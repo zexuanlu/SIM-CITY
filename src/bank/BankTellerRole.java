@@ -18,7 +18,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	public List<Task> tasks;
 	//BankDatabase bd;
 	//BankHost bh;
-	//BankCustomer bc;
+	public BankCustomer bc;
 	
 	public BankTellerRole(String name){
 		this.name = name;
@@ -27,12 +27,20 @@ public class BankTellerRole extends Role implements BankTeller {
 	//Messages
 	public void msgINeedAccount(BankCustomer bc, int amount){
 		//Adds a task to the list of tasks
+		this.bc = bc;
 		tasks.add(new Task("openAccount", amount));
 		stateChanged();
 	}
 	
 	public void msgDepositMoney(BankCustomer bc, int amount, int accountNumber){
+		this.bc = bc;
 		tasks.add(new Task("deposit", amount, accountNumber));
+		stateChanged();
+	}
+	
+	public void msgWithdrawMoney(BankCustomer bc, int amount, int accountNumber){
+		this.bc = bc;
+		tasks.add(new Task("withdraw", amount, accountNumber));
 		stateChanged();
 	}
 	//Scheduler
