@@ -14,10 +14,20 @@ import agent.*;
 public class BankTellerRole extends Role implements BankTeller {
 
 	//Data
-	List<Task> tasks;
+	String name;
+	public List<Task> tasks;
 	//BankDatabase bd;
 	//BankHost bh;
 	//BankCustomer bc;
+	
+	public BankTellerRole(String name){
+		this.name = name;
+		tasks = new ArrayList<Task>();
+	}
+	//Messages
+	public void msgINeedAccount(BankCustomer bc){
+		//Adds a task to the list of tasks
+	}
 	
 	//Scheduler
 	protected boolean pickAndExecuteAnAction(){
