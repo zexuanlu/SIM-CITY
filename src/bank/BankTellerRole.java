@@ -31,6 +31,10 @@ public class BankTellerRole extends Role implements BankTeller {
 		stateChanged();
 	}
 	
+	public void msgDepositMoney(BankCustomer bc, int amount, int accountNumber){
+		tasks.add(new Task("deposit", amount, accountNumber));
+		stateChanged();
+	}
 	//Scheduler
 	protected boolean pickAndExecuteAnAction(){
 		for(Task t : tasks){
