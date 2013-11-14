@@ -26,5 +26,9 @@ public class BankTellerTest extends TestCase {
 	
 	public void testOne(){
 		assertEquals("Bank Teller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+		
+		bt.msgINeedAccount(bc, 100);
+		assertEquals("Bank Teller should have 1 task in it. It doesn't", bt.tasks.size(), 1);
+		assertEquals("The type of the task should be openAccount. It isn't", bt.tasks.get(0).type, "openAccount");
 	}
 }

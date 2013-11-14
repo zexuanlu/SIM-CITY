@@ -7,7 +7,7 @@ package bank.interfaces;
  *
  */
 public interface BankTeller {
-	public void msgINeedAccount(BankCustomer bc);
+	public void msgINeedAccount(BankCustomer bc, int amount);
 	
 	
 }

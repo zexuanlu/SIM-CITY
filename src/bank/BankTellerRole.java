@@ -25,8 +25,10 @@ public class BankTellerRole extends Role implements BankTeller {
 		tasks = new ArrayList<Task>();
 	}
 	//Messages
-	public void msgINeedAccount(BankCustomer bc){
+	public void msgINeedAccount(BankCustomer bc, int amount){
 		//Adds a task to the list of tasks
+		tasks.add(new Task("openAccount", amount));
+		stateChanged();
 	}
 	
 	//Scheduler
@@ -61,16 +63,23 @@ public class BankTellerRole extends Role implements BankTeller {
 		//Requests a loan for an account in the BankDatabase
 	}
 	//Utilities
-	class Task{
-		String type;
-		int amount;
-		int balance;
-		int accountNumber;
-		taskState ts;
+	public class Task{
+		public String type;
+		public int amount;
+		public int balance;
+		public int accountNumber;
+		public taskState ts;
 		Task(String type, int amount, int accountNumber){
 			this.type = type;
 			this.amount = amount;
 			this.accountNumber = accountNumber;
+			ts = taskState.requested;
+		}
+		Task(String type, int amount){
+			this.type = type;
+			this.amount = amount;
+			accountNumber = 0;
+			ts = taskState.requested;
 		}
 	}
 	enum taskState {requested, waiting, completed}
