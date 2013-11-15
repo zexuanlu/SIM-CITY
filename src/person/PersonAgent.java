@@ -39,6 +39,14 @@ public class PersonAgent extends Agent implements Person{
 
 	Semaphore going;
 	
+	/* Utilities */
+	
+	private void activateRole(Role r){ r.setActive(true); }
+	private void deactivateRole(Role r){ r.setActive(false); }
+	public void addRole(Role r){ roles.add(r); }
+	
+	/* Messages */
+	
 	public void msgNewHour(int hour){ //from the world timer or gui 
 
 	    currentTime = hour;
@@ -55,17 +63,22 @@ public class PersonAgent extends Agent implements Person{
 
 	public void msgFinishedEvent(Role r){ //The location manager will send this message as the persons role leaves the building
 
-	    //deactivateRole(r);
+	    deactivateRole(r);
 	    activeRole = false;
 	    stateChanged();
 
 	}
-
+	/* Scheduler */
+	
 	@Override
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	/* Actions */
+	
+	
 	
 	/* 
 	 * the cityMap will be the person's guide to locations in the city 
