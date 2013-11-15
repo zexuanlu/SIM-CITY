@@ -1,9 +1,5 @@
 package agent;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
-
 /**
  * Base class for simple agents
  */
