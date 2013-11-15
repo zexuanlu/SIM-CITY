@@ -161,19 +161,14 @@ public class HomeOwner extends Role {
 			for (MyCheck c : checks) {
 				if (c.state == MyCheck.CheckState.New) {
 					payHousekeeper(c);
+					return true;
 				}
-			return true;
+			}
 		}
 		if (!toDoList.isEmpty()) {
 			for (MyPriority p : toDoList) { // Eating is the most important
 				if (p.task == MyPriority.Task.NeedToEat) {
 					checkFridge(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.PayHousekeeper) {
-					payHousekeeper(p);
 					return true;
 				}
 			}
@@ -185,7 +180,7 @@ public class HomeOwner extends Role {
 			}
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.RestockFridgeThenCook) {
-					restockFridgeCook(p);
+					restockFridgeThenCook(p);
 					return true;
 				}
 			}
@@ -220,125 +215,125 @@ public class HomeOwner extends Role {
 	/**
 	 * Actions for Homeowner
 	 */
-		void checkFridge(MyPriority p) {
-			toDoList.remove(p);
+	private void checkFridge(MyPriority p) {
+		toDoList.remove(p);
 
-			DoGoToFridge(); // GUI goes to the fridge
+//		DoGoToFridge(); // GUI goes to the fridge
 
-			// Semaphore to see if the GUI gets to the fridge
+		// Semaphore to see if the GUI gets to the fridge
 
-			if (!myFridge.isEmpty()) { // Checks to see if the list is empty
-				// Adds going to the market or restaurant to the list
-				toDoList.add(new MyPriority(MyPriority.Task.NoFood));
-				stateChanged(); // Legal?
-			}
-			else { // Cook the food
-				toDoList.add(new MyPriority(MyPriority.Task.Cooking));
-				stateChanged(); // Legal?
-			}	
+		if (!myFridge.isEmpty()) { // Checks to see if the list is empty
+			// Adds going to the market or restaurant to the list
+			toDoList.add(new MyPriority(MyPriority.Task.NoFood));
+			stateChanged(); // Legal?
 		}
-
-		void decideMarketOrGoOut(MyPriority p) {
-			toDoList.remove(p);
-
-			if (myTime > (marketTime + minCookingTime)) { 
-				DoGoToMarket(); // GUI will go to market
-				toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
-			}
-			else { 
-				DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
-				toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
-			}
-		}
-
-		void restockFridgeThenCook(MyPriority p) {
-			toDoList.remove(p);
-
-			DoGoToFridge(); // GUI will go to the fridge 
-
-			// Semaphore to determine if GUI arrived at fridge
-
+		else { // Cook the food
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+			stateChanged(); // Legal?
+		}	
+	}
+
+	private void decideMarketOrGoOut(MyPriority p) {
+		toDoList.remove(p);
+
+		if (myTime > (marketTime + minCookingTime)) { 
+//			DoGoToMarket(); // GUI will go to market
+			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
+		}
+		else { 
+//			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
+			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
+		}
+	}
+
+	private void restockFridgeThenCook(MyPriority p) {
+		toDoList.remove(p);
+
+//		DoGoToFridge(); // GUI will go to the fridge 
+
+		// Semaphore to determine if GUI arrived at fridge
+
+		toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+	}
+
+	private void restockFridge(MyPriority p) {
+		toDoList.remove(p);
+
+//		DoGoToFridge(); // GUI will go to the fridge 
+
+		// Semaphore to determine if GUI arrived at fridge
+	}
+
+	private void cookFood(MyPriority p) {
+		toDoList.remove(p);
+
+		int max = -1;
+		String maxChoice = null;
+
+		for (MyFood f : myFridge) { // Searches for the food item with the most inventory
+			if (f.foodAmount > max) {
+				max = f.foodAmount;
+				maxChoice = f.foodItem;
+			}
 		}
 
-		void restockFridge(MyPriority p) {
-			toDoList.remove(p);
-
-			DoGoToFridge(); // GUI will go to the fridge 
-
-			// Semaphore to determine if GUI arrived at fridge
-		}
-
-		void cookFood() {
-			toDoList.remove(p);
-
-			int max = -1;
-			String maxChoice;
-
-			for (MyFood f : myFridge) { // Searches for the food item with the most inventory
-				if (f.foodAmount > max) {
-					max = f.foodAmount;
-					maxChoice = f.foodItem;
+		for (MyFood f : myFridge) { // Searches for and decreases the amount of food for the one with the most inventory
+			if (f.foodItem == maxChoice) {
+				--f.foodAmount;
+				if (f.foodAmount == 0) { // If the food item's amount is 0, remove it from the fridge list
+					myFridge.remove(f);
 				}
 			}
-
-			for (MyFood f : myFridge) { // Searches for and decreases the amount of food for the one with the most inventory
-				if (f.foodItem == maxChoice) {
-					--f.foodAmount;
-					if (f.foodAmount == 0) { // If the food item's amount is 0, remove it from the fridge list
-						myFridge.remove(f);
-					}
-				}
-			}
-
-			DoGoToStove(); // GUI animation to go to the stove and start cooking
-
-			// Semaphore to determine if the GUI has gotten to the stove location
-
-			cookingTimer.start{msgFoodDone()};
 		}
 
-		void eatFood(MyPriority p) {
-			toDoList.remove(p);
+//		DoGoToStove(); // GUI animation to go to the stove and start cooking
+//
+//		// Semaphore to determine if the GUI has gotten to the stove location
+//
+//		cookingTimer.start{msgFoodDone()};
+	}
 
-			DoGoToStove(); // GUI animation to go to stove
+	private void eatFood(MyPriority p) {
+		toDoList.remove(p);
 
-			// Semaphore to determine if the GUI has gotten to the stove location
+//		DoGoToStove(); // GUI animation to go to stove
+//
+//		// Semaphore to determine if the GUI has gotten to the stove location
+//
+//		DoGoToDiningTable(); // GUI animation to go to the dining table
+//
+//		// Semaphore to determine if the GUI has gotten to the table location
+//
+//		eatingTimer.start{msgDoneEating()};
+	}
 
-			DoGoToDiningTable(); // GUI animation to go to the dining table
+	private void washDishes(MyPriority p) {
+		toDoList.remove(p);
 
-			// Semaphore to determine if the GUI has gotten to the table location
+		toDoList.add(new MyPriority(MyPriority.Task.Washing));
 
-			eatingTimer.start{msgDoneEating()};
+//		DoGoToSink(); // GUI animation to go to the sink
+//
+//		// Semaphore to determine if the GUI has arrived at sink locatin
+//
+//		washingDishesTimer.start{msgDoneWashing(p)};
+	}
+
+	private void callHousekeeper() {
+		housekeeper.msgPleaseComeMaintain(this, houseNumber);
+	}
+
+	private void payHousekeeper(MyCheck c) {
+		if (myMoney >= c.amount) {
+			housekeeper.msgHereIsThePayment(this, c.amount);
+			myMoney -= c.amount;
+
 		}
-
-		void washDishes(MyPriority p) {
-			toDoList.remove(p);
-
-			toDoList.add(new MyPriority(MyPriority.Task.Washing);
-
-			DoGoToSink(); // GUI animation to go to the sink
-
-			// Semaphore to determine if the GUI has arrived at sink locatin
-
-			washingDishesTimer.start{msgDoneWashing(p)};
+		else {
+			housekeeper.msgHereIsThePayment(this, myMoney);
+			c.amount = myMoney;
+			myMoney = 0;
 		}
-
-		void callHousekeeper() {
-			housekeeper.msgPleaseComeMaintain(this, int houseNumber);
-		}
-
-		void payHousekeeper(MyCheck c) {
-			if (myMoney >= c.amount) {
-				housekeeper.msgHereIsThePayment(this, c.amount);
-				myMoney -= c.amount;
-
-			}
-			else {
-				housekeeper.msgHereIsThePayment(this, myMoney);
-				c.amount = myMoney;
-				myMoney = 0;
-			}
-			c.state = MyCheck.CheckState.Paid;
-		}
+		c.state = MyCheck.CheckState.Paid;
+	}
 }
