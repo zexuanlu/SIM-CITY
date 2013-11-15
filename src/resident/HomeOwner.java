@@ -132,8 +132,8 @@ public class HomeOwner extends Role {
 		stateChanged();
 	}
 
-	public void msgDoneMaintaining(MyCheck c) {
-		checks.add(new MyCheck("Maintenance", c.amount));
+	public void msgDoneMaintaining(double amount) {
+		checks.add(new MyCheck("Maintenance", amount));
 		stateChanged();
 	}
 
