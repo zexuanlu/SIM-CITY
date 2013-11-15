@@ -187,6 +187,8 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
+		// Include scheduler rule for paying rent
+		
 		for (MyCustomer c : homesToBeMaintained) {
 			if (c.state == MyCustomer.MyCustomerState.NeedsMaintenance) {
 				maintainHouse(c);
