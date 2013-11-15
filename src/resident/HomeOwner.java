@@ -66,7 +66,7 @@ public class HomeOwner extends Role {
 	private double myTime; // Keeps track of how much time the resident has
 	private double minCookingTime; // Time it takes to cook the fastest food
 	private double marketTime; // Time it takes to go to the market and come back
-	//MaintenancePerson housekeeper;
+	private MaintenancePerson housekeeper;
 	
 	/**
 	 * Messages for Homeowner
