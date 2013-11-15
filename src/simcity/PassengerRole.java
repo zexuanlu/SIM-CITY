@@ -1,7 +1,7 @@
 package simcity;
+import agent.Role; 
 
-
-public class PassengerRole {
+public class PassengerRole extends Role{
 	String Destination; //eventual place that he wants to get to
 	int Cash; // amount of money he has
 

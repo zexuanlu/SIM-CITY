@@ -26,7 +26,6 @@ in this Software without prior written authorization from Stanford University.
 
 */
 package agent;
-//testing 
 /**
  * Constants of general use
  */
