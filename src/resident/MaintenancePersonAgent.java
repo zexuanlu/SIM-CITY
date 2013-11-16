@@ -1,12 +1,11 @@
 package resident;
 
-import interfaces.MaintenancePerson;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 
+import resident.interfaces.MaintenancePerson;
 import agent.Role;
 
 public class MaintenancePersonAgent extends Role implements MaintenancePerson {

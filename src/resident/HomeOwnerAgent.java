@@ -1,12 +1,11 @@
 package resident;
 
-import interfaces.HomeOwner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 
+import resident.interfaces.HomeOwner;
 import agent.Role;
 
 public class HomeOwnerAgent extends Role implements HomeOwner {
@@ -16,10 +15,9 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	 *
 	 */
 	private static class MyPriority {
-		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
+		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
 		private Task task;
 		double timeDuration;
-		private int levelOfImportance;
 //		Map<Task, Double> taskTime; // Will have times preinitialized 
 //		Map<Task, Integer> taskImportance; // Will have importance preinitialized
 
@@ -40,23 +38,22 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		}
 	}
 
-	private static class MyCheck {
-		private String service;
-		private double amount;
-		public enum CheckState {New, Paid}
-		CheckState state;
-
-		MyCheck(String s, double a) {
-			service = s;
-			amount = a;
-			state = CheckState.New;
-		}
-	}
+//	private static class MyCheck {
+//		private String service;
+//		private double amount;
+//		public enum CheckState {New, Paid}
+//		CheckState state;
+//
+//		MyCheck(String s, double a) {
+//			service = s;
+//			amount = a;
+//			state = CheckState.New;
+//		}
+//	}
 
 	private List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
 	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());;
-	private List<MyCheck> checks = Collections.synchronizedList(new ArrayList<MyCheck>());
-	private Timer globalTimer; // Reference to the global timer
+//	private List<MyCheck> checks = Collections.synchronizedList(new ArrayList<MyCheck>());
 	private Timer cookingTimer; // Times the food cooking
 	private Timer eatingTimer;
 	private Timer washingDishesTimer;
@@ -100,8 +97,10 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	}
 
 	public void msgDoneGoingToMarket(List<MyFood> groceries) {
+		// Add restocking fridge
 		for (MyPriority p : toDoList) {
 			if (p.task == MyPriority.Task.GoToMarket) {
+				// If the customer has just finished going to the market, restock the fridge and then cook
 				toDoList.remove(p);
 				toDoList.add(new MyPriority(MyPriority.Task.RestockFridgeThenCook));
 			}
@@ -117,6 +116,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	public void msgDoneEatingOut(List<MyFood> groceries) {
 		for (MyPriority p : toDoList) {
 			if (p.task == MyPriority.Task.GoToRestaurant) {
+				// If the customer has just finished going to the market, just restock the fridge
 				toDoList.remove(p);
 				toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));
 			}
@@ -128,6 +128,12 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 
 		stateChanged();
 	}
+	
+	public void msgMaintainHome() {
+		// Adds calling housekeeper to the list of priorities 
+		toDoList.add(new MyPriority(MyPriority.Task.CallHousekeeper));
+		stateChanged();
+	}
 
 	public void msgYouHaveDebt(double amount) {
 		debt += amount;
@@ -135,16 +141,16 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	}
 
 	public void msgDoneMaintaining(double amount) {
-		checks.add(new MyCheck("Maintenance", amount));
+		toDoList.add(new MyPriority(MyPriority.Task.PayHousekeeper));
 		stateChanged();
 	}
 
 	public void msgReceivedPayment(double amount) {
-		for (MyCheck check : checks) {
-			if (check.amount == amount) {
-				checks.remove(check);
-				stateChanged(); 
-			}
+		if (amount == 0) {
+			debt = 0;
+		}
+		else {
+			debt += amount;
 		}
 	}
 
@@ -155,22 +161,30 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		/*if (globalTimer%70 == 0) { // Assumng house needs to be maintained every week, and global timer 10 is equivalent to one day
-			callHousekeeper();
-			return true;
-		}*/
-		if (!checks.isEmpty()) {
-			for (MyCheck c : checks) {
-				if (c.state == MyCheck.CheckState.New) {
-					payHousekeeper(c);
-					return true;
-				}
-			}
-		}
+//		if (!checks.isEmpty()) {
+//			for (MyCheck c : checks) {
+//				if (c.state == MyCheck.CheckState.New) {
+//					payHousekeeper(c);
+//					return true;
+//				}
+//			}
+//		}
 		if (!toDoList.isEmpty()) {
 			for (MyPriority p : toDoList) { // Eating is the most important
 				if (p.task == MyPriority.Task.NeedToEat) {
 					checkFridge(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every week, and global timer 10 is equivalent to one day
+				if (p.task == MyPriority.Task.CallHousekeeper) {
+					callHousekeeper();
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.PayHousekeeper) {
+					payHousekeeper();
 					return true;
 				}
 			}
@@ -209,7 +223,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 					washDishes(p);
 					return true;
 				}
-			}	
+			}
 		}
 		return false;
 	}
@@ -227,11 +241,9 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		if (!myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
 			toDoList.add(new MyPriority(MyPriority.Task.NoFood));
-			stateChanged(); // Legal?
 		}
 		else { // Cook the food
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
-			stateChanged(); // Legal?
 		}	
 	}
 
@@ -316,7 +328,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 
 //		DoGoToSink(); // GUI animation to go to the sink
 //
-//		// Semaphore to determine if the GUI has arrived at sink locatin
+//		// Semaphore to determine if the GUI has arrived at sink location
 //
 //		washingDishesTimer.start{msgDoneWashing(p)};
 	}
@@ -325,17 +337,15 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		housekeeper.msgPleaseComeMaintain(this, houseNumber);
 	}
 
-	private void payHousekeeper(MyCheck c) {
-		if (myMoney >= c.amount) {
-			housekeeper.msgHereIsThePayment(this, c.amount);
-			myMoney -= c.amount;
+	private void payHousekeeper() {
+		if (myMoney >= maintenanceCost) {
+			housekeeper.msgHereIsThePayment(this, maintenanceCost);
+			myMoney -= maintenanceCost;
 
 		}
 		else {
 			housekeeper.msgHereIsThePayment(this, myMoney);
-			c.amount = myMoney;
 			myMoney = 0;
 		}
-		c.state = MyCheck.CheckState.Paid;
 	}
 }
