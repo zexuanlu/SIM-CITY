@@ -1,8 +1,10 @@
 package bank.test;
 
 import junit.framework.*;
+import bank.test.mock.*;
 import bank.interfaces.*;
-import bank.BankTellerRole;
+import bank.*;
+import bank.BankTellerRole.taskState;
 
 /**
  * This class is a junit TestCase designed to test the basic functionality 
@@ -15,6 +17,7 @@ public class BankTellerTest extends TestCase {
 
 	BankTellerRole bt;
 	BankCustomer bc;
+	BankDatabaseAgent bd;
 
 	/**
 	 * Sets up the basic agents being used in all of the following tests
@@ -22,6 +25,8 @@ public class BankTellerTest extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();		
 		bt = new BankTellerRole("BankTeller1");
+		bd = new BankDatabaseAgent("BankDatabase");
+		bt.bd = bd;
 	}	
 	
 	public void testOne(){
@@ -42,10 +47,21 @@ public class BankTellerTest extends TestCase {
 		assertEquals("The customer in the Bank Teller should be the same as bc. It isn't", bt.bc, bc);
 		
 		bt.msgWithdrawMoney(bc, 50, 123456);
-		assertEquals("Bank Teller should have 2 tasks in it. It doesn't", bt.tasks.size(), 3);
+		assertEquals("Bank Teller should have 3 tasks in it. It doesn't", bt.tasks.size(), 3);
 		assertEquals("The type of the third task should be deposit. It isn't", bt.tasks.get(2).type, "withdraw");
 		assertEquals("The amount of the third task should be $50. It isn't", bt.tasks.get(2).amount, 50);
 		assertEquals("The account number of the third task should be 123456. It isn't", bt.tasks.get(2).accountNumber, 123456);
 		assertEquals("The customer in the Bank Teller should be the same as bc. It isn't", bt.bc, bc);
+	
+		assertTrue("The scheduler should return true. It didn't", bt.pickAndExecuteAnAction());
+		assertTrue("BankDatabase should have logged \"Received msgOpenAccount\" but didn't. His log reads instead: " 
+				+ bd.log.getLastLoggedEvent().toString(), bd.log.containsString("Received msgOpenAccount"));
+		assertTrue("The state of the first task in Bank Teller should be waiting. It isn't.", bt.tasks.get(0).ts == taskState.waiting);
+	
+		bt.msgAccountCreated(789789, bc);
+		assertTrue("BankTeller should have logged \"Received msgAccountCreated\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgAccountCreated"));
+		assertTrue("The state of the first task in Bank Teller should be completed. It isn't", bt.tasks.get(0).ts == taskState.completed);
+		assertEquals("The account number of the first task should be 789789. It isn't", bt.tasks.get(0).accountNumber, 789789);
 	}
 }

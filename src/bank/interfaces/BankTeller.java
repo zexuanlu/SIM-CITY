@@ -11,5 +11,7 @@ public interface BankTeller {
 	
 	public void msgDepositMoney(BankCustomer bc, int amount, int accountNumber);
 	
-	public void msgWithdrawMoney(BankCustomer bc, int amount, int accountNumber);	
+	public void msgWithdrawMoney(BankCustomer bc, int amount, int accountNumber);
+	
+	public void msgAccountCreated(int accountNumber, BankCustomer bc);
 }

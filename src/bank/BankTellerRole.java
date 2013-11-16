@@ -1,6 +1,7 @@
 package bank;
 
 import java.util.*;
+import bank.test.mock.*;
 import bank.interfaces.*;
 import agent.*;
 
@@ -14,14 +15,16 @@ import agent.*;
 public class BankTellerRole extends Role implements BankTeller {
 
 	//Data
+	public EventLog log;
 	String name;
 	public List<Task> tasks;
-	//BankDatabase bd;
+	public BankDatabase bd;
 	//BankHost bh;
 	public BankCustomer bc;
 	
 	public BankTellerRole(String name){
 		this.name = name;
+		log = new EventLog();
 		tasks = new ArrayList<Task>();
 	}
 	//Messages
@@ -43,12 +46,25 @@ public class BankTellerRole extends Role implements BankTeller {
 		tasks.add(new Task("withdraw", amount, accountNumber));
 		stateChanged();
 	}
+	
+	public void msgAccountCreated(int accountNumber, BankCustomer bc){
+		log.add(new LoggedEvent("Received msgAccountCreated from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("openAccount")){
+				t.accountNumber = accountNumber;
+				t.ts = taskState.completed;
+				stateChanged();
+				return;
+			}
+		}
+	}
+	
 	//Scheduler
-	protected boolean pickAndExecuteAnAction(){
+	public boolean pickAndExecuteAnAction(){
 		for(Task t : tasks){
 			if(t.ts == taskState.requested){
 				switch(t.type){
-				case "makeAccount": openAccount(t); return true;
+				case "openAccount": openAccount(t); return true;
 				case "deposit": deposit(t); return true;
 				case "withdraw": withdraw(t); return true;
 				case "getLoan": getLoan(t); return true;
@@ -60,7 +76,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	//Actions
 	private void openAccount(Task t){
-		//Requests a new account from the BankDatabase
+		bd.msgOpenAccount(bc, t.amount, this);
+		t.ts = taskState.waiting;
 	}
 	
 	private void deposit(Task t){
@@ -94,5 +111,5 @@ public class BankTellerRole extends Role implements BankTeller {
 			ts = taskState.requested;
 		}
 	}
-	enum taskState {requested, waiting, completed}
+	public enum taskState {requested, waiting, completed}
 }
