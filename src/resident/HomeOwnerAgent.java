@@ -1,59 +1,75 @@
 package resident;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 
 import resident.interfaces.HomeOwner;
+import resident.interfaces.MaintenancePerson;
+import resident.test.mock.EventLog;
+import resident.test.mock.LoggedEvent;
 import agent.Role;
 
 public class HomeOwnerAgent extends Role implements HomeOwner {
+	
+	// For the purposes of JUnit testing
+	public EventLog log = new EventLog();
+	
 	/**
 	 * Data for Homeowner
 	 * @author jenniezhou
 	 *
 	 */
+	// Constructor
+	public HomeOwnerAgent(String n) {
+		super();
+		name = n;
+	}
+	
 	private static class MyPriority {
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
 		private Task task;
-		double timeDuration;
+		int timeDuration;
 //		Map<Task, Double> taskTime; // Will have times preinitialized 
-//		Map<Task, Integer> taskImportance; // Will have importance preinitialized
+		Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
 
 		MyPriority(Task t) {
 			task = t;
-//			timeDuration = taskTime.get(t);
+			
+			// Initializing all of the tasks and their times
+			taskTime.put(Task.NeedToEat, 0);
+			taskTime.put(Task.Cooking, 30);
+			taskTime.put(Task.Eating, 30);
+			taskTime.put(Task.WashDishes, 0);
+			taskTime.put(Task.Washing, 10);
+			taskTime.put(Task.CallHousekeeper, 5);
+			taskTime.put(Task.PayHousekeeper, 5);
+			taskTime.put(Task.GoToMarket, 20);
+			taskTime.put(Task.RestockFridge, 5);
+			taskTime.put(Task.RestockFridgeThenCook, 35);
+			taskTime.put(Task.GoToRestaurant, 40);
+			taskTime.put(Task.NoFood, 0);
+			
+			timeDuration = taskTime.get(t);
 //			levelOfImportance = taskImportance.get(t);
 		}
 	}
 
-	private class MyFood {
+	public static class MyFood {
 		private String foodItem;
 		private int foodAmount;
 
-		MyFood(String f, int a) {
+		public MyFood(String f, int a) {
 			foodItem = f;
 			foodAmount = a;
 		}
 	}
 
-//	private static class MyCheck {
-//		private String service;
-//		private double amount;
-//		public enum CheckState {New, Paid}
-//		CheckState state;
-//
-//		MyCheck(String s, double a) {
-//			service = s;
-//			amount = a;
-//			state = CheckState.New;
-//		}
-//	}
-
-	private List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
-	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());;
-//	private List<MyCheck> checks = Collections.synchronizedList(new ArrayList<MyCheck>());
+	public List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
+	public List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());
 	private Timer cookingTimer; // Times the food cooking
 	private Timer eatingTimer;
 	private Timer washingDishesTimer;
@@ -62,10 +78,14 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	private double myMoney;
 	private double debt;
 	private double maintenanceCost; // Static for now.
-	private double myTime; // Keeps track of how much time the resident has
-	private double minCookingTime; // Time it takes to cook the fastest food
-	private double marketTime; // Time it takes to go to the market and come back
-	private MaintenancePersonAgent housekeeper;
+	private int myTime; // Keeps track of how much time the resident has
+	private static int minCookingTime = 70; // Time it takes to cook the fastest food
+	private MaintenancePerson housekeeper;
+	
+	// Hack to establish connection between maintenance person and home owner
+	public void setMaintenance(MaintenancePerson m) {
+		housekeeper = m;
+	}
 	
 	/**
 	 * Messages for Homeowner
@@ -75,6 +95,10 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	public void msgGotHungry() {
 		// Add eating to the list of priorities that the resident has
 		toDoList.add(new MyPriority(MyPriority.Task.NeedToEat));
+		
+		// Log that the message has been received
+		log.add(new LoggedEvent("I'm hungry."));
+		
 		stateChanged();
 	}
 
@@ -159,16 +183,8 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	 * @author jenniezhou
 	 *
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-//		if (!checks.isEmpty()) {
-//			for (MyCheck c : checks) {
-//				if (c.state == MyCheck.CheckState.New) {
-//					payHousekeeper(c);
-//					return true;
-//				}
-//			}
-//		}
 		if (!toDoList.isEmpty()) {
 			for (MyPriority p : toDoList) { // Eating is the most important
 				if (p.task == MyPriority.Task.NeedToEat) {
@@ -238,19 +254,21 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 
 		// Semaphore to see if the GUI gets to the fridge
 
-		if (!myFridge.isEmpty()) { // Checks to see if the list is empty
+		if (myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
 			toDoList.add(new MyPriority(MyPriority.Task.NoFood));
+			log.add(new LoggedEvent("My fridge has no food. I must now decide if I should go to the market or go out to eat."));
 		}
 		else { // Cook the food
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+			log.add(new LoggedEvent("My fridge has food. I can cook now!"));
 		}	
 	}
 
 	private void decideMarketOrGoOut(MyPriority p) {
 		toDoList.remove(p);
 
-		if (myTime > (marketTime + minCookingTime)) { 
+		if (myTime > minCookingTime) { 
 //			DoGoToMarket(); // GUI will go to market
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
 		}
@@ -283,6 +301,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 
 		int max = -1;
 		String maxChoice = null;
+		int index = -1;
 
 		for (MyFood f : myFridge) { // Searches for the food item with the most inventory
 			if (f.foodAmount > max) {
@@ -294,10 +313,16 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		for (MyFood f : myFridge) { // Searches for and decreases the amount of food for the one with the most inventory
 			if (f.foodItem == maxChoice) {
 				--f.foodAmount;
-				if (f.foodAmount == 0) { // If the food item's amount is 0, remove it from the fridge list
-					myFridge.remove(f);
-				}
+				++index;
+				log.add(new LoggedEvent("I'm going to cook " + f.foodItem + ". My inventory of it is now " + f.foodAmount + "."));
+				break;
 			}
+		}
+		
+		// If there's no more of an item after the resident has removed it, then 
+		if (myFridge.get(index).foodAmount == 0) {
+			myFridge.remove(index);
+			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
 		}
 
 //		DoGoToStove(); // GUI animation to go to the stove and start cooking

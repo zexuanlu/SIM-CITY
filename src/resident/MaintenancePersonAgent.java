@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 
+import resident.interfaces.HomeOwner;
 import resident.interfaces.MaintenancePerson;
 import agent.Role;
 
@@ -14,14 +15,14 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	 *
 	 */
 	private static class MyCustomer {
-		private HomeOwnerAgent customer;
+		private HomeOwner customer;
 		private int houseNumber;
 		public enum MyCustomerState {NeedsMaintenance, InMaintenance, Maintained, NeedsToPay, Paid}
 		private MyCustomerState state;
 		private double amountOwed;
 		private double amountPaid;
 
-		MyCustomer(HomeOwnerAgent h, int n) {
+		MyCustomer(HomeOwner h, int n) {
 			customer = h;
 			houseNumber = n;
 			state = MyCustomerState.NeedsMaintenance;
@@ -159,7 +160,7 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 		}
 	}
 
-	public void msgPleaseComeMaintain(HomeOwnerAgent cust, int houseNumber) {
+	public void msgPleaseComeMaintain(HomeOwner cust, int houseNumber) {
 		homesToBeMaintained.add(new MyCustomer(cust, houseNumber));
 		stateChanged();
 	}
@@ -169,7 +170,7 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 		stateChanged();
 	}
 
-	public void msgHereIsThePayment(HomeOwnerAgent cust, double amount) {
+	public void msgHereIsThePayment(HomeOwner cust, double amount) {
 		for (MyCustomer c : homesToBeMaintained) {
 			if (c.customer == cust) {
 				c.state = MyCustomer.MyCustomerState.Paid;
