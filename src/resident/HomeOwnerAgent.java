@@ -29,10 +29,10 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		name = n;
 	}
 	
-	private static class MyPriority {
+	public static class MyPriority {
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
-		private Task task;
-		int timeDuration;
+		public Task task;
+		public int timeDuration;
 //		Map<Task, Double> taskTime; // Will have times preinitialized 
 		Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
 
@@ -105,18 +105,27 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	public void msgFoodDone() {
 		// Add getting cooked food to the list of priorities 
 		toDoList.add(new MyPriority(MyPriority.Task.Eating));
+		
+		log.add(new LoggedEvent("My food is ready! I can eat now."));
+		
 		stateChanged();
 	}
 
 	public void msgDoneEating() {
 		// Add washing dishes to the list of priorities
 		toDoList.add(new MyPriority(MyPriority.Task.WashDishes));
+		
+		log.add(new LoggedEvent("Done eating. I'm going to wash dishes now."));
+		
 		stateChanged();
 	}
 
 	public void msgDoneWashing(MyPriority p) {
 		// Removes washing from the list of priorities
 		toDoList.remove(p);
+		
+		log.add(new LoggedEvent("Done washing dishes!"));
+		
 		stateChanged();
 	}
 

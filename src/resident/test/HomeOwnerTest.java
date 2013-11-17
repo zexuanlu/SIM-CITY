@@ -6,6 +6,7 @@ import java.util.List;
 
 import resident.HomeOwnerAgent;
 import resident.HomeOwnerAgent.MyFood;
+import resident.HomeOwnerAgent.MyPriority;
 import resident.test.mock.MockMaintenancePerson;
 import junit.framework.*;
 
@@ -60,12 +61,14 @@ public class HomeOwnerTest extends TestCase
 		
 		// Check to make sure that the home owner now has one task
 		assertEquals("Home owner now has one task - to eat.", 1, homeOwner.toDoList.size());
+		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.NeedToEat);
 		
 		// Invokes scheduler and makes sure that it returns true
 		assertTrue(homeOwner.pickAndExecuteAnAction());
 		
 		// Checks that the home owner has only one task now
 		assertEquals("Home owner has one task - to cook.", 1, homeOwner.toDoList.size());
+		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.Cooking);
 		
 		// Checks that the home owner's log contains two entries now. The most recent one is the full fridge entry.
 		assertEquals("Home owner has two logged events.", 2, homeOwner.log.size());
@@ -78,5 +81,53 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has four logged events now.", 4, homeOwner.log.size());
 		assertTrue(homeOwner.log.containsString("I'm going to cook Chicken. My inventory of it is now 0."));
 		assertTrue(homeOwner.log.containsString("My fridge has no more Chicken."));
+		
+		// Ensures home owner has nothing in to do list
+		assertEquals("Home owner has nothing to do while cooking.", 0, homeOwner.toDoList.size());
+		
+		// Messages the home owner saying that the food is ready to be eaten
+		homeOwner.msgFoodDone();
+		
+		// Checks that to do list now has the task to eat
+		assertEquals("Home owner has one task now.", 1, homeOwner.toDoList.size());
+		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.Eating);
+		
+		// Checks home owner's log for one indicating ready to eat
+		assertEquals("Home owner has five logged events now.", 5, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("My food is ready! I can eat now."));
+		
+		// Invokes scheduler and makes sure that it returns true
+		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Checks to make sure resident has no tasks when eating
+		assertEquals("Home owner has nothing to do besides eating.", 0, homeOwner.toDoList.size());
+		
+		// Messages home owner when done eating
+		homeOwner.msgDoneEating();
+		
+		// Checks home owner's log for one indicating ready to wash dishes
+		assertEquals("Home owner has six logged events now.", 6, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("Done eating. I'm going to wash dishes now."));
+		
+		// Checks that to do list now has the task to wash dishes
+		assertEquals("Home owner has one task now.", 1, homeOwner.toDoList.size());
+		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.WashDishes);
+		
+		// Invokes scheduler and makes sure that it returns true
+		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Checks that home owner has task of washing (to prevent scheduler from running same action multiple times)
+		assertEquals("Home owner has one task now.", 1, homeOwner.toDoList.size());
+		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.Washing);
+		
+		// Messages home owner when done washing dishes
+		homeOwner.msgDoneWashing(homeOwner.toDoList.get(0));
+		
+		// Checks home owner's log for one indicating done washing dishes
+		assertEquals("Home owner has seven logged events now.", 7, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("Done washing dishes!"));
+		
+		// Invokes scheduler. Should return false because no task.
+		assertFalse(homeOwner.pickAndExecuteAnAction());
 	}
 }
