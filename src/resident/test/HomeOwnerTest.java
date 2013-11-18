@@ -374,4 +374,113 @@ public class HomeOwnerTest extends TestCase
 		// Invokes scheduler. Should return false because no task.
 		assertFalse(homeOwner.pickAndExecuteAnAction());		
 	}
+	
+	/**
+	 * Tests the home owner not having enough money to pay the housekeeper
+	 */
+	public void testPoorHomeownerMaintaining() {
+		DecimalFormat df = new DecimalFormat("###.##");
+		
+		System.out.println("Testing Calling Housekeeper - Non-Normative Scenario");
+		
+		// Sets housekeeper's maintenance cost to 50
+		housekeeper.setMaintenanceCost(50);
+		
+		homeOwner.setMaintenance(housekeeper);
+		
+		homeOwner.setMoney(40);
+		
+		// Preconditions: before home owner gets hungry message
+		assertEquals("Home owner has no logged events. It doesn't.", 0, homeOwner.log.size());
+		
+		// Preconditions: home owner has house number of 1 and name of HomeOwner
+		assertEquals("Home owner has been constructed with the correct information.", 1, homeOwner.getHouseNumber());
+		assertEquals("Home owner has been constructed with the correct name.", "HomeOwner", homeOwner.getName());
+		
+		// Preconditions: check to make sure home owner has no tasks
+		assertEquals("Home owner has no tasks in to do list. It doesn't.", 0, homeOwner.toDoList.size());
+		
+		/*
+		 *  STEP 1: Messages the home owner to maintain the house. In the full scenario, the person agent will send 
+		 *  this message to the home owner role once each day has begun. Thus, this assumes that the home owner
+		 *  needs home maintenance every day.
+		 */
+		homeOwner.msgMaintainHome();
+		
+		// Checks home owner's log for one new entry
+		assertEquals("Home owner now has one logged entry.", 1, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("It's been a day. I need to call the housekeeper now!"));
+		
+		// Checks to make sure that the home owner now has a task of calling the housekeeper
+		assertEquals("Home owner now has one task in to do list.", 1, homeOwner.toDoList.size());
+		assertEquals("Home owner has task of calling the housekeeper.", MyPriority.Task.CallHousekeeper, homeOwner.toDoList.get(0).task);
+	
+		// Invokes the home owner's scheduler and makes sure that it returns true
+		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Checks that home owner has sent a message to the maintenance person by checking housekeeper log
+		assertEquals("Housekeeper should now have 1 logged entry.", 1, housekeeper.log.size());
+		assertTrue(housekeeper.log.getLastLoggedEvent().toString().contains("Received message from home owner HomeOwner to maintain house 1."));
+	
+		// Checks that the home owner has no tasks to complete
+		assertEquals("Home owner should have no tasks.", 0, homeOwner.toDoList.size());
+		
+		// STEP 2: This next step involves the housekeeper getting to the home owner's house and sending a message
+		homeOwner.msgReadyToMaintain();
+		
+		// Checks home owner's log for one new entry
+		assertEquals("Home owner now has 2 logged entries.", 2, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("The housekeeper is here, so I need to let him or her in."));
+
+		// Checks that the home owner now has one task - to let housekeeper in
+		assertEquals("Home owner now has task of letting the housekeeper in.", 1, homeOwner.toDoList.size());
+		assertEquals("Home owner has task of calling the housekeeper.", MyPriority.Task.LetHousekeeperIn, homeOwner.toDoList.get(0).task);
+		
+		// Invokes the home owner's scheduler and makes sure that it returns true
+		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Checks that the housekeeper has message stating it can go in and maintain the home
+		assertEquals("Housekeeper should have 2 logged entries.", 2, housekeeper.log.size());
+		assertTrue(housekeeper.log.getLastLoggedEvent().toString().contains("Received message to go in home 1."));
+		
+		// Checks that home owner has no tasks to complete
+		assertEquals("Home owner should have no tasks.", 0, homeOwner.toDoList.size());
+		
+		// STEP 3: This next step occurs when the maintenance person is done with home upkeep
+		homeOwner.msgDoneMaintaining(housekeeper.getMaintenanceCost());
+		
+		// Checks that the home owner's maintenance cost is now 50
+		assertEquals("Home owner should have 3 logged entries.", 3, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("I received the housekeeper's bill of 50."));
+		
+		// Checks that the home owner now has the task of paying the housekeeper
+		assertEquals("Home owner now has task of paying the housekeeper.", 1, homeOwner.toDoList.size());
+		assertEquals("Home owner has task of calling the housekeeper.", MyPriority.Task.PayHousekeeper, homeOwner.toDoList.get(0).task);
+	
+		// Invokes the home owner's scheduler and makes sure that it returns true
+		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Checks that the housekeeper has message of payment
+		assertEquals("Housekeeper should have 3 logged entries.", 3, housekeeper.log.size());
+		assertTrue(housekeeper.log.getLastLoggedEvent().toString().contains("Received payment from home owner of 40."));
+		
+		// Checks that home owner now has no tasks to complete
+		assertEquals("Home owner should have no tasks.", 0, homeOwner.toDoList.size());
+		
+		// Checks that the home owner's new amount of money is 250
+		assertEquals("Home owner should now have $0.", df.format(0), df.format(homeOwner.getMoney()));
+		
+		// Since home owner's money was more than the maintenance cost, the home owner should have no debt
+		homeOwner.msgReceivedPayment(10);
+		
+		// Makes sure that the home owner has no debt
+		assertEquals("Home owner should have 4 logged entries.", 4, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("I now have debt of $10"));
+		
+		// Checks that home owner has no tasks still
+		assertEquals("Home owner should have no tasks.", 0, homeOwner.toDoList.size());
+		
+		// Scheduler should return false
+		assertFalse(homeOwner.pickAndExecuteAnAction());
+	}
 }
