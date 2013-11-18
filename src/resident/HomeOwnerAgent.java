@@ -169,16 +169,12 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		stateChanged();
 	}
 
-	public void msgDoneGoingToMarket(List<MyFood> groceries) {
-		// Add restocking fridge
-		for (MyPriority p : toDoList) {
-			if (p.task == MyPriority.Task.GoToMarket) {
-				// If the customer has just finished going to the market, restock the fridge and then cook
-				log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
-				toDoList.remove(p);
-				toDoList.add(new MyPriority(MyPriority.Task.RestockFridgeThenCook));
-			}
-		}
+	public void msgDoneGoingToMarket(List<MyFood> groceries) {		
+		// If the customer has just finished going to the market, restock the fridge and then cook
+		log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
+		
+		// Add restocking fridge to the to do list
+		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));		
 
 		for (MyFood f : groceries) {
 			myFridge.add(new MyFood(f.foodItem, f.foodAmount));
@@ -187,18 +183,14 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		stateChanged();
 	}
 
-	public void msgDoneEatingOut(List<MyFood> groceries) {
-		for (MyPriority p : toDoList) {
+	public void msgDoneEatingOut() {
+		/*for (MyPriority p : toDoList) {
 			if (p.task == MyPriority.Task.GoToRestaurant) {
-				// If the customer has just finished going to the market, just restock the fridge
+				// If the customer has just finished going to the restaurant
+				log.add(new LoggedEvent("I just finished going to the restaurant."));
 				toDoList.remove(p);
-				toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));
 			}
-		}
-
-		for (MyFood f : groceries) {
-			myFridge.add(new MyFood(f.foodItem, f.foodAmount));
-		}
+		}*/
 
 		stateChanged();
 	}
@@ -287,8 +279,14 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 				}
 			}
 			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.RestockFridgeThenCook) {
-					restockFridgeThenCook(p);
+				if (p.task == MyPriority.Task.GoToRestaurant) {
+					goToRestaurant(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.GoToMarket) {
+					goToMarket(p);
 					return true;
 				}
 			}
@@ -298,6 +296,12 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 					return true;
 				}
 			}
+			/*for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.RestockFridgeThenCook) {
+					restockFridgeThenCook(p);
+					return true;
+				}
+			}	*/		
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.Cooking) {
 					cookFood(p);
@@ -346,6 +350,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 
 		if (myTime > minCookingTime) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
+			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough time to go and come home."));
 			
@@ -353,14 +358,25 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		}
 		else { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket));
 			
-			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead."));
+			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time."));
 			
 //			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
 		}
 	}
+	
+	private void goToRestaurant(MyPriority p) {
+		toDoList.remove(p);
+		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
+	}
+	
+	private void goToMarket(MyPriority p) {
+		toDoList.remove(p);
+		// GUI goes to market, lets person agent know that no longer going to be a resident role
+	}
 
-	private void restockFridgeThenCook(MyPriority p) {
+	/*private void restockFridgeThenCook(MyPriority p) {
 		toDoList.remove(p);
 
 //		DoGoToFridge(); // GUI will go to the fridge 
@@ -368,7 +384,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		// Semaphore to determine if GUI arrived at fridge
 
 		toDoList.add(new MyPriority(MyPriority.Task.Cooking));
-	}
+	}*/
 
 	private void restockFridge(MyPriority p) {
 		toDoList.remove(p);
