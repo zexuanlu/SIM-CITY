@@ -1,0 +1,22 @@
+package bank.test.mock;
+
+import bank.interfaces.*;
+
+public class MockBankHost extends Mock implements BankHost {
+	
+	EventLog log;
+	public MockBankHost(String name){
+		super(name);
+		log = new EventLog();
+	}
+	
+	public void msgINeedTeller(BankCustomer bc) {
+		log.add(new LoggedEvent("Received msgINeedTeller from BankCustomer"));
+	}
+
+	@Override
+	public void msgBackToWork(BankTeller bt) {
+		log.add(new LoggedEvent("Receieved msgBackToWork from BankTeller"));
+	}
+
+}
