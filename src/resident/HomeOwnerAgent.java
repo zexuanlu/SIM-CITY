@@ -51,6 +51,15 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		return myMoney;
 	}
 	
+	// Sets the amount of time that the home owner has
+	public void setTime(int t) {
+		myTime = t;
+	}
+	
+	public int getTime() {
+		return myTime;
+	}
+	
 	public static class MyPriority {
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, LetHousekeeperIn, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
 		public Task task;
@@ -88,6 +97,14 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		public MyFood(String f, int a) {
 			foodItem = f;
 			foodAmount = a;
+		}
+		
+		public String getFoodItem() {
+			return foodItem;
+		}
+		
+		public int getFoodAmount() {
+			return foodAmount;
 		}
 	}
 
@@ -157,6 +174,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		for (MyPriority p : toDoList) {
 			if (p.task == MyPriority.Task.GoToMarket) {
 				// If the customer has just finished going to the market, restock the fridge and then cook
+				log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
 				toDoList.remove(p);
 				toDoList.add(new MyPriority(MyPriority.Task.RestockFridgeThenCook));
 			}
@@ -327,12 +345,18 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		toDoList.remove(p);
 
 		if (myTime > minCookingTime) { 
-//			DoGoToMarket(); // GUI will go to market
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
+			
+			log.add(new LoggedEvent("I'm going to go to the market. I have enough time to go and come home."));
+			
+//			DoGoToMarket(); // GUI will go to market
 		}
 		else { 
-//			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
+			
+			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead."));
+			
+//			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
 		}
 	}
 
