@@ -5,16 +5,15 @@ import agent.Agent;
 public class Location {
 
 	private String building;
-	private Agent contact;
-	enum LocationType {Restaurant, Bank, Market, Home};
+	Agent contact;
+	public enum LocationType {Restaurant, Bank, Market, Home};
 	LocationType type;
 	private int x;
 	private int y;
 	
-	Location(String buildingName, Agent contact, LocationType type, int id, int x, int y){
+	Location(String buildingName, LocationType type, int id, int x, int y){
 		
 		this.building = buildingName;
-		this.contact = contact;
 		this.type = type;
 		this.x = x;
 		this.y = y;
@@ -22,6 +21,12 @@ public class Location {
 	}
 	Location(){
 		
+	}
+	public Location(int x, int y, String bn){
+		
+		this.building = bn;
+		this.x = x;
+		this.y = y;
 	}
 	void setX(int x){
 		this.x = x;
@@ -40,9 +45,6 @@ public class Location {
 	}
 	LocationType getType(){
 		return type;
-	}
-	Agent getContact(){
-		return this.contact;
 	}
 	String getName(){
 		return this.building;

@@ -2,17 +2,17 @@ package person;
 
 public class Event {
 
-    Location loc; //contains building name and coords
-    enum EventType {HostEvent, CustomerEvent, WaiterEvent, EmployeeEvent, HomeEvent, TellerEvent, GuardEvent, PassengerEvent} //and so on
-    EventType type;
+    Location location; //contains building name and coords
+    public enum EventType {HostEvent, CustomerEvent, WaiterEvent, EmployeeEvent, HomeEvent, TellerEvent, GuardEvent, PassengerEvent} //and so on
+    public EventType type;
     int priority; // for ordering in queue
     int start;
     int finish; 
     boolean inProgress; 
     
-    Event(Location l, int p, int st, int et, EventType type ) {
+    public Event(Location l, int p, int st, int et, EventType type ) {
     	
-    	this.loc = l;
+    	this.location = l;
     	this.priority = p;
     	this.start = st;
     	this.finish = et;
@@ -23,7 +23,7 @@ public class Event {
     
     Event(Location l, int st, int et, EventType type ) {
     	
-    	this.loc = l;
+    	this.location = l;
     	this.start = st;
     	this.finish = et;
     	this.inProgress = false;
@@ -34,19 +34,19 @@ public class Event {
     
     void setLocation(Location l) {
     	
-    	this.loc = l;
+    	this.location = l;
     }
     
     void setLocation(int x, int y) {
     	
-    	this.loc.setX(x);
-    	this.loc.setY(y);
+    	this.location.setX(x);
+    	this.location.setY(y);
     	
     }
     
     Location getLocation() {
     	
-    	return loc;
+    	return location;
     	
     }
     
