@@ -4,7 +4,7 @@ import bank.interfaces.*;
 
 public class MockBankDatabase extends Mock implements BankDatabase {
 	
-	EventLog log;
+	public EventLog log;
 	public MockBankDatabase(String name){
 		super(name);
 		log = new EventLog();
