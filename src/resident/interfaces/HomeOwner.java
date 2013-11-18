@@ -6,6 +6,8 @@ public interface HomeOwner {
 
 	public abstract void msgReceivedPayment(double amountPaid);
 
-	public abstract void msgYouHaveDebt(double amountOwed);
+	//public abstract void msgYouHaveDebt(double amountOwed);
+
+	public abstract String getName();
 
 }

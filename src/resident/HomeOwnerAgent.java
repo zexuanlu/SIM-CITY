@@ -1,5 +1,6 @@
 package resident;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList; 
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,13 +25,34 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	 *
 	 */
 	// Constructor
-	public HomeOwnerAgent(String n) {
+	public HomeOwnerAgent(String n, int hn) {
 		super();
 		name = n;
+		houseNumber = hn;
+	}
+	
+	// Returns the name of the home owner
+	public String getName() {
+		return name;
+	}
+	
+	// Returns the house number of the home owner
+	public int getHouseNumber() {
+		return houseNumber;
+	}
+	
+	// Sets the amount of money for the home owner
+	public void setMoney(double amt) {
+		myMoney = amt;
+	}
+	
+	// Returns the amount of money for the home owner
+	public double getMoney() {
+		return myMoney;
 	}
 	
 	public static class MyPriority {
-		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
+		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, LetHousekeeperIn, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
 		public Task task;
 		public int timeDuration;
 //		Map<Task, Double> taskTime; // Will have times preinitialized 
@@ -46,6 +68,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			taskTime.put(Task.WashDishes, 0);
 			taskTime.put(Task.Washing, 10);
 			taskTime.put(Task.CallHousekeeper, 5);
+			taskTime.put(Task.LetHousekeeperIn, 5);
 			taskTime.put(Task.PayHousekeeper, 5);
 			taskTime.put(Task.GoToMarket, 20);
 			taskTime.put(Task.RestockFridge, 5);
@@ -163,28 +186,48 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	}
 	
 	public void msgMaintainHome() {
-		// Adds calling housekeeper to the list of priorities 
+		// Adds calling housekeeper to the list of priorities
 		toDoList.add(new MyPriority(MyPriority.Task.CallHousekeeper));
+		
+		log.add(new LoggedEvent("It's been a day. I need to call the housekeeper now!"));
+		
+		stateChanged();
+	}
+	
+	public void msgReadyToMaintain() {
+		// Adds letting housekeeper into the home to list of priorities
+		toDoList.add(new MyPriority(MyPriority.Task.LetHousekeeperIn));
+		
+		log.add(new LoggedEvent("The housekeeper is here, so I need to let him or her in."));
+		
 		stateChanged();
 	}
 
-	public void msgYouHaveDebt(double amount) {
+	/*public void msgYouHaveDebt(double amount) {
 		debt += amount;
 		stateChanged();
-	}
+	}*/
 
 	public void msgDoneMaintaining(double amount) {
 		toDoList.add(new MyPriority(MyPriority.Task.PayHousekeeper));
+		maintenanceCost = amount;
+		
+		log.add(new LoggedEvent("I received the housekeeper's bill of " + maintenanceCost + "."));
+		
 		stateChanged();
 	}
 
 	public void msgReceivedPayment(double amount) {
+		DecimalFormat df = new DecimalFormat("###.##");
+		
 		if (amount == 0) {
 			debt = 0;
 		}
 		else {
 			debt += amount;
 		}
+		
+		log.add(new LoggedEvent("I now have debt of $" + df.format(debt) + "."));
 	}
 
 	/**
@@ -203,13 +246,19 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			}
 			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every week, and global timer 10 is equivalent to one day
 				if (p.task == MyPriority.Task.CallHousekeeper) {
-					callHousekeeper();
+					callHousekeeper(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.LetHousekeeperIn) {
+					letHousekeeperIn(p);
 					return true;
 				}
 			}
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.PayHousekeeper) {
-					payHousekeeper();
+					payHousekeeper(p);
 					return true;
 				}
 			}
@@ -367,11 +416,18 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 //		washingDishesTimer.start{msgDoneWashing(p)};
 	}
 
-	private void callHousekeeper() {
+	private void callHousekeeper(MyPriority p) {
+		toDoList.remove(p);
 		housekeeper.msgPleaseComeMaintain(this, houseNumber);
 	}
+	
+	private void letHousekeeperIn(MyPriority p) {
+		toDoList.remove(p);
+		housekeeper.msgPleaseComeIn(this, houseNumber);
+	}
 
-	private void payHousekeeper() {
+	private void payHousekeeper(MyPriority p) {
+		toDoList.remove(p);
 		if (myMoney >= maintenanceCost) {
 			housekeeper.msgHereIsThePayment(this, maintenanceCost);
 			myMoney -= maintenanceCost;

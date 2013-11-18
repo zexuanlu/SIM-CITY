@@ -164,6 +164,15 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 		homesToBeMaintained.add(new MyCustomer(cust, houseNumber));
 		stateChanged();
 	}
+	
+	public void msgPleaseComeIn(HomeOwner homeOwnerAgent, int houseNumber) {
+		for (MyCustomer c : homesToBeMaintained) {
+			if (c.customer == homeOwnerAgent) {
+				c.state = MyCustomer.MyCustomerState.InMaintenance;
+				stateChanged();
+			}
+		}
+	}
 
 	public void msgFinishedMaintenance(MyCustomer customer) {
 		customer.state = MyCustomer.MyCustomerState.Maintained;
@@ -261,7 +270,7 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	private void maintainHouse(MyCustomer c) {
 //		DoGoToCustomerHouse(c);
 		// Semaphore to indicate when at customer's house
-		c.state = MyCustomer.MyCustomerState.InMaintenance;
+		//c.state = MyCustomer.MyCustomerState.InMaintenance;
 //		maintenanceTimer.start{msgFinishedMaintenance(c)};
 	}
 
@@ -272,10 +281,8 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	}
 
 	private void tellCustomerReceivedPayment(MyCustomer c) {
-		c.customer.msgReceivedPayment(c.amountPaid);
-		if (c.amountOwed > 0) {
-			c.customer.msgYouHaveDebt(c.amountOwed);
-		}
+		c.customer.msgReceivedPayment(maintenanceCost - c.amountPaid);
+		
 		homesToBeMaintained.remove(c);
 	}
 
