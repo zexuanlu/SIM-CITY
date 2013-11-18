@@ -9,15 +9,16 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	//Data
 	String name;
 	public EventLog log;
-	List<Task> tasks;
-	int accountNumber;
-	double balance;
+	public List<Task> tasks;
+	public int accountNumber;
+	public double balance;
 	public BankHost bh;
 	public BankTeller bt;
-	state s;
+	public state s;
 	
 	public BankCustomerRole(String name){
 		this.name = name;
+		s = state.none;
 		tasks = new ArrayList<Task>();
 		log = new EventLog();
 		accountNumber = -1;
@@ -25,6 +26,7 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	
 	//Messages
 	public void msgGoToBank(String task, double amount){
+		log.add(new LoggedEvent("Received msgGoToBank from Person"));
 		tasks.add(new Task(task, amount));
 		s = state.needTeller;
 		stateChanged();
@@ -59,7 +61,7 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		stateChanged();
 	}
 	//Scheduler
-	protected boolean pickAndExecuteAnAction(){
+	public boolean pickAndExecuteAnAction(){
 		if(s == state.needTeller){
 			informHost();
 			return true;
@@ -120,14 +122,14 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		return name;
 	}
 	
-	class Task{
-		String type;
-		double amount;
+	public class Task{
+		public String type;
+		public double amount;
 		Task(String type, double amount){
 			this.type = type;
 			this.amount = amount;
 		}
 	}
 	
-	enum state {needTeller, waiting, haveTeller, atTeller, runningAway, none}
+	public enum state {needTeller, waiting, haveTeller, atTeller, runningAway, none}
 }

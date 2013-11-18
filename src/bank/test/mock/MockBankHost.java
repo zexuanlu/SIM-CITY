@@ -4,7 +4,7 @@ import bank.interfaces.*;
 
 public class MockBankHost extends Mock implements BankHost {
 	
-	EventLog log;
+	public EventLog log;
 	public MockBankHost(String name){
 		super(name);
 		log = new EventLog();
@@ -14,7 +14,6 @@ public class MockBankHost extends Mock implements BankHost {
 		log.add(new LoggedEvent("Received msgINeedTeller from BankCustomer"));
 	}
 
-	@Override
 	public void msgBackToWork(BankTeller bt) {
 		log.add(new LoggedEvent("Receieved msgBackToWork from BankTeller"));
 	}

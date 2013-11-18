@@ -4,7 +4,7 @@ import bank.interfaces.*;
 
 public class MockBankTeller extends Mock implements BankTeller {
 	
-	EventLog log;
+	public EventLog log;
 	public MockBankTeller(String name){
 		super(name);
 		log = new EventLog();
