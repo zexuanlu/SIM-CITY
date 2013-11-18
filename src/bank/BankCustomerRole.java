@@ -12,6 +12,7 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	List<Task> tasks;
 	int accountNumber;
 	double balance;
+	public BankHost bh;
 	public BankTeller bt;
 	state s;
 	
@@ -37,7 +38,6 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	
 	public void msgAccountMade(int accountNumber){
 		log.add(new LoggedEvent("Received msgAccountMade from BankTeller"));
-		Do("Received account with account number " + accountNumber);
 		this.accountNumber = accountNumber;
 		this.balance = 0;
 		this.s = state.atTeller;
@@ -50,6 +50,7 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		this.s = state.atTeller;
 		stateChanged();
 	}
+	
 	//Scheduler
 	protected boolean pickAndExecuteAnAction(){
 		if(s == state.needTeller){
@@ -69,13 +70,18 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 			bankingAction(tasks.get(0));
 			return true;
 		}
+		if(s == state.atTeller && tasks.isEmpty()){
+			leaveBank();
+			return true;
+		}
 		return false;
 	}
 	//Actions
 	private void informHost(){
 		//goToLocation("Host");
-		//bh.iNeedTeller();
-		s = state.atTeller;
+		Do("Requesting a Teller");
+		bh.msgINeedTeller(this);
+		s = state.waiting;
 	}
 	
 	private void openAccount(){
@@ -89,6 +95,12 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		bt.msgDepositMoney(this, t.amount, accountNumber);
 		tasks.remove(t);
 		s = state.waiting;
+	}
+	
+	private void leaveBank(){
+		bt.msgLeavingBank(this);
+		Do("Leaving Bank");
+		s = state.none;
 	}
 	//Utilities
 	public String toString(){

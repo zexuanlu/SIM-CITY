@@ -9,6 +9,8 @@ package bank.interfaces;
 public interface BankTeller {
 	public void msgINeedAccount(BankCustomer bc);
 	
+	public void msgLeavingBank(BankCustomer bc);
+	
 	public void msgDepositMoney(BankCustomer bc, double amount, int accountNumber);
 	
 	public void msgWithdrawMoney(BankCustomer bc, double amount, int accountNumber);

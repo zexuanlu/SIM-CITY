@@ -19,8 +19,10 @@ public class BankTellerRole extends Agent implements BankTeller {
 	String name;
 	public List<Task> tasks;
 	public BankDatabase bd;
-	//BankHost bh;
+	BankHost bh;
 	public BankCustomer bc;
+	state s;
+	enum state {working, notWorking, backToWork}
 	
 	public BankTellerRole(String name){
 		this.name = name;
@@ -85,6 +87,12 @@ public class BankTellerRole extends Agent implements BankTeller {
 			}
 		}
 	}
+	
+	public void msgLeavingBank(BankCustomer bc){
+		log.add(new LoggedEvent("Received msgLeavingBank from BankCustomer"));
+		s = state.backToWork;
+		stateChanged();		
+	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
 		for(Task t : tasks){
@@ -107,6 +115,10 @@ public class BankTellerRole extends Agent implements BankTeller {
 				case "getLoan": getLoan(t); return true;
 				}
 			}
+		}
+		if(s == state.backToWork){
+			informHost();
+			return true;
 		}
 		return false;
 	}
@@ -151,9 +163,19 @@ public class BankTellerRole extends Agent implements BankTeller {
 	private void loanMade(Task t){
 		
 	}
+	
+	private void informHost(){
+		Do("Telling host that I am working");
+		bh.msgBackToWork(this);
+		s = state.working;
+	}
 	//Utilities
 	public String toString(){
 		return name;
+	}
+	
+	public void setHost(BankHost bh){
+		this.bh = bh;
 	}
 	
 	public class Task{
