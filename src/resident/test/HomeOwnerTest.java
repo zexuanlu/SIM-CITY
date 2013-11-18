@@ -584,4 +584,71 @@ public class HomeOwnerTest extends TestCase
 		// Invokes scheduler. Should return false because no task.
 		assertFalse(homeOwner.pickAndExecuteAnAction());
 	}
+	
+	/**
+	 * Test calling housekeeper and eating at home with nonempty fridge
+	 */
+	public void testMaintainHomeAndEatAtHome() {
+		DecimalFormat df = new DecimalFormat("###.##");
+		
+		System.out.println("Testing Calling Housekeeper - Normative Scenario");
+		
+		// Sets housekeeper's maintenance cost to 50
+		housekeeper.setMaintenanceCost(50);
+		
+		homeOwner.setMaintenance(housekeeper);
+		
+		homeOwner.setMoney(300);
+		
+		// Preconditions: before home owner gets hungry message
+		assertEquals("Home owner has no logged events. It doesn't.", 0, homeOwner.log.size());
+		
+		// Preconditions: home owner has house number of 1 and name of HomeOwner
+		assertEquals("Home owner has been constructed with the correct information.", 1, homeOwner.getHouseNumber());
+		assertEquals("Home owner has been constructed with the correct name.", "HomeOwner", homeOwner.getName());
+		
+		// Preconditions: check to make sure home owner has no tasks
+		assertEquals("Home owner has no tasks in to do list. It doesn't.", 0, homeOwner.toDoList.size());
+		
+		/*
+		 *  STEP 1: Messages the home owner to maintain the house. In the full scenario, the person agent will send 
+		 *  this message to the home owner role once each day has begun. Thus, this assumes that the home owner
+		 *  needs home maintenance every day.
+		 */
+		homeOwner.msgMaintainHome();
+		
+		// Checks home owner's log for one new entry
+		assertEquals("Home owner now has one logged entry.", 1, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("It's been a day. I need to call the housekeeper now!"));
+		
+		// Checks to make sure that the home owner now has a task of calling the housekeeper
+		assertEquals("Home owner now has one task in to do list.", 1, homeOwner.toDoList.size());
+		assertEquals("Home owner has task of calling the housekeeper.", MyPriority.Task.CallHousekeeper, homeOwner.toDoList.get(0).task);
+	
+		// Adds food to the fridge 
+		homeOwner.myFridge.add(new MyFood("Chicken", 1));
+		
+		// Preconditions: before home owner gets hungry message
+		assertEquals("Home owner has 1 logged event.", 1, homeOwner.log.size());
+		
+		// Preconditions: fridge has one food in it
+		assertEquals("Home owner has one food item in it.", 1, homeOwner.myFridge.size());
+		
+		// Preconditions: check to make sure home owner has no tasks
+		assertEquals("Home owner has 1 task in to do list.", 1, homeOwner.toDoList.size());
+		
+		// STEP 2: Send message to the home owner saying hungry
+		homeOwner.msgGotHungry();
+		
+		// Check to make sure that the home owner's log contains one entry now, and is the hungry message
+		assertEquals("Home owner now has 2 logged events.", 2, homeOwner.log.size());
+		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("I'm hungry."));
+		
+		// Check to make sure that the home owner now has two tasks
+		assertEquals("Home owner now has a new task - to eat.", 2, homeOwner.toDoList.size());
+		assertEquals(homeOwner.toDoList.get(1).task, MyPriority.Task.NeedToEat);
+		
+		
+		
+	}
 }
