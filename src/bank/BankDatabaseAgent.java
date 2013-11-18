@@ -92,12 +92,14 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		if(r.type.equals("withdraw")){
 			if(r.a.balance > r.amount){
 				r.a.balance -= r.amount;
-				r.bt.msgWithdrawDone(r.a.balance, r.amount, r.bc);
-				return;
 			}
 			else{
-				//Figure out what goes here
+				r.amount = r.a.balance;
+				r.a.balance = 0;
 			}
+			Do("Completed withdrawal of " + r.amount);
+			r.bt.msgWithdrawDone(r.a.balance, r.amount, r.bc);
+			requests.remove(r);
 		}
 }
 	

@@ -15,6 +15,7 @@ import agent.*;
 public class BankTellerRole extends Agent implements BankTeller {
 
 	//Data
+	int count = 0;
 	public EventLog log;
 	String name;
 	public List<Task> tasks;
@@ -87,7 +88,7 @@ public class BankTellerRole extends Agent implements BankTeller {
 			}
 		}
 	}
-	
+		
 	public void msgLeavingBank(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgLeavingBank from BankCustomer"));
 		s = state.backToWork;
@@ -154,7 +155,8 @@ public class BankTellerRole extends Agent implements BankTeller {
 	}
 	
 	private void withdrawMade(Task t){
-		
+		bc.msgWithdrawDone(t.balance, t.amount);
+		tasks.remove(t);
 	}
 	
 	private void getLoan(Task t){
@@ -164,10 +166,15 @@ public class BankTellerRole extends Agent implements BankTeller {
 		
 	}
 	
+
 	private void informHost(){
 		Do("Telling host that I am working");
 		bh.msgBackToWork(this);
 		s = state.working;
+		if(count == 0)
+			bc.msgGoToBank("withdraw", 50);
+		count++;
+		
 	}
 	//Utilities
 	public String toString(){

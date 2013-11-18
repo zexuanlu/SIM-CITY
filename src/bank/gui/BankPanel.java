@@ -22,7 +22,7 @@ public class BankPanel {
 		bt.setHost(bh);
 		bh.addTeller(bt);
 		bt.bd = bd;
-		bc.msgGoToBank("depositMoney", 100);
+		bc.msgGoToBank("deposit", 100);
 	}
 	
 	public static void main(String[] args) {

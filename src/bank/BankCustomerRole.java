@@ -51,6 +51,13 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		stateChanged();
 	}
 	
+	public void msgWithdrawDone(double balance, double money){
+		log.add(new LoggedEvent("Received msgWithdrawDone from BankTeller"));
+		this.balance = balance;
+		//Person.addMoney(money);
+		this.s = state.atTeller;
+		stateChanged();
+	}
 	//Scheduler
 	protected boolean pickAndExecuteAnAction(){
 		if(s == state.needTeller){
@@ -91,8 +98,14 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	}
 	
 	private void bankingAction(Task t){
-		Do("Requesting deposit");
-		bt.msgDepositMoney(this, t.amount, accountNumber);
+		if(t.type.equals("deposit")){
+			Do("Requesting deposit");
+			bt.msgDepositMoney(this, t.amount, accountNumber);
+		}
+		if(t.type.equals("withdraw")){
+			Do("Requesting withdrawal");
+			bt.msgWithdrawMoney(this, t.amount, accountNumber);
+		}
 		tasks.remove(t);
 		s = state.waiting;
 	}
