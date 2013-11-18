@@ -12,7 +12,7 @@ import agent.*;
  * @author Joseph
  *
  */
-public class BankTellerRole extends Role implements BankTeller {
+public class BankTellerRole extends Agent implements BankTeller {
 
 	//Data
 	public EventLog log;
@@ -28,20 +28,21 @@ public class BankTellerRole extends Role implements BankTeller {
 		tasks = new ArrayList<Task>();
 	}
 	//Messages
-	public void msgINeedAccount(BankCustomer bc, int amount){
-		//Adds a task to the list of tasks
+	public void msgINeedAccount(BankCustomer bc){
+		Do("Received request for account");
 		this.bc = bc;
-		tasks.add(new Task("openAccount", amount));
+		tasks.add(new Task("openAccount"));
 		stateChanged();
 	}
 	
-	public void msgDepositMoney(BankCustomer bc, int amount, int accountNumber){
+	public void msgDepositMoney(BankCustomer bc, double amount, int accountNumber){
+		Do("Received request for deposit");
 		this.bc = bc;
 		tasks.add(new Task("deposit", amount, accountNumber));
 		stateChanged();
 	}
 	
-	public void msgWithdrawMoney(BankCustomer bc, int amount, int accountNumber){
+	public void msgWithdrawMoney(BankCustomer bc, double amount, int accountNumber){
 		this.bc = bc;
 		tasks.add(new Task("withdraw", amount, accountNumber));
 		stateChanged();
@@ -51,6 +52,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		log.add(new LoggedEvent("Received msgAccountCreated from BankDatabase"));
 		for(Task t : tasks){
 			if(t.type.equals("openAccount")){
+				Do("Account Number " + accountNumber + " Created");
 				t.accountNumber = accountNumber;
 				t.ts = taskState.completed;
 				stateChanged();
@@ -59,8 +61,43 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
+	public void msgDepositDone(double balance, BankCustomer bc){
+		log.add(new LoggedEvent("Received msgDepositDone from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("deposit")){
+				t.balance = balance;
+				t.ts = taskState.completed;
+				stateChanged();
+				return;
+			}
+		}
+	}
+	
+	public void msgWithdrawDone(double balance, double money, BankCustomer bc){
+		log.add(new LoggedEvent("Received msgWithdrawDone from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("withdraw")){
+				t.balance = balance;
+				t.amount = money;
+				t.ts = taskState.completed;
+				stateChanged();
+				return;
+			}
+		}
+	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		for(Task t : tasks){
+			if(t.ts == taskState.completed){
+				switch(t.type){
+				case "openAccount": accountMade(t); return true;
+				case "deposit": depositMade(t); return true;
+				case "withdraw": withdrawMade(t); return true;
+				case "getLoan": loanMade(t); return true;
+				}
+			}
+		}
+		
 		for(Task t : tasks){
 			if(t.ts == taskState.requested){
 				switch(t.type){
@@ -76,37 +113,63 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	//Actions
 	private void openAccount(Task t){
-		bd.msgOpenAccount(bc, t.amount, this);
+		Do("Requesting an account");
+		bd.msgOpenAccount(bc, this);
 		t.ts = taskState.waiting;
 	}
 	
+	private void accountMade(Task t){
+		Do("Informing Customer of account");
+		bc.msgAccountMade(t.accountNumber);
+		tasks.remove(t);
+	}
+	
 	private void deposit(Task t){
-		//Requests a deposit to an account in the BankDatabase
+		Do("Requesting a deposit");
+		bd.msgDepositMoney(bc, t.amount, t.accountNumber, this);
+		t.ts = taskState.waiting;
+	}
+	
+	private void depositMade(Task t){
+		Do("Telling customer of his deposit. Current balance is " + t.balance);
+		bc.msgDepositDone(t.balance);
+		tasks.remove(t);
 	}
 	
 	private void withdraw(Task t){
-		//Requests a withdrawal from an account in the BankDatabase
+		bd.msgWithdrawMoney(bc, t.amount, t.accountNumber, this);
+		t.ts = taskState.waiting;
+	}
+	
+	private void withdrawMade(Task t){
+		
 	}
 	
 	private void getLoan(Task t){
 		//Requests a loan for an account in the BankDatabase
 	}
+	private void loanMade(Task t){
+		
+	}
 	//Utilities
+	public String toString(){
+		return name;
+	}
+	
 	public class Task{
 		public String type;
-		public int amount;
-		public int balance;
+		public double amount;
+		public double balance;
 		public int accountNumber;
 		public taskState ts;
-		Task(String type, int amount, int accountNumber){
+		Task(String type, double amount, int accountNumber){
 			this.type = type;
 			this.amount = amount;
 			this.accountNumber = accountNumber;
 			ts = taskState.requested;
 		}
-		Task(String type, int amount){
+		Task(String type){
 			this.type = type;
-			this.amount = amount;
 			accountNumber = 0;
 			ts = taskState.requested;
 		}

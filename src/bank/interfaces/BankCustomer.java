@@ -7,5 +7,7 @@ package bank.interfaces;
  *
  */
 public interface BankCustomer {	
+	public void msgAccountMade(int accountNumber);
 	
+	public void msgDepositDone(double balance);
 }
