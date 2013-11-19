@@ -15,13 +15,20 @@ public class MockBusRole extends Mock implements Bus{
 	
 	public List<Passenger> passengerlist; 
 	
-	public void msgCanIComeOnBus(Passenger p){}
+	public void msgCanIComeOnBus(Passenger p){
+		log.add(new LoggedEvent("Can I come on Bus"));
+		
+	}
 	
-	public void msgHeresMyFare(Passenger p, double Paid){}
+	public void msgHeresMyFare(Passenger p, double Paid){
+		log.add(new LoggedEvent("Passenger paid amount of "+ Paid));
+	}
 	
-	public void msgAtStop(String stop){}
+	public void msgAtStop(String stop){} //called from animation
 	
-	public void msgLeaving(Passenger p){}
+	public void msgLeaving(Passenger p){
+		log.add(new LoggedEvent("Passenger leaving bus"));
+	}
 	
 	public void msgHereisList(List<Passenger> sentpassengers){
 		passengerlist = sentpassengers; 

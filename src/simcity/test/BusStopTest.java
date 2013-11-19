@@ -18,6 +18,8 @@ public class BusStopTest extends TestCase{
 	
 	public void testOneNormalCustomerScenario()
 	{
+		//1 Normal interaction
+		
 		//check initial conditions of the mocks & busStop
 		assertEquals("mockBus log should be empty",0,bus.log.size());
 		assertEquals("mockPassenger log should be empty",0,passenger.log.size()); 
@@ -41,7 +43,12 @@ public class BusStopTest extends TestCase{
 		assertFalse("busStop scheduler has nothing to do",busstop.pickAndExecuteAnAction());
 		assertEquals("bus should have received a list of passengers waiting at busstop", bus.passengerlist.size(),1);
 		assertTrue("in bus's received list, should have initialized passenger", bus.passengerinList(passenger));
-
+		//now have bus leave
+		busstop.msgBusLeaving(bus);
+		assertFalse("busStop should recognize that bus is leaving",busstop.isBusAtStop(bus));
+		assertFalse("busStop scheduler has nothing to do",busstop.pickAndExecuteAnAction());
+		assertEquals("busStop should have cleared its passengerslist",0,busstop.passengers.size());
+		assertEquals("busStop should still have one bus in list",1,busstop.busses.size());
 
 	}
 }

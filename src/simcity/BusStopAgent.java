@@ -30,6 +30,7 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 		for (myBus bu: busses){
 			if (bu.bus == b){
 				bu.busState = BusState.notatStop; 
+				passengers.clear();
 			}
 		}
 	}

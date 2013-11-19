@@ -18,7 +18,7 @@ public class MockBusStop extends Mock implements BusStop {
 	public void msgatBusStop(Passenger p){}
 	
 	public boolean isBusAtStop(Bus b){
-		return true;
+		return true; //temporary hack
 	}
 
 	public void msgBusLeaving(Bus b){}

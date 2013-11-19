@@ -20,9 +20,18 @@ public class PassengerRole extends Role implements Passenger{
 		int busStopX, busStopY; 
 		int destinationX, destinationY; 
 		double fare; 
-		private String destination; //busstop name that he wants to get off at
+		String destination; //busstop name that he wants to get off at
 	}
-	BusRoute busroute; 
+	BusRoute busroute = new BusRoute(); 
+	String name; 
+	
+	public PassengerRole(String name){
+		super();
+		this.name = name; 
+		state= State.none; 
+		Cash = 100; 
+	}
+	
 	
 	//Messages 
 	public void msgHereIsPrice(Bus b, double fare){
@@ -32,7 +41,7 @@ public class PassengerRole extends Role implements Passenger{
 	}
 	
 	public void msgComeOnBus(Bus b){
-		action = Action.toPay; 
+		action = Action.toBoard; 
 		stateChanged();
 	}
 	
@@ -58,7 +67,7 @@ public class PassengerRole extends Role implements Passenger{
 	}
 	
 	//Scheduler
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if (state == State.none && action == Action.asktoComeonBoard){
 			askBus();
 			return true; 
@@ -72,7 +81,7 @@ public class PassengerRole extends Role implements Passenger{
 			return true; 
 		}
 		if (state == State.onBus && action == Action.leaveBus){
-			//leaveBus();
+			LeaveBus();
 			return true; 
 		}
 		return false; 
@@ -93,7 +102,7 @@ public class PassengerRole extends Role implements Passenger{
 		if (Cash >= busroute.fare){
 			Cash = Cash - busroute.fare; 
 			state = State.paid; 
-			//busroute.bus.msgHeresMyFare(this, busroute.fare);
+			busroute.bus.msgHeresMyFare(this, busroute.fare);
 		}
 		else { //can't pay has to leave
 			LeaveBus();
@@ -108,6 +117,19 @@ public class PassengerRole extends Role implements Passenger{
 	public void LeaveBus(){
 		state = State.none; 
 		//DoLeaveBus();
-		//busroute.bus.msgLeftBus(this);
+		busroute.bus.msgLeaving(this);
+	}
+	
+	//accessors/setters 
+	public void setBus(Bus b){
+		busroute.bus = b;
+	}
+	
+	public void setBusStop(BusStop bs){
+		busroute.busstop = bs; 
+	}
+	
+	public void setDestination(String ds){
+		busroute.destination = ds; 
 	}
 }
