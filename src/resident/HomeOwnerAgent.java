@@ -254,24 +254,6 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 					return true;
 				}
 			}
-			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every week, and global timer 10 is equivalent to one day
-				if (p.task == MyPriority.Task.CallHousekeeper) {
-					callHousekeeper(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.LetHousekeeperIn) {
-					letHousekeeperIn(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.PayHousekeeper) {
-					payHousekeeper(p);
-					return true;
-				}
-			}
 			for (MyPriority p : toDoList) { // If fridge is empty
 				if (p.task == MyPriority.Task.NoFood) {
 					decideMarketOrGoOut(p);
@@ -290,24 +272,36 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 					return true;
 				}
 			}
+			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every day
+				if (p.task == MyPriority.Task.CallHousekeeper) {
+					callHousekeeper(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.LetHousekeeperIn) {
+					letHousekeeperIn(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.PayHousekeeper) {
+					payHousekeeper(p);
+					return true;
+				}
+			}
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.RestockFridge) {
 					restockFridge(p);
 					return true;
 				}
 			}
-			/*for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.RestockFridgeThenCook) {
-					restockFridgeThenCook(p);
-					return true;
-				}
-			}	*/		
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.Cooking) {
 					cookFood(p);
 					return true;
 				}
-			}
+			}			
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.Eating) {
 					eatFood(p);
