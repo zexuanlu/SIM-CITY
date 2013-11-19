@@ -1,7 +1,11 @@
 package simcity;
 import agent.Role; 
+import simcity.interfaces.BusStop; 
+import simcity.interfaces.Bus; 
+import simcity.interfaces.Passenger; 
 
-public class PassengerRole extends Role{
+
+public class PassengerRole extends Role implements Passenger{
 	String Destination; //eventual place that he wants to get to
 	double Cash; // amount of money he has
 
@@ -11,23 +15,23 @@ public class PassengerRole extends Role{
 	Action action; 
 	
 	private class BusRoute {
-		private BusRole bus; 
-		private BusStop busstop; 
-		private int busStopX, busStopY; 
-		private int destinationX, destinationY; 
-		private double fare; 
+		Bus bus; 
+		BusStop busstop; 
+		int busStopX, busStopY; 
+		int destinationX, destinationY; 
+		double fare; 
 		private String destination; //busstop name that he wants to get off at
 	}
 	BusRoute busroute; 
 	
 	//Messages 
-	public void msgHereIsPrice(BusRole b, double fare){
+	public void msgHereIsPrice(Bus b, double fare){
 		busroute.fare = fare;  //should I first check if it's the correct bus? 
 		action = Action.toPay; 
 		stateChanged();
 	}
 	
-	public void msgComeOnBus(BusRole b){
+	public void msgComeOnBus(Bus b){
 		action = Action.toPay; 
 		stateChanged();
 	}
@@ -39,7 +43,7 @@ public class PassengerRole extends Role{
 		}
 	}
 	
-	public void msgBusLeaving(BusRole b){ 
+	public void msgBusLeaving(Bus b){ 
 		action = Action.leaveBus; 
 		stateChanged();
 	}
@@ -76,7 +80,13 @@ public class PassengerRole extends Role{
 	
 	public void askBus() {
 		state = State.asked; 
-		//busroute.bus.msgCanIComeOnBus(this);
+		if (busroute.busstop.isBusAtStop(busroute.bus)){ //if the bus is at the stop send the message to the bus
+			busroute.bus.msgCanIComeOnBus(this);
+			return; 
+		}
+		else { //bus not at stop wait at busstop
+			busroute.busstop.msgatBusStop(this);
+		}
 	}
 	
 	public void payFare(){
