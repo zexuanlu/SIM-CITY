@@ -31,8 +31,13 @@ public class BankTellerRole extends Agent implements BankTeller {
 		tasks = new ArrayList<Task>();
 	}
 	//Messages
+	public void msgBackToWork(BankHost bh){
+		s = state.backToWork;
+		this.bh = bh;
+		stateChanged();
+	}
+	
 	public void msgINeedAccount(BankCustomer bc){
-		Do("Received request for account");
 		this.bc = bc;
 		tasks.add(new Task("openAccount"));
 		stateChanged();
