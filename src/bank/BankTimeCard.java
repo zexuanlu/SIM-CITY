@@ -37,22 +37,39 @@ public class BankTimeCard extends Agent implements TimeCard {
 	}
 
 	public void msgOffWork(Role role) {
-		// TODO Auto-generated method stub
-
+		for(MyRole mr : roles){
+			if(mr.role == role){
+				mr.rs = roleState.newWorker;
+				stateChanged();
+				return;
+			}
+		}
 	}
 
 	public boolean pickAndExecuteAnAction(){
+		for(MyRole r : roles){
+			if(r.rs == roleState.newWorker){
+				goBackToWork(r);
+				return true;
+			}
+		}
+		for(MyRole r : roles){
+			if(r.rs == roleState.replacement){
+				goOffWork(r);
+				return true;
+			}
+		}
 		return false;
 	}
 	
-	public void goBackToWork(Role role) {
-		// TODO Auto-generated method stub
-
+	public void goBackToWork(MyRole role) {
+		//role.person.readyToWork(role.role);
+		roles.remove(role);
 	}
 
-	public void goOffWork(Role role) {
-		// TODO Auto-generated method stub
-
+	public void goOffWork(MyRole role) {
+		//role.role.msgDoneWithWork();
+		role.rs = roleState.waiting;
 	}
 	
 	class MyTeller{
@@ -70,14 +87,4 @@ public class BankTimeCard extends Agent implements TimeCard {
 			this.bh = bh;
 		}
 	}
-	
-	class MyRole{
-		Role role;
-		roleState rs;
-		MyRole(Role role, roleState rs){
-			this.role = role;
-			this.rs = rs;
-		}
-	}
-	enum roleState {replacement, newWorker}
 }
