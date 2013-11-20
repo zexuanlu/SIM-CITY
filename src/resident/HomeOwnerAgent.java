@@ -61,11 +61,11 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	}
 	
 	public static class MyPriority {
-		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, LetHousekeeperIn, PayHousekeeper, GoToMarket, RestockFridge, RestockFridgeThenCook, GoToRestaurant, NoFood}
+		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, LetHousekeeperIn, PayHousekeeper, GoToMarket, RestockFridge, GoToRestaurant, NoFood}
 		public Task task;
 		public int timeDuration;
 //		Map<Task, Double> taskTime; // Will have times preinitialized 
-		Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
+		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
 
 		MyPriority(Task t) {
 			task = t;
@@ -81,7 +81,6 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			taskTime.put(Task.PayHousekeeper, 5);
 			taskTime.put(Task.GoToMarket, 20);
 			taskTime.put(Task.RestockFridge, 5);
-			taskTime.put(Task.RestockFridgeThenCook, 35);
 			taskTime.put(Task.GoToRestaurant, 40);
 			taskTime.put(Task.NoFood, 0);
 			
@@ -139,6 +138,8 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		// Log that the message has been received
 		log.add(new LoggedEvent("I'm hungry."));
 		
+		print("I'm hungry.");
+		
 		stateChanged();
 	}
 
@@ -147,6 +148,8 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		toDoList.add(new MyPriority(MyPriority.Task.Eating));
 		
 		log.add(new LoggedEvent("My food is ready! I can eat now."));
+		
+		print("My food is ready! I can eat now.");
 		
 		stateChanged();
 	}
@@ -157,6 +160,8 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		
 		log.add(new LoggedEvent("Done eating. I'm going to wash dishes now."));
 		
+		print("Done eating. I'm going to wash dishes now.");
+		
 		stateChanged();
 	}
 
@@ -166,12 +171,16 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		
 		log.add(new LoggedEvent("Done washing dishes!"));
 		
+		print("Done washing dishes!");
+		
 		stateChanged();
 	}
 
 	public void msgDoneGoingToMarket(List<MyFood> groceries) {		
 		// If the customer has just finished going to the market, restock the fridge and then cook
 		log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
+		
+		print("I just finished going to the market. Time to put all my groceries in the fridge.");
 		
 		// Add restocking fridge to the to do list
 		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));		
@@ -184,14 +193,10 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	}
 
 	public void msgDoneEatingOut() {
-		/*for (MyPriority p : toDoList) {
-			if (p.task == MyPriority.Task.GoToRestaurant) {
-				// If the customer has just finished going to the restaurant
-				log.add(new LoggedEvent("I just finished going to the restaurant."));
-				toDoList.remove(p);
-			}
-		}*/
-
+		log.add(new LoggedEvent("I just finished eating out. I'm full now!"));
+		
+		print("I just finished eating out. I'm full now!");
+		
 		stateChanged();
 	}
 	
@@ -200,6 +205,8 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		toDoList.add(new MyPriority(MyPriority.Task.CallHousekeeper));
 		
 		log.add(new LoggedEvent("It's been a day. I need to call the housekeeper now!"));
+		
+		print("It's been a day. I need to call the housekeeper now!");
 		
 		stateChanged();
 	}
@@ -210,13 +217,10 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		
 		log.add(new LoggedEvent("The housekeeper is here, so I need to let him or her in."));
 		
+		print("The housekeeper is here, so I need to let him or her in.");
+		
 		stateChanged();
 	}
-
-	/*public void msgYouHaveDebt(double amount) {
-		debt += amount;
-		stateChanged();
-	}*/
 
 	public void msgDoneMaintaining(double amount) {
 		toDoList.add(new MyPriority(MyPriority.Task.PayHousekeeper));
@@ -224,20 +228,21 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		
 		log.add(new LoggedEvent("I received the housekeeper's bill of " + maintenanceCost + "."));
 		
+		print("I received the housekeeper's bill of " + maintenanceCost + ".");
+		
 		stateChanged();
 	}
 
 	public void msgReceivedPayment(double amount) {
 		DecimalFormat df = new DecimalFormat("###.##");
 		
-		if (amount == 0) {
-			debt = 0;
-		}
-		else {
-			debt += amount;
-		}
+		debt += amount;
 		
 		log.add(new LoggedEvent("I now have debt of $" + df.format(debt) + "."));
+		
+		print("I now have debt of $" + df.format(debt) + ".");
+
+		stateChanged();
 	}
 
 	/**
@@ -332,10 +337,12 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			// Adds going to the market or restaurant to the list
 			toDoList.add(new MyPriority(MyPriority.Task.NoFood));
 			log.add(new LoggedEvent("My fridge has no food. I must now decide if I should go to the market or go out to eat."));
+			print("My fridge has no food. I must now decide if I should go to the market or go out to eat.");
 		}
 		else { // Cook the food
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			log.add(new LoggedEvent("My fridge has food. I can cook now!"));
+			print("My fridge has food. I can cook now!");
 		}	
 	}
 
@@ -348,6 +355,8 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough time to go and come home."));
 			
+			print("I'm going to go to the market. I have enough time to go and come home.");
+			
 //			DoGoToMarket(); // GUI will go to market
 		}
 		else { 
@@ -356,6 +365,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			
 			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time."));
 			
+			print("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time.");
 //			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
 		}
 	}
@@ -407,6 +417,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 				--f.foodAmount;
 				++index;
 				log.add(new LoggedEvent("I'm going to cook " + f.foodItem + ". My inventory of it is now " + f.foodAmount + "."));
+				print("I'm going to cook " + f.foodItem + ". My inventory of it is now " + f.foodAmount + ".");
 				break;
 			}
 		}
@@ -415,6 +426,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 		if (myFridge.get(index).foodAmount == 0) {
 			myFridge.remove(index);
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
+			print("My fridge has no more " + maxChoice + ".");
 		}
 
 //		DoGoToStove(); // GUI animation to go to the stove and start cooking
@@ -462,9 +474,10 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 
 	private void payHousekeeper(MyPriority p) {
 		toDoList.remove(p);
-		if (myMoney >= maintenanceCost) {
-			housekeeper.msgHereIsThePayment(this, maintenanceCost);
-			myMoney -= maintenanceCost;
+		
+		if (myMoney >= (debt+maintenanceCost)) {
+			housekeeper.msgHereIsThePayment(this, debt+maintenanceCost);
+			myMoney -= debt+maintenanceCost;
 
 		}
 		else {

@@ -4,7 +4,7 @@ public interface HomeOwner {
 
 	public abstract void msgDoneMaintaining(double maintenanceAmount);
 
-	public abstract void msgReceivedPayment(double amountPaid);
+	public abstract void msgReceivedPayment(double amt);
 
 	//public abstract void msgYouHaveDebt(double amountOwed);
 

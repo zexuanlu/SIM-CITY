@@ -7,7 +7,7 @@ import resident.test.mock.EventLog;
 public class MockMaintenancePerson extends Mock implements MaintenancePerson{
 
 	/**
-	 * Reference to the Cashier under test that can be set by the unit test.
+	 * Reference to the Home Owner under test that can be set by the unit test.
 	 */
 	public HomeOwner homeOwner;
 	private double maintenanceCost;
