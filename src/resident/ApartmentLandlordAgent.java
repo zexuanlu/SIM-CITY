@@ -1,6 +1,6 @@
 package resident;
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat; 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,25 +8,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
-import resident.HomeOwnerAgent.MyFood;
-import resident.HomeOwnerAgent.MyPriority;
-import resident.HomeOwnerAgent.MyPriority.Task;
-import resident.interfaces.HomeOwner;
+import resident.interfaces.ApartmentLandlord;
+import resident.interfaces.ApartmentTenant;
 import resident.interfaces.MaintenancePerson;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
 import agent.Role;
 
-public class MaintenancePersonAgent extends Role implements MaintenancePerson {
+public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 	/**
-	 * Data for MaintenancePerson
+	 * Data for Apartment Tenant
 	 *
 	 */
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
 	
 	// Constructor
-	public MaintenancePersonAgent(String n, int an) {
+	public ApartmentLandlordAgent(String n, int an) {
 		super();
 		name = n;
 		apartmentNumber = an;
@@ -39,24 +37,6 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	public int getAptNum() {
 		return apartmentNumber;
 	}
-	
-	private static class MyCustomer {
-		private HomeOwner customer;
-		private int houseNumber;
-		public enum MyCustomerState {NeedsMaintenance, InMaintenance, Maintained, NeedsToPay, Paid}
-		private MyCustomerState state;
-		private double amountOwed;
-		private double amountPaid;
-
-		MyCustomer(HomeOwner h, int n) {
-			customer = h;
-			houseNumber = n;
-			state = MyCustomerState.NeedsMaintenance;
-		}
-	}
-
-	private List<MyCustomer> homesToBeMaintained = Collections.synchronizedList(new ArrayList<MyCustomer>());
-	private double maintenanceCost;
 
 	private static class MyPriority {
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, GoToMarket, RestockFridge, PayRent, GoToRestaurant, NoFood}
@@ -95,7 +75,24 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 			foodAmount = a;
 		}
 	}
+	
+	private static class MyTenant {
+		private ApartmentTenant aptRes;
+		private int apartmentNumber;
+		public enum TenantState {None, PayingRent, Paid};
+		private TenantState state;
+		private double amountOwed;
+		private double amountPaying;
 
+		MyTenant(ApartmentTenant at, int apt) {
+			aptRes = at;
+			apartmentNumber = apt;
+			amountOwed = 0;
+			state = TenantState.None;
+		}
+	}
+
+	private List<MyTenant> tenants = Collections.synchronizedList(new ArrayList<MyTenant>());
 	private List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
 	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());;
 	private Timer globalTimer; // Reference to the global timer
@@ -111,11 +108,9 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	private double myTime; // Keeps track of how much time the resident has
 	private double minCookingTime; // Time it takes to cook the fastest food
 	private double marketTime; // Time it takes to go to the market and come back
-	private ApartmentLandlordAgent landlord;
 	
 	/**
-	 * Messages for MaintenancePerson
-	 * 
+	 * Messages for Apartment Tenant
 	 */
 	public void msgGotHungry() {
 		// Add eating to the list of priorities that the resident has
@@ -203,40 +198,23 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 		print("I now have debt of $" + df.format(debt) + ".");
 		stateChanged();
 	}
-
-	public void msgPleaseComeMaintain(HomeOwner cust, int houseNumber) {
-		log.add(new LoggedEvent("Just received a call from " + cust.getName() + "to go maintain house " + houseNumber));
-		print("Just received a call from " + cust.getName() + "to go maintain house " + houseNumber);
-		homesToBeMaintained.add(new MyCustomer(cust, houseNumber));
-		stateChanged();
-	}
 	
-	public void msgPleaseComeIn(HomeOwner homeOwnerAgent, int houseNumber) {
-		for (MyCustomer c : homesToBeMaintained) {
-			if (c.customer == homeOwnerAgent) {
-				c.state = MyCustomer.MyCustomerState.InMaintenance;
-				log.add(new LoggedEvent("Going into customer " + c.customer.getName() + "'s house to maintain."));
-				print("Going into customer " + c.customer.getName() + "'s house to maintain.");
-				stateChanged();
-			}
-		}
-	}
-
-	public void msgFinishedMaintenance(MyCustomer c) {
-		log.add(new LoggedEvent("Finished maintaining " + c.customer.getName() + "'s house."));
-		print("Finished maintaining " + c.customer.getName() + "'s house.");
-		c.state = MyCustomer.MyCustomerState.Maintained;
+	public void msgNewTenant(ApartmentTenant apartmentTenantAgent, int atNum) {
+		tenants.add(new MyTenant(apartmentTenantAgent, atNum));
 		stateChanged();
 	}
 
-	public void msgHereIsThePayment(HomeOwner cust, double amount) {
-		for (MyCustomer c : homesToBeMaintained) {
-			if (c.customer == cust) {
-				c.state = MyCustomer.MyCustomerState.Paid;
-				c.amountPaid = amount;
-				c.amountOwed = maintenanceCost - amount;
-				log.add(new LoggedEvent("Just received payment of " + c.amountPaid + " from customer " + c.customer.getName()));
-				print("Just received payment of " + c.amountPaid + " from customer " + c.customer.getName());
+	public void msgHereIsTheRent(MaintenancePerson maintenancePersonAgent, double rentCost) {
+		
+	}
+
+	public void msgHereIsTheRent(ApartmentTenant apartmentTenantAgent, double amount) {
+		for (MyTenant t : tenants) {
+			if (t.aptRes == apartmentTenantAgent) {
+				t.state = MyTenant.TenantState.PayingRent;
+				t.amountPaying = amount;
+				log.add(new LoggedEvent("Received payment of $" + t.amountPaying + "."));
+				print("Received payment of $" + t.amountPaying + ".");
 				stateChanged();
 			}
 		}
@@ -248,34 +226,16 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	 */
 	protected boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		for (MyCustomer c : homesToBeMaintained) {
-			if (c.state == MyCustomer.MyCustomerState.NeedsMaintenance) {
-				maintainHouse(c);
-				return true;
-			}
-		}
-
-		for (MyCustomer c : homesToBeMaintained) {
-			if (c.state == MyCustomer.MyCustomerState.Maintained) {
-				letCustomerKnow(c);
-				return true;
-			}
-		}
-
-		for (MyCustomer c : homesToBeMaintained) {
-			if (c.state == MyCustomer.MyCustomerState.Paid) {
-				tellCustomerReceivedPayment(c);
-				return true;
+		if (!tenants.isEmpty()) {
+			for (MyTenant t : tenants) {
+				if (t.state == MyTenant.TenantState.PayingRent) {
+					collectPayment(t);
+					return true;
+				}
 			}
 		}
 
 		if (!toDoList.isEmpty()) {
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.PayRent) {
-					payLandlord(p);
-					return true;
-				}
-			}
 			for (MyPriority p : toDoList) { // Eating is the most important
 				if (p.task == MyPriority.Task.NeedToEat) {
 					checkFridge(p);
@@ -329,44 +289,12 @@ public class MaintenancePersonAgent extends Role implements MaintenancePerson {
 	}
 	
 	/**
-	 * Actions for MaintenancePerson
+	 * Actions for Apartment Tenant
 	 */
-	private void maintainHouse(MyCustomer c) {
-		log.add(new LoggedEvent("Maintaining home.."));
-		print("Maintaining home..");
-//		DoGoToCustomerHouse(c);
-		// Semaphore to indicate when at customer's house
-		//c.state = MyCustomer.MyCustomerState.InMaintenance;
-//		maintenanceTimer.start{msgFinishedMaintenance(c)};
-	}
-
-	private void letCustomerKnow(MyCustomer c) {
-		log.add(new LoggedEvent("Finished maintaining " + c.customer.getName() + "'s home!"));
-		print("Finished maintaining " + c.customer.getName() + "'s home!");
-		c.customer.msgDoneMaintaining(maintenanceAmount);
-		c.state = MyCustomer.MyCustomerState.NeedsToPay;
-		c.amountOwed = maintenanceCost;
-	}
-
-	private void tellCustomerReceivedPayment(MyCustomer c) {
-		c.customer.msgReceivedPayment(maintenanceCost - c.amountPaid);
-		log.add(new LoggedEvent("I received the customer's payment of " + (maintenanceCost - c.amountPaid) + "."));
-		homesToBeMaintained.remove(c);
-	}
-
-	private void payLandlord(MyPriority p) {
-		toDoList.remove(p);
-		
-		// If the amount of money the maintenance person has is more than rent cost, pay rent cost.
-		if (myMoney >= rentCost) {
-			landlord.msgHereIsTheRent(this, rentCost);
-			myMoney -= rentCost;
-		}
-		// Otherwise, pay as much as you can 
-		else {
-			landlord.msgHereIsTheRent(this, myMoney);
-			myMoney = 0;
-		}
+	private void collectPayment(MyTenant t) {
+		t.state = MyTenant.TenantState.Paid;
+		t.amountOwed = rentCost - t.amountPaying;
+		t.aptRes.msgReceivedRent(t.amountOwed);
 	}
 
 	private void checkFridge(MyPriority p) {
