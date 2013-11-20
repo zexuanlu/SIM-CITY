@@ -15,6 +15,8 @@ import person.tests.mock.*;
 
 /* Tests the comparator's compare method and the composite score computation used in ordering the person's 
  * priority queue of things to do 
+ * 
+ * @author Grant Collins
  */
 
 public class EventComparatorTest extends TestCase{

@@ -16,15 +16,20 @@ import java.util.concurrent.Semaphore;
 import person.Location.LocationType;
 import person.Event.EventType;
 import person.interfaces.Person;
-
+/*
+ * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
+ * The PersonAgent, once a desicion has been made will switch to the appropriate role to carry out the task given in the event
+ * 
+ * @author Grant Collins
+ */
 public class PersonAgent extends Agent implements Person{
 
-	String name;
+	private String name;
 	int hunger; // tracks hunger level
-	boolean activeRole;
+	public boolean activeRole;
 
 	//PersonGui gui;
-	List<Role> roles = new ArrayList<Role>();
+	public List<Role> roles = new ArrayList<Role>();
 
 	int accountNumber; 
 	int wallet; // cash on hand
@@ -44,8 +49,22 @@ public class PersonAgent extends Agent implements Person{
 
 	Semaphore going = new Semaphore(0, true);
 
+	public PersonAgent (String name, List<Location> l){
+		this.name = name;
+		this.cityMap = new CityMap(l);
+	}
+	public PersonAgent ( ) {
+		super();
+	}
 	/* Utilities */
+	public void setName(String name){this.name = name;}
+	
+	public String getName(){ return this.name; }
+	
+	public boolean active() {return this.activeRole; }
+	
 	public int getTime(){ return currentTime; }
+	
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
 
 	private void activateRole(Role r){ r.setActive(true); }
@@ -53,6 +72,8 @@ public class PersonAgent extends Agent implements Person{
 	private void deactivateRole(Role r){ r.setActive(false); }
 
 	public void addRole(Role r){ roles.add(r); }
+	
+	public void populateCityMap(List<Location> loc){ cityMap = new CityMap(loc); }//temporary method 
 
 	/* Messages */
 
@@ -81,7 +102,7 @@ public class PersonAgent extends Agent implements Person{
 	/* Scheduler */
 
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 
 		if(activeRole) {
 
@@ -111,35 +132,39 @@ public class PersonAgent extends Agent implements Person{
 	private void goToAndDoEvent(Event e){
 
 
-		DoGoTo(e.location); // Handles picking mode of transport and animating there
+		//DoGoTo(e.location); // Handles picking mode of transport and animating there
 
-		going.acquire(); // wait while we get there
+		/*try {
+			going.acquire();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} // wait while we get there*/ //this is all gui related and i will implement/test after agent code is clean
 
 		if(e.location.type == LocationType.Restaurant){
 
 			if(e.type == EventType.CustomerEvent){
 				activeRole = true;
-				CustomerRole cRole = new CustomerRole(this.name);
+				CustomerRole cRole = new CustomerRole(this.name, this);
 				if(!roles.contains(cRole)){
 					roles.add(cRole);
 				}
-				e.location.contact.msgImHungry(this, cRole);
+				e.location.contact.msgIWantFood(this, cRole);
 				cRole.setActive(true);
 			}
-		}
 
-
-		else if(e.type == EventType.HostEvent){
-
-			activeRole = true;
-			HostRole hostRole = new HostRole(m, this.name, this); 
-
-			if(!roles.contains(hostRole)){                                                       
-
-				roles.add(hostRole);
+			else if(e.type == EventType.HostEvent){
+	
+				activeRole = true;
+				HostRole hostRole = new HostRole(this.name, this); 
+	
+				if(!roles.contains(hostRole)){                                                       
+	
+					roles.add(hostRole);
+				}
+				e.location.contact.msgClockIn(this, hostRole);
+				hostRole.setActive(true);
 			}
-			e.location.contact.msgHostPunchIn(this, hostRole);
-			hostRole.setActive(true);
 		}
 		 //we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
 		else {
@@ -182,10 +207,11 @@ public class PersonAgent extends Agent implements Person{
 	 */
 	public class CityMap {
 
-		List<Location> map;
-
+		public List<Location> map;
+		public DistCompare comparator = new DistCompare();
+		public PriorityQueue distancePriority = new PriorityQueue<Double>(10, comparator);
 		CityMap(List<Location> locations){ map = locations; }
-
+		
 		public Location getByType(LocationType lt){
 
 			Location destination = new Location();
@@ -198,17 +224,17 @@ public class PersonAgent extends Agent implements Person{
 
 			return destination;
 		}
-		double distanceTo(Location yourLoc, Location destination){
+		public double distanceTo(int x, int y, Location destination){
 
-			double distance = Math.sqrt( (Math.pow((destination.getX() - yourLoc.getX()), 2) + 
-					Math.pow((destination.getY() - yourLoc.getY()), 2)));
+			double distance = Math.sqrt( (Math.pow((destination.getX() - x), 2) + 
+					Math.pow((destination.getY() - y), 2)));
 			return distance;
 
 		}
 
-		Location chooseByName(String name){ //sync? i dont think anyone will mess with this list after init
+		public Location chooseByName(String name){ //sync? i dont think anyone will mess with this list after init
 
-			Location choice = new Location();
+			Location choice = null;
 
 			for(Location l : map){
 
@@ -219,29 +245,28 @@ public class PersonAgent extends Agent implements Person{
 			return choice;
 		}
 
-		Location chooseRandom(LocationType type) {
+		public Location chooseRandom(LocationType type) {
 
 			Random chooser = new Random();
 			int i = chooser.nextInt(map.size()); //number of restaurants
 			return map.get(i);
 		}
+		public Location chooseByLocation(int yourX, int yourY, int searchRadius, LocationType type){
 
-		Location chooseByLocation(Location yourLoc, int searchRadius, LocationType type){
-			Random chooser = new Random();
-			int i = chooser.nextInt(5); //number of restaurants
-
-			List<Location> locationsNearMe = new ArrayList<Location>();
+			Map<Double, Location> locationsNearMe = new HashMap<Double, Location>();
 			for(Location l : map){
-
-				if(distanceTo(yourLoc, l) <= searchRadius && l.getType() == type){
-					locationsNearMe.add(l);
+				double d = distanceTo(yourX, yourY, l);
+				if( d <= (double)searchRadius && l.getType() == type){
+					distancePriority.offer(d);
+					locationsNearMe.put(d, l);
+					
 				}
 			}
-			//choose randomly from a list of nearby locations 
-			return locationsNearMe.get(i);
+			double nearest = (double) distancePriority.peek();
+			return locationsNearMe.get(nearest);
 		}
 
-		Location chooseByType(LocationType type){
+		public Location chooseByType(LocationType type){
 
 			List<Location> types = new ArrayList<Location>();
 			for(Location l : map){
@@ -257,7 +282,21 @@ public class PersonAgent extends Agent implements Person{
 			return types.get(i);
 
 		}
+		class DistCompare implements Comparator<Double> {
 
+			@Override
+			public int compare(Double o1, Double o2) {
+				// TODO Auto-generated method stub
+				if(o1 < o2){
+					return -1;
+				}
+				if(o1 > o2){
+					return 1;
+				}
+				return 0;
+			} 
+			
+		}
 	}
 	class EventComparator implements Comparator{
 
