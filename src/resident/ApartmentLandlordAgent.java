@@ -351,16 +351,6 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 		// GUI goes to market, lets person agent know that no longer going to be a resident role
 	}
 
-	/*private void restockFridgeThenCook(MyPriority p) {
-		toDoList.remove(p);
-
-//		DoGoToFridge(); // GUI will go to the fridge 
-
-		// Semaphore to determine if GUI arrived at fridge
-
-		toDoList.add(new MyPriority(MyPriority.Task.Cooking));
-	}*/
-
 	private void restockFridge(MyPriority p) {
 		toDoList.remove(p);
 

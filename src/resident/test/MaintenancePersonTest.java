@@ -16,7 +16,7 @@ public class MaintenancePersonTest extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();		
 		
-		housekeeper = new MaintenancePersonAgent("Mock Maintenance", 2);	
+		housekeeper = new MaintenancePersonAgent("Mock Maintenance");	
 		homeOwner = new MockHomeOwner("HomeOwner", 1);		
 	} 
 }
