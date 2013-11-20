@@ -13,11 +13,17 @@ public class MockPassengerRole extends Mock implements Passenger {
 		super(name);
 	}
 	
-	public void msgHereIsPrice(Bus b, double fare){}
+	public void msgHereIsPrice(Bus b, double fare){
+		log.add(new LoggedEvent("Bus has sent fare of "+ fare));
+	}
 
-	public void msgComeOnBus(Bus b){}
+	public void msgComeOnBus(Bus b){
+		log.add(new LoggedEvent("Welcomed onboard"));
+	}
 
-	public void msgNowAtStop(String stop){}
+	public void msgNowAtStop(String stop){
+		log.add(new LoggedEvent("At stop " + stop));
+	}
 	
 	public void gotoBus(){}
 }

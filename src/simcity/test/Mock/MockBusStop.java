@@ -15,13 +15,20 @@ public class MockBusStop extends Mock implements BusStop {
 	public Passenger passenger; 
 	public Bus bus; 
 	
-	public void msgatBusStop(Passenger p){}
+	public void msgatBusStop(Passenger p){
+		log.add(new LoggedEvent("Passenger at Stop"));
+	}
 	
 	public boolean isBusAtStop(Bus b){
 		return true; //temporary hack
 	}
 
-	public void msgBusLeaving(Bus b){}
-	public void msgatBusStop(Bus b){}
+	public void msgBusLeaving(Bus b){
+		log.add(new LoggedEvent("Bus Leaving"));
+		
+	}
+	public void msgatBusStop(Bus b){
+		log.add(new LoggedEvent("Bus at Stop"));
+	}
 	
 }

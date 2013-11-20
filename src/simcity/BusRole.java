@@ -11,8 +11,10 @@ public class BusRole extends Role implements Bus {
 	int fare; 
 	String name;
 	
+	public BusMap busmap = new BusMap(); 
+	
 	Timer timer = new Timer();
-	List<myPassenger> passengers = new ArrayList<myPassenger>(); 
+	public List<myPassenger> passengers = new ArrayList<myPassenger>(); 
 	private class myPassenger{
 		public Passenger p; 
 		public PersonState state;
@@ -26,13 +28,13 @@ public class BusRole extends Role implements Bus {
 	};
 	
 	public enum BusState {
-		atStop, interactingbusStop, stopped, toAnnounce, abouttoleave, moving;
+		stopped, toAnnounce, abouttoleave, moving;
 	}
 	BusState busState; 
 	
 	public List<String> RouteA = new ArrayList<String>(); //journey there
-	public List<String> RouteB = new ArrayList<String>(); //journey back
-	String currentStop; 
+	//public List<String> RouteB = new ArrayList<String>(); //journey back
+	public String currentStop; 
 	public BusStop currentbusstop; 
 	
 	public BusRole(String name){
@@ -42,10 +44,12 @@ public class BusRole extends Role implements Bus {
 
 	
 	public void msgCanIComeOnBus(Passenger p){
-		myPassenger mp = new myPassenger(p);
-		mp.state = PersonState.waiting; 
-		passengers.add(mp);
-		stateChanged();
+		if (busState != BusState.moving){
+			myPassenger mp = new myPassenger(p);
+			mp.state = PersonState.waiting; 
+			passengers.add(mp);
+			stateChanged();
+		}
 	}
 	
 	public void msgHereisList(List<Passenger> sentpassengers){
@@ -71,9 +75,11 @@ public class BusRole extends Role implements Bus {
 	}
 	
 	public void msgAtStop(String stop){ //sent from animation
-		currentStop = stop; 
-		busState = BusState.atStop; 
-		stateChanged();
+		//this should ONLY be semaphore crap
+		
+		//currentStop = stop; 
+		//busState = BusState.atStop; 
+		//stateChanged();
 	}
 	
 	public void msgLeaving(Passenger p){
@@ -85,8 +91,13 @@ public class BusRole extends Role implements Bus {
 		stateChanged();
 	}
 	
+	public void msgtimetoLeave(){
+		busState = BusState.abouttoleave; 
+		stateChanged();
+	}
+	
 	//Scheduler
-		protected boolean pickAndExecuteAnAction() {
+		public boolean pickAndExecuteAnAction() {
 			for (myPassenger mp: passengers){
 				if (mp.state == PersonState.leaving){
 					passengerLeaving(mp);
@@ -94,10 +105,6 @@ public class BusRole extends Role implements Bus {
 				}
 			}
 			
-			if (busState == BusState.atStop){
-				askforList();
-				return true; 
-			}
 			
 			if (busState == BusState.toAnnounce){
 				announceStop();
@@ -111,10 +118,6 @@ public class BusRole extends Role implements Bus {
 				}
 			}
 			
-			if (busState == BusState.abouttoleave){
-				leaveStop();
-				return true; 
-			}
 			
 			for (myPassenger mp:passengers){
 				if (mp.state == PersonState.waiting){
@@ -123,17 +126,27 @@ public class BusRole extends Role implements Bus {
 				}
 			}
 			
+			if (busState == BusState.abouttoleave){
+				leaveStop();
+				return true; 
+			}
+			
+			if (busState == BusState.moving){
+				ontheMove();
+				return true; 
+			}
+			
 			return false; 	
 		}
 		
-		public void seatPassenger(myPassenger mp){
+		private void seatPassenger(myPassenger mp){
 			if (passengers.size() <= capacity){
 				mp.state = PersonState.paying; 
 				mp.p.msgHereIsPrice(this, fare);;
 			}
 		}
 		
-		public void welcomeAboard(myPassenger mp){
+		private void welcomeAboard(myPassenger mp){
 			mp.state = PersonState.seated; 
 			mp.p.msgComeOnBus(this);
 		}
@@ -142,11 +155,6 @@ public class BusRole extends Role implements Bus {
 			passengers.remove(mp);
 		}
 		
-		public void askforList(){
-			currentbusstop.msgatBusStop(this);
-			busState = BusState.toAnnounce; 
-			stateChanged();
-		}
 		
 		public void announceStop(){
 			busState = BusState.stopped; 
@@ -156,8 +164,7 @@ public class BusRole extends Role implements Bus {
 			
 			timer.schedule(new TimerTask() {
 				public void run() {
-					busState = BusState.abouttoleave; 
-					stateChanged();
+					msgtimetoLeave();
 				}
 			},10000);			
 		}
@@ -165,12 +172,55 @@ public class BusRole extends Role implements Bus {
 		
 		public void leaveStop() {
 			busState = BusState.moving; 
-			//for (myPassenger p:passengers){
-				//if (p.state == PersonState.waiting){
-				//	p.p.msgBusLeaving(this);
-				//}
-			//}
-			//doGotoStop(nextStop); 
+			currentbusstop.msgBusLeaving(this);
+			stateChanged();
+			
+			//AM I SWIMMING IN DANGEROUS WATERS?
+
+		}
+		
+		public void ontheMove(){
+			busState = BusState.toAnnounce; 
+			//gotoNextBusStop()
+			//semaphore crap
+			
+			//temporary assumption made that only RouteA 
+			//or else have to deal with direction
+			
+			int index = 0;
+			for (String s :RouteA){
+				index = index + 1; 
+				if (currentStop.equals(s)){
+					break; 
+				}
+			}
+			
+			if (index == RouteA.size()){
+				index = 0; //loop back to the first stop
+			}
+			
+			currentStop = RouteA.get(index); //knows what nextStop is
+			currentbusstop = busmap.getBusStop(currentStop);
+			//SOMEHOW HAS TO FIGURE OUT THE NEXT BUS STOP I guess grab it from a map? 
+
+			currentbusstop.msgatBusStop(this); //make it ask for a list
+			stateChanged();
+		}
+		
+		public void setFare(int f){
+			fare = f; 
+		}
+		
+		public void setCapacity (int c){
+			capacity = c;
+		}
+		
+		public void setCurrentStop (String c){
+			currentStop = c;
+		}
+		
+		public void setBusMap (BusMap b){
+			busmap = b;
 		}
 
 }
