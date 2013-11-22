@@ -19,8 +19,8 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	//Data\
 	public EventLog log;
 	String name;
-	Map<Integer,Account> accounts;
-	List<Request> requests = new ArrayList<Request>();
+	public Map<Integer,Account> accounts;
+	public List<Request> requests = new ArrayList<Request>();
 	
 	public BankDatabaseAgent(String name){
 		this.name = name;
@@ -53,7 +53,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		stateChanged();
 	}
 	//Scheduler
-	protected boolean pickAndExecuteAnAction(){
+	public boolean pickAndExecuteAnAction(){
 		if(!requests.isEmpty()){
 			performBankAction(requests.get(0));
 			return true;
@@ -118,12 +118,12 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		return "Bank Database";
 	}
 	
-	class Request{
-		String type;
-		double amount;
-		Account a;
-		BankCustomer bc;
-		BankTeller bt;
+	public class Request{
+		public String type;
+		public double amount;
+		public Account a;
+		public BankCustomer bc;
+		public BankTeller bt;
 		Request(String type, Account a, double amount, BankTeller bt, BankCustomer bc){
 			this.type = type;
 			this.amount = amount;
@@ -138,15 +138,19 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		}
 	}
 	
-	class Account{
-		double balance;
-		double accountNumber;
-		BankCustomer owner;
-		double debt;
+	public class Account{
+		public double balance;
+		public int accountNumber;
+		public BankCustomer owner;
+		public double debt;
 		Account(BankCustomer owner, double balance, int accountNumber){
 			this.owner = owner;
 			this.balance = balance;
 			this.accountNumber = accountNumber;
 		}
+	}
+	
+	public void addAccount(BankCustomer owner, double balance, int accountNumber){
+		accounts.put(accountNumber, new Account(owner, balance, accountNumber));
 	}
 }

@@ -76,6 +76,7 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
 		assertTrue("The state of the bank customer should be waiting. It isn't.", bc.s == state.none);
+		assertFalse("The scheduler should return false. It didn't.", bc.pickAndExecuteAnAction());
 	}
 	
 	public void testAccountCreationAndWithdrawal(){
@@ -128,5 +129,6 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
 		assertTrue("The state of the bank customer should be waiting. It isn't.", bc.s == state.none);
+		assertFalse("The scheduler should return false. It didn't.", bc.pickAndExecuteAnAction());
 	}
 }

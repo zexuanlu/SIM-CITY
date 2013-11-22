@@ -47,5 +47,6 @@ public class BankHostTest extends TestCase {
 		
 		bh.msgBackToWork(bt);
 		assertTrue("The state of the Teller should be working. It isn't.", bh.tellers.get(0).s == state.working);	
+		assertFalse("The scheduler should return false. It didn't.", bh.pickAndExecuteAnAction());
 	}
 }

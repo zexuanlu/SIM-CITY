@@ -67,6 +67,7 @@ public class BankTellerTest extends TestCase {
 		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
 	
 	public void testAccountDeposit(){
@@ -105,6 +106,7 @@ public class BankTellerTest extends TestCase {
 		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
 	
 	public void testAccountWithdraw(){
@@ -144,6 +146,7 @@ public class BankTellerTest extends TestCase {
 		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
 	
 	public void testLoanGranting(){
@@ -182,6 +185,7 @@ public class BankTellerTest extends TestCase {
 		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
 	
 	public void testOffOfWork(){
@@ -201,5 +205,6 @@ public class BankTellerTest extends TestCase {
 		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
 }
