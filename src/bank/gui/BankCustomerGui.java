@@ -21,9 +21,6 @@ public class BankCustomerGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public static final int xTable = 50;
-	public static final int yTable = 200;
-
 	public BankCustomerGui(BankCustomer c, AnimationPanel gui){ //HostAgent m) {
 		bc = c;
 		xPos = -20;
@@ -31,8 +28,9 @@ public class BankCustomerGui implements Gui{
 		xDestination = -20;
 		yDestination = 300;
 		this.gui = gui;
-		locations.put("Host", new Dimension(20, 260));
-		locations.put("Teller", new Dimension(250, 10));
+		locations.put("Host", new Dimension(30, 265));
+		locations.put("Teller", new Dimension(220, 40));
+		locations.put("Outside", new Dimension(-20,200));
 	}
 
 	public void updatePosition() {

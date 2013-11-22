@@ -77,7 +77,7 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 			return true;
 		}
 		if(s == state.haveTeller){
-			//goToLocation("Teller");
+			goToLocation("Teller");
 			s = state.atTeller;
 			return true;
 		}
@@ -98,12 +98,6 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	//Actions
 	private void informHost(){
 		goToLocation("Host");
-		try{
-			movement.acquire();
-		}
-		catch(InterruptedException e){
-			e.printStackTrace();
-		}
 		Do("Requesting a Teller");
 		bh.msgINeedTeller(this);
 		s = state.waiting;
@@ -130,13 +124,19 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	
 	private void leaveBank(){
 		bt.msgLeavingBank(this);
-		Do("Leaving Bank");
+		goToLocation("Outside");
 		s = state.none;
 	}
 	
 	private void goToLocation(String location){
 		gui.DoGoToLocation(location);
-		Do("Moving to Host");
+		Do("Moving to " + location);
+		try{
+			movement.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 	//Utilities
 	public String toString(){

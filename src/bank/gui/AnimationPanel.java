@@ -19,8 +19,8 @@ public class AnimationPanel extends JPanel implements ActionListener {
 	private final int WINDOWX = 300;
     private final int WINDOWY = 600;
     static final int TIMERCOUNT = 20;
-    static final int TELLERBOOTHSIZE = 30;
-    static final int TELLERBOOTHX = 250;
+    static final int TELLERBOOTHSIZE = 20;
+    static final int TELLERBOOTHX = 240;
     static final int TELLERBOOTHY = 40;
 
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
@@ -47,13 +47,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.BLACK);
         for(int i = 0; i < 10; i++){
             g2.setColor(Color.BLACK);
-        	g2.fillRect(TELLERBOOTHX, TELLERBOOTHY + 50*i, 10, TELLERBOOTHSIZE);
+        	g2.fillRect(TELLERBOOTHX, TELLERBOOTHY + 50*i, 20, TELLERBOOTHSIZE);
         	g2.setColor(Color.BLUE);
-        	g2.fillRect(TELLERBOOTHX + 10, TELLERBOOTHY + 5 + 50*i, 20, 20);
+        	g2.fillRect(TELLERBOOTHX + 20, TELLERBOOTHY + 50*i, 20, 20);
         }
 
         g2.setColor(Color.RED);
-        g2.fillRect(50, 250, 20, 50);
+        g2.fillRect(50, 245, 20, 60);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {
