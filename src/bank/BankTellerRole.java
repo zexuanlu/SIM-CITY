@@ -54,7 +54,11 @@ public class BankTellerRole extends Agent implements BankTeller {
 		tasks.add(new Task("withdraw", amount, accountNumber));
 		stateChanged();
 	}
-	
+	public void msgINeedLoan(BankCustomer bc, double amount, int accountNumber){
+		this.bc = bc;
+		tasks.add(new Task("getLoan", amount, accountNumber));
+		stateChanged();
+	}
 	public void msgAccountCreated(int accountNumber, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgAccountCreated from BankDatabase"));
 		for(Task t : tasks){
@@ -92,7 +96,20 @@ public class BankTellerRole extends Agent implements BankTeller {
 			}
 		}
 	}
-		
+	
+	public void msgLoanGranted(double money, double debt, BankCustomer bc){
+		log.add(new LoggedEvent("Received msgLoanGranted from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("getLoan")){
+				t.amount = money;
+				t.ts = taskState.completed;
+				t.balance = debt;
+				stateChanged();
+				return;
+			}
+		}
+	}
+	
 	public void msgLeavingBank(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgLeavingBank from BankCustomer"));
 		s = state.backToWork;
@@ -164,10 +181,12 @@ public class BankTellerRole extends Agent implements BankTeller {
 	}
 	
 	private void getLoan(Task t){
-		//Requests a loan for an account in the BankDatabase
+		bd.msgLoanPlease(bc, t.amount, t.accountNumber, this);
+		t.ts = taskState.waiting;
 	}
 	private void loanMade(Task t){
-		
+		bc.msgLoanGranted(t.amount, t.balance);
+		tasks.remove(t);
 	}
 	
 

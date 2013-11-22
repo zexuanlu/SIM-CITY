@@ -70,6 +70,13 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		this.s = state.atTeller;
 		stateChanged();
 	}
+	
+	public void msgLoanGranted(double money, double debt){
+		log.add(new LoggedEvent("Received msgLoanGranted from BankTeller"));
+		//Person.addMoney(money);
+		this.s = state.atTeller;
+		stateChanged();
+	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
 		if(s == state.needTeller){
@@ -117,6 +124,10 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		if(t.type.equals("withdraw")){
 			Do("Requesting withdrawal");
 			bt.msgWithdrawMoney(this, t.amount, accountNumber);
+		}
+		if(t.type.equals("getLoan")){
+			Do("Requesting loan");
+			bt.msgINeedLoan(this, t.amount, accountNumber);
 		}
 		tasks.remove(t);
 		s = state.waiting;

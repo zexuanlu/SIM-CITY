@@ -10,6 +10,10 @@ public class MockBankDatabase extends Mock implements BankDatabase {
 		log = new EventLog();
 	}
 	
+	public void msgLoanPlease(BankCustomer bc, double money, int accountNumber, BankTeller bt){
+		log.add(new LoggedEvent("Received msgLoanPlease from BankTeller"));
+	}
+	
 	public void msgOpenAccount(BankCustomer bc, BankTeller bt){
 		log.add(new LoggedEvent("Received msgOpenAccount from BankTeller"));
 	}

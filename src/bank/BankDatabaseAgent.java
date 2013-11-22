@@ -47,6 +47,11 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		stateChanged();
 	}
 	
+	public void msgLoanPlease(BankCustomer bc, double money, int accountNumber, BankTeller bt){
+		requests.add(new Request("getLoan", accounts.get(accountNumber), money, bt, bc));
+		log.add(new LoggedEvent("Received msgLoanPlease from BankTeller"));
+		stateChanged();
+	}
 	//Scheduler
 	protected boolean pickAndExecuteAnAction(){
 		if(!requests.isEmpty()){
@@ -99,6 +104,11 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			}
 			Do("Completed withdrawal of " + r.amount);
 			r.bt.msgWithdrawDone(r.a.balance, r.amount, r.bc);
+			requests.remove(r);
+		}
+		if(r.type.equals("getLoan")){
+			r.a.debt = r.amount;
+			r.bt.msgLoanGranted(r.amount, r.a.debt, r.bc);
 			requests.remove(r);
 		}
 }

@@ -10,6 +10,9 @@ public class MockBankTeller extends Mock implements BankTeller {
 		log = new EventLog();
 	}
 
+	public void msgINeedLoan(BankCustomer bc, double amount, int accountNumber){
+		log.add(new LoggedEvent("Received msgINeedLoan from BankCustomer"));
+	}
 	public void msgINeedAccount(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgINeedAccount from BankCustomer"));
 	}
@@ -36,5 +39,9 @@ public class MockBankTeller extends Mock implements BankTeller {
 	
 	public void msgWithdrawDone(double balance, double money, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgWithdrawDone from BankDatabase. The new balance is " + balance + " and the amount withdrawn is " + money));
+	}
+
+	public void msgLoanGranted(double money, double debt, BankCustomer bc) {
+		log.add(new LoggedEvent("Received msgLoanGranted from BankDatabase"));
 	}
 }

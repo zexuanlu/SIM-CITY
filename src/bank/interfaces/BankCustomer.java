@@ -18,4 +18,6 @@ public interface BankCustomer {
 	public void msgDepositDone(double balance);
 	
 	public void msgWithdrawDone(double balance, double money);
+	
+	public void msgLoanGranted(double money, double debt);
 }

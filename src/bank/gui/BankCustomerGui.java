@@ -30,7 +30,7 @@ public class BankCustomerGui implements Gui{
 		this.gui = gui;
 		locations.put("Host", new Dimension(30, 265));
 		locations.put("Teller", new Dimension(220, 40));
-		locations.put("Outside", new Dimension(-20,200));
+		locations.put("Outside", new Dimension(-20, 200));
 	}
 
 	public void updatePosition() {
