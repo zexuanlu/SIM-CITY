@@ -7,7 +7,7 @@ import bank.BankHostRole.state;
 
 /**
  * This class is a J-Unit TestCase designed to test the basic functionality 
- * of the BankTellerRole in its interactions with the other agents
+ * of the BankHostRole in its interactions with the other agents
  * 
  * @author Joseph
  *

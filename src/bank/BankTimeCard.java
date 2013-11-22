@@ -4,6 +4,11 @@ import java.util.*;
 import agent.*;
 import bank.interfaces.*;
 
+/**
+ * This class is the way that people check into and out of work.
+ * @author Joseph
+ *
+ */
 public class BankTimeCard extends Agent implements TimeCard {
 
 	//Data

@@ -5,6 +5,12 @@ import bank.interfaces.*;
 import java.util.*;
 import bank.test.mock.*;
 
+/**
+ * This class is the Bank Host. It handles customers coming and assigns them to
+ * tellers.
+ * @author Joseph
+ *
+ */
 public class BankHostRole extends Role implements BankHost {
 
 
