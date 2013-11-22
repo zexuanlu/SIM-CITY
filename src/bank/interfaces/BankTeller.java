@@ -24,4 +24,6 @@ public interface BankTeller {
 	public void msgWithdrawDone(double balance, double money, BankCustomer bc);
 	
 	public void msgLoanGranted(double money, double debt, BankCustomer bc);
+	
+	public void msgDoneWithWork(double pay);
 }

@@ -17,7 +17,7 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	public double balance;
 	public BankHost bh;
 	public BankTeller bt;
-	public BankCustomerGui gui;
+	public BankCustomerGui gui = null;
 	public state s;
 	Semaphore movement = new Semaphore(0, true);
 	
@@ -140,13 +140,15 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	}
 	
 	private void goToLocation(String location){
-		gui.DoGoToLocation(location);
-		Do("Moving to " + location);
-		try{
-			movement.acquire();
-		}
-		catch(InterruptedException e){
-			e.printStackTrace();
+		if(gui != null){
+			gui.DoGoToLocation(location);
+			Do("Moving to " + location);
+			try{
+				movement.acquire();
+			}
+			catch(InterruptedException e){
+				e.printStackTrace();
+			}
 		}
 	}
 	//Utilities

@@ -9,6 +9,13 @@ import java.util.concurrent.*;
  */
 public abstract class Role {
 
+	//protected Person person;
+	
+	
+	public void msgDoneWithWork(double pay){
+		
+	}
+	
     protected Role() {
     }
 

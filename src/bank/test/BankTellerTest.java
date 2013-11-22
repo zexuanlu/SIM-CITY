@@ -4,6 +4,7 @@ import junit.framework.*;
 import bank.test.mock.*;
 import bank.*;
 import bank.BankTellerRole.taskState;
+import bank.BankTellerRole.state;
 
 /**
  * This class is a J-Unit TestCase designed to test the basic functionality 
@@ -17,6 +18,7 @@ public class BankTellerTest extends TestCase {
 	BankTellerRole bt;
 	MockBankCustomer bc;
 	MockBankDatabase bd;
+	MockBankHost bh;
 
 	/**
 	 * Sets up the basic agents being used in all of the following tests
@@ -26,7 +28,9 @@ public class BankTellerTest extends TestCase {
 		bt = new BankTellerRole("BankTeller1");
 		bc = new MockBankCustomer("BankCustomer1");
 		bd = new MockBankDatabase("BankDatabase");
+		bh = new MockBankHost("BankHost");
 		bt.bd = bd;
+		bt.bh = bh;
 	}	
 	
 	public void testAccountCreation(){
@@ -53,6 +57,16 @@ public class BankTellerTest extends TestCase {
 		assertTrue("BankCustomer should have logged \"Received msgAccountMade\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgAccountMade"));
 		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+	
+		bt.msgLeavingBank(bc);
+		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
+		assertTrue("The Bank Teller's state should be backToWork. It is instead " + bt.s, bt.s == state.backToWork);
+		assertEquals("Bank Customer inside Bank Teller should be null. It isn't.", bt.bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
+				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 	}
 	
 	public void testAccountDeposit(){
@@ -81,6 +95,16 @@ public class BankTellerTest extends TestCase {
 		assertTrue("BankCustomer should have logged \"Received msgDepositDone\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgDepositDone"));
 		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+		
+		bt.msgLeavingBank(bc);
+		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
+		assertTrue("The Bank Teller's state should be backToWork. It is instead " + bt.s, bt.s == state.backToWork);
+		assertEquals("Bank Customer inside Bank Teller should be null. It isn't.", bt.bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
+				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 	}
 	
 	public void testAccountWithdraw(){
@@ -110,5 +134,72 @@ public class BankTellerTest extends TestCase {
 		assertTrue("BankCustomer should have logged \"Received msgWithdrawDone\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgWithdrawDone"));
 		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+		
+		bt.msgLeavingBank(bc);
+		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
+		assertTrue("The Bank Teller's state should be backToWork. It is instead " + bt.s, bt.s == state.backToWork);
+		assertEquals("Bank Customer inside Bank Teller should be null. It isn't.", bt.bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
+				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+	}
+	
+	public void testLoanGranting(){
+		assertEquals("Bank Teller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+
+		bt.msgINeedLoan(bc, 4000.00, 123);
+		assertEquals("Bank Teller should have 1 task in it. It doesn't", bt.tasks.size(), 1);
+		assertEquals("The type of the task should be getLoan. It isn't", bt.tasks.get(0).type, "getLoan");
+		assertEquals("The account number of the task should be 123. It isn't", bt.tasks.get(0).accountNumber, 123);
+		assertEquals("The amount of the task should be 4000.00. It isn't", bt.tasks.get(0).amount, 4000.00);
+		assertEquals("The customer in the Bank Teller should be the same as bc. It isn't", bt.bc, bc);
+	
+		assertTrue("The scheduler should return true. It didn't", bt.pickAndExecuteAnAction());
+		assertTrue("BankDatabase should have logged \"Received msgLoanPlease\" but didn't. His log reads instead: " 
+				+ bd.log.getLastLoggedEvent().toString(), bd.log.containsString("Received msgLoanPlease"));
+		assertTrue("The state of the first task in Bank Teller should be waiting. It isn't.", bt.tasks.get(0).ts == taskState.waiting);
+		
+		bt.msgLoanGranted(4000.00, 4000.00, bc);
+		assertTrue("BankTeller should have logged \"Received msgLoanGranted\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLoanGranted"));
+		assertTrue("The state of the first task in Bank Teller should be completed. It isn't", bt.tasks.get(0).ts == taskState.completed);
+		assertEquals("The account number of the first task should be 123. It isn't", bt.tasks.get(0).accountNumber, 123);
+		assertEquals("The amount of the first task should be 4000.00. It isn't", bt.tasks.get(0).amount, 4000.00);
+	
+		assertTrue("The scheduler should  return true. It didn't", bt.pickAndExecuteAnAction());
+		assertTrue("BankCustomer should have logged \"Received msgLoanGranted\" but didn't. His log reads instead: " 
+				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgLoanGranted"));
+		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+		
+		bt.msgLeavingBank(bc);
+		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
+		assertTrue("The Bank Teller's state should be backToWork. It is instead " + bt.s, bt.s == state.backToWork);
+		assertEquals("Bank Customer inside Bank Teller should be null. It isn't.", bt.bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
+				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
+	}
+	
+	public void testOffOfWork(){
+		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+		
+		bt.msgDoneWithWork(500.00);
+		assertTrue("The state of Bank Teller should be goingOffWork. It isn't.", bt.s == state.goingOffWork);
+		assertEquals("The customer pointer in Bank Teller should be null. It isn't.", bt.bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("The state of Bank Teller should be none. It isn't", bt.s == state.none);
+		
+		bt.msgBackToWork(bh);
+		assertTrue("The state of Bank Teller should be backToWork. It isn't.", bt.s == state.backToWork);
+		assertEquals("The Bank Host pointer in Bank Teller should be right. It isn't", bt.bh, bh);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
+				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 	}
 }

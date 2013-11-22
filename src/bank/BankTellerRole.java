@@ -15,21 +15,29 @@ import agent.*;
 public class BankTellerRole extends Agent implements BankTeller {
 
 	//Data
+	//Person person;
 	public EventLog log;
 	String name;
 	public List<Task> tasks;
 	public BankDatabase bd;
-	BankHost bh;
+	public BankHost bh;
 	public BankCustomer bc;
-	state s;
-	enum state {working, notWorking, backToWork}
+	public state s;
+	public enum state {working, backToWork, goingOffWork, none}
 	
 	public BankTellerRole(String name){
 		this.name = name;
 		log = new EventLog();
 		tasks = new ArrayList<Task>();
+		s = state.working;
 	}
 	//Messages
+	public void msgDoneWithWork(double pay){
+		log.add(new LoggedEvent("Received msgDoneWithWork from BankTimeCard"));
+		s = state.goingOffWork;
+		stateChanged();
+	}
+	
 	public void msgBackToWork(BankHost bh){
 		s = state.backToWork;
 		this.bh = bh;
@@ -112,6 +120,7 @@ public class BankTellerRole extends Agent implements BankTeller {
 	
 	public void msgLeavingBank(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgLeavingBank from BankCustomer"));
+		this.bc = null;
 		s = state.backToWork;
 		stateChanged();		
 	}
@@ -137,6 +146,10 @@ public class BankTellerRole extends Agent implements BankTeller {
 				case "getLoan": getLoan(t); return true;
 				}
 			}
+		}
+		if(s == state.goingOffWork && bc == null){
+			doneWithWork();
+			return true;
 		}
 		if(s == state.backToWork){
 			informHost();
@@ -189,7 +202,13 @@ public class BankTellerRole extends Agent implements BankTeller {
 		tasks.remove(t);
 	}
 	
-
+	private void doneWithWork(){
+		//person.addMoney(pay);
+		//person.deactivateRole(this);
+		//Person.getBankTimeCard().msgOffWork(this);
+		s = state.none;
+	}
+	
 	private void informHost(){
 		Do("Telling host that I am working");
 		bh.msgBackToWork(this);
