@@ -3,40 +3,47 @@ package bank;
 import agent.Agent;
 import bank.interfaces.*;
 import java.util.*;
+import bank.test.mock.*;
 
 public class BankHostRole extends Agent implements BankHost {
 
+
+	//Data
+	String name;
+	public EventLog log;
+	public List<BankCustomer> waitingCustomers;
+	public List<MyTeller> tellers;
 	public BankHostRole(String name){
 		this.name = name;
 		waitingCustomers = new ArrayList<BankCustomer>();
 		tellers = new ArrayList<MyTeller>();
+		log = new EventLog();
 	}
-	//Data
-	String name;
-	List<BankCustomer> waitingCustomers;
-	public List<MyTeller> tellers;
 	
 	//Messages
 	public void msgINeedTeller(BankCustomer bc) {
+		log.add(new LoggedEvent("Received msgINeedTeller from Bank Customer"));
 		waitingCustomers.add(bc);
 		stateChanged();
 	}
 
 	public void msgBackToWork(BankTeller bt){
+		log.add(new LoggedEvent("Receieved msgBackToWork from Bank Teller"));
 		for(MyTeller mt : tellers){
 			if(mt.bt == bt){
 				mt.s = state.working;
 				stateChanged();
 				return;
 			}
-		}
+		}		
 	}
 	//Scheduler
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if(!waitingCustomers.isEmpty()){
 			for(MyTeller mt : tellers){
 				if(mt.s == state.working){
 					assignCustomer(waitingCustomers.get(0), mt);
+					return true;
 				}
 			}
 		}
@@ -60,13 +67,13 @@ public class BankHostRole extends Agent implements BankHost {
 		return name;
 	}
 	
-	class MyTeller{
-		BankTeller bt;
-		state s;
+	public class MyTeller{
+		public BankTeller bt;
+		public state s;
 		MyTeller(BankTeller bt){
 			this.bt = bt;
 			s = state.working;
 		}
 	}
-	enum state {working, offWork, withCustomer} 
+	public enum state {working, offWork, withCustomer} 
 }
