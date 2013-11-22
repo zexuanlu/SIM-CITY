@@ -8,9 +8,13 @@ import person.interfaces.*;
 
 import org.junit.Test;
 
+import person.Bank;
 import person.Location;
 import person.Event;
+import person.Market;
 import person.PersonAgent;
+import person.Position;
+import person.Restaurant;
 import person.tests.mock.*;
 
 /* Tests the comparator's compare method and the composite score computation used in ordering the person's 
@@ -22,11 +26,16 @@ import person.tests.mock.*;
 public class EventComparatorTest extends TestCase{
 	
 	PersonAgent person = new PersonAgent();
-	EventLog log;
+	MockHostRole h1;
+	MockHostRole h2;
+	MockHostRole h3;
+	Position p1 = new Position(10, 10);
+	Position p2 = new Position(20, 20);
+	Position p3 = new Position(30, 30);
 	
-	Location bank = new Location(10, 10, "B1");
-	Location work = new Location(20, 20, "B2");
-	Location market = new Location(30, 20, "B3");
+	Bank bank = new Bank("B1", h1, p1, LocationType.Bank);
+	Restaurant work = new Restaurant("B2", h2, p2, LocationType.Restaurant);
+	Market market = new Market("B3", h3, p3, LocationType.Market);
 	
 	//Events to be enetered into pq
 	Event goToBank;
@@ -40,8 +49,7 @@ public class EventComparatorTest extends TestCase{
 		goToWork = new Event(work, 1, 9, 11, EventType.HostEvent);
 		goToMarket = new Event(market, 3, 15, 16, EventType.CustomerEvent);
 		/*
-		 * Scores should be 
-		 * 
+		 * Scores should be: 
 		 * goToBank: 2 + 5 = 7
 		 * goToWork: 1 + 2 = 3
 		 * goToMarket: 3 + 8 = 11
@@ -49,7 +57,7 @@ public class EventComparatorTest extends TestCase{
 		
 	}	
 	@Test
-	public void test() {
+	public void testEventScoring() {
 		
 		try {
 			setUp();

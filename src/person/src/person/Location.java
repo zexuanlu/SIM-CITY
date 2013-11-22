@@ -6,68 +6,19 @@ import agent.Role;
 
 public class Location {
 
-	public String building;
-	Host contact;
+	protected String name;
 	public enum LocationType {Restaurant, Bank, Market, Home};
-	public LocationType type;
-	private int x;
-	private int y;
-	
-	Location(String buildingName, LocationType type, int id, int x, int y){
-		
-		this.building = buildingName;
+	protected LocationType type;
+	protected Position position;
+	Location(String name, LocationType type, Position p){
+		this.name = name;
 		this.type = type;
-		this.x = x;
-		this.y = y;
-		
+		this.position = p;
 	}
-	Location(){
-		
-	}
-	public Location(int x, int y, String bn){
-		
-		this.building = bn;
-		this.x = x;
-		this.y = y;
-	}
-	public Location(String bn, Host c, LocationType t, int x, int y){
-		
-		this.building = bn;
-		this.contact = c;
-		this.type = t;
-		this.x = x;
-		this.y = y;
-		
-	}
-	public Location(String bn, LocationType t, int x, int y){
-		
-		this.building = bn;
-		this.type = t;
-		this.x = x;
-		this.y = y;
-		
-	}
-	void setX(int x){
-		this.x = x;
-	}
-	void setY(int y){
-		this.y = y;
-	}
-	void setType(LocationType type){
-		this.type = type;
-	}
-	int getX(){
-		return x;
-	}
-	int getY(){
-		return y;
-	}
-	LocationType getType(){
-		return type;
-	}
-	String getName(){
-		return this.building;
-	}
-	
+	Location(){}//Blank constructor for copying etc
+	public String getName(){ return this.name; }
+	public LocationType getType(){ return this.type; }
+	protected Position getPosition(){ return this.position; }
+	protected void setPosition(Position p){ this.position = p; } 
 
 }

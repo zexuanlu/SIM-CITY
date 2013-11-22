@@ -2,8 +2,9 @@ package person;
 
 public class Event {
 
-    Location location; //contains building name and coords
-    public enum EventType {HostEvent, CustomerEvent, WaiterEvent, EmployeeEvent, HomeEvent, TellerEvent, GuardEvent, PassengerEvent} //and so on
+    Location location;
+    public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
+    						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent} 
     public EventType type;
     int priority; // for ordering in queue
     int start;
@@ -33,52 +34,38 @@ public class Event {
     }
     
     void setLocation(Location l) {
-    	
     	this.location = l;
     }
     
-    void setLocation(int x, int y) {
-    	
-    	this.location.setX(x);
-    	this.location.setY(y);
-    	
+    void setLocation(Position p) {   	
+    	this.location.setPosition(p);
     }
     
-    Location getLocation() {
-    	
-    	return location;
-    	
+    Location getLocation() {   	
+    	return location;    	
     }
     
-    void setStart(int s) {
-    	
+    void setStart(int s) {    	
     	this.start = s;
     }
     
-    void setFinish(int f) {
-    	
-    	this.finish = f;
-    	
+    void setFinish(int f) {    	
+    	this.finish = f;    	
     }
     
-    int getStart() {
-    	
-    	return this.start;
-    	
+    int getStart() {   	
+    	return this.start;    	
     }
     
-    int getFinish() {
-    	
+    int getFinish() {    	
     	return this.finish;
     }
     
-    void setProgress(boolean inProgress) {
-    	
+    void setProgress(boolean inProgress) {    	
     	this.inProgress = inProgress;
     }
     
-    boolean getProgress() {
-    	
+    boolean getProgress() {   	
     	return inProgress;
     }
     

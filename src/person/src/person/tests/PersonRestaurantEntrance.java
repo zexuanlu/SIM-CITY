@@ -9,9 +9,11 @@ import person.Event;
 import person.HostRole;
 import person.CustomerRole;
 import person.Location;
+import person.Position;
 import person.PersonAgent;
 import person.Event.EventType;
 import person.Location.LocationType;
+import person.Restaurant;
 import person.tests.mock.MockHostRole;
 
 /*
@@ -26,6 +28,7 @@ public class PersonRestaurantEntrance extends TestCase{
 	MockHostRole host;
 	Event goToRestaurant;
 	Location rest;
+	Position p = new Position(10, 10);
 	
 	public void setUp() throws Exception{
 		
@@ -33,7 +36,7 @@ public class PersonRestaurantEntrance extends TestCase{
 		person = new PersonAgent();
 		person.setName("Grant");
 		host = new MockHostRole("Gil");
-		rest = new Location("Restaurant", host, LocationType.Restaurant, 10, 10);
+		rest = new Restaurant("Restaurant", host, p, LocationType.Restaurant);
 		goToRestaurant = new Event(rest, 1, 9, 10, EventType.CustomerEvent);
 	}	
 	@Test
