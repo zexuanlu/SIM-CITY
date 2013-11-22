@@ -15,7 +15,6 @@ import agent.*;
 public class BankTellerRole extends Agent implements BankTeller {
 
 	//Data
-	int count = 0;
 	public EventLog log;
 	String name;
 	public List<Task> tasks;
@@ -176,10 +175,6 @@ public class BankTellerRole extends Agent implements BankTeller {
 		Do("Telling host that I am working");
 		bh.msgBackToWork(this);
 		s = state.working;
-		if(count == 0)
-			bc.msgGoToBank("withdraw", 50);
-		count++;
-		
 	}
 	//Utilities
 	public String toString(){

@@ -9,6 +9,8 @@ package bank.interfaces;
 public interface BankCustomer {	
 	public void msgGoToBank(String type, double money);
 	
+	public void msgAtDestination();
+	
 	public void msgHereIsTeller(BankTeller bt);
 	
 	public void msgAccountMade(int accountNumber);

@@ -17,6 +17,10 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 		log = new EventLog();
 
 	}
+	
+	public void msgAtDestination(){
+		
+	}
 
 	@Override
 	public void msgGoToBank(String type, double money){

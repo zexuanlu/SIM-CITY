@@ -3,7 +3,10 @@ package bank;
 import bank.interfaces.*;
 import agent.*;
 import bank.test.mock.*;
+import bank.gui.*;
+
 import java.util.*;
+import java.util.concurrent.*;
 
 public class BankCustomerRole extends Agent implements BankCustomer {
 	//Data
@@ -14,7 +17,9 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	public double balance;
 	public BankHost bh;
 	public BankTeller bt;
+	public BankCustomerGui gui;
 	public state s;
+	Semaphore movement = new Semaphore(0, true);
 	
 	public BankCustomerRole(String name){
 		this.name = name;
@@ -25,6 +30,11 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	}
 	
 	//Messages
+	public void msgAtDestination(){
+		movement.release();
+		stateChanged();
+	}
+	
 	public void msgGoToBank(String task, double amount){
 		log.add(new LoggedEvent("Received msgGoToBank from Person"));
 		tasks.add(new Task(task, amount));
@@ -87,7 +97,13 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 	}
 	//Actions
 	private void informHost(){
-		//goToLocation("Host");
+		goToLocation("Host");
+		try{
+			movement.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
 		Do("Requesting a Teller");
 		bh.msgINeedTeller(this);
 		s = state.waiting;
@@ -117,6 +133,11 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		Do("Leaving Bank");
 		s = state.none;
 	}
+	
+	private void goToLocation(String location){
+		gui.DoGoToLocation(location);
+		Do("Moving to Host");
+	}
 	//Utilities
 	public String toString(){
 		return name;
@@ -131,5 +152,5 @@ public class BankCustomerRole extends Agent implements BankCustomer {
 		}
 	}
 	
-	public enum state {needTeller, waiting, haveTeller, atTeller, runningAway, none}
+	public enum state {needTeller, waiting, haveTeller, atTeller, none}
 }
