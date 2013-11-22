@@ -7,7 +7,7 @@ import agent.Role;
 public class Location {
 
 	protected String name;
-	public enum LocationType {Restaurant, Bank, Market, Home};
+	public enum LocationType {Restaurant, Bank, Market, Home, BusStop};
 	protected LocationType type;
 	protected Position position;
 	Location(String name, LocationType type, Position p){

@@ -2,6 +2,7 @@ package person.tests.mock;
 
 import agent.Role;
 import person.Location;
+import person.Position;
 import person.interfaces.Person;
 
 public class PersonMock extends Mock implements Person {
@@ -20,7 +21,7 @@ public class PersonMock extends Mock implements Person {
 	}
 
 	@Override
-	public void msgAtDest(Location destination) {
+	public void msgAtDest(Position destination) {
 		
 		log.add(new LoggedEvent("you have arrived at your gui destination"));
 	}

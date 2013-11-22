@@ -16,6 +16,7 @@ import java.util.concurrent.Semaphore;
 import person.Location.LocationType;
 import person.Restaurant;
 import person.Event.EventType;
+import person.gui.PersonGui;
 import person.interfaces.Person;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
@@ -29,13 +30,13 @@ public class PersonAgent extends Agent implements Person{
 	int hunger; // tracks hunger level
 	public boolean activeRole;
 
-	//PersonGui gui;
+	PersonGui gui;
 	public List<Role> roles = new ArrayList<Role>();
 
 	int accountNumber; 
 	public Wallet wallet;
 	int currentTime; 
-	Location currentLocation; 
+	Position currentLocation; 
 
 	Map<Integer, Event> schedule = new HashMap<Integer, Event>(); 
 	public CityMap cityMap;
@@ -94,7 +95,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 
-	public void msgAtDest(Location destination){ // From the gui. now we can send the correct entrance message to the location manager
+	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
 		going.release();
 		currentLocation = destination;
 		stateChanged();
@@ -138,14 +139,14 @@ public class PersonAgent extends Agent implements Person{
 
 	private void goToAndDoEvent(Event e){
 
-		//DoGoTo(e.location); // Handles picking mode of transport and animating there
+		DoGoTo(e.location); // Handles picking mode of transport and animating there
 
-		/*try {
+		try {
 			going.acquire();
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} // wait while we get there*/ //this is all gui related and i will implement/test after agent code is clean
+		} // wait while we get there //this is all gui related and i will implement/test after agent code is clean
 
 		if(e.location.type == LocationType.Restaurant){
 			Restaurant rest = (Restaurant)e.location;
@@ -171,6 +172,12 @@ public class PersonAgent extends Agent implements Person{
 				rest.getHost().msgClockIn(this, hostRole);
 				hostRole.setActive(true);
 			}
+		}
+		else if(e.location.type == LocationType.Bank){
+			
+		}
+		else if(e.location.type == LocationType.Market){
+			
 		}
 		//we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
 		else {
@@ -199,9 +206,24 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
-
+		Position goTo = calculateTransportation(loc);
+		if(goTo == currentLocation){
+			gui.DoGoTo(loc.position);
+		}
+		else{
+			gui.DoGoTo(goTo);
+		}
 	}
-	private void calculateTransportation(Location loc){}
+	private Position calculateTransportation(Location loc){
+		//if the person has a car use it
+		/*
+		 * if(car){ return an event with the same location }
+		 */
+		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) > 10){
+			return cityMap.findNearestBusStop(currentLocation);
+		}
+		return currentLocation; //hack life
+	}
 
 	/* 
 	 * the cityMap will be the person's guide to locations in the city 
@@ -223,6 +245,23 @@ public class PersonAgent extends Agent implements Person{
 				}
 			}
 			return destination;
+		}
+		public Position findNearestBusStop(Position p){
+			PriorityQueue<Position> nearest = new PriorityQueue<Position>();
+			List<Location> busStops = getListOfType(LocationType.BusStop);
+			for(Location l : busStops){
+				nearest.offer(l.position);
+			}
+			return nearest.peek();
+		}
+		public List<Location> getListOfType(LocationType type){
+			List<Location> locations = new ArrayList<Location>();
+			for(Location l : map){
+				if(l.type == type){
+					locations.add(l);
+				}
+			}
+			return locations;
 		}
 		public double distanceTo(int x, int y, Location destination){
 			double distance = Math.sqrt( (Math.pow((destination.getPosition().getX() - x), 2) + 

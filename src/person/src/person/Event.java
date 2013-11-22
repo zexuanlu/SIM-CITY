@@ -4,7 +4,8 @@ public class Event {
 	String name;
     Location location;
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
-    						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, FreeEvent} 
+    						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, 
+    						FreeEvent, BusEvent} 
     public EventType type;
     int priority; // for ordering in queue
     int start;
