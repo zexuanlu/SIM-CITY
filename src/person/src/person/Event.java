@@ -1,10 +1,10 @@
 package person;
 
 public class Event {
-
+	String name;
     Location location;
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
-    						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent} 
+    						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, FreeEvent} 
     public EventType type;
     int priority; // for ordering in queue
     int start;
@@ -32,6 +32,18 @@ public class Event {
     	this.type = type;
     	
     }
+    /*
+     * create a time ambiguous event that will be ordered on the fly 
+     * with regards to existing mandatory events
+     */
+    public Event(String name, Location l, int p, EventType t){ 
+    	this.name = name;
+    	this.location = l;
+    	this.start = 0;
+    	this.finish = 0;
+    	this.priority = p;
+    	this.type = t;
+    }
     
     void setLocation(Location l) {
     	this.location = l;
@@ -45,7 +57,7 @@ public class Event {
     	return location;    	
     }
     
-    void setStart(int s) {    	
+    public void setStart(int s) {    	
     	this.start = s;
     }
     

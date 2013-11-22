@@ -5,13 +5,13 @@ import person.interfaces.Host;
 
 public class Home extends Location{
 	
-	private Host host;
+	private PersonAgent host;
 	
-	Home(String n, Host h, Position p, LocationType type){
+	public Home(String n, PersonAgent person, Position p, LocationType type){
 		super(n, type, p);
-		this.host = h;
+		this.host = person;
 	}
 
-	public Host getHost(){ return host; }
-	public void setHost(Host h){ this.host = h; }
+	public PersonAgent getHost(){ return host; }
+	public void setHost(PersonAgent h){ this.host = h; }
 }

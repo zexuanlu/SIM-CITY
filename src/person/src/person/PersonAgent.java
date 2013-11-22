@@ -39,7 +39,7 @@ public class PersonAgent extends Agent implements Person{
 
 	Map<Integer, Event> schedule = new HashMap<Integer, Event>(); 
 	public CityMap cityMap;
-	
+
 	@SuppressWarnings("unchecked")
 	Comparator<Event> comparator = new EventComparator();
 	public PriorityQueue<Event> toDo = new PriorityQueue<Event>(3, comparator);
@@ -51,21 +51,24 @@ public class PersonAgent extends Agent implements Person{
 	Semaphore transport = new Semaphore(0, true);
 
 	public PersonAgent (String name, List<Location> l){
+		super();
 		this.name = name;
 		this.cityMap = new CityMap(l);
+		this.wallet = new Wallet(5000, 5000);//hacked in
+		this.hunger = 4;
 	}
 	public PersonAgent ( ) {
 		super();
 	}
 	/* Utilities */
 	public void setName(String name){this.name = name;}
-	
+
 	public String getName(){ return this.name; }
-	
+
 	public boolean active() {return this.activeRole; }
-	
+
 	public int getTime(){ return currentTime; }
-	
+
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
 
 	private void activateRole(Role r){ r.setActive(true); }
@@ -73,7 +76,7 @@ public class PersonAgent extends Agent implements Person{
 	private void deactivateRole(Role r){ r.setActive(false); }
 
 	public void addRole(Role r){ roles.add(r); }
-	
+
 	public void populateCityMap(List<Location> loc){ cityMap = new CityMap(loc); } 
 
 	/* Messages */
@@ -81,7 +84,7 @@ public class PersonAgent extends Agent implements Person{
 		wallet.setOnHand(money); 
 		stateChanged();
 	}
-	
+
 	public void msgAddEvent(Event e){
 		toDo.offer(e);
 		stateChanged();
@@ -117,10 +120,15 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			Event nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
+			System.out.println("current time is: "+currentTime+" and the next event starts at "+nextEvent.getStart()+" the total time is "+
+					Math.abs(currentTime - nextEvent.getStart()));
 			if(nextEvent != null) {
 				nextEvent.inProgress = true; //using in progress to keep these events in the pq like active not active 
 				goToAndDoEvent(nextEvent); 
 				return true;
+				/*else{ // we should think about what to do in the mean time?
+
+				}*/
 			}
 		}
 		return false;
@@ -152,19 +160,19 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
-	
+
 				activeRole = true;
 				HostRole hostRole = new HostRole(this.name, this); 
-	
+
 				if(!roles.contains(hostRole)){                                                       
-	
+
 					roles.add(hostRole);
 				}
 				rest.getHost().msgClockIn(this, hostRole);
 				hostRole.setActive(true);
 			}
 		}
-		 //we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
+		//we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
 		else {
 			checkVitals();
 			Event eventToExec = toDo.remove();          
@@ -182,7 +190,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		if(hunger >= 4){
 			Location restaurantChoice = cityMap.chooseRandom(LocationType.Restaurant);
-			Event needFood = new Event(restaurantChoice, 4, currentTime + 30, currentTime + 60, EventType.CustomerEvent);
+			Event needFood = new Event((Restaurant)restaurantChoice, 4, currentTime + 30, currentTime + 60, EventType.CustomerEvent);
 			if(! toDo.contains(needFood)){
 				toDo.add(needFood);
 			}
@@ -191,7 +199,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
-		
+
 	}
 	private void calculateTransportation(Location loc){}
 
@@ -205,7 +213,7 @@ public class PersonAgent extends Agent implements Person{
 		public DistCompare comparator = new DistCompare();
 		public PriorityQueue distancePriority = new PriorityQueue<Double>(10, comparator);
 		CityMap(List<Location> locations){ map = locations; }
-		
+
 		public Location getByType(LocationType lt){
 
 			Location destination = new Location();
@@ -285,11 +293,11 @@ public class PersonAgent extends Agent implements Person{
 
 		public int getComposite(Event e){
 
-			int time = Math.abs(currentTime - e.start); //how far into the future is this event
+			int time = Math.abs(e.start - currentTime); //how far into the future is this event
 			int priority = e.priority; //how urgent is this?
 			int score = time + priority;
+			System.out.println("Score of: "+score);
 			return score;
-			//use a switch should we change to an enum or string priority level 
 		}
 
 		//given that there are never two events happening at the same time 
@@ -316,16 +324,11 @@ public class PersonAgent extends Agent implements Person{
 		private int onHand;
 		private int inBank;
 		private int balance; 
-		
-		Wallet(int oh, int ib, int balance){
+
+		Wallet(int oh, int ib){
 			this.onHand = oh;
 			this.inBank = ib;
-			this.balance = balance;
-		}
-		Wallet(int balance, int ratio){ //ratio = what % do you want on hand
-			this.balance = balance;
-			this.onHand = (int)balance *(ratio/100);
-			this.inBank = this.balance - this.onHand;
+			this.balance = oh + ib;
 		}
 		public int getOnHand(){
 			return onHand;

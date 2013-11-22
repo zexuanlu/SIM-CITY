@@ -41,20 +41,17 @@ public class EventComparatorTest extends TestCase{
 	Event goToBank;
 	Event goToWork;
 	Event goToMarket;
+	Event goHome;
 	
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		goToBank = new Event(bank, 2, 12, 13, EventType.CustomerEvent); //times in millitary
-		goToWork = new Event(work, 1, 9, 11, EventType.HostEvent);
-		goToMarket = new Event(market, 3, 15, 16, EventType.CustomerEvent);
-		/*
-		 * Scores should be: 
-		 * goToBank: 2 + 5 = 7
-		 * goToWork: 1 + 2 = 3
-		 * goToMarket: 3 + 8 = 11
-		 */
+		goToBank = new Event("BANK", bank, 2, EventType.CustomerEvent);
 		
+		goToWork = new Event(work, 1, 10, 14, EventType.HostEvent);
+		goToMarket = new Event("MARKET", market, 3, EventType.CustomerEvent);
+		
+		goHome = new Event(market, 1, 18, 24, EventType.HomeEvent);
 	}	
 	@Test
 	public void testEventScoring() {
@@ -66,6 +63,8 @@ public class EventComparatorTest extends TestCase{
 			e.printStackTrace();
 		}
 		person.msgNewHour(7); //wakes up at 7 am
+		goToBank.setStart(person.getTime());
+		goToMarket.setStart(person.getTime());
 		/*
 		 * Preconditions: 
 		 * 1.Check that there are no events in the pq at start up 
@@ -76,17 +75,18 @@ public class EventComparatorTest extends TestCase{
 		assertTrue("The event queue should be empty, it is not", person.toDo.peek() == null);
 		
 		person.toDo.offer(goToWork);
+		person.toDo.offer(goHome);
 		person.toDo.offer(goToBank);
 		person.toDo.offer(goToMarket);
-		
-		assertTrue("There should be three times in the queue, there are not", person.toDo.size() == 3);
+
+		assertTrue("There should be three times in the queue, there are not", person.toDo.size() == 4);
 		/* Now test the order while removing */
-		System.out.println(person.toDo.peek().type);
-		assertTrue("goToWork should be on the top of the list, it is not", person.toDo.poll() == goToWork);
 		System.out.println(person.toDo.peek().type);
 		assertTrue("goToBank should be on the top of the list, it is not", person.toDo.poll() == goToBank);
 		System.out.println(person.toDo.peek().type);
 		assertTrue("goToMarket should be on the top of the list, it is not", person.toDo.poll() == goToMarket);
+		System.out.println(person.toDo.peek().type);
+		assertTrue("goToWork should be on the top of the list, it is not", person.toDo.poll() == goToWork);
 		
 	}
 
