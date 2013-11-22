@@ -8,14 +8,6 @@ import java.util.concurrent.*;
  * Base class for simple agents
  */
 public abstract class Role {
-
-	//protected Person person;
-	
-	
-	public void msgDoneWithWork(double pay){
-		
-	}
-	
     protected Role() {
     }
 
