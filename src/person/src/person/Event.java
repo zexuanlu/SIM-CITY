@@ -1,7 +1,7 @@
 package person;
 
 public class Event {
-	String name;
+	String directive;
     Location location;
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
     						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, 
@@ -37,15 +37,17 @@ public class Event {
      * create a time ambiguous event that will be ordered on the fly 
      * with regards to existing mandatory events
      */
-    public Event(String name, Location l, int p, EventType t){ 
-    	this.name = name;
+    public Event(String directive, Location l, int p, EventType t){ 
+    	this.directive = directive;
     	this.location = l;
     	this.start = 0;
     	this.finish = 0;
     	this.priority = p;
     	this.type = t;
     }
-    
+    public String getDirective(){
+    	return this.directive;
+    }
     void setLocation(Location l) {
     	this.location = l;
     }

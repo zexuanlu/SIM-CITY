@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import person.Bank;
+import person.BankHostRole;
 import person.Event;
 import person.Location;
 import person.Location.LocationType;
@@ -16,6 +17,7 @@ import person.PersonAgent;
 import person.Event.EventType;
 import person.Position;
 import person.Restaurant;
+import person.interfaces.BankHost;
 import person.interfaces.Host;
 import person.tests.mock.EventLog;
 import person.tests.mock.MockHostRole;
@@ -42,7 +44,7 @@ public class CityMapTest extends TestCase{
 
 		super.setUp();	
 		locs = new ArrayList<Location>();
-		bank = new Bank("Bank", new MockHostRole("BankHost"), new Position(10, 10), LocationType.Bank);
+		bank = new Bank("Bank", new BankHostRole("Host", person), new Position(10, 10), LocationType.Bank);
 		cr = new Restaurant("Chinese", new MockHostRole("ChineseHost"), new Position(20, 20), LocationType.Restaurant);
 		market = new Market("MarketA", new MockHostRole("MarketHost"), new Position(30, 30), LocationType.Market);
 		ir = new Restaurant("Italian", new MockHostRole("ItalianHost"), new Position(40, 40), LocationType.Restaurant);

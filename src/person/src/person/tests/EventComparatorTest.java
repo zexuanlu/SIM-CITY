@@ -26,7 +26,7 @@ import person.tests.mock.*;
 public class EventComparatorTest extends TestCase{
 	
 	PersonAgent person = new PersonAgent();
-	MockHostRole h1;
+	BankHost h1;
 	MockHostRole h2;
 	MockHostRole h3;
 	Position p1 = new Position(10, 10);

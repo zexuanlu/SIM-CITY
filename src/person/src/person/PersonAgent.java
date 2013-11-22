@@ -17,6 +17,8 @@ import person.Location.LocationType;
 import person.Restaurant;
 import person.Event.EventType;
 import person.gui.PersonGui;
+import person.interfaces.BankCustomer;
+import person.interfaces.BankHost;
 import person.interfaces.Person;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
@@ -44,10 +46,11 @@ public class PersonAgent extends Agent implements Person{
 	@SuppressWarnings("unchecked")
 	Comparator<Event> comparator = new EventComparator();
 	public PriorityQueue<Event> toDo = new PriorityQueue<Event>(3, comparator);
-
+	
+	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
 	/* Home home; // home/apartment
 	Car car; // car if the person has a car */ //Who is in charge of these classes?
-
+	
 	Semaphore going = new Semaphore(0, true);
 	Semaphore transport = new Semaphore(0, true);
 
@@ -105,6 +108,9 @@ public class PersonAgent extends Agent implements Person{
 		deactivateRole(r);
 		activeRole = false;
 		stateChanged();
+	}
+	public void msgReadyToWork(Role r){
+		
 	}
 
 	/* Scheduler */
@@ -174,7 +180,26 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		else if(e.location.type == LocationType.Bank){
-			
+			Bank bank = (Bank)e.location;
+			if(e.type == EventType.CustomerEvent){
+				BankCustomerRole bcr = new BankCustomerRole(this.name, this);
+
+				if(!roles.contains(bcr)){                                                       
+
+					roles.add(bcr);
+				}
+				bank.getHost().msgGoToBank(e.getDirective(), wallet.getInBank());
+				bcr.setActive(true);
+			}
+			else if(e.type == EventType.TellerEvent){
+				
+			}
+			else if(e.type == EventType.GuardEvent){
+				
+			}
+			else if(e.type == EventType.HostEvent){
+				
+			}
 		}
 		else if(e.location.type == LocationType.Market){
 			
@@ -383,6 +408,16 @@ public class PersonAgent extends Agent implements Person{
 		}
 		public void setInBank(int newAmount){
 			inBank += newAmount;
+		}
+	}
+	public class MyBankHost {
+		BankHost bh; 
+		
+		MyBankHost(BankHost bh){
+			this.bh = bh;
+		}
+		BankHost getBankHost(){
+			return bh;
 		}
 	}
 }

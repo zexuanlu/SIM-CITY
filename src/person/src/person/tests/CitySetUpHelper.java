@@ -19,7 +19,7 @@ public class CitySetUpHelper {
 	
 	List<Location> locs = new ArrayList<Location>();
 	List<Event> events = new ArrayList<Event>();
-	Bank bank = new Bank("Bank", new MockHostRole("BankHost"), new Position(10, 10), LocationType.Bank);
+	//Bank bank = new Bank("Bank", new (BankHost)MockHostRole("BankHost"), new Position(10, 10), LocationType.Bank);
 	Restaurant cr = new Restaurant("Chinese", new MockHostRole("ChineseHost"), new Position(20, 20), LocationType.Restaurant);
 	Restaurant ir = new Restaurant("Italian", new MockHostRole("ItalianHost"), new Position(40, 40), LocationType.Restaurant);
 	Restaurant fr = new Restaurant("Fancy", new MockHostRole("FancyHost"), new Position(40, 55), LocationType.Restaurant);
@@ -33,7 +33,7 @@ public class CitySetUpHelper {
 	
 	public CitySetUpHelper(){
 		
-		locs.add(bank);
+		//locs.add(bank);
 		locs.add(cr);
 		locs.add(ir);
 		locs.add(fr);
