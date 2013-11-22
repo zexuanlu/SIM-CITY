@@ -19,7 +19,7 @@ public class SimCityGui extends JFrame{
 	 	add (animationPanel);
 	 	
 	 	////////
-	 	CashierAgent cashier = new CashierAgent();
+/*	 	CashierAgent cashier = new CashierAgent();
         CustomerAgent customer = new CustomerAgent();
         EmployeeAgent employee = new EmployeeAgent();
         CustomerGui customerGui = new CustomerGui();
@@ -38,7 +38,7 @@ public class SimCityGui extends JFrame{
         employee.setGui(employeeGui);
         customer.addFood("Steak", 2);
         customer.addFood("Car", 1);
-        customer.msgHello();
+        customer.msgHello();       */
 	}
     
 	public static void main(String[] args) {

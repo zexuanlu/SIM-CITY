@@ -1,6 +1,6 @@
 package market;
 
-import agent.Agent;
+import agent.*;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ import marketinterface.Customer;
 import marketinterface.Employee;
 import marketinterface.Truck;
 
-public class CashierAgent extends Agent implements Cashier{
+public class CashierAgent extends Role implements Cashier{
 
 	public List<Employee> employee = new ArrayList<Employee>();
 	public List<Truck> truck = new ArrayList<Truck>();

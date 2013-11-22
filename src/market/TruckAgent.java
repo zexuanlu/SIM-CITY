@@ -1,6 +1,6 @@
 package market;
 
-import agent.Agent;
+import agent.*;
 
 import java.util.*;
 
@@ -8,7 +8,7 @@ import marketinterface.Cashier;
 import marketinterface.Cook;
 import marketinterface.Truck;
 
-public class TruckAgent extends Agent implements Truck{
+public class TruckAgent extends Role implements Truck{
 
 	List<Food> order;
 	Cook cook;

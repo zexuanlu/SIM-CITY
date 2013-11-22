@@ -1,6 +1,6 @@
 package market;
 
-import agent.Agent;
+import agent.*;
 import gui.EmployeeGui;
 
 import java.util.*;
@@ -12,7 +12,7 @@ import marketinterface.Customer;
 import marketinterface.Employee;
 import marketinterface.Truck;
 
-public class EmployeeAgent extends Agent implements Employee{
+public class EmployeeAgent extends Role implements Employee{
 
 	Cashier cashier;
 	EmployeeGui employeeGui;

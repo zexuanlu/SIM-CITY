@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
 import marketinterface.Cashier;
 import marketinterface.Customer;
 
-public class CustomerAgent extends Agent implements Customer{
+public class CustomerAgent extends Role implements Customer{
 
 	Cashier cashier;
 	CustomerGui customerGui;
