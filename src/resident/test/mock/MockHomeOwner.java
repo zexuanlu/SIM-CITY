@@ -24,6 +24,10 @@ public class MockHomeOwner extends Mock implements HomeOwner{
 		houseNum = i;
 	}
 
+	public void msgReadyToMaintain() {
+		log.add(new LoggedEvent("Received message that the housekeeper is ready to maintain home."));
+	}
+
 	public void msgDoneMaintaining(double maintenanceAmount) {
 		if (myMoney >= maintenanceAmount) {
 			log.add(new LoggedEvent("Received message that housekeeper is done maintaining my home. I now have to pay " + maintenanceAmount + "."));
@@ -39,5 +43,8 @@ public class MockHomeOwner extends Mock implements HomeOwner{
 		debt += amt;
 		log.add(new LoggedEvent("My debt is now " + amt + "."));
 	}
-	
+
+	public void msgMaintainHome() {		
+	}
+
 }

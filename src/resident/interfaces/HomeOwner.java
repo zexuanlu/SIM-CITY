@@ -10,4 +10,6 @@ public interface HomeOwner {
 
 	public abstract String getName();
 
+	public abstract void msgReadyToMaintain();
+
 }
