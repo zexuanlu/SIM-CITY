@@ -8,10 +8,7 @@ import java.util.concurrent.*;
  * Base class for simple agents
  */
 public abstract class Role {
-<<<<<<< HEAD
-=======
 
->>>>>>> market
     protected Role() {
     }
 
