@@ -5,8 +5,17 @@ import simcity.BusRole;
 import simcity.BusStopAgent; 
 import simcity.PassengerRole; 
 import simcity.CityMap; 
+import simcity.astar.*; 
+import java.util.concurrent.*; 
+import java.awt.event.*; 
 
 public class SimCityGui extends JFrame{
+	
+	static int gridX = 60; 
+	static int gridY = 60; 
+	Semaphore[][] grid = new Semaphore[gridX + 1][gridY + 1];
+
+	
 	CityMap citymap = new CityMap();
 	
 	BusRole bus = new BusRole("BusRole");
@@ -34,8 +43,8 @@ public class SimCityGui extends JFrame{
 	BusStopGui bs4gui = new BusStopGui(busstop4,100,500);
 	
 	public SimCityGui(){	
-		 int WINDOWX = 600;
-	     int WINDOWY = 600;
+		 int WINDOWX = 600; //60 across
+	     int WINDOWY = 600; //60 across
 	     setBounds(50, 50, WINDOWX, WINDOWY);
 	     AnimationPanel animationPanel = new AnimationPanel();
 	     add (animationPanel);
