@@ -1,5 +1,5 @@
 package simcity;
-import java.util.*; 
+import java.util.*;
 import java.awt.Dimension;
 import java.util.concurrent.Semaphore;
 
@@ -46,6 +46,8 @@ public class BusRole extends Agent implements Bus {
 		super();		
 		this.name = name; 
 		capacity = 100; 
+
+		
 	}
 	
 	public void msgStartBus(){
@@ -181,7 +183,7 @@ public class BusRole extends Agent implements Bus {
 				public void run() {
 					msgtimetoLeave();
 				}
-			},10000);			
+			},5000);			
 		}
 		
 		
@@ -257,5 +259,6 @@ public class BusRole extends Agent implements Bus {
 		public void addtoRoute(String r){
 			RouteA.add(r);
 		}
+		
 
 }

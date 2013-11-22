@@ -11,15 +11,20 @@ import java.awt.event.*;
 
 public class SimCityGui extends JFrame{
 	
-	static int gridX = 60; 
-	static int gridY = 60; 
-	Semaphore[][] grid = new Semaphore[gridX + 1][gridY + 1];
-
+	static int gridX = 30; 
+	static int gridY = 30; 
 	
 	CityMap citymap = new CityMap();
 	
+	Semaphore[][] grid = new Semaphore[gridX + 1][gridY + 1];
+	//intialize the semaphore grid
+
+    AStarTraversal aStarTraversal = new AStarTraversal(grid);
+    
 	BusRole bus = new BusRole("BusRole");
-	BusGui bgui = new BusGui(bus);
+	BusRole bus2 = new BusRole("BusRole2");
+	BusGui bgui2; 
+	BusGui bgui;
 	
 	PassengerRole passenger = new PassengerRole("PassengerRole");
 	PassengerGui pgui = new PassengerGui(passenger,0,0);
@@ -31,25 +36,58 @@ public class SimCityGui extends JFrame{
 	PassengerGui pgui3 = new PassengerGui(passenger3,105,300);
 	
 	BusStopAgent busstop1 = new BusStopAgent("Stop1");
-	BusStopGui bsgui = new BusStopGui(busstop1,100,80);
+	BusStopGui bsgui = new BusStopGui(busstop1,160,110);
 	
 	BusStopAgent busstop2 = new BusStopAgent("Stop2");
-	BusStopGui bs2gui = new BusStopGui(busstop2, 450, 80);
+	BusStopGui bs2gui = new BusStopGui(busstop2, 420, 110);
 	
 	BusStopAgent busstop3 = new BusStopAgent("Stop3");
-	BusStopGui bs3gui = new BusStopGui(busstop3, 500, 300);
+	BusStopGui bs3gui = new BusStopGui(busstop3, 470, 300);
 	
 	BusStopAgent busstop4 = new BusStopAgent("Stop4");
 	BusStopGui bs4gui = new BusStopGui(busstop4,100,500);
 	
 	public SimCityGui(){	
+
+		for (int i=0; i<gridX+1 ; i++)
+		    for (int j = 0; j<gridY+1; j++)
+			grid[i][j]=new Semaphore(1,true);
+		//build the animation areas
+		try {
+		    //make the 0-th row and column unavailable
+		    System.out.println("making row 0 and col 0 unavailable.");
+		    for (int i=0; i<gridY+1; i++) grid[0][0+i].acquire();
+		    for (int i=1; i<gridX+1; i++) grid[0+i][0].acquire();
+		    
+		    for (int x=8;x<gridX+1;x++){
+		    	for (int y=1;y<5;y++) grid[x][y].acquire();
+		    }
+		    for (int y = 5; y<9; y++){
+		    	for (int x=27;x<gridX+1;x++) grid[x][y].acquire();
+		    }
+		    
+		    for (int y = 9;y<25;y++){//rows 9-24
+		    	for (int x=1; x<5;x++) grid[x][y].acquire(); 
+		    	for (int x=7; x<23;x++) grid[x][y].acquire(); 
+		    	for (int x=27;x<gridX+1;x++)  grid[x][y].acquire(); 
+		    }	    
+		    
+		}catch (Exception e) {
+		    System.out.println("Unexpected exception caught in during setup:"+ e);
+		}
+		
+		bgui = new BusGui(bus,aStarTraversal);
+		bgui2 = new BusGui(bus,aStarTraversal);
+		
+		
 		 int WINDOWX = 600; //60 across
 	     int WINDOWY = 600; //60 across
-	     setBounds(50, 50, WINDOWX, WINDOWY);
+	     setBounds(50, 50, WINDOWX+50, WINDOWY+50);
 	     AnimationPanel animationPanel = new AnimationPanel();
 	     add (animationPanel);
 	     
 	 	 bus.setGui(bgui);
+	 	 bus2.setGui(bgui2);
 	 	 busstop1.setGui(bsgui);
 	 	 busstop2.setGui(bs2gui);
 	 	 busstop3.setGui(bs3gui);
@@ -74,7 +112,7 @@ public class SimCityGui extends JFrame{
 	     citymap.addBus(busstop4, bus);
 	     
 	     citymap.addDestination("Home", new Dimension(550, 100));
-	     citymap.addDestination("Food", new Dimension(150, 400));
+	     citymap.addDestination("Food", new Dimension(200, 400));
 
 	     animationPanel.addGui(bgui);
 	     animationPanel.addGui(bsgui);
@@ -92,6 +130,7 @@ public class SimCityGui extends JFrame{
 	     passenger.startThread();
 	     passenger2.startThread();
 	     passenger3.startThread();
+	     
 	     
 	     bus.setBusMap(citymap);
 	     bus.startThread();
