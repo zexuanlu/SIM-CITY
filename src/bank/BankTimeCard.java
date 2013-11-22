@@ -68,8 +68,8 @@ public class BankTimeCard extends Agent implements TimeCard {
 	}
 
 	public void goOffWork(MyRole role) {
-		double pay = 500.00;
-		role.role.msgDoneWithWork(pay);
+		//double pay = 500.00;
+		//role.role.msgDoneWithWork(pay);
 		role.rs = roleState.waiting;
 	}
 	
