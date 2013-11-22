@@ -65,9 +65,9 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	private void performBankAction(Request r){
 		//Open a new account
 		if(r.type.equals("openAccount")){
-			int AccountNumber = (int)(Math.random()*1000);
+			int AccountNumber = (int)((Math.random()*1000)+1);
 			while(accounts.containsKey(AccountNumber)){
-				AccountNumber = (int)(Math.random()*1000);
+				AccountNumber = (int)((Math.random()*1000)+1);
 			}
 			Do("Creating Account Number " + AccountNumber);
 			accounts.put(AccountNumber, new Account(r.bc, 0, AccountNumber));
