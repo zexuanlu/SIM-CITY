@@ -8,7 +8,7 @@ import bank.gui.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class BankCustomerRole extends Agent implements BankCustomer {
+public class BankCustomerRole extends Role implements BankCustomer {
 	//Data
 	String name;
 	public EventLog log;

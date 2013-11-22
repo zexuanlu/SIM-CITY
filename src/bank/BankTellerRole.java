@@ -12,7 +12,7 @@ import agent.*;
  * @author Joseph
  *
  */
-public class BankTellerRole extends Agent implements BankTeller {
+public class BankTellerRole extends Role implements BankTeller {
 
 	//Data
 	//Person person;

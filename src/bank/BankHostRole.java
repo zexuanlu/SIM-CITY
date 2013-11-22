@@ -1,11 +1,11 @@
 package bank;
 
-import agent.Agent;
+import agent.*;
 import bank.interfaces.*;
 import java.util.*;
 import bank.test.mock.*;
 
-public class BankHostRole extends Agent implements BankHost {
+public class BankHostRole extends Role implements BankHost {
 
 
 	//Data
