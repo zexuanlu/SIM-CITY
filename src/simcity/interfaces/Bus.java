@@ -9,7 +9,7 @@ public interface Bus {
 	
 	public abstract void msgHeresMyFare(Passenger p, double Paid);
 	
-	public abstract void msgAtStop(String stop);
+	public abstract void msgAtStop();
 	
 	public abstract void msgLeaving(Passenger p);
 	

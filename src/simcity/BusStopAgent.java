@@ -1,6 +1,9 @@
 package simcity;
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList; 
+import java.util.List; 
 import agent.Agent; 
+import simcity.gui.BusStopGui;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
@@ -8,6 +11,7 @@ import simcity.interfaces.Passenger;
 public class BusStopAgent extends Agent implements BusStop{ //do i have to make it an agent? 
 	public List <Passenger> passengers; 
 	public List <myBus> busses; //already filled in beforehand
+	private BusStopGui myGui = null; 
 	
 	private class myBus{
 		public Bus bus; 
@@ -16,15 +20,20 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 	    	bus = bu;
 	    }
 	}
-	public enum BusState {notatStop, arrivedatStop, atStop}; 
-	String name; 
 	
+	public enum BusState {notatStop, arrivedatStop, atStop}; 
+	public String name; 
+	
+
 	public BusStopAgent(String name){
 		super(); 
 		this.name = name; 
 		passengers = new ArrayList<Passenger>();
 		busses = new ArrayList<myBus>();
 	}
+	
+
+	
 	
 	public void msgBusLeaving(Bus b){
 		for (myBus bu: busses){
@@ -40,12 +49,22 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 	}
 	
 	public void msgatBusStop(Bus b){
+		//check if already added in busses list, if not then add it
+		boolean added = false; 
+		
 		for (myBus bu: busses){
 			if (bu.bus == b){
 				bu.busState = BusState.arrivedatStop; 
-				stateChanged();
+				added = true; 
+				break;
 			}
 		}
+		if (!added ){
+			myBus mb = new myBus(b);
+			mb.busState = BusState.arrivedatStop; 
+			busses.add(mb);
+			}
+		stateChanged();
 	}
 	
 	public List<Passenger> heresPassList(){
@@ -66,6 +85,7 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 	//actions 
 	private void giveList(myBus mb){
 		mb.busState = BusState.atStop;
+		print("BusStop here is list of "+passengers.size()+" passengers");
 		mb.bus.msgHereisList(passengers);
 	}
 	
@@ -90,5 +110,12 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 		busses.add(mb);
 	}
 	
+	public void setGui(BusStopGui bgui){
+		myGui = bgui; 
+	}
+	
+	public Dimension getDim(){
+		return myGui.getDim();
+	}
 	
 }

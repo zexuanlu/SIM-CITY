@@ -1,6 +1,6 @@
 package simcity.test;
 import simcity.BusRole; 
-import simcity.BusMap; 
+import simcity.CityMap; 
 import simcity.interfaces.Passenger; 
 import simcity.test.Mock.MockBusStop; 
 import simcity.test.Mock.MockPassengerRole; 
@@ -8,7 +8,7 @@ import junit.framework.*;
 import java.util.*;
 
 public class BusTest extends TestCase{
-	BusMap busmap = new BusMap(); 
+	CityMap citymap = new CityMap(); 
 	BusRole busrole; 
 	MockBusStop busstop; 
 	MockBusStop busstop2;
@@ -27,8 +27,8 @@ public class BusTest extends TestCase{
 		passenger1 = new MockPassengerRole("PBS");
 		busroute.add("Stop1");
 		busroute.add("Stop2");
-		busmap.add("Stop1", busstop);
-		busmap.add("Stop2", busstop2);
+		citymap.addBusStop("Stop1", busstop);
+		citymap.addBusStop("Stop2", busstop2);
 		sentpassengers.add(passenger1);
 		
 	}
@@ -52,7 +52,7 @@ public class BusTest extends TestCase{
 		busrole.currentbusstop = busstop; 
 		busrole.RouteA = busroute;
 		busrole.setCurrentStop("Stop1");
-		busrole.setBusMap(busmap);
+		busrole.setBusMap(citymap);
 		//test involving bus arriving at busstop and receiving one passenger from busstop
 		busrole.msgHereisList(sentpassengers); 
 		assertEquals("Bus should have 1 passenger in his list", busrole.passengers.size(),1);
@@ -96,11 +96,8 @@ public class BusTest extends TestCase{
 		assertTrue("Bus should react to leaving passenger",busrole.pickAndExecuteAnAction());
 		assertEquals("Bus should have 1 passenger in his list",busrole.passengers.size(),1);
 
-
-		
-		
-		
-
-
 	}
+
+
+
 }

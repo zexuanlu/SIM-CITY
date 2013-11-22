@@ -1,11 +1,18 @@
 package simcity;
 import agent.Role; 
+import agent.Agent; 
+import simcity.gui.PassengerGui; 
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
 
+import java.util.concurrent.Semaphore;
 
-public class PassengerRole extends Role implements Passenger{
+//Passenger Role created with an original position and also an eventual Destination
+public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MADE AGENT SO THAT IT WORKS
+	private Semaphore atStop = new Semaphore(0,true);
+	PassengerGui myGui = null; 
+	public CityMap citymap = new CityMap(); 
 	String Destination; //eventual place that he wants to get to
 	double Cash; // amount of money he has
 
@@ -14,14 +21,6 @@ public class PassengerRole extends Role implements Passenger{
 	State state; 
 	Action action; 
 	
-	private class BusRoute {
-		Bus bus; 
-		BusStop busstop; 
-		int busStopX, busStopY; 
-		int destinationX, destinationY; 
-		double fare; 
-		String destination; //busstop name that he wants to get off at
-	}
 	BusRoute busroute = new BusRoute(); 
 	String name; 
 	
@@ -63,7 +62,7 @@ public class PassengerRole extends Role implements Passenger{
 	}
 	
 	public void msgAtBusStop(){ //called from animation
-		//probably should rewrite this
+		atStop.release();
 	}
 	
 	//Scheduler
@@ -89,11 +88,21 @@ public class PassengerRole extends Role implements Passenger{
 	
 	public void askBus() {
 		state = State.asked; 
+		atStop.drainPermits();
+		myGui.GoToBusStop(busroute.busStopX, busroute.busStopY);
+		try{
+			atStop.acquire();
+		}catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		if (busroute.busstop.isBusAtStop(busroute.bus)){ //if the bus is at the stop send the message to the bus
+			print("Passenger asked to come on bus");
 			busroute.bus.msgCanIComeOnBus(this);
 			return; 
 		}
 		else { //bus not at stop wait at busstop
+			print("Passenger at busStop");
 			busroute.busstop.msgatBusStop(this);
 		}
 	}
@@ -102,21 +111,24 @@ public class PassengerRole extends Role implements Passenger{
 		if (Cash >= busroute.fare){
 			Cash = Cash - busroute.fare; 
 			state = State.paid; 
+			print("Passenger paid fare");
 			busroute.bus.msgHeresMyFare(this, busroute.fare);
 		}
-		else { //can't pay has to leave
+		else { //can't pay has to leaveBus
+			print("Passenger can't afford fare, leaving bus");
 			LeaveBus();
 		}	
 	}
 	
 	public void boardBus(){
 		state = State.onBus; 
-		//DoGoOnBus(); gui stuff
+		myGui.GoOnBus();
 	}
 	
 	public void LeaveBus(){
 		state = State.none; 
-		//DoLeaveBus();
+		myGui.LeaveBus(busroute.destinationX, busroute.destinationY, citymap.getDestination(Destination).width, citymap.getDestination(Destination).height);
+		print("Passenger leaving bus");
 		busroute.bus.msgLeaving(this);
 	}
 	
@@ -132,4 +144,18 @@ public class PassengerRole extends Role implements Passenger{
 	public void setDestination(String ds){
 		busroute.destination = ds; 
 	}
+	
+	public void setPassDestination(String ds){
+		Destination = ds; 
+		busroute = citymap.generateBusInformation(ds, myGui.xPos, myGui.yPos);
+	}
+	
+	public void setCityMap (CityMap cm){
+		citymap = cm; 
+	}
+	
+	public void setGui(PassengerGui pgui){
+		myGui = pgui; 
+	}
+	
 }

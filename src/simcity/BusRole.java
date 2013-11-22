@@ -1,17 +1,23 @@
 package simcity;
 import java.util.*; 
+import java.awt.Dimension;
+import java.util.concurrent.Semaphore;
+
+import simcity.gui.BusGui; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
 import simcity.interfaces.BusStop; 
-import agent.Role; 
+import agent.Agent; 
 
-public class BusRole extends Role implements Bus {
+public class BusRole extends Agent implements Bus {
 	int capacity; 
 	int Cash; 
 	int fare; 
 	String name;
 	
-	public BusMap busmap = new BusMap(); 
+	private Semaphore atStop = new Semaphore(0,true);
+	private BusGui busgui; 
+	public CityMap citymap = new CityMap(); 
 	
 	Timer timer = new Timer();
 	public List<myPassenger> passengers = new ArrayList<myPassenger>(); 
@@ -28,18 +34,24 @@ public class BusRole extends Role implements Bus {
 	};
 	
 	public enum BusState {
-		stopped, toAnnounce, abouttoleave, moving;
+		starting, stopped, toAnnounce, abouttoleave, moving;
 	}
 	BusState busState; 
 	
 	public List<String> RouteA = new ArrayList<String>(); //journey there
-	//public List<String> RouteB = new ArrayList<String>(); //journey back
 	public String currentStop; 
 	public BusStop currentbusstop; 
 	
 	public BusRole(String name){
 		super();		
 		this.name = name; 
+		capacity = 100; 
+	}
+	
+	public void msgStartBus(){
+		busState = BusState.starting;
+		print("Bus Starting");
+		stateChanged();
 	}
 
 	
@@ -58,7 +70,6 @@ public class BusRole extends Role implements Bus {
 			mp.state = PersonState.waiting;
 			passengers.add(mp);
 		}
-		//will i have to call stateChanged as many times as there are customers in list?
 		stateChanged();
 	}
 	
@@ -74,12 +85,8 @@ public class BusRole extends Role implements Bus {
 		stateChanged(); //should I call this only in there?
 	}
 	
-	public void msgAtStop(String stop){ //sent from animation
-		//this should ONLY be semaphore crap
-		
-		//currentStop = stop; 
-		//busState = BusState.atStop; 
-		//stateChanged();
+	public void msgAtStop(){ //sent from animation
+		atStop.release();
 	}
 	
 	public void msgLeaving(Passenger p){
@@ -92,12 +99,18 @@ public class BusRole extends Role implements Bus {
 	}
 	
 	public void msgtimetoLeave(){
+		print ("Bus time to leave");
 		busState = BusState.abouttoleave; 
 		stateChanged();
 	}
 	
 	//Scheduler
 		public boolean pickAndExecuteAnAction() {
+			if (busState == BusState.starting){
+				ontheMove();
+				return true; 
+			}
+			
 			for (myPassenger mp: passengers){
 				if (mp.state == PersonState.leaving){
 					passengerLeaving(mp);
@@ -142,12 +155,14 @@ public class BusRole extends Role implements Bus {
 		private void seatPassenger(myPassenger mp){
 			if (passengers.size() <= capacity){
 				mp.state = PersonState.paying; 
+				print("Bus here is fare");
 				mp.p.msgHereIsPrice(this, fare);;
 			}
 		}
 		
 		private void welcomeAboard(myPassenger mp){
 			mp.state = PersonState.seated; 
+			print("Bus Come on bus");
 			mp.p.msgComeOnBus(this);
 		}
 		
@@ -172,6 +187,7 @@ public class BusRole extends Role implements Bus {
 		
 		public void leaveStop() {
 			busState = BusState.moving; 
+			print("Bus leaving stop");
 			currentbusstop.msgBusLeaving(this);
 			stateChanged();
 			
@@ -181,28 +197,39 @@ public class BusRole extends Role implements Bus {
 		
 		public void ontheMove(){
 			busState = BusState.toAnnounce; 
-			//gotoNextBusStop()
-			//semaphore crap
-			
 			//temporary assumption made that only RouteA 
 			//or else have to deal with direction
-			
-			int index = 0;
-			for (String s :RouteA){
-				index = index + 1; 
-				if (currentStop.equals(s)){
-					break; 
+			if (currentStop != null){
+				int index = 0;
+				for (String s :RouteA){
+					index = index + 1; 
+					if (currentStop.equals(s)){
+						break; 
+					}
 				}
+				
+				if (index == RouteA.size()){
+					index = 0; //loop back to the first stop
+				}
+				currentStop = RouteA.get(index); //knows what nextStop is
+			}
+			else {
+				currentStop = RouteA.get(0); //go to first destination; this is only if first stop
 			}
 			
-			if (index == RouteA.size()){
-				index = 0; //loop back to the first stop
+			currentbusstop = citymap.getBusStop(currentStop);
+			
+			Dimension d = citymap.getDimension(currentbusstop);
+			
+			atStop.drainPermits();
+			busgui.GoToBusStop(d.width, d.height);
+			try {
+				atStop.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			
-			currentStop = RouteA.get(index); //knows what nextStop is
-			currentbusstop = busmap.getBusStop(currentStop);
-			//SOMEHOW HAS TO FIGURE OUT THE NEXT BUS STOP I guess grab it from a map? 
-
+			print("Bus at bus stop");
 			currentbusstop.msgatBusStop(this); //make it ask for a list
 			stateChanged();
 		}
@@ -219,8 +246,16 @@ public class BusRole extends Role implements Bus {
 			currentStop = c;
 		}
 		
-		public void setBusMap (BusMap b){
-			busmap = b;
+		public void setBusMap (CityMap b){
+			citymap = b;
+		}
+		
+		public void setGui(BusGui gui){
+			busgui = gui; 
+		}
+		
+		public void addtoRoute(String r){
+			RouteA.add(r);
 		}
 
 }

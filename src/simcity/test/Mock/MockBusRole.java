@@ -24,7 +24,7 @@ public class MockBusRole extends Mock implements Bus{
 		log.add(new LoggedEvent("Passenger paid amount of "+ Paid));
 	}
 	
-	public void msgAtStop(String stop){} //called from animation
+	public void msgAtStop(){} //called from animation
 	
 	public void msgLeaving(Passenger p){
 		log.add(new LoggedEvent("Passenger leaving bus"));

@@ -18,8 +18,7 @@ public class BusStopTest extends TestCase{
 	
 	public void testOneNormalCustomerScenario()
 	{
-		//1 Normal interaction
-		
+		//Normal interaction
 		//check initial conditions of the mocks & busStop
 		assertEquals("mockBus log should be empty",0,bus.log.size());
 		assertEquals("mockPassenger log should be empty",0,passenger.log.size()); 
