@@ -12,17 +12,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
     private final int WINDOWX = 700;
     private final int WINDOWY = 360;
-    private final int tablex = 250;
-    private final int tabley = 100;
-    private final int tablex2 = 350;
-    private final int tabley2 = 100;
-    private final int tablex3 = 250;
-    private final int tabley3 = 200;
-    private final int tablex4 = 350;
-    private final int tabley4 = 200;
-    private final int tableW = 50;
-    private final int CookStationx = 550;
-    private final int CookStationy = 30;
     private Image bufferImage;
     private Dimension bufferSize;
 
@@ -48,15 +37,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
-        
-        //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(tablex, tabley, tableW, tableW);//200 and 250 need to be table params
-        g2.fillRect(tablex2, tabley2, tableW, tableW);
-        g2.fillRect(tablex3, tabley3, tableW, tableW);
-        g2.fillRect(tablex4, tabley4, tableW, tableW);
-        g2.fillRect(CookStationx, CookStationy, 25, 133);
-        g2.fillRect(650, 30, 25, 133);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
