@@ -1,4 +1,4 @@
-package markettestmock;
+package market.test.mock;
 
 import java.util.LinkedList;
 import java.util.List;

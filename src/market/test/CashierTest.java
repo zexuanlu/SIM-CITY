@@ -1,4 +1,4 @@
-package MarketTest;
+package market.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,11 @@ import market.CashAgent;
 import market.CashierAgent;
 import market.CashierAgent.state;
 import market.CashierAgent.state1;
-import marketinterface.Cook;
-import marketinterface.Customer;
-import markettestmock.MockCook;
-import markettestmock.MockCustomer;
-import markettestmock.MockEmployee;
+import market.interfaces.Cook;
+import market.interfaces.Customer;
+import market.test.mock.MockCook;
+import market.test.mock.MockCustomer;
+import market.test.mock.MockEmployee;
 import junit.framework.TestCase;
 import market.Food;
 

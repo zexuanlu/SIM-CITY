@@ -1,10 +1,11 @@
-package MarketTest;
+package market.test;
 
 import market.CustomerAgent;
 import market.CustomerAgent.state;
-import markettestmock.EventLog;
-import markettestmock.MockCashier;
+import market.test.mock.EventLog;
+import market.test.mock.MockCashier;
 import junit.framework.TestCase;
+
 import java.util.*;
 
 public class CustomerTest extends TestCase {

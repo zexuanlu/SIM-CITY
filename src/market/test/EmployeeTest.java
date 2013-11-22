@@ -1,4 +1,4 @@
-package MarketTest;
+package market.test;
 
 
 import java.util.*;
@@ -6,11 +6,11 @@ import java.util.*;
 import market.EmployeeAgent;
 import market.EmployeeAgent.state;
 import market.EmployeeAgent.state1;
-import markettestmock.EventLog;
-import markettestmock.MockCashier;
-import markettestmock.MockCook;
-import markettestmock.MockCustomer;
-import markettestmock.MockTruck;
+import market.test.mock.EventLog;
+import market.test.mock.MockCashier;
+import market.test.mock.MockCook;
+import market.test.mock.MockCustomer;
+import market.test.mock.MockTruck;
 import junit.framework.TestCase;
 
 public class EmployeeTest extends TestCase{

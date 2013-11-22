@@ -1,13 +1,8 @@
-package marketinterface;
+package market.interfaces;
 
 import java.util.List;
 
-import market.CashAgent;
-import market.CashierAgent;
-import market.CookAgent;
-import market.CustomerAgent;
-import market.Food;
-
+import market.*;
 
 public interface Cashier {
 

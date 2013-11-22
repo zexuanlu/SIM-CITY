@@ -2,13 +2,13 @@ package market;
 
 import agent.Agent;
 import agent.Role;
-import gui.CustomerGui;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import marketinterface.Cashier;
-import marketinterface.Customer;
+import market.gui.CustomerGui;
+import market.interfaces.Cashier;
+import market.interfaces.Customer;
 
 public class CustomerAgent extends Role implements Customer{
 

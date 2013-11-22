@@ -1,10 +1,10 @@
-package MarketTest;
+package market.test;
 
 import junit.framework.TestCase;
 import market.TruckAgent;
 import market.TruckAgent.state;
-import markettestmock.EventLog;
-import markettestmock.MockCook;
+import market.test.mock.EventLog;
+import market.test.mock.MockCook;
 
 import java.util.*;
 

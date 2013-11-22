@@ -1,4 +1,4 @@
-package gui;
+package market.gui;
 
 import java.awt.*;
 

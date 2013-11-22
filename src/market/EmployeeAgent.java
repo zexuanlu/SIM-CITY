@@ -1,16 +1,16 @@
 package market;
 
 import agent.*;
-import gui.EmployeeGui;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import marketinterface.Cashier;
-import marketinterface.Cook;
-import marketinterface.Customer;
-import marketinterface.Employee;
-import marketinterface.Truck;
+import market.gui.EmployeeGui;
+import market.interfaces.Cashier;
+import market.interfaces.Cook;
+import market.interfaces.Customer;
+import market.interfaces.Employee;
+import market.interfaces.Truck;
 
 public class EmployeeAgent extends Role implements Employee{
 

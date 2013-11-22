@@ -1,4 +1,4 @@
-package markettestmock;
+package market.test.mock;
 
 /**
  * This is the base class for all mocks.

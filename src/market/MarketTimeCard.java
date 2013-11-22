@@ -1,8 +1,9 @@
 package market;
 
 import java.util.*;
+
 import agent.*;
-import marketinterface.*;
+import market.interfaces.*;
 
 public class MarketTimeCard extends Agent implements TimeCard{
 

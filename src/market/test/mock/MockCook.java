@@ -1,8 +1,8 @@
-package markettestmock;
+package market.test.mock;
 
 import java.util.List;
 
-import marketinterface.Cook;
+import market.interfaces.Cook;
 
 public class MockCook extends Mock implements Cook{
 

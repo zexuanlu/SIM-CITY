@@ -1,4 +1,4 @@
-package marketinterface;
+package market.interfaces;
 
 import java.util.List;
 import market.Food;

@@ -1,12 +1,12 @@
-package markettestmock;
+package market.test.mock;
 
 import java.util.List;
 
 import market.CookAgent;
-import marketinterface.Cook;
-import marketinterface.Customer;
-import marketinterface.Employee;
-import marketinterface.Truck;
+import market.interfaces.Cook;
+import market.interfaces.Customer;
+import market.interfaces.Employee;
+import market.interfaces.Truck;
 
 public class MockEmployee extends Mock implements Employee{
 

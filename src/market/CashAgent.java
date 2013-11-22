@@ -1,7 +1,7 @@
 package market;
 
-import marketinterface.Cashier;
-import markettestmock.EventLog;
+import market.interfaces.Cashier;
+import market.test.mock.EventLog;
 import agent.Agent;
 
 public class CashAgent extends Agent{

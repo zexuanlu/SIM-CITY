@@ -1,4 +1,4 @@
-package markettestmock;
+package market.test.mock;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import market.CashAgent;
 import market.CashierAgent;
 import market.CookAgent;
 import market.Food;
-import marketinterface.Cashier;
-import marketinterface.Cook;
-import marketinterface.Customer;
-import marketinterface.Truck;
+import market.interfaces.Cashier;
+import market.interfaces.Cook;
+import market.interfaces.Customer;
+import market.interfaces.Truck;
 
 public class MockCashier extends Mock implements Cashier{
 
