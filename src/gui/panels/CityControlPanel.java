@@ -6,6 +6,7 @@ package gui.panels;
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
+import gui.subpanels.*;
 
 public class CityControlPanel extends JPanel {
 	
