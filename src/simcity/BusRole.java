@@ -3,6 +3,9 @@ import java.util.*;
 import java.awt.Dimension;
 import java.util.concurrent.Semaphore;
 
+import simcity.astar.AStarNode;
+import simcity.astar.AStarTraversal;
+import simcity.astar.Position;
 import simcity.gui.BusGui; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
@@ -10,10 +13,18 @@ import simcity.interfaces.BusStop;
 import agent.Agent; 
 
 public class BusRole extends Agent implements Bus {
+	int scale = 20; 
+	int heightofStreet = 50; 
+	
+	
 	int capacity; 
 	int Cash; 
 	int fare; 
 	String name;
+	
+	Position currentPosition; 
+	Position originalPosition;
+	AStarTraversal aStar; 
 	
 	private Semaphore atStop = new Semaphore(0,true);
 	private BusGui busgui; 
@@ -45,13 +56,11 @@ public class BusRole extends Agent implements Bus {
 	public BusRole(String name){
 		super();		
 		this.name = name; 
-		capacity = 100; 
-
-		
+		capacity = 100; 	
 	}
 	
 	public void msgStartBus(){
-		busState = BusState.starting;
+		busState = BusState.moving;
 		print("Bus Starting");
 		stateChanged();
 	}
@@ -62,15 +71,18 @@ public class BusRole extends Agent implements Bus {
 			myPassenger mp = new myPassenger(p);
 			mp.state = PersonState.waiting; 
 			passengers.add(mp);
-			stateChanged();
 		}
+		System.out.println("size of passengers is "+ passengers.size());
+		stateChanged();
 	}
 	
 	public void msgHereisList(List<Passenger> sentpassengers){
-		for (Passenger p: sentpassengers){
-			myPassenger mp = new myPassenger(p);
-			mp.state = PersonState.waiting;
-			passengers.add(mp);
+		if (sentpassengers.size()>0){
+			for (Passenger p: sentpassengers){
+				myPassenger mp = new myPassenger(p);
+				mp.state = PersonState.waiting;
+				passengers.add(mp);
+			}
 		}
 		stateChanged();
 	}
@@ -113,10 +125,12 @@ public class BusRole extends Agent implements Bus {
 				return true; 
 			}
 			
-			for (myPassenger mp: passengers){
-				if (mp.state == PersonState.leaving){
-					passengerLeaving(mp);
-					return true; 
+			if (passengers.size() != 0){
+				for (myPassenger mp: passengers){
+					if (mp.state == PersonState.leaving){
+						passengerLeaving(mp);
+						return true; 
+					}
 				}
 			}
 			
@@ -126,21 +140,23 @@ public class BusRole extends Agent implements Bus {
 				return true; 
 			}
 			
+			if (passengers.size() != 0){
 			for (myPassenger mp: passengers){
 				if (mp.state == PersonState.paid){
 					welcomeAboard(mp);
 					return true; 
 				}
 			}
-			
-			
-			for (myPassenger mp:passengers){
-				if (mp.state == PersonState.waiting){
-					seatPassenger(mp);
-					return true; 
-				}
 			}
 			
+			if (passengers.size() != 0){
+				for (myPassenger mp:passengers){
+					if (mp.state == PersonState.waiting){
+						seatPassenger(mp);
+						return true; 
+					}
+				}
+			}
 			if (busState == BusState.abouttoleave){
 				leaveStop();
 				return true; 
@@ -224,7 +240,7 @@ public class BusRole extends Agent implements Bus {
 			Dimension d = citymap.getDimension(currentbusstop);
 			
 			atStop.drainPermits();
-			busgui.GoToBusStop(d.width, d.height);
+			GoToBusStop(d.width, d.height +heightofStreet);
 			try {
 				atStop.acquire();
 			} catch (InterruptedException e) {
@@ -259,6 +275,67 @@ public class BusRole extends Agent implements Bus {
 		public void addtoRoute(String r){
 			RouteA.add(r);
 		}
+		public void setAStar(	AStarTraversal as ){
+			aStar = as; 
+			currentPosition = new Position(busgui.xPos/scale, busgui.yPos/scale);
+	        currentPosition.moveInto(aStar.getGrid());
+	        originalPosition = currentPosition;
+		}
 		
+		//this is just a subroutine for waiter moves. It's not an "Action"
+	    //itself, it is called by Actions.
+	    private void guiMoveFromCurrentPositionTo(Position to){
 
+		AStarNode aStarNode = (AStarNode)aStar.generalSearch(currentPosition, to);
+		List<Position> path = aStarNode.getPath();
+		Boolean firstStep   = true;
+		Boolean gotPermit   = true;
+
+		for (Position tmpPath: path) {
+		    //The first node in the path is the current node. So skip it.
+		    if (firstStep) {
+			firstStep   = false;
+			continue;
+		    }
+
+		    //Try and get lock for the next step.
+		    int attempts    = 1;
+		    gotPermit       = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
+
+		    //Did not get lock. Lets make n attempts.
+		    while (!gotPermit && attempts < 3) {
+			//System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
+
+			//Wait for 1sec and try again to get lock.
+			try { Thread.sleep(1000); }
+			catch (Exception e){}
+
+			gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
+			attempts ++;
+		    }
+
+		    //Did not get lock after trying n attempts. So recalculating path.            
+		    if (!gotPermit) {
+			//System.out.println("[Gaut] " + guiWaiter.getName() + " No Luck even after " + attempts + " attempts! Lets recalculate");
+		    	
+		    	/////////////ADDED
+		    	path.clear();
+		    	aStarNode=null; //added later
+			guiMoveFromCurrentPositionTo(to);
+			break;
+		    }
+
+		    //Got the required lock. Lets move.
+		    //System.out.println("[Gaut] " + guiWaiter.getName() + " got permit for " + tmpPath.toString());
+		    currentPosition.release(aStar.getGrid());
+		    currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
+		    busgui.moveto(currentPosition.getX(), currentPosition.getY());
+			}
+	    }
+		
+	    private void GoToBusStop(int x, int y){
+	    	busgui.GoToBusStop();
+	    	guiMoveFromCurrentPositionTo(new Position((x/scale),(y/scale)));
+	    }
+		
 }

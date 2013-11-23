@@ -49,6 +49,9 @@ public class AStarTraversal extends GraphTraversal
 	//from pos.
 	for(int i = -1; i <= 1; i++) {//increment for x direction
 	    for (int j = -1; j <= 1; j++) {//increment for y direction
+		
+		    if ((j==0) || (i== 0 && j != 0)){
+		
 		//create the potential next position
 		int nextX=x+i;
 		int nextY=y+j;
@@ -75,6 +78,7 @@ public class AStarTraversal extends GraphTraversal
 		expandedNodes.add(nodeTemp);//could have just added
 					    //them directly to nodelist 
 	    }
+	}
 	}
 	return expandedNodes;
     }//end expandFunc

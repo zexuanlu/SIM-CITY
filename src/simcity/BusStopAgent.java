@@ -91,13 +91,16 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 	
 	//accessor
 	public boolean isBusAtStop(Bus b){
-		for (myBus mb: busses){
-			if (mb.bus == b){
-				if (mb.busState != BusState.notatStop){
-					return true; 
-				}
-				else {
-					return false; 
+		
+		if (busses.size() > 0){
+			for (myBus mb: busses){
+				if (mb.bus == b){
+					if (mb.busState != BusState.notatStop){
+						return true; 
+					}
+					else {
+						return false; 
+					}
 				}
 			}
 		}

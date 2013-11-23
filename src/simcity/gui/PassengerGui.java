@@ -14,14 +14,7 @@ public class PassengerGui implements Gui {
 	public int xPos, yPos, xDestination, yDestination; 
 
 	
-	public PassengerGui(PassengerRole mp){
-		passenger = mp; 
-		xPos = 0;
-		yPos = 0;
-		xDestination = 0; 
-		yDestination = 0; 
-		}
-	
+
 	public PassengerGui(PassengerRole mp, int x, int y){
 		passenger = mp; 
 		xPos = x;
