@@ -9,8 +9,8 @@ import person.Position;
 public class PersonGui implements Gui{
     private PersonAgent agent = null;
 
-    private int xPos = -20, yPos = -20;//default player position
-    private int xDestination = -20, yDestination = -20;//default start position
+    private int xPos = 20, yPos = 20;//default player position
+    private int xDestination = 20, yDestination = 20;//default start position
     public PersonGui(PersonAgent agent) {
         this.agent = agent;
     }

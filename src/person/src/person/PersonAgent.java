@@ -19,6 +19,7 @@ import person.Event.EventType;
 import person.gui.PersonGui;
 import person.interfaces.BankCustomer;
 import person.interfaces.BankHost;
+import person.interfaces.BankTeller;
 import person.interfaces.Person;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
@@ -46,11 +47,11 @@ public class PersonAgent extends Agent implements Person{
 	@SuppressWarnings("unchecked")
 	Comparator<Event> comparator = new EventComparator();
 	public PriorityQueue<Event> toDo = new PriorityQueue<Event>(3, comparator);
-	
+
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
 	/* Home home; // home/apartment
 	Car car; // car if the person has a car */ //Who is in charge of these classes?
-	
+
 	Semaphore going = new Semaphore(0, true);
 	Semaphore transport = new Semaphore(0, true);
 
@@ -107,14 +108,26 @@ public class PersonAgent extends Agent implements Person{
 		currentLocation = destination;
 		stateChanged();
 	}
-
 	public void msgFinishedEvent(Role r){ //The location manager will send this message as the persons role leaves the building
 		deactivateRole(r);
 		activeRole = false;
 		stateChanged();
 	}
 	public void msgReadyToWork(Role r){
-		
+		for(Role role : roles){
+			if(role == r ){
+				role.setActive(true);
+			}
+		}
+		stateChanged();
+	}
+	public void msgGoOffWork(Role r){ 
+		for(Role role : roles){
+			if(role == r){
+				role.setActive(true);
+			}
+		}
+		stateChanged();
 	}
 
 	/* Scheduler */
@@ -169,7 +182,6 @@ public class PersonAgent extends Agent implements Person{
 				rest.getHost().msgIWantFood(this, cRole);
 				cRole.setActive(true);
 			}
-
 			else if(e.type == EventType.HostEvent){
 
 				activeRole = true;
@@ -183,39 +195,101 @@ public class PersonAgent extends Agent implements Person{
 				hostRole.setActive(true);
 			}
 			else if(e.type == EventType.WaiterEvent){
-				
+
 			}
 			else if(e.type == EventType.CookEvent){
-				
+
 			}
 			else if(e.type == EventType.CashierEvent){
-				
+
 			}
 		}
 		else if(e.location.type == LocationType.Bank){
 			Bank bank = (Bank)e.location;
 			if(e.type == EventType.CustomerEvent){
+				activeRole = true;
 				BankCustomerRole bcr = new BankCustomerRole(this.name, this);
 
 				if(!roles.contains(bcr)){                                                       
-
 					roles.add(bcr);
 				}
 				bank.getHost().msgGoToBank(e.getDirective(), wallet.getInBank());
 				bcr.setActive(true);
 			}
 			else if(e.type == EventType.TellerEvent){
-				
+				activeRole = true;
+				BankTellerRole btr = new BankTellerRole(this.name, this);
+
+				if(!roles.contains(btr)){                                                       
+					roles.add(btr);
+				}
+				bank.getHost().msgBackToWork(this, bhr);
+				btr.setActive(true);			
 			}
 			else if(e.type == EventType.GuardEvent){
-				
+				activeRole = true;
+				BankGuardRole bgr = new BankGuardRole(this.name, this);
+
+				if(!roles.contains(bgr)){                                                       
+					roles.add(bgr);
+				}
+				bank.getHost().msgBackToWork(this, bhr);
+				bgr.setActive(true);
 			}
 			else if(e.type == EventType.HostEvent){
-				
+				activeRole = true;
+				BankHostRole bhr = new BankHostRole(this.name, this);
+
+				if(!roles.contains(bhr)){                                                       
+					roles.add(bhr);
+				}
+				bank.getHost().msgBackToWork(this, bhr);
+				bhr.setActive(true);
 			}
 		}
 		else if(e.location.type == LocationType.Market){
-			
+			Market market = (Market)e.location;
+			if(e.type == EventType.CustomerEvent){
+				activeRole = true;
+				MarketCustomerRole mcr = new MarketCustomerRole(this.name, this);
+				
+				if(!roles.contains(mcr)){
+					roles.add(mcr);
+				}
+				market.getHost().msgCollectOrder(shoppingList);
+				mcr.setActive(true);
+			}
+			else if(e.type == EventType.EmployeeEvent){
+				activeRole = true;
+				MarketEmployeeRole mer = new MarketEmployeeRole(this.name, this);
+				
+				if(!roles.contains(mer)){
+					roles.add(mer);
+				}
+				market.getTimeCard().msgBackToWork(this, mer);
+				mer.setActive(true);
+			}
+			else if(e.type == EventType.CashierEvent){
+				activeRole = true;
+				MarketCashierRole mcash = new MarketCashierRole(mcr);
+				
+				if(!roles.contains(mcash)){
+					roles.add(mcash);
+				}
+				market.getTimeCard().msgBackToWork(this,mcash);
+				mcash.setActive(true);
+			}
+		}
+		else if(e.location.type == LocationType.Home){
+			Home home = (Home)e.location;
+			activeRole = true;
+			HomeRole hr = new HomeRole(this.name, this);
+			if(!roles.contains(hr)){
+				roles.add(hr);
+			}
+			hr.setActive(hr);
+			//set time and hunger 
+			hr.msgUpdateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
 		}
 		//we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
 		else {
@@ -426,7 +500,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public class MyBankHost {
 		BankHost bh; 
-		
+
 		MyBankHost(BankHost bh){
 			this.bh = bh;
 		}
