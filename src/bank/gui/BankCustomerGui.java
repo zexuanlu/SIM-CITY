@@ -16,21 +16,30 @@ public class BankCustomerGui implements Gui{
 	private boolean atDestination = true;
 	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
 
-	AnimationPanel gui;
+	BankAnimationPanel gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public BankCustomerGui(BankCustomer c, AnimationPanel gui){ //HostAgent m) {
+	public BankCustomerGui(BankCustomer c, BankAnimationPanel gui){ //HostAgent m) {
 		bc = c;
 		xPos = -20;
 		yPos = 300;
 		xDestination = -20;
 		yDestination = 300;
 		this.gui = gui;
-		locations.put("Host", new Dimension(30, 265));
-		locations.put("Teller", new Dimension(220, 40));
-		locations.put("Outside", new Dimension(-20, 200));
+		locations.put("Host", new Dimension(320,80));
+		locations.put("Teller1", new Dimension(40, 340));
+		locations.put("Teller2", new Dimension(100, 340));
+		locations.put("Teller3", new Dimension(160, 340));
+		locations.put("Teller4", new Dimension(220, 340));
+		locations.put("Teller5", new Dimension(280, 340));
+		locations.put("Teller6", new Dimension(340, 340));
+		locations.put("Teller7", new Dimension(400, 340));
+		locations.put("Teller8", new Dimension(460, 340));
+		locations.put("Teller9", new Dimension(520, 340));
+		locations.put("Teller10", new Dimension(580, 340));
+		locations.put("Outside", new Dimension(280, -20));
 	}
 
 	public void updatePosition() {

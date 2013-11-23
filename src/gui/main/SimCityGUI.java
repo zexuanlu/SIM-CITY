@@ -19,7 +19,6 @@ public class SimCityGUI extends JFrame {
 	BuildingAnimationPanel bldngAnimPanel = new BuildingAnimationPanel();
 	CityControlPanel cityCtrlPanel = new CityControlPanel();
 	
-	
 	public SimCityGUI() {
 		// SETUP
 		this.setTitle(title);
