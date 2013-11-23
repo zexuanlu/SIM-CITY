@@ -13,6 +13,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	String name;
 	public EventLog log;
 	public List<Task> tasks;
+	public String destination;
 	public int accountNumber;
 	public double balance;
 	public BankHost bh;
@@ -42,8 +43,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
-	public void msgHereIsTeller(BankTeller bt){
+	public void msgHereIsTeller(BankTeller bt, String location){
 		this.bt = bt;
+		destination = location;
 		s = state.haveTeller;
 		stateChanged();
 	}
@@ -84,7 +86,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			return true;
 		}
 		if(s == state.haveTeller){
-			goToLocation("Teller");
+			goToLocation(destination);
 			s = state.atTeller;
 			return true;
 		}

@@ -27,7 +27,7 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 		log.add(new LoggedEvent("Received msgGoToBank from person with type " + type + " and amount "+ money));
 	}
 	
-	public void msgHereIsTeller(BankTeller bt){
+	public void msgHereIsTeller(BankTeller bt, String location){
 		log.add(new LoggedEvent("Received msgHereIsTeller from BankHost"));
 	}
 	
