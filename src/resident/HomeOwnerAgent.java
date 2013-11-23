@@ -124,7 +124,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	private double debt;
 	private double maintenanceCost; // Static for now.
 	private int myTime; // Keeps track of how much time the resident has
-	private static int minCookingTime = 70; // Time it takes to cook the fastest food
+	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
 	private MaintenancePerson housekeeper;
 	private Person person;
 	
@@ -356,7 +356,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	private void decideMarketOrGoOut(MyPriority p) {
 		toDoList.remove(p);
 
-		if (myTime > minCookingTime) { 
+		if (myMoney < minRestaurantMoney) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			
@@ -370,9 +370,9 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket));
 			
-			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time."));
+			log.add(new LoggedEvent("I have enough money to go to the restaurant, and go to the market when I have time."));
 			
-			print("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time.");
+			print("I have enough money to go to the restaurant, and go to the market when I have time.");
 //			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
 		}
 	}

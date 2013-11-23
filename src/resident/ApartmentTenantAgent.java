@@ -101,7 +101,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	private static double rentCost = 100; // Static for now.
 	private int apartmentNumber;
 	private double myTime; // Keeps track of how much time the resident has
-	private double minCookingTime; // Time it takes to cook the fastest food
+	private static double minRestaurantMoney = 70; // Minimum amount in the restaurant
 	private double marketTime; // Time it takes to go to the market and come back
 	private ApartmentLandlord landlord;
 	private Person person;
@@ -321,7 +321,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	private void decideMarketOrGoOut(MyPriority p) {
 		toDoList.remove(p);
 
-		if (myTime > minCookingTime) { 
+		if (myMoney < minRestaurantMoney) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			

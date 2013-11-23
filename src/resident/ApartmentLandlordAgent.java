@@ -59,7 +59,6 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 	private String name;
 	private Person person; 
 	private double myMoney;
-	private double debt;
 	private static double rentCost = 100; // Static for now	
 	private int apartmentNumber;
 
@@ -77,6 +76,7 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 			if (t.aptRes == apartmentTenantAgent) {
 				t.state = MyTenant.TenantState.PayingRent;
 				t.amountPaying = amount;
+				// person.msgAddMoney(amount);
 				log.add(new LoggedEvent("Received payment of $" + t.amountPaying + "."));
 				print("Received payment of $" + t.amountPaying + ".");
 				stateChanged();
@@ -107,6 +107,8 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 	 */
 	private void collectPayment(MyTenant t) {
 		t.state = MyTenant.TenantState.Paid;
+		myMoney += t.amountPaying;
+		// person.msgAddMoney(t.amountPaying);
 		t.amountOwed = rentCost - t.amountPaying;
 		t.aptRes.msgReceivedRent(t.amountOwed);
 		person.msgFinishedEvent(this);

@@ -502,8 +502,8 @@ public class HomeOwnerTest extends TestCase
 	public void testNoFoodGoToRestaurant() {
 		System.out.println("Testing Eating at Home with Empty Fridge; Decides to go to Restaurant");
 		
-		// Sets the amount of time that the resident has - how is this actually going to work? :( Maybe just use money instead
-		homeOwner.setTime(50);		
+		// Sets the amount of money that the resident has
+		homeOwner.setMoney(70);		
 		
 		// Preconditions: before home owner gets hungry message
 		assertEquals("Home owner has no logged events. It doesn't.", 0, homeOwner.log.size());
@@ -541,7 +541,7 @@ public class HomeOwnerTest extends TestCase
 		
 		// Checks that the home owner has 1 more logged event - to go to the market
 		assertEquals("Home owner has 3 logged events now.", 3, homeOwner.log.size());
-		assertTrue(homeOwner.log.containsString("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time."));
+		assertTrue(homeOwner.log.containsString("I have enough money to go to the restaurant, and go to the market when I have time."));
 		
 		// Ensures home owner has going to Restaurant and Market in to do list
 		assertEquals("Home owner has 2 tasks.", 2, homeOwner.toDoList.size());
@@ -811,14 +811,11 @@ public class HomeOwnerTest extends TestCase
 		// Sets housekeeper's maintenance cost to 50
 		housekeeper.setMaintenanceCost(50);
 		
-		// Sets the amount of time that the resident has - how is this actually going to work? :( Maybe just use money instead
-		homeOwner.setTime(80);		
-		
 		// Sets home owner's housekeeper to the mock housekeeper
 		homeOwner.setMaintenance(housekeeper);
 		
-		// Sets the home owner's money to $300
-		homeOwner.setMoney(300);
+		// Sets the home owner's money to $15
+		homeOwner.setMoney(50);
 		
 		// Preconditions: before home owner gets hungry message
 		assertEquals("Home owner has no logged events. It doesn't.", 0, homeOwner.log.size());
@@ -1019,8 +1016,8 @@ public class HomeOwnerTest extends TestCase
 		// Checks that home owner now has 1 task to complete
 		assertEquals("Home owner should have 1 task.", 1, homeOwner.toDoList.size());
 		
-		// Checks that the home owner's new amount of money is 250
-		assertEquals("Home owner should now have $250.", df.format(250), df.format(homeOwner.getMoney()));
+		// Checks that the home owner's new amount of money is 20
+		assertEquals("Home owner should now have $0.", df.format(0), df.format(homeOwner.getMoney()));
 		
 		// Since home owner's money was more than the maintenance cost, the home owner should have no debt
 		homeOwner.msgReceivedPayment(0);
