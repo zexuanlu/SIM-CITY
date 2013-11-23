@@ -29,6 +29,7 @@ public class EventComparatorTest extends TestCase{
 	BankHost h1;
 	MockHostRole h2;
 	MockHostRole h3;
+	
 	Position p1 = new Position(10, 10);
 	Position p2 = new Position(20, 20);
 	Position p3 = new Position(30, 30);

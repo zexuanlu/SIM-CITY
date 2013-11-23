@@ -122,11 +122,8 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r){ 
-		for(Role role : roles){
-			if(role == r){
-				role.setActive(true);
-			}
-		}
+		deactivateRole(r);
+		activeRole = false;
 		stateChanged();
 	}
 
@@ -144,15 +141,10 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			Event nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			/*System.out.println("current time is: "+currentTime+" and the next event starts at "+nextEvent.getStart()+" the total time is "+
-					Math.abs(currentTime - nextEvent.getStart()));*/
 			if(nextEvent != null) {
 				nextEvent.inProgress = true; //using in progress to keep these events in the pq like active not active 
 				goToAndDoEvent(nextEvent); 
 				return true;
-				/*else{ // we should think about what to do in the mean time?
-
-				}*/
 			}
 		}
 		return false;
@@ -161,143 +153,154 @@ public class PersonAgent extends Agent implements Person{
 	/* Actions */
 
 	private void goToAndDoEvent(Event e){
-
-		DoGoTo(e.location); // Handles picking mode of transport and animating there
-
-		try {
-			going.acquire();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		if(e.location.type == LocationType.Restaurant){
-			Restaurant rest = (Restaurant)e.location;
-			if(e.type == EventType.CustomerEvent){
-				activeRole = true;
-				CustomerRole cRole = new CustomerRole(this.name, this);
-				if(!roles.contains(cRole)){
-					roles.add(cRole);
-				}
-				rest.getHost().msgIWantFood(this, cRole);
-				cRole.setActive(true);
-			}
-			else if(e.type == EventType.HostEvent){
-
-				activeRole = true;
-				HostRole hostRole = new HostRole(this.name, this); 
-
-				if(!roles.contains(hostRole)){                                                       
-
-					roles.add(hostRole);
-				}
-				rest.getHost().msgClockIn(this, hostRole);
-				hostRole.setActive(true);
-			}
-			else if(e.type == EventType.WaiterEvent){
-
-			}
-			else if(e.type == EventType.CookEvent){
-
-			}
-			else if(e.type == EventType.CashierEvent){
-
-			}
-		}
-		else if(e.location.type == LocationType.Bank){
-			Bank bank = (Bank)e.location;
-			if(e.type == EventType.CustomerEvent){
-				activeRole = true;
-				BankCustomerRole bcr = new BankCustomerRole(this.name, this);
-
-				if(!roles.contains(bcr)){                                                       
-					roles.add(bcr);
-				}
-				bank.getHost().msgGoToBank(e.getDirective(), wallet.getInBank());
-				bcr.setActive(true);
-			}
-			else if(e.type == EventType.TellerEvent){
-				activeRole = true;
-				BankTellerRole btr = new BankTellerRole(this.name, this);
-
-				if(!roles.contains(btr)){                                                       
-					roles.add(btr);
-				}
-				bank.getHost().msgBackToWork(this, bhr);
-				btr.setActive(true);			
-			}
-			else if(e.type == EventType.GuardEvent){
-				activeRole = true;
-				BankGuardRole bgr = new BankGuardRole(this.name, this);
-
-				if(!roles.contains(bgr)){                                                       
-					roles.add(bgr);
-				}
-				bank.getHost().msgBackToWork(this, bhr);
-				bgr.setActive(true);
-			}
-			else if(e.type == EventType.HostEvent){
-				activeRole = true;
-				BankHostRole bhr = new BankHostRole(this.name, this);
-
-				if(!roles.contains(bhr)){                                                       
-					roles.add(bhr);
-				}
-				bank.getHost().msgBackToWork(this, bhr);
-				bhr.setActive(true);
-			}
-		}
-		else if(e.location.type == LocationType.Market){
-			Market market = (Market)e.location;
-			if(e.type == EventType.CustomerEvent){
-				activeRole = true;
-				MarketCustomerRole mcr = new MarketCustomerRole(this.name, this);
-				
-				if(!roles.contains(mcr)){
-					roles.add(mcr);
-				}
-				market.getHost().msgCollectOrder(shoppingList);
-				mcr.setActive(true);
-			}
-			else if(e.type == EventType.EmployeeEvent){
-				activeRole = true;
-				MarketEmployeeRole mer = new MarketEmployeeRole(this.name, this);
-				
-				if(!roles.contains(mer)){
-					roles.add(mer);
-				}
-				market.getTimeCard().msgBackToWork(this, mer);
-				mer.setActive(true);
-			}
-			else if(e.type == EventType.CashierEvent){
-				activeRole = true;
-				MarketCashierRole mcash = new MarketCashierRole(mcr);
-				
-				if(!roles.contains(mcash)){
-					roles.add(mcash);
-				}
-				market.getTimeCard().msgBackToWork(this,mcash);
-				mcash.setActive(true);
-			}
-		}
-		else if(e.location.type == LocationType.Home){
-			Home home = (Home)e.location;
+		if(isInWalkingDistance(e.location)){
 			activeRole = true;
-			HomeRole hr = new HomeRole(this.name, this);
-			if(!roles.contains(hr)){
-				roles.add(hr);
+			PassengerRole pRole = new PassengerRole(this.name, this);
+			if(!roles.contains(pRole)){
+				roles.add(pRole);
 			}
-			hr.setActive(hr);
-			//set time and hunger 
-			hr.msgUpdateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
+			pRole.setActive(true);
+			pRole.msgDestination(e.location.name);
+			pRole.msgGo();
+		}
+		else{
+			DoGoTo(e.location);// Handles picking mode of transport and animating there
+
+			try {
+				going.acquire();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			if(e.location.type == LocationType.Restaurant){
+				Restaurant rest = (Restaurant)e.location;
+				if(e.type == EventType.CustomerEvent){
+					activeRole = true;
+					CustomerRole cRole = new CustomerRole(this.name, this);
+					if(!roles.contains(cRole)){
+						roles.add(cRole);
+					}
+					rest.getHost().msgIWantFood(this, cRole);
+					cRole.setActive(true);
+				}
+				else if(e.type == EventType.HostEvent){
+
+					activeRole = true;
+					HostRole hostRole = new HostRole(this.name, this); 
+
+					if(!roles.contains(hostRole)){                                                       
+
+						roles.add(hostRole);
+					}
+					rest.getHost().msgClockIn(this, hostRole);
+					hostRole.setActive(true);
+				}
+				else if(e.type == EventType.WaiterEvent){
+
+				}
+				else if(e.type == EventType.CookEvent){
+
+				}
+				else if(e.type == EventType.CashierEvent){
+
+				}
+			}
+			else if(e.location.type == LocationType.Bank){
+				Bank bank = (Bank)e.location;
+				if(e.type == EventType.CustomerEvent){
+					activeRole = true;
+					BankCustomerRole bcr = new BankCustomerRole(this.name, this);
+
+					if(!roles.contains(bcr)){                                                       
+						roles.add(bcr);
+					}
+					bank.getHost().msgGoToBank(e.getDirective(), wallet.getInBank());
+					bcr.setActive(true);
+				}
+				else if(e.type == EventType.TellerEvent){
+					activeRole = true;
+					BankTellerRole btr = new BankTellerRole(this.name, this);
+
+					if(!roles.contains(btr)){                                                       
+						roles.add(btr);
+					}
+					bank.getHost().msgBackToWork(this, bhr);
+					btr.setActive(true);			
+				}
+				else if(e.type == EventType.GuardEvent){
+					activeRole = true;
+					BankGuardRole bgr = new BankGuardRole(this.name, this);
+
+					if(!roles.contains(bgr)){                                                       
+						roles.add(bgr);
+					}
+					bank.getHost().msgBackToWork(this, bhr);
+					bgr.setActive(true);
+				}
+				else if(e.type == EventType.HostEvent){
+					activeRole = true;
+					BankHostRole bhr = new BankHostRole(this.name, this);
+
+					if(!roles.contains(bhr)){                                                       
+						roles.add(bhr);
+					}
+					bank.getHost().msgBackToWork(this, bhr);
+					bhr.setActive(true);
+				}
+			}
+			else if(e.location.type == LocationType.Market){
+				Market market = (Market)e.location;
+				if(e.type == EventType.CustomerEvent){
+					activeRole = true;
+					MarketCustomerRole mcr = new MarketCustomerRole(this.name, this);
+
+					if(!roles.contains(mcr)){
+						roles.add(mcr);
+					}
+					market.getHost().msgCollectOrder(shoppingList);
+					mcr.setActive(true);
+				}
+				else if(e.type == EventType.EmployeeEvent){
+					activeRole = true;
+					MarketEmployeeRole mer = new MarketEmployeeRole(this.name, this);
+
+					if(!roles.contains(mer)){
+						roles.add(mer);
+					}
+					market.getTimeCard().msgBackToWork(this, mer);
+					mer.setActive(true);
+				}
+				else if(e.type == EventType.CashierEvent){
+					activeRole = true;
+					MarketCashierRole mcash = new MarketCashierRole(mcr);
+
+					if(!roles.contains(mcash)){
+						roles.add(mcash);
+					}
+					market.getTimeCard().msgBackToWork(this,mcash);
+					mcash.setActive(true);
+				}
+			}
+			else if(e.location.type == LocationType.Home){
+				Home home = (Home)e.location;
+				activeRole = true;
+				HomeRole hr = new HomeRole(this.name, this);
+				if(!roles.contains(hr)){
+					roles.add(hr);
+				}
+				hr.setActive(hr);
+				//set time and hunger 
+				hr.msgUpdateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
+			}
 		}
 		//we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
-		else {
+		/*else {
 			checkVitals();
 			Event eventToExec = toDo.peek();
 			//if(event)
 			//createAndAddRole(eventToExec); // a stub for the procedure shown above of checking what type of event it is and creating a role for it
-		}
+		}*/
 
 	}
 	private void checkVitals() {
@@ -336,6 +339,12 @@ public class PersonAgent extends Agent implements Person{
 			return cityMap.findNearestBusStop(currentLocation);
 		}
 		return currentLocation; //hack life
+	}
+	private boolean isInWalkingDistance(Location loc){
+		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) > 10){
+			return true;
+		}
+		return false;
 	}
 
 	/* 
