@@ -26,4 +26,8 @@ public interface BankTeller {
 	public void msgLoanGranted(double money, double debt, BankCustomer bc);
 	
 	public void msgDoneWithWork(double pay);
+	
+	public void msgAtDestination();
+	
+	public void msgBackToWork(BankHost bh);
 }
