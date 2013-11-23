@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import person.Event;
+import person.Location;
+import person.Position;
+import person.Event.EventType;
+import person.interfaces.Person;
 import resident.interfaces.HomeOwner;
 import resident.interfaces.MaintenancePerson;
 import resident.test.mock.EventLog;
@@ -25,10 +30,11 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	 *
 	 */
 	// Constructor
-	public HomeOwnerAgent(String n, int hn) {
+	public HomeOwnerAgent(String n, int hn, Person p) {
 		super();
 		name = n;
 		houseNumber = hn;
+		person = p;
 	}
 	
 	// Returns the name of the home owner
@@ -120,6 +126,7 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	private int myTime; // Keeps track of how much time the resident has
 	private static int minCookingTime = 70; // Time it takes to cook the fastest food
 	private MaintenancePerson housekeeper;
+	private Person person;
 	
 	// Hack to establish connection between maintenance person and home owner
 	public void setMaintenance(MaintenancePerson m) {
@@ -372,12 +379,20 @@ public class HomeOwnerAgent extends Role implements HomeOwner {
 	
 	private void goToRestaurant(MyPriority p) {
 		toDoList.remove(p);
+		
+		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		
 		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
+		person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
 	}
 	
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
+		
+		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
+		
 		// GUI goes to market, lets person agent know that no longer going to be a resident role
+		person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
 	}
 
 	private void restockFridge(MyPriority p) {

@@ -8,6 +8,7 @@ import resident.HomeOwnerAgent;
 import resident.HomeOwnerAgent.MyFood;
 import resident.HomeOwnerAgent.MyPriority;
 import resident.test.mock.MockMaintenancePerson;
+import resident.test.mock.MockPerson;
 import junit.framework.*;
 
 /**
@@ -22,15 +23,17 @@ public class HomeOwnerTest extends TestCase
 	// These are instantiated for each test separately via the setUp() method.
 	HomeOwnerAgent homeOwner;
 	MockMaintenancePerson housekeeper;
+	MockPerson person;
 	
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
 	 * for your agent and mocks, etc.
 	 */
-	public void setUp() throws Exception{
+	public void setUp() throws Exception {
 		super.setUp();		
 		
-		homeOwner = new HomeOwnerAgent("HomeOwner", 1);		
+		person = new MockPerson("Mock Person");
+		homeOwner = new HomeOwnerAgent("HomeOwner", 1, person);		
 		housekeeper = new MockMaintenancePerson("Mock Maintenance");	
 	}
 	
@@ -294,6 +297,10 @@ public class HomeOwnerTest extends TestCase
 		
 		// Invokes scheduler and makes sure that it returns true
 		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Check that mock person has received message
+		assertEquals("Mock person has one entry.", 1, person.log.size());
+		assertTrue(person.log.getLastLoggedEvent().toString().contains("An event has been added to the personagent's queue"));
 				
 		// Initializes list of groceries
 		List<MyFood> groceries = new ArrayList<MyFood>();
@@ -543,6 +550,10 @@ public class HomeOwnerTest extends TestCase
 		
 		// Invokes scheduler and makes sure that it returns true
 		assertTrue(homeOwner.pickAndExecuteAnAction());
+		
+		// Check that mock person has received message
+		assertEquals("Mock person has one entry.", 1, person.log.size());
+		assertTrue(person.log.getLastLoggedEvent().toString().contains("An event has been added to the personagent's queue"));
 		
 		// STEP 2: Message from the person agent when it's done going to the restaurant
 		homeOwner.msgDoneEatingOut();

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import person.interfaces.Person;
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
 import resident.test.mock.EventLog;
@@ -23,10 +24,11 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 	public EventLog log = new EventLog();
 	
 	// Constructor
-	public ApartmentLandlordAgent(String n, int an) {
+	public ApartmentLandlordAgent(String n, int an, Person p) {
 		super();
 		name = n;
 		apartmentNumber = an;
+		person = p;
 	}
 	
 	public String getName() {
@@ -55,6 +57,7 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 
 	public List<MyTenant> tenants = Collections.synchronizedList(new ArrayList<MyTenant>());
 	private String name;
+	private Person person; 
 	private double myMoney;
 	private double debt;
 	private static double rentCost = 100; // Static for now	
@@ -106,5 +109,6 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 		t.state = MyTenant.TenantState.Paid;
 		t.amountOwed = rentCost - t.amountPaying;
 		t.aptRes.msgReceivedRent(t.amountOwed);
+		person.msgFinishedEvent(this);
 	}
 }

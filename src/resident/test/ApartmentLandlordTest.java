@@ -3,12 +3,14 @@ package resident.test;
 import resident.ApartmentLandlordAgent;
 import resident.ApartmentLandlordAgent.MyTenant;
 import resident.test.mock.MockApartmentTenant;
+import resident.test.mock.MockPerson;
 import junit.framework.TestCase;
 
 public class ApartmentLandlordTest extends TestCase {
 	// These are instantiated for each test separately via the setUp() method.
 	ApartmentLandlordAgent landlord;
 	MockApartmentTenant tenant;
+	MockPerson person;
 	
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -17,7 +19,8 @@ public class ApartmentLandlordTest extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();		
 		
-		landlord = new ApartmentLandlordAgent("Landlord", 1);		
+		person = new MockPerson("Mock Person");
+		landlord = new ApartmentLandlordAgent("Landlord", 1, person);		
 		tenant = new MockApartmentTenant("Mock Apartment Tenant", 2);	
 	}
 	
@@ -67,6 +70,10 @@ public class ApartmentLandlordTest extends TestCase {
 		// Checks that tenant received message from landlord
 		assertEquals("Tenant has one logged entry.", 1, tenant.log.size());
 		assertTrue(tenant.log.getLastLoggedEvent().toString().contains("The landlord received my rent. I owe $0"));
+		
+		// Checks that the person agent has received finish role message
+		assertEquals("Person agent has one logged entry.", 1, person.log.size());
+		assertTrue(person.log.getLastLoggedEvent().toString().contains("You've finished your role and have returned to your PersonAgent"));
 		
 		// Invokes scheduler and makes sure that it returns true
 		assertFalse(landlord.pickAndExecuteAnAction());	
@@ -118,6 +125,10 @@ public class ApartmentLandlordTest extends TestCase {
 		// Checks that tenant received message from landlord
 		assertEquals("Tenant has one logged entry.", 1, tenant.log.size());
 		assertTrue(tenant.log.getLastLoggedEvent().toString().contains("The landlord received my rent. I owe $90"));
+		
+		// Checks that the person agent has received finish role message
+		assertEquals("Person agent has one logged entry.", 1, person.log.size());
+		assertTrue(person.log.getLastLoggedEvent().toString().contains("You've finished your role and have returned to your PersonAgent"));
 		
 		// Invokes scheduler and makes sure that it returns true
 		assertFalse(landlord.pickAndExecuteAnAction());	

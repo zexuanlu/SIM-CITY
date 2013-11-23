@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import person.Event;
+import person.Location;
+import person.Event.EventType;
+import person.Position;
+import person.interfaces.Person;
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
 import resident.test.mock.EventLog;
@@ -23,10 +28,11 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	public EventLog log = new EventLog();
 	
 	// Constructor
-	public ApartmentTenantAgent(String n, int an) {
+	public ApartmentTenantAgent(String n, int an, Person p) {
 		super();
 		name = n;
 		apartmentNumber = an;
+		person = p;
 	}
 	
 	public String getName() {
@@ -76,8 +82,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	}
 
 	public List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
-	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());;
-	private Timer globalTimer; // Reference to the global timer
+	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());
 	private Timer cookingTimer; // Times the food cooking
 	private Timer eatingTimer;
 	private Timer washingDishesTimer;
@@ -99,6 +104,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	private double minCookingTime; // Time it takes to cook the fastest food
 	private double marketTime; // Time it takes to go to the market and come back
 	private ApartmentLandlord landlord;
+	private Person person;
 	
 	public void setLandlord(ApartmentLandlord l) {
 		landlord = l;
@@ -201,7 +207,10 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-
+//		if (person.toDo.peek()) {
+//			activatePerson();
+//			return true;
+//		}
 		if (!toDoList.isEmpty()) {
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.PayRent) {
@@ -264,6 +273,12 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	/**
 	 * Actions for Apartment Tenant
 	 */
+//	private void activatePerson() {
+//		person.msgFinishedEvent(this);
+//		log.add(new LoggedEvent("I have nothing else to do!"));
+//		print("I have nothing else to do!");
+//	}
+	
 	private void payLandlord(MyPriority p) {
 		toDoList.remove(p);
 		
@@ -313,8 +328,6 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough time to go and come home."));
 			
 			print("I'm going to go to the market. I have enough time to go and come home.");
-			
-//			DoGoToMarket(); // GUI will go to market
 		}
 		else { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
@@ -323,29 +336,26 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time."));
 			
 			print("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time.");
-//			DoGoToMarketThenRestaurant(); // GUI will go to market then restaurant
 		}
 	}
 	
 	private void goToRestaurant(MyPriority p) {
 		toDoList.remove(p);
+		
+		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		
 		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
+		person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
 	}
 	
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
+		
+		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
+		
 		// GUI goes to market, lets person agent know that no longer going to be a resident role
+		person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
 	}
-
-	/*private void restockFridgeThenCook(MyPriority p) {
-		toDoList.remove(p);
-
-//		DoGoToFridge(); // GUI will go to the fridge 
-
-		// Semaphore to determine if GUI arrived at fridge
-
-		toDoList.add(new MyPriority(MyPriority.Task.Cooking));
-	}*/
 
 	private void restockFridge(MyPriority p) {
 		toDoList.remove(p);

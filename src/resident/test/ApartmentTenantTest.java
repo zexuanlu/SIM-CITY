@@ -3,10 +3,12 @@ package resident.test;
 import resident.ApartmentTenantAgent;
 import resident.ApartmentTenantAgent.MyPriority;
 import resident.test.mock.MockApartmentLandlord;
+import resident.test.mock.MockPerson;
 import junit.framework.TestCase;
 
 public class ApartmentTenantTest extends TestCase {
 	// These are instantiated for each test separately via the setUp() method.
+	MockPerson person;
 	ApartmentTenantAgent tenant;
 	MockApartmentLandlord landlord;
 	
@@ -17,7 +19,8 @@ public class ApartmentTenantTest extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();		
 		
-		tenant = new ApartmentTenantAgent("Tenant", 1);		
+		person = new MockPerson("Mock Person");
+		tenant = new ApartmentTenantAgent("Tenant", 1, person);		
 		landlord = new MockApartmentLandlord("Mock Apartment Landlord");	
 	}
 	
@@ -72,8 +75,8 @@ public class ApartmentTenantTest extends TestCase {
 		// Tenant still has no tasks to do
 		assertEquals("Tenant has no tasks.", 0, tenant.toDoList.size());
 		
-		// Makes sure that the scheduler returns false, since the tenant has nothing to do
-		assertFalse(tenant.pickAndExecuteAnAction());		
+		// Scheduler should return false
+		assertFalse(tenant.pickAndExecuteAnAction());
 	}
 	/**
 	 * Tests the apartment tenant not having enough money to pay rent
@@ -117,11 +120,11 @@ public class ApartmentTenantTest extends TestCase {
 		assertTrue(landlord.log.getLastLoggedEvent().toString().contains("Received rent of $10.0 from Tenant"));
 		
 		// Message from the landlord telling the tenant that rent was received, debt is 0 so landlord passes 0 to message
-		tenant.msgReceivedRent(190);
+		tenant.msgReceivedRent(10);
 		
 		// Tenant should have 1 more logged entry
 		assertEquals("Tenant has 3 logged entries now.", 3, tenant.log.size());
-		assertTrue(tenant.log.getLastLoggedEvent().toString().contains("I now have debt of $190"));
+		assertTrue(tenant.log.getLastLoggedEvent().toString().contains("I now have debt of $10"));
 		
 		// Tenant still has no tasks to do
 		assertEquals("Tenant has no tasks.", 0, tenant.toDoList.size());
