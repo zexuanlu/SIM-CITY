@@ -1,6 +1,6 @@
 package resident.test.mock;
 
-import resident.interfaces.ApartmentLandlord;
+import resident.interfaces.ApartmentLandlord; 
 import resident.interfaces.ApartmentTenant;
 
 public class MockApartmentLandlord extends Mock implements ApartmentLandlord {
@@ -10,8 +10,8 @@ public class MockApartmentLandlord extends Mock implements ApartmentLandlord {
 		super(name);
 	}
 	
-	public void msgHereIsTheRent(ApartmentTenant apartmentTenantAgent, double myMoney) {
-		log.add(new LoggedEvent("Received rent of $" + myMoney +" from " + apartmentTenantAgent.getName()));
+	public void msgHereIsTheRent(ApartmentTenant apartmentTenantAgent, double money) {
+		log.add(new LoggedEvent("Received rent of $" + money +" from " + apartmentTenantAgent.getName()));
 	}
 
 }

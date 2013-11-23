@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
@@ -36,9 +37,9 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 		return apartmentNumber;
 	}
 
-	private static class MyPriority {
+	public static class MyPriority {
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, GoToMarket, RestockFridge, PayRent, GoToRestaurant, NoFood}
-		private Task task;
+		public Task task;
 		private double timeDuration;
 		private int levelOfImportance;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>();
@@ -74,7 +75,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 		}
 	}
 
-	private List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
+	public List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
 	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());;
 	private Timer globalTimer; // Reference to the global timer
 	private Timer cookingTimer; // Times the food cooking
@@ -82,14 +83,26 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	private Timer washingDishesTimer;
 	private String name;
 	private double myMoney;
+	
+	public void setMoney(double m) {
+		myMoney = m;
+	}
+	
+	public double getMoney() {
+		return myMoney;
+	}
+	
 	private double debt;
-	private double rentCost; // Static for now.
-	private double maintenanceAmount; 
+	private static double rentCost = 100; // Static for now.
 	private int apartmentNumber;
 	private double myTime; // Keeps track of how much time the resident has
 	private double minCookingTime; // Time it takes to cook the fastest food
 	private double marketTime; // Time it takes to go to the market and come back
-	private ApartmentLandlordAgent landlord;
+	private ApartmentLandlord landlord;
+	
+	public void setLandlord(ApartmentLandlord l) {
+		landlord = l;
+	}
 	
 	/**
 	 * Messages for Apartment Tenant
@@ -166,7 +179,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	
 	public void msgPayRent() {
 		log.add(new LoggedEvent("It's been a day. Time to pay rent."));
-		print("It's been a day. TIme to pay rent.");
+		print("It's been a day. Time to pay rent.");
 		
 		toDoList.add(new MyPriority(MyPriority.Task.PayRent));
 		stateChanged();
@@ -186,7 +199,7 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 	 * Scheduler for MaintenancePerson
 	 * 
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 
 		if (!toDoList.isEmpty()) {
@@ -256,11 +269,15 @@ public class ApartmentTenantAgent extends Role implements ApartmentTenant {
 		
 		// If the amount of money the maintenance person has is more than rent cost, pay rent cost.
 		if (myMoney >= rentCost) {
-			landlord.msgHereIsTheRent(this, rentCost);
+			log.add(new LoggedEvent("Paying the landlord $" + rentCost + "."));
+			print("Paying the landlord $" + (debt + rentCost) + ".");
+			landlord.msgHereIsTheRent(this, debt + rentCost);
 			myMoney -= rentCost;
 		}
 		// Otherwise, pay as much as you can 
 		else {
+			log.add(new LoggedEvent("Paying the landlord $" + myMoney + ", because I don't have enough."));
+			print("Paying the landlord $" + myMoney + ", because I don't have enough.");
 			landlord.msgHereIsTheRent(this, myMoney);
 			myMoney = 0;
 		}

@@ -10,7 +10,6 @@ import java.util.Timer;
 
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
-import resident.interfaces.MaintenancePerson;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
 import agent.Role;
@@ -76,13 +75,13 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 		}
 	}
 	
-	private static class MyTenant {
-		private ApartmentTenant aptRes;
-		private int apartmentNumber;
+	public static class MyTenant {
+		public ApartmentTenant aptRes;
+		public int apartmentNumber;
 		public enum TenantState {None, PayingRent, Paid};
-		private TenantState state;
-		private double amountOwed;
-		private double amountPaying;
+		public TenantState state;
+		public double amountOwed;
+		public double amountPaying;
 
 		MyTenant(ApartmentTenant at, int apt) {
 			aptRes = at;
@@ -92,7 +91,7 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 		}
 	}
 
-	private List<MyTenant> tenants = Collections.synchronizedList(new ArrayList<MyTenant>());
+	public List<MyTenant> tenants = Collections.synchronizedList(new ArrayList<MyTenant>());
 	private List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
 	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());;
 	private Timer globalTimer; // Reference to the global timer
@@ -102,7 +101,7 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 	private String name;
 	private double myMoney;
 	private double debt;
-	private double rentCost; // Static for now.
+	private static double rentCost = 100; // Static for now	
 	private double maintenanceAmount; 
 	private int apartmentNumber;
 	private double myTime; // Keeps track of how much time the resident has
@@ -204,10 +203,6 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 		stateChanged();
 	}
 
-	public void msgHereIsTheRent(MaintenancePerson maintenancePersonAgent, double rentCost) {
-		
-	}
-
 	public void msgHereIsTheRent(ApartmentTenant apartmentTenantAgent, double amount) {
 		for (MyTenant t : tenants) {
 			if (t.aptRes == apartmentTenantAgent) {
@@ -224,7 +219,7 @@ public class ApartmentLandlordAgent extends Role implements ApartmentLandlord {
 	 * Scheduler for MaintenancePerson
 	 * 
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		if (!tenants.isEmpty()) {
 			for (MyTenant t : tenants) {
