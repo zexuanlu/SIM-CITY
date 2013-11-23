@@ -10,14 +10,15 @@ import java.util.ArrayList;
 
 public class AnimationPanel extends JPanel implements ActionListener {
 
-    private final int WINDOWX = 700;
-    private final int WINDOWY = 360;
+    private final int WINDOWX = 400;
+    private final int WINDOWY = 400;
     private Image bufferImage;
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
     public AnimationPanel() {
+    	
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
@@ -32,6 +33,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
 	}
 
     public void paintComponent(Graphics g) {
+    	
         Graphics2D g2 = (Graphics2D)g;
 
         //Clear the screen by painting a rectangle the size of the frame

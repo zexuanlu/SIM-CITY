@@ -29,7 +29,7 @@ import person.interfaces.Person;
 public class PersonAgent extends Agent implements Person{
 
 	private String name;
-	int hunger; // tracks hunger level
+	public int hunger; // tracks hunger level
 	public boolean activeRole;
 
 	PersonGui gui;
@@ -61,8 +61,12 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 	}
-	public PersonAgent ( ) {
+	public PersonAgent () {
 		super();
+	}
+	public PersonAgent (String name){
+		super();
+		this.name = name;
 	}
 	/* Utilities */
 	public void setName(String name){this.name = name;}
@@ -127,8 +131,8 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			Event nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			System.out.println("current time is: "+currentTime+" and the next event starts at "+nextEvent.getStart()+" the total time is "+
-					Math.abs(currentTime - nextEvent.getStart()));
+			/*System.out.println("current time is: "+currentTime+" and the next event starts at "+nextEvent.getStart()+" the total time is "+
+					Math.abs(currentTime - nextEvent.getStart()));*/
 			if(nextEvent != null) {
 				nextEvent.inProgress = true; //using in progress to keep these events in the pq like active not active 
 				goToAndDoEvent(nextEvent); 
@@ -152,7 +156,7 @@ public class PersonAgent extends Agent implements Person{
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} // wait while we get there //this is all gui related and i will implement/test after agent code is clean
+		}
 
 		if(e.location.type == LocationType.Restaurant){
 			Restaurant rest = (Restaurant)e.location;
@@ -177,6 +181,15 @@ public class PersonAgent extends Agent implements Person{
 				}
 				rest.getHost().msgClockIn(this, hostRole);
 				hostRole.setActive(true);
+			}
+			else if(e.type == EventType.WaiterEvent){
+				
+			}
+			else if(e.type == EventType.CookEvent){
+				
+			}
+			else if(e.type == EventType.CashierEvent){
+				
 			}
 		}
 		else if(e.location.type == LocationType.Bank){
@@ -207,7 +220,8 @@ public class PersonAgent extends Agent implements Person{
 		//we're in our free time so we pick what we need to do based on our non mandatory events (pQ)
 		else {
 			checkVitals();
-			Event eventToExec = toDo.remove();          
+			Event eventToExec = toDo.peek();
+			//if(event)
 			//createAndAddRole(eventToExec); // a stub for the procedure shown above of checking what type of event it is and creating a role for it
 		}
 
@@ -419,5 +433,11 @@ public class PersonAgent extends Agent implements Person{
 		BankHost getBankHost(){
 			return bh;
 		}
+	}
+	public class MyTimeCard {
+		//TimeCard tc;
+		//Location l;
+		//MyTimeCard(TimeCard t, Location l){}
+		//
 	}
 }

@@ -11,6 +11,9 @@ public class PersonGui implements Gui{
 
     private int xPos = -20, yPos = -20;//default player position
     private int xDestination = -20, yDestination = -20;//default start position
+    public PersonGui(PersonAgent agent) {
+        this.agent = agent;
+    }
 	@Override
 	public void updatePosition() {
         if (xPos < xDestination){ xPos++; }
