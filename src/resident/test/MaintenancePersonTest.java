@@ -1,6 +1,6 @@
 package resident.test;
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat; 
 
 import resident.MaintenancePersonAgent;
 import resident.MaintenancePersonAgent.MyCustomer;
