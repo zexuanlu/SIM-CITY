@@ -4,9 +4,9 @@ import java.util.List;
 
 import market.CookAgent;
 import market.interfaces.Cook;
-import market.interfaces.Truck;
+import market.interfaces.MarketTruck;
 
-public class MockTruck extends Mock implements Truck{
+public class MockTruck extends Mock implements MarketTruck{
 
 	public EventLog log = new EventLog();
 	

@@ -3,13 +3,13 @@ import java.util.*;
 
 import market.Food;
 
-public interface Customer {
+public interface MarketCustomer {
 
 	public abstract void msgHello();
 	
 	public abstract void msgPleasePay(int b);
 
-	public abstract void msgHereisYourChange(double change);
+	public abstract void msgHereisYourChange(double change, int num);
 
 	public abstract void msgYourFoodReady();
 

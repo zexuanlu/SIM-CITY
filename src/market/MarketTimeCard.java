@@ -13,7 +13,7 @@ public class MarketTimeCard extends Agent implements TimeCard{
 	
 
 	public void msgBackToWork(Role role) {
-		if(role instanceof Employee){
+		if(role instanceof MarketEmployee){
 			for(MyEmployee me : employee){
 				if(me.e == role){
 					roles.add(new MyRole(/*person,*/ role, roleState.replacement));
@@ -25,7 +25,7 @@ public class MarketTimeCard extends Agent implements TimeCard{
 			stateChanged();
 			return;
 		}
-		else if(role instanceof Cashier){
+		else if(role instanceof MarketCashier){
 			if(cashier.c == role){
 				roles.add(new MyRole(/*person,*/ role, roleState.replacement));
 				stateChanged();
@@ -80,17 +80,17 @@ public class MarketTimeCard extends Agent implements TimeCard{
 	}
 	
 	class MyEmployee{
-		Employee e;
+		MarketEmployee e;
 		boolean isWorking;
-		MyEmployee(Employee e){
+		MyEmployee(MarketEmployee e){
 			this.e = e;
 		}
 	}
 
 	class MyCashier{
-		Cashier c;
+		MarketCashier c;
 		boolean isWorking;
-		MyCashier(Cashier c){
+		MyCashier(MarketCashier c){
 			this.c = c;
 		}
 	}

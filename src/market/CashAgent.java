@@ -1,12 +1,12 @@
 package market;
 
-import market.interfaces.Cashier;
+import market.interfaces.MarketCashier;
 import market.test.mock.EventLog;
 import agent.Agent;
 
 public class CashAgent extends Agent{
 	EventLog log = new EventLog();
-	public void msgPleasepaytheBill(Cashier c, double bill){
+	public void msgPleasepaytheBill(MarketCashier c, double bill){
 		
 	}
 	@Override

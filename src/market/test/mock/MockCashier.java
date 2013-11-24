@@ -3,15 +3,15 @@ package market.test.mock;
 import java.util.List;
 
 import market.CashAgent;
-import market.CashierAgent;
+import market.MarketCashierRole;
 import market.CookAgent;
 import market.Food;
-import market.interfaces.Cashier;
+import market.interfaces.MarketCashier;
 import market.interfaces.Cook;
-import market.interfaces.Customer;
-import market.interfaces.Truck;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketTruck;
 
-public class MockCashier extends Mock implements Cashier{
+public class MockCashier extends Mock implements MarketCashier{
 
 	public EventLog log = new EventLog();
 	
@@ -21,25 +21,25 @@ public class MockCashier extends Mock implements Cashier{
 	}
 
 	@Override
-	public void msgHereisOrder(Customer customer, List<Food> food) {
+	public void msgHereisOrder(MarketCustomer customer, List<Food> food) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got Your Order"));
 	}
 
 	@Override
-	public void msgPayment(Customer customer, double m) {
+	public void msgPayment(MarketCustomer customer, double m) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Receive "+m));
 	}
 
 	@Override
-	public void msgHereisProduct(Customer customer, List<Food> order) {
+	public void msgHereisProduct(MarketCustomer customer, List<Food> order) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got it"));
 	}
 
 	@Override
-	public void msgGoToTable(Customer customer) {
+	public void msgGoToTable(MarketCustomer customer) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("You are at the table"));
 	}
@@ -59,7 +59,7 @@ public class MockCashier extends Mock implements Cashier{
 
 
 	@Override
-	public void msgTruckBack(Truck t) {
+	public void msgTruckBack(MarketTruck t) {
 		// TODO Auto-generated method stub
 		
 	}

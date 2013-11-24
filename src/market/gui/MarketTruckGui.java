@@ -3,14 +3,14 @@ package market.gui;
 import java.awt.Graphics2D;
 import market.*;
 
-public class TruckGui implements Gui{
+public class MarketTruckGui implements Gui{
 	
-	private TruckAgent agent;
+	private MarketTruckAgent agent;
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	
 	
-	public void setAgent(TruckAgent agent){
+	public void setAgent(MarketTruckAgent agent){
 		this.agent = agent;
 	}
 

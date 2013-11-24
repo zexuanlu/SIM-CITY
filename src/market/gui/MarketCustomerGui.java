@@ -3,18 +3,18 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import market.CustomerAgent;
+import market.MarketCustomerRole;
 
-public class CustomerGui implements Gui {
+public class MarketCustomerGui implements Gui {
 	
-	private CustomerAgent agent = null;
+	private MarketCustomerRole agent = null;
 	private int xPos = 220, yPos = -20;
 	private int xDestination = 220, yDestination = 300;
 	private int distance = 20;
 	private int xTable =220, yTable = 300;
 	private boolean atTable = true;
 	
-	public void setAgent(CustomerAgent agent){
+	public void setAgent(MarketCustomerRole agent){
 		this.agent = agent;
 	}
 	
@@ -79,6 +79,18 @@ public class CustomerGui implements Gui {
 		}
 		if(number == 6){
 			yDestination = 300;
+			
+		}
+		if(number == 7){
+			yDestination = 340;
+			
+		}
+		if(number == 8){
+			yDestination = 380;
+			
+		}
+		if(number == 9){
+			yDestination = 420;
 			
 		}
 	}

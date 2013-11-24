@@ -4,25 +4,26 @@ import agent.*;
 
 import java.util.*;
 
-import market.interfaces.Cashier;
+import market.interfaces.MarketCashier;
 import market.interfaces.Cook;
-import market.interfaces.Customer;
-import market.interfaces.Employee;
-import market.interfaces.Truck;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
+import market.interfaces.MarketTruck;
 
-public class CashierAgent extends Role implements Cashier{
+public class MarketCashierRole extends Role implements MarketCashier{
 
-	public List<Employee> employee = new ArrayList<Employee>();
-	public List<Truck> truck = new ArrayList<Truck>();
+	public List<MarketEmployee> employee = new ArrayList<MarketEmployee>();
+	public List<MarketTruck> truck = new ArrayList<MarketTruck>();
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
 	public Map<String, Double> price = new HashMap<String, Double>();
 	public Map<String, Integer> inventory = new HashMap<String, Integer>();
 	int employeeCount = 0;
 	int truckCount = 0;
+	int seatCount = 1;
 	double income = 0;
 
-	public CashierAgent(){
+	public MarketCashierRole(){
 		inventory.put("Steak", 2);
 		inventory.put("Car", 2);
 		price.put("Steak", (double) 2);
@@ -31,7 +32,7 @@ public class CashierAgent extends Role implements Cashier{
 
 
 	public class Mycustomer{
-		Customer c;
+		MarketCustomer c;
 		List<Food> order;
 		public List<Food> collectedOrder = new ArrayList<Food>();
 		public state s = state.ordering;
@@ -39,7 +40,7 @@ public class CashierAgent extends Role implements Cashier{
 		public double pay;
 		double change;
 
-		Mycustomer(Customer c, List<Food> order){
+		Mycustomer(MarketCustomer c, List<Food> order){
 			this.c = c;
 			this.order = order;
 		}
@@ -65,7 +66,7 @@ public class CashierAgent extends Role implements Cashier{
 	}
 	public enum state1{ordering, ordered};
 
-	public Mycustomer find(Customer mc){
+	public Mycustomer find(MarketCustomer mc){
 		Mycustomer a = null;
 		for(Mycustomer m: mycustomer){
 			if(mc == m.c){
@@ -76,33 +77,33 @@ public class CashierAgent extends Role implements Cashier{
 		return a;
 	}
 
-	public void addTruck(Truck t){
+	public void addTruck(MarketTruck t){
 		truck.add(t);
 	}
 
-	public void addEmployee(Employee e){
+	public void addEmployee(MarketEmployee e){
 		employee.add(e);
 	}
 
-	public void msgHereisOrder(Customer customer, List<Food> food){
+	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
 	}
 
-	public void msgPayment(Customer customer, double m){
+	public void msgPayment(MarketCustomer customer, double m){
 		Mycustomer mc = find(customer);
 		mc.s = state.paying;
 		mc.pay = m;
 		stateChanged();
 	}
 
-	public void msgHereisProduct(Customer customer, List<Food> order){
+	public void msgHereisProduct(MarketCustomer customer, List<Food> order){
 		Mycustomer mc = find(customer);
 		mc.s = state.collected;
 		stateChanged();
 	}
 
-	public void msgGoToTable(Customer customer){
+	public void msgGoToTable(MarketCustomer customer){
 		Mycustomer mc = find(customer);
 		mc.s = state.taking;
 		stateChanged();
@@ -120,7 +121,7 @@ public class CashierAgent extends Role implements Cashier{
 		stateChanged();
 	}
 
-	public void msgTruckBack(Truck t){
+	public void msgTruckBack(MarketTruck t){
 		truck.add(t);
 		stateChanged();
 	}
@@ -185,7 +186,14 @@ public class CashierAgent extends Role implements Cashier{
 		customer.change = customer.pay - customer.bill;
 		income += customer.bill;
 		//Calculate the change;
-		customer.c.msgHereisYourChange(customer.change);
+		int a = seatCount;
+		if(seatCount < 9){
+			seatCount ++;
+		}
+		else{
+			seatCount = 1;
+		}
+		customer.c.msgHereisYourChange(customer.change, a);
 	}
 
 	void CallCustomer(Mycustomer customer){
@@ -218,7 +226,7 @@ public class CashierAgent extends Role implements Cashier{
 
 	// end of in market scenario
 
-	void TakeOrderFromCook(Myrest rest, Truck t){
+	void TakeOrderFromCook(Myrest rest, MarketTruck t){
 		rest.s1 = state1.ordered;
 		rest.bill = DocalculateThebillFromRest(rest, rest.order);
 		rest.ca.msgPleasepaytheBill(this, rest.bill);
