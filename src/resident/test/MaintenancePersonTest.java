@@ -2,14 +2,14 @@ package resident.test;
 
 import java.text.DecimalFormat; 
 
-import resident.MaintenancePersonAgent;
-import resident.MaintenancePersonAgent.MyCustomer;
+import resident.MaintenancePersonRole;
+import resident.MaintenancePersonRole.MyCustomer;
 import resident.test.mock.MockHomeOwner;
 import junit.framework.TestCase;
 
 public class MaintenancePersonTest extends TestCase {
 	// These are instantiated for each test separately via the setUp() method.
-	MaintenancePersonAgent housekeeper;
+	MaintenancePersonRole housekeeper;
 	MockHomeOwner homeOwner;
 	
 	/**
@@ -19,7 +19,7 @@ public class MaintenancePersonTest extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();		
 		
-		housekeeper = new MaintenancePersonAgent("Maintenance Person");	
+		housekeeper = new MaintenancePersonRole("Maintenance Person");	
 		homeOwner = new MockHomeOwner("Mock HomeOwner", 1);		
 	} 
 	

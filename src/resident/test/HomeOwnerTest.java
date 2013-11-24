@@ -4,9 +4,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import resident.HomeOwnerAgent;
-import resident.HomeOwnerAgent.MyFood;
-import resident.HomeOwnerAgent.MyPriority;
+import resident.HomeOwnerRole;
+import resident.HomeOwnerRole.MyFood;
+import resident.HomeOwnerRole.MyPriority;
 import resident.test.mock.MockMaintenancePerson;
 import resident.test.mock.MockPerson;
 import junit.framework.*;
@@ -21,7 +21,7 @@ import junit.framework.*;
 public class HomeOwnerTest extends TestCase
 {
 	// These are instantiated for each test separately via the setUp() method.
-	HomeOwnerAgent homeOwner;
+	HomeOwnerRole homeOwner;
 	MockMaintenancePerson housekeeper;
 	MockPerson person;
 	
@@ -33,7 +33,7 @@ public class HomeOwnerTest extends TestCase
 		super.setUp();		
 		
 		person = new MockPerson("Mock Person");
-		homeOwner = new HomeOwnerAgent("HomeOwner", 1, person);		
+		homeOwner = new HomeOwnerRole("HomeOwner", 1, person);		
 		housekeeper = new MockMaintenancePerson("Mock Maintenance");	
 	}
 	
@@ -56,7 +56,7 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has no tasks in to do list. It doesn't.", 0, homeOwner.toDoList.size());
 		
 		// STEP 1: Send message to the home owner saying hungry
-		homeOwner.msgGotHungry();
+		homeOwner.updateVitals(3, 5);
 		
 		// Check to make sure that the home owner's log contains one entry now, and is the hungry message
 		assertEquals("Home owner now has one logged event.", 1, homeOwner.log.size());
@@ -262,7 +262,7 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has no tasks in to do list. It doesn't.", 0, homeOwner.toDoList.size());
 		
 		// STEP 1: Send message to the home owner saying hungry
-		homeOwner.msgGotHungry();
+		homeOwner.updateVitals(4, 5);
 		
 		// Check to make sure that the home owner's log contains one entry now, and is the hungry message
 		assertEquals("Home owner now has one logged event.", 1, homeOwner.log.size());
@@ -515,7 +515,7 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has no tasks in to do list. It doesn't.", 0, homeOwner.toDoList.size());
 		
 		// STEP 1: Send message to the home owner saying hungry
-		homeOwner.msgGotHungry();
+		homeOwner.updateVitals(3, 5);
 		
 		// Check to make sure that the home owner's log contains one entry now, and is the hungry message
 		assertEquals("Home owner now has one logged event.", 1, homeOwner.log.size());
@@ -655,7 +655,7 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has 1 task in to do list.", 1, homeOwner.toDoList.size());
 		
 		// STEP 2: Send message to the home owner saying hungry
-		homeOwner.msgGotHungry();
+		homeOwner.updateVitals(3, 5);
 		
 		// Check to make sure that the home owner's log contains one entry now, and is the hungry message
 		assertEquals("Home owner now has 2 logged events.", 2, homeOwner.log.size());
@@ -852,7 +852,7 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has 1 task in to do list.", 1, homeOwner.toDoList.size());
 		
 		// STEP 2: Send message to the home owner saying hungry
-		homeOwner.msgGotHungry();
+		homeOwner.updateVitals(3, 5);
 		
 		// Check to make sure that the home owner's log contains one entry now, and is the hungry message
 		assertEquals("Home owner now has 2 logged events.", 2, homeOwner.log.size());

@@ -1,7 +1,7 @@
 package resident.test;
 
-import resident.ApartmentTenantAgent;
-import resident.ApartmentTenantAgent.MyPriority;
+import resident.ApartmentTenantRole;
+import resident.ApartmentTenantRole.MyPriority;
 import resident.test.mock.MockApartmentLandlord;
 import resident.test.mock.MockPerson;
 import junit.framework.TestCase;
@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 public class ApartmentTenantTest extends TestCase {
 	// These are instantiated for each test separately via the setUp() method.
 	MockPerson person;
-	ApartmentTenantAgent tenant;
+	ApartmentTenantRole tenant;
 	MockApartmentLandlord landlord;
 	
 	/**
@@ -20,7 +20,7 @@ public class ApartmentTenantTest extends TestCase {
 		super.setUp();		
 		
 		person = new MockPerson("Mock Person");
-		tenant = new ApartmentTenantAgent("Tenant", 1, person);		
+		tenant = new ApartmentTenantRole("Tenant", 1, person);		
 		landlord = new MockApartmentLandlord("Mock Apartment Landlord");	
 	}
 	

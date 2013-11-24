@@ -12,4 +12,6 @@ public interface HomeOwner {
 
 	public abstract void msgReadyToMaintain();
 
+	public abstract void updateVitals(int i, int j);
+
 }

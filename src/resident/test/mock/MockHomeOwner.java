@@ -47,4 +47,8 @@ public class MockHomeOwner extends Mock implements HomeOwner{
 	public void msgMaintainHome() {		
 	}
 
+	public void updateVitals(int i, int j) {
+	
+	}
+
 }
