@@ -1,7 +1,9 @@
 package market.test;
 
-import market.CustomerAgent;
-import market.CustomerAgent.state;
+import market.MarketCustomerRole;
+import market.MarketCustomerRole.state;
+import market.Food;
+import market.gui.MarketCustomerGui;
 import market.test.mock.EventLog;
 import market.test.mock.MockCashier;
 import junit.framework.TestCase;
@@ -11,24 +13,33 @@ import java.util.*;
 public class CustomerTest extends TestCase {
 
 	EventLog log = new EventLog();
-	CustomerAgent customer;
+	MarketCustomerRole customer;
 	MockCashier cashier;
+	MarketCustomerGui customerGui;
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		customer = new CustomerAgent();
+		customer = new MarketCustomerRole();
 		cashier = new MockCashier("cashier");
+		customerGui = new MarketCustomerGui();
 	}
 	
 	public void testNormalCustomerCashierCase(){
 		customer.addFood("Steak", 2);
+		
 		customer.addFood("Chicken", 2);
+		
 		customer.setCashier(cashier);
-		List food = new ArrayList();
+		
+		List<Food> food = new ArrayList<Food>();
+		
+		customer.setGui(customerGui);
 		
 		assertEquals("customer should have 2 in the list", customer.food.size(),2);
 		
 		customer. msgHello();
+		
+		customer.msgAtTable();
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 		
@@ -48,7 +59,7 @@ public class CustomerTest extends TestCase {
 		assertTrue("cashier should return a string with word receive 30, but the last event return "
 		+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Receive 30"));
 		
-		customer.msgHereisYourChange(10);
+		customer.msgHereisYourChange(10, 0);
 		
 		assertTrue("Customer should have money == 10", customer.money == 10);
 		
@@ -58,6 +69,8 @@ public class CustomerTest extends TestCase {
 				customer.s == state.GoWaiting);
 		
 		customer.msgYourFoodReady();
+		
+		customer.msgAtTable();
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 		

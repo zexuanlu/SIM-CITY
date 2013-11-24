@@ -4,32 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import market.CashAgent;
-import market.CashierAgent;
-import market.CashierAgent.state;
-import market.CashierAgent.state1;
+import market.MarketCashierRole;
+import market.MarketCashierRole.state;
+import market.MarketCashierRole.state1;
 import market.interfaces.Cook;
-import market.interfaces.Customer;
+import market.interfaces.MarketCustomer;
 import market.test.mock.MockCook;
 import market.test.mock.MockCustomer;
 import market.test.mock.MockEmployee;
+import market.test.mock.MockTruck;
 import junit.framework.TestCase;
 import market.Food;
 
 public class CashierTest extends TestCase{
 
-	CashierAgent cashier;
+	MarketCashierRole cashier;
 	MockCustomer customer;
 	MockEmployee employee;
 	MockCook cook;
 	CashAgent cash;
+	MockTruck truck;
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		cashier = new CashierAgent();
+		cashier = new MarketCashierRole();
 		customer = new MockCustomer("customer");
 		employee = new MockEmployee("employee");
 		cook = new MockCook("cook");
 		cash = new CashAgent();
+		truck = new MockTruck("truck");
 	}
 	
 	public void testCashierCustomerEmployeeCase(){
@@ -94,8 +97,10 @@ public class CashierTest extends TestCase{
 	}
 	
 	public void testDeliveryCase(){
-		List food = new ArrayList();
+		List<Food> food = new ArrayList<Food>();
+		food.add(new Food("Steak", 2));
 		cashier.addEmployee(employee);
+		cashier.addTruck(truck);
 		
 		assertEquals("cashier should have 1 employee in the list", cashier.employee.size(), 1);
 		

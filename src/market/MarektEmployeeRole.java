@@ -5,33 +5,33 @@ import agent.*;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import market.gui.EmployeeGui;
-import market.interfaces.Cashier;
+import market.gui.MarketEmployeeGui;
+import market.interfaces.MarketCashier;
 import market.interfaces.Cook;
-import market.interfaces.Customer;
-import market.interfaces.Employee;
-import market.interfaces.Truck;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
+import market.interfaces.MarketTruck;
 
-public class EmployeeAgent extends Role implements Employee{
+public class MarektEmployeeRole extends Role implements MarketEmployee{
 
-	Cashier cashier;
-	EmployeeGui employeeGui;
+	MarketCashier cashier;
+	MarketEmployeeGui employeeGui;
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
 	//public List<Truck> truck = new ArrayList<Truck>();
 
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public EmployeeAgent(){
+	public MarektEmployeeRole(){
 		
 	}
 	
 	public class Mycustomer{
-		Customer c;
+		MarketCustomer c;
 		List<Food> order;
 		public state s = state.collecting;
 		int listSize;
-		Mycustomer(Customer c, List<Food> order){
+		Mycustomer(MarketCustomer c, List<Food> order){
 			this.c = c;
 			this.order = order;
 		}
@@ -39,11 +39,11 @@ public class EmployeeAgent extends Role implements Employee{
 
 	public class Myrest{
 		Cook cook;
-		Truck truck;
+		MarketTruck truck;
 		List<Food> order;
 		public state1 s1 = state1.collecting;
 		int listSize;
-		Myrest(Cook cook, List<Food> order, Truck truck){
+		Myrest(Cook cook, List<Food> order, MarketTruck truck){
 			this.cook = cook;
 			this.order = order;
 			this.truck = truck;
@@ -53,7 +53,7 @@ public class EmployeeAgent extends Role implements Employee{
 	public enum state{ collecting, collected};
 	public enum state1{collecting, sending};
 
-	public void setCashier(Cashier cashier){
+	public void setCashier(MarketCashier cashier){
 		this.cashier =  cashier;
 	}
 
@@ -61,16 +61,16 @@ public class EmployeeAgent extends Role implements Employee{
 //		truck.add(t);
 //	}
 	
-	public void setGui(EmployeeGui gui){
+	public void setGui(MarketEmployeeGui gui){
 		this.employeeGui = gui;
 	}
 	
-	public void msgCollectOrer(Customer customer, List<Food> food){
+	public void msgCollectOrer(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
 	}
 
-	public void msgCollectTheDilivery(Cook cook, List<Food> food, Truck truck){
+	public void msgCollectTheDilivery(Cook cook, List<Food> food, MarketTruck truck){
 		myrest.add(new Myrest(cook, food, truck));
 		stateChanged();
 	}

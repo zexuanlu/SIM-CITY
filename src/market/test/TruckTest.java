@@ -1,9 +1,10 @@
 package market.test;
 
 import junit.framework.TestCase;
-import market.TruckAgent;
-import market.TruckAgent.state;
+import market.MarketTruckAgent;
+import market.MarketTruckAgent.state;
 import market.test.mock.EventLog;
+import market.test.mock.MockCashier;
 import market.test.mock.MockCook;
 
 import java.util.*;
@@ -11,18 +12,23 @@ import java.util.*;
 public class TruckTest extends TestCase{
 	
 	EventLog log = new EventLog();
-	TruckAgent truck;
+	MarketTruckAgent truck;
 	MockCook cook;
+	MockCashier cashier;
 	
 	public void setUp() throws Exception{
 		super.setUp();
-		truck = new TruckAgent();
+		truck = new MarketTruckAgent();
 		cook = new MockCook("cook");
+		cashier = new MockCashier("C");
 	}
 
 	public void testNormalDeliveryCase(){
 		
+		truck.setCashier(cashier);
+		
 		List food = new ArrayList();
+		
 		truck.msgPleaseDiliver(cook, food);
 		
 		assertTrue("truck's scheduler should have returned true, but didn't.", truck.pickAndExecuteAnAction());

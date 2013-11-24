@@ -4,11 +4,11 @@ import java.util.List;
 
 import market.CookAgent;
 import market.interfaces.Cook;
-import market.interfaces.Customer;
-import market.interfaces.Employee;
-import market.interfaces.Truck;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketEmployee;
+import market.interfaces.MarketTruck;
 
-public class MockEmployee extends Mock implements Employee{
+public class MockEmployee extends Mock implements MarketEmployee{
 
 	public EventLog log = new EventLog();
 	
@@ -18,7 +18,7 @@ public class MockEmployee extends Mock implements Employee{
 	}
 
 	@Override
-	public void msgCollectOrer(Customer customer, List food) {
+	public void msgCollectOrer(MarketCustomer customer, List food) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got Your Order"));
 		
@@ -26,7 +26,7 @@ public class MockEmployee extends Mock implements Employee{
 
 
 	@Override
-	public void msgCollectTheDilivery(Cook cook, List food, Truck truck) {
+	public void msgCollectTheDilivery(Cook cook, List food, MarketTruck truck) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got Your Order"));
 	}

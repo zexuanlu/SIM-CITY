@@ -6,17 +6,18 @@ import agent.Role;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import market.gui.CustomerGui;
-import market.interfaces.Cashier;
-import market.interfaces.Customer;
+import market.gui.MarketCustomerGui;
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketCustomer;
 
-public class CustomerAgent extends Role implements Customer{
+public class MarketCustomerRole extends Role implements MarketCustomer{
 
-	Cashier cashier;
-	CustomerGui customerGui;
+	MarketCashier cashier;
+	MarketCustomerGui customerGui;
 	public List<Food> food = new ArrayList<Food>();
 	public List<Food> Receivedfood = new ArrayList<Food>();
 	double bill = 0;
+	int seatNumber;
 	public double money = 30;
 	
 	private Semaphore atTable = new Semaphore(0,true);
@@ -25,7 +26,7 @@ public class CustomerAgent extends Role implements Customer{
 	public enum state{none, ordering, ordered, paying, payed, GetChange, GoWaiting, GoToTable, attable, collecting, collected}
 	public state s = state.none;
 	
-	public void setCashier(Cashier cashier){
+	public void setCashier(MarketCashier cashier){
 		this.cashier = cashier;
 	}
 
@@ -33,7 +34,7 @@ public class CustomerAgent extends Role implements Customer{
 		food.add(new Food(name, amount));
 	}
 	
-	public void setGui(CustomerGui gui){
+	public void setGui(MarketCustomerGui gui){
 		this.customerGui = gui;
 	}
 	
@@ -48,9 +49,10 @@ public class CustomerAgent extends Role implements Customer{
 		stateChanged();
 	}
 
-	public void msgHereisYourChange(double change){
+	public void msgHereisYourChange(double change, int num){
 		money = change;
 		s = state.GetChange;
+		seatNumber = num;
 		stateChanged();
 	}
 
@@ -104,7 +106,6 @@ public class CustomerAgent extends Role implements Customer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Do("Yooooo");
 		cashier.msgHereisOrder(this,  food);
 		s = state.ordered;
 	}
@@ -115,7 +116,7 @@ public class CustomerAgent extends Role implements Customer{
 	}
 
 	void Wait(){
-		customerGui.DoGoToWaitingArea(0);/////!!!!!!!!!!!!!!!!!!!
+		customerGui.DoGoToWaitingArea(seatNumber);/////!!!!!!!!!!!!!!!!!!!
 		s = state.GoWaiting;
 	}
 

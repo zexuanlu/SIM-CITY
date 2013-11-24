@@ -4,19 +4,19 @@ import agent.*;
 
 import java.util.*;
 
-import market.interfaces.Cashier;
+import market.interfaces.MarketCashier;
 import market.interfaces.Cook;
-import market.interfaces.Truck;
+import market.interfaces.MarketTruck;
 
-public class TruckAgent extends Role implements Truck{
+public class MarketTruckAgent extends Agent implements MarketTruck{
 
 	List<Food> order;
 	Cook cook;
-	Cashier cashier;
+	MarketCashier cashier;
 	public enum state{receivingOrder, sending }
 	public state s;
 	
-	public void setCashier(Cashier cashier){
+	public void setCashier(MarketCashier cashier){
 		this.cashier = cashier;
 	}
 	

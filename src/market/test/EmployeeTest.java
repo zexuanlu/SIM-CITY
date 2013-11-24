@@ -3,9 +3,11 @@ package market.test;
 
 import java.util.*;
 
-import market.EmployeeAgent;
-import market.EmployeeAgent.state;
-import market.EmployeeAgent.state1;
+import market.MarektEmployeeRole;
+import market.MarektEmployeeRole.state;
+import market.MarektEmployeeRole.state1;
+import market.Food;
+import market.gui.MarketEmployeeGui;
 import market.test.mock.EventLog;
 import market.test.mock.MockCashier;
 import market.test.mock.MockCook;
@@ -16,29 +18,38 @@ import junit.framework.TestCase;
 public class EmployeeTest extends TestCase{
 
 	EventLog log = new EventLog();
-	EmployeeAgent employee;
+	MarektEmployeeRole employee;
 	MockCashier cashier;
 	MockCustomer customer;
 	MockCook cook;
 	MockTruck truck;
+	MarketEmployeeGui employeeGui;
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		employee = new EmployeeAgent();
+		employee = new MarektEmployeeRole();
 		cashier = new MockCashier("casheir");
 		customer = new MockCustomer("customer");
 		cook = new MockCook("cook");
 		truck = new MockTruck("truck");
+		employeeGui = new MarketEmployeeGui();
 	}
 	
 	public void testNormalEmployeeCashierCase(){
 		
 		assertEquals("employee should have 0 in the list", employee.mycustomer.size(), 0);
+		
 		employee.setCashier(cashier);
-		List food = new ArrayList();
+		
+		employee.setGui(employeeGui);
+		
+		List<Food> food = new ArrayList<Food>();
+		
 		employee.msgCollectOrer(customer, food);
 		
 		assertEquals("employee should have 1 customer in it. It doesn't.", employee.mycustomer.size(), 1);
+		
+		employee.msgAtTable();
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", employee.pickAndExecuteAnAction());
 		
@@ -52,11 +63,18 @@ public class EmployeeTest extends TestCase{
 	
 	public void testMormalDeliveryCase(){
 		assertEquals("employee should have 0 in the list", employee.myrest.size(), 0);
+		
 		employee.setCashier(cashier);
-		List food = new ArrayList();
+		
+		employee.setGui(employeeGui);
+		
+		List<Food> food = new ArrayList<Food>();
+		
 		employee.msgCollectTheDilivery(cook, food, truck);
 		
 		assertEquals("employee should have 1 order in it. It doesn't.", employee.myrest.size(), 1);
+		
+		employee.msgAtTable();
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", employee.pickAndExecuteAnAction());
 		

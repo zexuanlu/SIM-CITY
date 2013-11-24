@@ -3,11 +3,11 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import market.EmployeeAgent;
+import market.MarektEmployeeRole;
 
-public class EmployeeGui implements Gui{
+public class MarketEmployeeGui implements Gui{
 	
-	private EmployeeAgent agent;
+	private MarektEmployeeRole agent;
 	private int xPos = 280, yPos = 430;//default waiter position
     private int xDestination = 280, yDestination = 430;//default start position
     private int distance= 20;
@@ -16,7 +16,7 @@ public class EmployeeGui implements Gui{
     private boolean takeFood = false;
     private boolean sendFood = false;
     
-    public void setAgent(EmployeeAgent agent){
+    public void setAgent(MarektEmployeeRole agent){
     	this.agent = agent;
     }
     

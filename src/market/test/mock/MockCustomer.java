@@ -1,10 +1,10 @@
 package market.test.mock;
 
-import market.interfaces.Customer;
+import market.interfaces.MarketCustomer;
 
 import java.util.*;
 
-public class MockCustomer extends Mock implements Customer{
+public class MockCustomer extends Mock implements MarketCustomer{
 
 	public EventLog log = new EventLog();	
 	
@@ -26,7 +26,7 @@ public class MockCustomer extends Mock implements Customer{
 	}
 
 	@Override
-	public void msgHereisYourChange(double change) {
+	public void msgHereisYourChange(double change, int num) {
 		// TODO Auto-generated method stub
 		
 	}
