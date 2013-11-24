@@ -55,7 +55,7 @@ public class TimeCard extends Agent {
 	}
 	
 	private void goBackToWork(MyRole role){
-		//role.person.readyToWork(role.role);
+		role.person.msgReadyToWork(role.role);
 		myRoles.remove(role);
 		roles.add(role.role);
 	}

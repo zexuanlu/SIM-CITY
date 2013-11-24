@@ -1,13 +1,11 @@
 package person.test.mock;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import agent.Role;
 import person.SimEvent;
-import person.Location;
 import person.Position;
 import person.interfaces.Person;
 
@@ -59,7 +57,7 @@ public class PersonMock extends Mock implements Person {
 		
 	}
 	@Override
-	public void msgAddMoney(int money) { //add money back to the person's wallet
+	public void msgAddMoney(double money) { //add money back to the person's wallet
 		log.add(new LoggedEvent("Cash has been added to your personagent's wallet to the tune of "+money+" dollars"));
 		wallet.setOnHand(money);
 	}	
@@ -86,28 +84,28 @@ public class PersonMock extends Mock implements Person {
 	}
 	public class Wallet {
 		
-		private int onHand;
-		private int inBank;
-		private int balance; 
+		private double onHand;
+		private double inBank;
+		private double balance; 
 
-		Wallet(int oh, int ib){
+		Wallet(double oh, double ib){
 			this.onHand = oh;
 			this.inBank = ib;
 			this.balance = oh + ib;
 		}
-		public int getOnHand(){
+		public double getOnHand(){
 			return onHand;
 		}
-		public int getInBank(){
+		public double getInBank(){
 			return inBank;
 		}
-		public int getBalance(){
+		public double getBalance(){
 			return balance;
 		}
-		public void setOnHand(int newAmount){
+		public void setOnHand(double newAmount){
 			onHand += newAmount;
 		}
-		public void setInBank(int newAmount){
+		public void setInBank(double newAmount){
 			inBank += newAmount;
 		}
 	}
