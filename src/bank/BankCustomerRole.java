@@ -1,6 +1,7 @@
 package bank;
 
 import bank.interfaces.*;
+import person.interfaces.*;
 import agent.*;
 import bank.test.mock.*;
 import bank.gui.*;
@@ -22,7 +23,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public state s;
 	Semaphore movement = new Semaphore(0, true);
 	
-	public BankCustomerRole(String name){
+	public BankCustomerRole(Person person, String name){
+		super(person);
 		this.name = name;
 		s = state.none;
 		tasks = new ArrayList<Task>();

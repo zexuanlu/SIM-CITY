@@ -1,13 +1,14 @@
 package agent;
 
 import java.util.*;
+import person.interfaces.*;
 
 public class TimeCard extends Agent {
 	List<MyRole> myRoles = new ArrayList<MyRole>();
 	List<Role> roles = new ArrayList<Role>();
 	boolean endOfDay = false;
 	
-	public void msgBackToWork(/*Person person,*/ Role role) {
+	public void msgBackToWork(Person person, Role role) {
 		for(Role r : roles){
 			if(r == role){
 				myRoles.add(new MyRole(/*person,*/ role, roleState.replacement));

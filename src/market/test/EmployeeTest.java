@@ -3,9 +3,9 @@ package market.test;
 
 import java.util.*;
 
-import market.MarektEmployeeRole;
-import market.MarektEmployeeRole.state;
-import market.MarektEmployeeRole.state1;
+import market.MarketEmployeeRole;
+import market.MarketEmployeeRole.state;
+import market.MarketEmployeeRole.state1;
 import market.Food;
 import market.gui.MarketEmployeeGui;
 import market.test.mock.EventLog;
@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 public class EmployeeTest extends TestCase{
 
 	EventLog log = new EventLog();
-	MarektEmployeeRole employee;
+	MarketEmployeeRole employee;
 	MockCashier cashier;
 	MockCustomer customer;
 	MockCook cook;
@@ -27,7 +27,7 @@ public class EmployeeTest extends TestCase{
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		employee = new MarektEmployeeRole();
+		employee = new MarketEmployeeRole();
 		cashier = new MockCashier("casheir");
 		customer = new MockCustomer("customer");
 		cook = new MockCook("cook");
