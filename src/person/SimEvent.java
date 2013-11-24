@@ -2,7 +2,7 @@ package person;
 
 public class SimEvent {
 	String directive;
-    Location location;
+    public Location location;
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
     						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, 
     						FreeEvent, BusEvent, AptTenantEvent, HomeOwnerEvent, LandlordEvent, 

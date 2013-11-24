@@ -1,11 +1,13 @@
 package person.test.mock;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import agent.Role;
 import person.SimEvent;
+import person.Location;
 import person.Position;
 import person.interfaces.Person;
 
@@ -14,7 +16,7 @@ public class PersonMock extends Mock implements Person {
 	public EventLog log = new EventLog();
 	public int hunger;
 	public int currentTime;
-	public Wallet wallet = new Wallet(100.00, 100.00);
+	public Wallet wallet;
 	public List<String> groceryList = new ArrayList<String>();
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
 	public List<Role> roles = new ArrayList<Role>();
@@ -72,6 +74,10 @@ public class PersonMock extends Mock implements Person {
 		
 	}
 	@Override
+	public void msgGoOffWork(Role r, double pay) {
+		// TODO Auto-generated method stub
+		
+	}
 	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
 		// TODO Auto-generated method stub
 		

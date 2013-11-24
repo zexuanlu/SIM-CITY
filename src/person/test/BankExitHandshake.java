@@ -49,8 +49,8 @@ public class BankExitHandshake extends TestCase{
 		assertTrue("person's scheduler should return true because we have added one event to his queue", person.pickAndExecuteAnAction());
 		
 		//Check customer role creation is correct
-		assertTrue("person should now have a TellerRole role in his roles list, he does not", person.roles.get(0) instanceof BankTellerRole);
-		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).getPerson() == person);
+		assertTrue("person should now have a TellerRole role in his roles list, he does not", person.roles.get(0).role instanceof BankTellerRole);
+		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).role.getPerson() == person);
 		
 		//Check that host for the restaurant received our message and both the person and the customer role
 		/*assertTrue("host's log should read: The customer role Grant has entered via the person Grant and is hungry, instead it reads: "+host.log.getLastLoggedEvent().getMessage(), 

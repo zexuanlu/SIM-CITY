@@ -1,6 +1,7 @@
 package person.interfaces;
 
 import person.SimEvent;
+import person.Location;
 import person.Position;
 import agent.Role;
 
@@ -18,6 +19,6 @@ public interface Person {
 	
 	public abstract void msgReadyToWork(Role r); //notify a waiting person that they can send their role to work
 	
-	public abstract void msgGoOffWork(Role r); //return the person's role and have them continue with their day
+	public abstract void msgGoOffWork(Role r, double pay); //return the person's role and have them continue with their day
 	
 }
