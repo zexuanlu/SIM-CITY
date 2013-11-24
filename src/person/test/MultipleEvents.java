@@ -52,7 +52,9 @@ public class MultipleEvents extends TestCase{
 		assertTrue("The person's scheduler should running the role's pickandexecute, it is not, rather it is running the persons", 
 				 person.active());
 		person.msgFinishedEvent(person.roles.get(0).role);
+		person.msgNewHour(9);
 		assertTrue("The person should now run his own code", person.pickAndExecuteAnAction());
+		person.msgReadyToWork(person.roles.get(1).role);
 		assertTrue("The person should now have the teller role active, he does not", person.active() && person.roles.get(1).role instanceof BankTellerRole);
 		person.msgGoOffWork(person.roles.get(1).role, 100);
 		assertTrue("The person should now have one hundred dollars more in his wallet", person.wallet.getOnHand() == 5100);

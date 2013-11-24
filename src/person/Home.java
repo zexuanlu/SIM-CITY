@@ -1,7 +1,5 @@
 package person;
 
-import person.Location.LocationType;
-import person.interfaces.Host;
 
 public class Home extends Location{
 	

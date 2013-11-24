@@ -1,14 +1,10 @@
 package person;
 
-import person.interfaces.Host;
-import agent.Agent;
-import agent.Role;
-
 public class Location {
 
 	protected String name;
 	public enum LocationType {Restaurant, Bank, Market, Home, BusStop};
-	protected LocationType type;
+	public LocationType type;
 	protected Position position;
 	Location(String name, LocationType type, Position p){
 		this.name = name;

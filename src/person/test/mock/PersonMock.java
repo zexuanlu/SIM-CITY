@@ -73,6 +73,11 @@ public class PersonMock extends Mock implements Person {
 		
 		
 	}
+	@Override
+	public void msgGoOffWork(Role r, double pay) {
+		// TODO Auto-generated method stub
+		
+	}
 	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
 		// TODO Auto-generated method stub
 		
@@ -109,11 +114,6 @@ public class PersonMock extends Mock implements Person {
 		public void setInBank(double newAmount){
 			inBank += newAmount;
 		}
-	}
-	@Override
-	public void msgGoOffWork(Role r, int pay) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
