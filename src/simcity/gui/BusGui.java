@@ -52,7 +52,6 @@ public class BusGui implements Gui {
     	//check orientation of the bus
     	if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
     		guistate = GuiState.canStop; 
-    		System.out.println("msg at Stop");
     		myBus.msgatSlot();
     		return; 
     	}
@@ -87,6 +86,5 @@ public class BusGui implements Gui {
     	guistate = GuiState.gotoStop; 
 		xDestination = x*scale; 
 		yDestination = y*scale; 
-		System.out.println(xDestination +" " + yDestination);
 	}
 }

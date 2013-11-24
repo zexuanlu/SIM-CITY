@@ -19,7 +19,7 @@ public class BusStopGui implements Gui{
 	
 	public void draw(Graphics2D g) {  
         g.setColor(Color.MAGENTA);
-		g.fillRect(xPos,yPos,20,20);
+		g.fillRect(xPos,yPos,10,10);
 	}
 
 	public boolean isPresent() {

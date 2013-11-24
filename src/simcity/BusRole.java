@@ -63,7 +63,6 @@ public class BusRole extends Agent implements Bus {
 	
 	public void msgatSlot(){
 		atSlot.release();
-		System.out.println("at Slot released "+ atSlot.availablePermits());
 	}
 	
 	public void msgStartBus(){

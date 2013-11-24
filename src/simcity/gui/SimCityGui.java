@@ -72,6 +72,10 @@ public class SimCityGui extends JFrame{
 		  //  	System.out.println(grid[2][4].availablePermits());
 		   // }
 			
+			for (int y=0;y<30;y++){
+				grid[30][20].release();
+			}
+			
 			for (int y = 0; y < 11; y ++){
 				for (int x = 0; x < 14; x++){
 					grid[x][y].acquire(); 
@@ -216,7 +220,6 @@ public class SimCityGui extends JFrame{
 		 animationPanel.addGui(cgui);
 		 caragent.startThread();
 		 caragent.gotoPosition(500,250);
-
 		 
 		 aStarTraversal = new AStarTraversal(grid);
 		 CarAgent caragent2 = new CarAgent(aStarTraversal);
@@ -241,7 +244,6 @@ public class SimCityGui extends JFrame{
 		 animationPanel.addGui(cgui4);
 		 caragent4.startThread();
 		 caragent4.gotoPosition(300,50);
-		 
 
 
 		 

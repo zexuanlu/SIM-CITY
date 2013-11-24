@@ -8,6 +8,17 @@ import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
 
+
+
+//to use: create CarAgent with aStarTraversal as parameter as well as Person Agent
+//Create gui with original starting position
+//gotoposition(int x, int y); 
+//gui will disappear once he reaches destination and will send message back to person
+//msgatLocation(int x, int y); 
+//to make him reappear setatPosition(int x, int y); 
+//gotoposition (int x, int y); 
+
+//Break this sequence and you will screw up his disappearing/reappearing
 public class CarAgent extends Agent {
 	Position currentPosition; 
 	Position originalPosition;
@@ -40,10 +51,39 @@ public class CarAgent extends Agent {
 		atSlot.release();
 		System.out.println("at Slot released "+ atSlot.availablePermits());
 	}
+	
+	public void msgatDestination(){
+		//SOME SORT OF THING HERE FOR PERSON TO KNOW HE IS THERE
+	}
 
+	
+	public void setatPosition(int x, int y){
+	    currentPosition.release(aStar.getGrid());
+		currentPosition = new Position(x/scale, y/scale);
+        currentPosition.moveInto(aStar.getGrid());
+        originalPosition = currentPosition;
+        
+        int numx = x/scale; 
+		numx = numx*scale; 
+		
+		int numy = y/scale; 
+		numy = numy*scale; 
+        
+        myGui.atPosition(numx, numy);
+	}
+	
 	public void gotoPosition(int x, int y){
 		destinationX = x; 
 		destinationY = y; 
+		int num = x/scale; 
+		num = num*scale; 
+		myGui.overallX = num; 
+
+		num = y/scale; 
+		num = num*scale; 
+		myGui.overallY = num; 
+		System.out.println("overall is "+myGui.overallX +" , "+ myGui.overallY);
+
 		carstate = CarState.goTo;  
 		stateChanged();	
 	}
@@ -106,6 +146,13 @@ public class CarAgent extends Agent {
 			e.printStackTrace();
 		}
 		}
+    }
+    
+    public void deadPos(int x, int y){
+	    currentPosition.release(aStar.getGrid());
+		currentPosition = new Position(x/scale, y/scale);
+        currentPosition.moveInto(aStar.getGrid());
+        originalPosition = currentPosition;
     }
     
     protected boolean pickAndExecuteAnAction(){
