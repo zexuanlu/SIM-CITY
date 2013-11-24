@@ -1,10 +1,10 @@
 package agent;
 
-import java.util.List;
+import java.util.*;
 
 public class TimeCard extends Agent {
-	List<MyRole> myRoles;
-	List<Role> roles;
+	List<MyRole> myRoles = new ArrayList<MyRole>();
+	List<Role> roles = new ArrayList<Role>();
 	
 	public void msgBackToWork(/*Person person,*/ Role role) {
 		for(Role r : roles){
