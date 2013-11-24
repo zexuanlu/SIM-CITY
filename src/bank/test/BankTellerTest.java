@@ -1,8 +1,8 @@
 package bank.test;
 
 import junit.framework.*;
-import person.interfaces.*;
 import bank.test.mock.*;
+import person.test.mock.*;
 import bank.*;
 import bank.BankTellerRole.taskState;
 import bank.BankTellerRole.state;
@@ -19,7 +19,7 @@ public class BankTellerTest extends TestCase {
 	BankTellerRole bt;
 	MockBankCustomer bc;
 	MockBankDatabase bd;
-	Person p;
+	PersonMock p;
 	MockBankHost bh;
 
 	/**
@@ -188,5 +188,9 @@ public class BankTellerTest extends TestCase {
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
+	}
+	
+	public void testEndOfDay(){
+		
 	}
 }
