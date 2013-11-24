@@ -35,7 +35,11 @@ public class BankHostTest extends TestCase {
 	
 	public void testOneCustomerOneTeller(){
 		assertEquals("Bank Host should contain 0 Tellers. It doesn't.", bh.tellers.size(), 0);
-
+		assertFalse("Bank Host's atDesk should be false. It isn't", bh.atDesk);
+		
+		assertTrue("The scheduler should return true. It didn't.", bh.pickAndExecuteAnAction());
+		assertTrue("Bank Host's atDesk should be true. It isn't", bh.atDesk);
+		
 		bh.addTeller(bt);
 		assertEquals("Bank Host should contain 1 Teller. It doesn't.", bh.tellers.size(), 1);
 		assertEquals("Bank Host should contain 0 Customers. It doesn't.", bh.waitingCustomers.size(), 0);
@@ -65,6 +69,10 @@ public class BankHostTest extends TestCase {
 	
 	public void testTwoCustomersOneTeller(){
 		assertEquals("Bank Host should contain 0 Tellers. It doesn't.", bh.tellers.size(), 0);
+		assertFalse("Bank Host's atDesk should be false. It isn't", bh.atDesk);
+		
+		assertTrue("The scheduler should return true. It didn't.", bh.pickAndExecuteAnAction());
+		assertTrue("Bank Host's atDesk should be true. It isn't", bh.atDesk);
 		
 		bh.addTeller(bt);
 		assertEquals("Bank Host should contain 1 Teller. It doesn't.", bh.tellers.size(), 1);

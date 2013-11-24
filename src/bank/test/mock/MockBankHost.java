@@ -17,5 +17,9 @@ public class MockBankHost extends Mock implements BankHost {
 	public void msgBackToWork(BankTeller bt) {
 		log.add(new LoggedEvent("Received msgBackToWork from BankTeller"));
 	}
+	
+	public void msgAtDestination(){
+		log.add(new LoggedEvent("Received msgAtDestination from BankHostGui"));
+	}
 
 }
