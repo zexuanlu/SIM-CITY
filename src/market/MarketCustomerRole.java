@@ -1,14 +1,13 @@
 package market;
 
-import agent.Agent;
-import agent.Role;
+import agent.*;
+import person.interfaces.*;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import market.gui.MarketCustomerGui;
-import market.interfaces.MarketCashier;
-import market.interfaces.MarketCustomer;
+import market.interfaces.*;
 
 public class MarketCustomerRole extends Role implements MarketCustomer{
 
@@ -19,6 +18,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	double bill = 0;
 	int seatNumber;
 	public double money = 30;
+	
+	public MarketCustomerRole(Person person, String name){
+		super(person);
+	}
 	
 	private Semaphore atTable = new Semaphore(0,true);
 

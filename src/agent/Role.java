@@ -4,22 +4,36 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+import person.interfaces.*;
+
 /**
  * Base class for simple agents
  */
 public abstract class Role {
-
-	//Person person;
 	
-	/*public void switchPerson(Person person){
+	public void switchPerson(Person person){
 		this.person = person;
-	}*/
+	}
 	
-	/*public Person getPerson(){
+	public Person getPerson(){
 		return person;
-	}*/
+	}
 	
-    protected Role() {
+	private boolean isActive;
+	private Person person;
+	
+    protected Role(Person person) {
+    	isActive = false;
+    	this.person = person;
+    }
+
+    public boolean isActive() {
+    	
+    	return isActive;
+    }
+    public void setActive(boolean active){
+    	
+    	this.isActive = active;
     }
 
     /**
@@ -38,7 +52,7 @@ public abstract class Role {
      * @return true iff some action was executed that might have changed the
      *         state.
      */
-    protected abstract boolean pickAndExecuteAnAction();
+    public abstract boolean pickAndExecuteAnAction();
 
     /**
      * Return agent name for messages.  Default is to return java instance

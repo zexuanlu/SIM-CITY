@@ -1,6 +1,7 @@
 package market.test;
 
 import java.util.ArrayList;
+import person.interfaces.*;
 import java.util.List;
 
 import market.CashAgent;
@@ -9,16 +10,14 @@ import market.MarketCashierRole.state;
 import market.MarketCashierRole.state1;
 import market.interfaces.Cook;
 import market.interfaces.MarketCustomer;
-import market.test.mock.MockCook;
-import market.test.mock.MockCustomer;
-import market.test.mock.MockEmployee;
-import market.test.mock.MockTruck;
+import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
 
 public class CashierTest extends TestCase{
 
 	MarketCashierRole cashier;
+	Person p;
 	MockCustomer customer;
 	MockEmployee employee;
 	MockCook cook;
@@ -27,7 +26,7 @@ public class CashierTest extends TestCase{
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		cashier = new MarketCashierRole();
+		cashier = new MarketCashierRole(p, "cashier");
 		customer = new MockCustomer("customer");
 		employee = new MockEmployee("employee");
 		cook = new MockCook("cook");

@@ -1,14 +1,11 @@
 package market;
 
 import agent.*;
+import person.interfaces.*;
 
 import java.util.*;
 
-import market.interfaces.MarketCashier;
-import market.interfaces.Cook;
-import market.interfaces.MarketCustomer;
-import market.interfaces.MarketEmployee;
-import market.interfaces.MarketTruck;
+import market.interfaces.*;
 
 public class MarketCashierRole extends Role implements MarketCashier{
 
@@ -23,7 +20,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	int seatCount = 1;
 	double income = 0;
 
-	public MarketCashierRole(){
+	public MarketCashierRole(Person person, String name){
+		super(person);
 		inventory.put("Steak", 2);
 		inventory.put("Car", 2);
 		price.put("Steak", (double) 2);

@@ -3,6 +3,7 @@ package bank;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import person.interfaces.*;
 import bank.gui.*;
 import bank.test.mock.*;
 import bank.interfaces.*;
@@ -30,7 +31,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	public state s;
 	public enum state {working, backToWork, goingOffWork, none}
 	
-	public BankTellerRole(String name){
+	public BankTellerRole(Person person, String name){
+		super(person);
 		this.name = name;
 		log = new EventLog();
 		tasks = new ArrayList<Task>();

@@ -2,6 +2,7 @@ package bank;
 
 import agent.*;
 import bank.interfaces.*;
+import person.interfaces.*;
 import java.util.*;
 import bank.test.mock.*;
 
@@ -19,7 +20,8 @@ public class BankHostRole extends Role implements BankHost {
 	public EventLog log;
 	public List<BankCustomer> waitingCustomers;
 	public List<MyTeller> tellers;
-	public BankHostRole(String name){
+	public BankHostRole(Person person, String name){
+		super(person);
 		this.name = name;
 		waitingCustomers = new ArrayList<BankCustomer>();
 		tellers = new ArrayList<MyTeller>();

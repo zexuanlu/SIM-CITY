@@ -1,6 +1,7 @@
 package market.test;
 
 import market.MarketCustomerRole;
+import person.interfaces.*;
 import market.MarketCustomerRole.state;
 import market.Food;
 import market.gui.MarketCustomerGui;
@@ -14,12 +15,13 @@ public class CustomerTest extends TestCase {
 
 	EventLog log = new EventLog();
 	MarketCustomerRole customer;
+	Person p;
 	MockCashier cashier;
 	MarketCustomerGui customerGui;
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		customer = new MarketCustomerRole();
+		customer = new MarketCustomerRole(p, "customer");
 		cashier = new MockCashier("cashier");
 		customerGui = new MarketCustomerGui();
 	}

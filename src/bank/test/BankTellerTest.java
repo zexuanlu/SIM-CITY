@@ -1,6 +1,7 @@
 package bank.test;
 
 import junit.framework.*;
+import person.interfaces.*;
 import bank.test.mock.*;
 import bank.*;
 import bank.BankTellerRole.taskState;
@@ -18,6 +19,7 @@ public class BankTellerTest extends TestCase {
 	BankTellerRole bt;
 	MockBankCustomer bc;
 	MockBankDatabase bd;
+	Person p;
 	MockBankHost bh;
 
 	/**
@@ -25,7 +27,7 @@ public class BankTellerTest extends TestCase {
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		bt = new BankTellerRole("BankTeller1");
+		bt = new BankTellerRole(p, "BankTeller1");
 		bc = new MockBankCustomer("BankCustomer1");
 		bd = new MockBankDatabase("BankDatabase");
 		bh = new MockBankHost("BankHost");
