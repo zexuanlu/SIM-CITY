@@ -36,7 +36,7 @@ public class BankHostRole extends Role implements BankHost {
 	}
 
 	public void msgBackToWork(BankTeller bt){
-		log.add(new LoggedEvent("Receieved msgBackToWork from Bank Teller"));
+		log.add(new LoggedEvent("Received msgBackToWork from Bank Teller"));
 		for(MyTeller mt : tellers){
 			if(mt.bt == bt){
 				mt.s = state.working;
