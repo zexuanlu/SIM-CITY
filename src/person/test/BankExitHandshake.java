@@ -1,20 +1,19 @@
 package person.test;
 
 import static org.junit.Assert.*;
+import agent.*;
 import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import bank.*;
 import person.Bank;
 import person.SimEvent;
 import person.PersonAgent;
 import person.Position;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
-import person.bank.BankCustomerRole;
-import person.bank.BankTellerRole;
-import person.bank.BankTimeCard;
-import person.bank.test.mock.MockBankHost;
+import bank.test.mock.*;
 
 public class BankExitHandshake extends TestCase{
 	PersonAgent person;
@@ -29,9 +28,9 @@ public class BankExitHandshake extends TestCase{
 		person = new PersonAgent();
 		person.setName("Grant");
 		host = new MockBankHost("Gil");
-		BankTimeCard btc = new BankTimeCard();
-		btc.startThread();
-		bank = new Bank("Bank", btc, host, p, LocationType.Bank);
+		TimeCard tc = new TimeCard();
+		tc.startThread();
+		bank = new Bank("Bank", tc, host, p, LocationType.Bank);
 		goToBank = new SimEvent(bank, 1, 9, 10, EventType.TellerEvent);
 		
 	}
@@ -51,7 +50,7 @@ public class BankExitHandshake extends TestCase{
 		
 		//Check customer role creation is correct
 		assertTrue("person should now have a TellerRole role in his roles list, he does not", person.roles.get(0) instanceof BankTellerRole);
-		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).person == person);
+		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).getPerson() == person);
 		
 		//Check that host for the restaurant received our message and both the person and the customer role
 		/*assertTrue("host's log should read: The customer role Grant has entered via the person Grant and is hungry, instead it reads: "+host.log.getLastLoggedEvent().getMessage(), 

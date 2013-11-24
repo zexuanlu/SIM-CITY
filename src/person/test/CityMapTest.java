@@ -8,19 +8,14 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import person.Bank;
-import person.BankHostRole;
-import person.SimEvent;
 import person.Location;
 import person.Location.LocationType;
 import person.Market;
 import person.PersonAgent;
-import person.SimEvent.EventType;
 import person.Position;
 import person.Restaurant;
-import person.interfaces.BankHost;
-import person.interfaces.Host;
-import person.test.mock.EventLog;
-import person.test.mock.MockHostRole;
+import bank.*;
+
 /*
  * Tests the various look up methods within the city map class 
  * 1. Random
@@ -44,11 +39,11 @@ public class CityMapTest extends TestCase{
 
 		super.setUp();	
 		locs = new ArrayList<Location>();
-		bank = new Bank("Bank", new BankHostRole("Host", person), new Position(10, 10), LocationType.Bank);
-		cr = new Restaurant("Chinese", new MockHostRole("ChineseHost"), new Position(20, 20), LocationType.Restaurant);
-		market = new Market("MarketA", new MockHostRole("MarketHost"), new Position(30, 30), LocationType.Market);
-		ir = new Restaurant("Italian", new MockHostRole("ItalianHost"), new Position(40, 40), LocationType.Restaurant);
-		fr = new Restaurant("Fancy", new MockHostRole("FancyHost"), new Position(40, 55), LocationType.Restaurant);
+		bank = new Bank("Bank", new BankHostRole(person, "Host"), new Position(10, 10), LocationType.Bank);
+		//cr = new Restaurant("Chinese", new MockHostRole("ChineseHost"), new Position(20, 20), LocationType.Restaurant);
+		//market = new Market("MarketA", new MockHostRole("MarketHost"), new Position(30, 30), LocationType.Market);
+		//ir = new Restaurant("Italian", new MockHostRole("ItalianHost"), new Position(40, 40), LocationType.Restaurant);
+		//fr = new Restaurant("Fancy", new MockHostRole("FancyHost"), new Position(40, 55), LocationType.Restaurant);
 
 		locs.add(bank);
 		locs.add(cr);

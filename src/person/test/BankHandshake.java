@@ -6,17 +6,13 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import person.Bank;
-import person.CustomerRole;
 import person.SimEvent;
-import person.Location;
 import person.PersonAgent;
 import person.Position;
-import person.Restaurant;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
-import person.test.mock.MockHostRole;
-import person.bank.BankCustomerRole;
-import person.bank.test.mock.*;
+import bank.*;
+import bank.test.mock.*;
 
 public class BankHandshake extends TestCase{
 	
@@ -54,7 +50,7 @@ public class BankHandshake extends TestCase{
 		
 		//Check customer role creation is correct
 		assertTrue("person should now have a customer role in his roles list, he does not", person.roles.get(0) instanceof BankCustomerRole);
-		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).person == person);
+		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).getPerson() == person);
 		
 		//Check that host for the restaurant received our message and both the person and the customer role
 		/*assertTrue("host's log should read: The customer role Grant has entered via the person Grant and is hungry, instead it reads: "+host.log.getLastLoggedEvent().getMessage(), 

@@ -5,14 +5,11 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import person.CustomerRole;
 import person.SimEvent;
 import person.Location;
 import person.PersonAgent;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
-import person.test.mock.MockCustomerRole;
-import person.test.mock.MockHostRole;
 /*
  * Tests the exit handshake between a host and a PersonAgent as the person's role leaves the location
  *
@@ -20,7 +17,7 @@ import person.test.mock.MockHostRole;
  */
 public class PersonRestaurantExit extends TestCase{
 	
-	PersonAgent person;
+	/*PersonAgent person;
 	MockHostRole host;
 	CustomerRole customer;
 	
@@ -50,6 +47,6 @@ public class PersonRestaurantExit extends TestCase{
 					person.roles.get(0).isActive());
 		assertFalse("person's scheduler should run its own events now, it is still blocked by activeRole", person.activeRole);
 		assertFalse("person's scheduler should block as we have no events in the queue", person.pickAndExecuteAnAction());
-	}
+	}*/
 
 }

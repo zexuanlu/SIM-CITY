@@ -2,6 +2,7 @@ package bank.test;
 
 import junit.framework.*;
 import bank.test.mock.*;
+import person.interfaces.*;
 import bank.*;
 import bank.BankHostRole.state;
 
@@ -16,6 +17,7 @@ public class BankHostTest extends TestCase {
 
 	MockBankTeller bt;
 	MockBankCustomer bc;
+	Person p;
 	BankHostRole bh;
 
 	/**
@@ -25,7 +27,7 @@ public class BankHostTest extends TestCase {
 		super.setUp();		
 		bt = new MockBankTeller("BankTeller1");
 		bc = new MockBankCustomer("BankCustomer1");
-		bh = new BankHostRole("BankHost");
+		bh = new BankHostRole(p, "BankHost");
 		bh.addTeller(bt);
 	}
 	
