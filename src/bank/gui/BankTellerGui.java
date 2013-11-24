@@ -28,17 +28,18 @@ public class BankTellerGui implements Gui{
 		xDestination = 640;
 		yDestination = 250;
 		this.gui = gui;
-		locations.put("Teller1", new Dimension(40, 340));
-		locations.put("Teller2", new Dimension(100, 340));
-		locations.put("Teller3", new Dimension(160, 340));
-		locations.put("Teller4", new Dimension(220, 340));
-		locations.put("Teller5", new Dimension(280, 340));
-		locations.put("Teller6", new Dimension(340, 340));
-		locations.put("Teller7", new Dimension(400, 340));
-		locations.put("Teller8", new Dimension(460, 340));
-		locations.put("Teller9", new Dimension(520, 340));
-		locations.put("Teller10", new Dimension(580, 340));
+		locations.put("Teller1", new Dimension(40, 380));
+		locations.put("Teller2", new Dimension(100, 380));
+		locations.put("Teller3", new Dimension(160, 380));
+		locations.put("Teller4", new Dimension(220, 380));
+		locations.put("Teller5", new Dimension(280, 380));
+		locations.put("Teller6", new Dimension(340, 380));
+		locations.put("Teller7", new Dimension(400, 380));
+		locations.put("Teller8", new Dimension(460, 380));
+		locations.put("Teller9", new Dimension(520, 380));
+		locations.put("Teller10", new Dimension(580, 380));
 		locations.put("Outside", new Dimension(640, 250));
+		gui.addGui(this);
 	}
 
 	public void updatePosition() {

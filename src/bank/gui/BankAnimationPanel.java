@@ -32,7 +32,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
     public BankAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
     	setVisible(true);
- 
+    	
     	Timer timer = new Timer(TIMERCOUNT, this );
     	timer.start();
     }
