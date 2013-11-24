@@ -187,24 +187,4 @@ public class BankTellerTest extends TestCase {
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
-	
-	public void testOffOfWork(){
-		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
-		
-		bt.msgDoneWithWork(500.00);
-		assertTrue("The state of Bank Teller should be goingOffWork. It isn't.", bt.s == state.goingOffWork);
-		assertEquals("The customer pointer in Bank Teller should be null. It isn't.", bt.bc, null);
-		
-		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
-		assertTrue("The state of Bank Teller should be none. It isn't", bt.s == state.none);
-		
-		bt.msgBackToWork(bh);
-		assertTrue("The state of Bank Teller should be backToWork. It isn't.", bt.s == state.backToWork);
-		assertEquals("The Bank Host pointer in Bank Teller should be right. It isn't", bt.bh, bh);
-		
-		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
-		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
-				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
-		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
-	}
 }

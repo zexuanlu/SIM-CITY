@@ -37,17 +37,6 @@ public class BankTellerRole extends Role implements BankTeller {
 		s = state.working;
 	}
 	//Messages
-	public void msgDoneWithWork(double pay){
-		log.add(new LoggedEvent("Received msgDoneWithWork from BankTimeCard"));
-		s = state.goingOffWork;
-		stateChanged();
-	}
-	
-	public void msgBackToWork(BankHost bh){
-		log.add(new LoggedEvent("Received msgBackToWork from Person"));
-		s = state.backToWork;
-		stateChanged();
-	}
 	
 	public void msgINeedAccount(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgINeedAccount from BankCustomer"));
