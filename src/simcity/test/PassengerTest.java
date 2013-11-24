@@ -1,11 +1,13 @@
 package simcity.test;
 import simcity.test.Mock.MockBusRole;
 import simcity.test.Mock.MockBusStop; 
+import simcity.test.Mock.PersonMock; 
 import simcity.PassengerRole;
 import junit.framework.*;
 
 public class PassengerTest extends TestCase{
 	MockBusStop busstop; 
+	PersonMock person; 
 	MockBusRole bus; 
 	PassengerRole passenger; 
 	String Destination;
@@ -15,7 +17,7 @@ public class PassengerTest extends TestCase{
 		super.setUp();
 		busfare = 10; 
 		Destination = "Palo Alto";
-		passenger = new PassengerRole("passenger");
+		passenger = new PassengerRole("passenger",person);
 		bus = new MockBusRole("bus");
 		busstop = new MockBusStop("busstop");
 	}

@@ -11,7 +11,6 @@ import java.awt.Graphics2D;
 public class BusGui implements Gui {
 	int scale = 20; 
 	
-	List<Dimension> moves = new ArrayList<Dimension>();
 	private BusRole myBus = null;
 	boolean NorthSouth; 
 	boolean EastWest; 
@@ -21,7 +20,7 @@ public class BusGui implements Gui {
 	Position originalPosition;
 	AStarTraversal aStar; 
 	
-	public enum GuiState {gotoStop, atStop,canStop};
+	public enum GuiState {gotoStop, atStop,canStop, atSlot};
 	GuiState guistate; 
 	
 	public BusGui(BusRole bus, int x, int y){
@@ -51,17 +50,11 @@ public class BusGui implements Gui {
     
     public void updatePosition() {
     	//check orientation of the bus
-    	if (xPos == xDestination && yPos == yDestination){
-    		if (!moves.isEmpty()){
-    			moves.remove(0); //remove at index
-    			if(!moves.isEmpty()){
-	    			xDestination = moves.get(0).width; 
-	    			yDestination = moves.get(0).height; 
-    			}
-    			else{
-    				guistate = GuiState.canStop;
-    			}
-    		}
+    	if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
+    		guistate = GuiState.canStop; 
+    		System.out.println("msg at Stop");
+    		myBus.msgatSlot();
+    		return; 
     	}
     	
     	if (xPos == xDestination && yPos != yDestination){
@@ -89,14 +82,11 @@ public class BusGui implements Gui {
         	myBus.msgAtStop();
         }
     }
-   
-    public void GoToBusStop(){
-    	guistate = GuiState.gotoStop; 
-    }
 	
 	public void moveto(int x, int y){
-		moves.add(new Dimension(x*scale,y*scale));
-		xDestination = moves.get(0).width; 
-		yDestination = moves.get(0).height; 
+    	guistate = GuiState.gotoStop; 
+		xDestination = x*scale; 
+		yDestination = y*scale; 
+		System.out.println(xDestination +" " + yDestination);
 	}
 }

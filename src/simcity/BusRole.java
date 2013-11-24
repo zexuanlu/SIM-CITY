@@ -14,7 +14,7 @@ import agent.Agent;
 
 public class BusRole extends Agent implements Bus {
 	int scale = 20; 
-	int heightofStreet = 50; 
+	int heightofStreet = 20; 
 	
 	
 	int capacity; 
@@ -27,6 +27,8 @@ public class BusRole extends Agent implements Bus {
 	AStarTraversal aStar; 
 	
 	private Semaphore atStop = new Semaphore(0,true);
+	private Semaphore atSlot = new Semaphore(0,true);
+	
 	private BusGui busgui; 
 	public CityMap citymap = new CityMap(); 
 	
@@ -57,6 +59,11 @@ public class BusRole extends Agent implements Bus {
 		super();		
 		this.name = name; 
 		capacity = 100; 	
+	}
+	
+	public void msgatSlot(){
+		atSlot.release();
+		System.out.println("at Slot released "+ atSlot.availablePermits());
 	}
 	
 	public void msgStartBus(){
@@ -239,12 +246,27 @@ public class BusRole extends Agent implements Bus {
 			
 			Dimension d = citymap.getDimension(currentbusstop);
 			
-			atStop.drainPermits();
-			GoToBusStop(d.width, d.height +heightofStreet);
-			try {
-				atStop.acquire();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if (busgui != null){
+				atStop.drainPermits();
+				
+				if (currentbusstop.getDirection().equals("up")){
+					GoToBusStop(d.width, d.height - heightofStreet);
+				}
+				else if (currentbusstop.getDirection().equals("down")){
+					GoToBusStop(d.width, d.height + heightofStreet);
+	
+				}
+				else if (currentbusstop.getDirection().equals("left")){
+					GoToBusStop(d.width - heightofStreet, d.height);
+				}	
+				else if (currentbusstop.getDirection().equals("right")){
+					GoToBusStop(d.width + heightofStreet, d.height);
+				}
+				try {
+					atStop.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			print("Bus at bus stop");
@@ -330,12 +352,17 @@ public class BusRole extends Agent implements Bus {
 		    currentPosition.release(aStar.getGrid());
 		    currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
 		    busgui.moveto(currentPosition.getX(), currentPosition.getY());
+			try {
+				atSlot.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			}
 	    }
 		
 	    private void GoToBusStop(int x, int y){
-	    	busgui.GoToBusStop();
 	    	guiMoveFromCurrentPositionTo(new Position((x/scale),(y/scale)));
 	    }
+	    
 		
 }

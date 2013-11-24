@@ -97,6 +97,23 @@ public class BusTest extends TestCase{
 		assertEquals("Bus should have 1 passenger in his list",busrole.passengers.size(),1);
 
 	}
+	
+	
+	public void testTwoNormalCustomerScenario(){
+		//test initial conditions 
+		assertEquals("Busstop should have nothing in it's log", busstop.log.size(),0);
+		assertEquals("Passenger should have nothing in it's log", passenger1.log.size(),0);
+		assertEquals("Passenger should have nothing in it's log", passenger2.log.size(),0);
+		assertEquals("Bus should have no passengers in his list",busrole.passengers.size(),0);
+		assertFalse("Bus should have no events in its scheduler",busrole.pickAndExecuteAnAction());
+		
+		busrole.setCapacity(5); //can fit 5 people; 
+		busrole.setFare(10); //fare is 10
+		busrole.currentbusstop = busstop; 
+		busrole.RouteA = busroute;
+		busrole.setCurrentStop("Stop1");
+		busrole.setBusMap(citymap);
+	}
 
 
 

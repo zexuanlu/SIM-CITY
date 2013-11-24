@@ -2,16 +2,20 @@ package simcity;
 import java.awt.*;
 import java.util.ArrayList; 
 import java.util.List; 
+
 import agent.Agent; 
 import simcity.gui.BusStopGui;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
 
-public class BusStopAgent extends Agent implements BusStop{ //do i have to make it an agent? 
+public class BusStopAgent extends Agent implements BusStop{//do i have to make it an agent? 
 	public List <Passenger> passengers; 
 	public List <myBus> busses; //already filled in beforehand
 	private BusStopGui myGui = null; 
+	int scale = 20; 
+	
+	public String direction = null; 
 	
 	private class myBus{
 		public Bus bus; 
@@ -31,9 +35,6 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 		passengers = new ArrayList<Passenger>();
 		busses = new ArrayList<myBus>();
 	}
-	
-
-	
 	
 	public void msgBusLeaving(Bus b){
 		for (myBus bu: busses){
@@ -120,5 +121,14 @@ public class BusStopAgent extends Agent implements BusStop{ //do i have to make 
 	public Dimension getDim(){
 		return myGui.getDim();
 	}
+	
+	public void setDirection(String s){
+		direction = s; 
+	}
+	
+	public String getDirection(){
+		return direction; 
+	}
+
 	
 }

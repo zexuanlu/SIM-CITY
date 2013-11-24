@@ -1,5 +1,4 @@
 package simcity;
-import java.awt.*;
 import java.util.*;
 import java.awt.Dimension;
 
@@ -10,6 +9,8 @@ import simcity.interfaces.Bus;
 public class CityMap {
 	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
 	//bus information
+	
+	Map<Bus, ArrayList<BusStop>> routes = new HashMap<Bus, ArrayList<BusStop>>();
 	public Map<String,BusStop> busstops = new HashMap<String,BusStop>();  //map of name of stop to 
 	public Map<BusStop,Dimension> dimensions = new HashMap<BusStop,Dimension>();
 	public Map<BusStop, Bus> busses = new HashMap<BusStop, Bus>();
@@ -21,17 +22,19 @@ public class CityMap {
 	public BusRoute generateBusInformation(String destination, int originx, int originy){
 		BusRoute b = new BusRoute();
 		
-		b.busstop = getClosestStop(originx, originy);
-		b.busStopX = getDimension(b.busstop).width; 
-		b.busStopY = getDimension(b.busstop).height;
+
 		
 		Dimension destdim = simMap.get(destination);
 		BusStop destStop = getClosestStop(destdim.width, destdim.height);
 		b.destination = getStopName(destStop);
 		b.destinationX = dimensions.get(destStop).width;
 		b.destinationY = dimensions.get(destStop).height; 
+		b.bus = busses.get(destStop);
 		
-		b.bus = busses.get(b.busstop);
+		b.busstop = getClosestStopinRoute(originx, originy,b.bus);
+		b.busStopX = getDimension(b.busstop).width; 
+		b.busStopY = getDimension(b.busstop).height;
+		
 		
 		return b;
 	}
@@ -46,7 +49,7 @@ public class CityMap {
 	}
 	
 	private BusStop getClosestStop(int startx, int starty){
-
+		
 		BusStop closest = null; 
 		int tempdiff; //kinda weird but I set it as the biggest for comparison reasons
 		int numdiff = 1000000; 
@@ -62,8 +65,24 @@ public class CityMap {
 		return closest; 
 	}
 	
+private BusStop getClosestStopinRoute(int startx, int starty,Bus b){
+		ArrayList<BusStop> broute = routes.get(b);
+		BusStop closest = null; 
+		int tempdiff = 0; 
+		int numdiff = 10000; 
+		for (BusStop br: broute){
+			Dimension d = dimensions.get(br);
+			tempdiff = tempdiff + Math.abs(d.width - startx);
+			tempdiff = tempdiff + Math.abs(d.height - starty);
+			if (tempdiff < numdiff){
+				numdiff = tempdiff; 
+				closest = br;
+			}
+		}
+		return closest; 
 
-	    
+	}
+	
     public Dimension getDimension(BusStop bs){
     	return dimensions.get(bs);
     }
@@ -73,16 +92,21 @@ public class CityMap {
 	}
 	public void addBusStop(String s, BusStop b){
 		busstops.put(s, b);
+		dimensions.put(b, b.getDim());
 	}
 	
 	public void addBus(BusStop bs, Bus b){
 		busses.put(bs, b);
+		if (routes.containsKey(b)){
+			routes.get(b).add(bs);
+		}
+		else {
+			ArrayList<BusStop> m = new ArrayList<BusStop>();
+			m.add(bs);
+			routes.put(b, m);
+		}
 	}
 
-	public void addBusStopDim(BusStop b, Dimension d){
-		dimensions.put(b, d);
-	}
-	
 	public int getNumBusStops(){
 		return busstops.size();
 	}

@@ -5,6 +5,7 @@ import simcity.gui.PassengerGui;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
+import simcity.interfaces.Person; 
 
 import java.util.concurrent.Semaphore;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.Semaphore;
 public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MADE AGENT SO THAT IT WORKS
 	private Semaphore atStop = new Semaphore(0,true);
 	PassengerGui myGui = null; 
+	Person myPerson; 
 	public CityMap citymap = new CityMap(); 
 	String Destination; //eventual place that he wants to get to
 	double Cash; // amount of money he has
@@ -31,9 +33,17 @@ public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MAD
 		Cash = 100; 
 	}
 	
+	public PassengerRole(String name,Person p){
+		super();
+		this.name = name; 
+		state= State.none; 
+		Cash = 100; 
+		myPerson = p; 
+	}
 	
 	//Messages 
 	public void msgHereIsPrice(Bus b, double fare){
+		
 		busroute.fare = fare;  //should I first check if it's the correct bus? 
 		action = Action.toPay; 
 		stateChanged();
@@ -89,13 +99,14 @@ public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MAD
 	public void askBus() {
 		state = State.asked; 
 		atStop.drainPermits();
-		myGui.GoToBusStop(busroute.busStopX, busroute.busStopY);
-		try{
-			atStop.acquire();
-		}catch (InterruptedException e) {
-			e.printStackTrace();
+		if (myGui != null){
+			myGui.GoToBusStop(busroute.busStopX, busroute.busStopY);
+			try{
+				atStop.acquire();
+			}catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		
 		if (busroute.busstop.isBusAtStop(busroute.bus)){ //if the bus is at the stop send the message to the bus
 			print("Passenger asked to come on bus");
 			busroute.bus.msgCanIComeOnBus(this);
@@ -109,6 +120,7 @@ public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MAD
 	
 	public void payFare(){
 		if (Cash >= busroute.fare){
+		//	myPerson.msgAddMoney(-(int)busroute.fare);
 			Cash = Cash - busroute.fare; 
 			state = State.paid; 
 			print("Passenger paid fare");
@@ -122,14 +134,19 @@ public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MAD
 	
 	public void boardBus(){
 		state = State.onBus; 
-		myGui.GoOnBus();
+		if (myGui != null){
+			myGui.GoOnBus();
+		}
 	}
 	
 	public void LeaveBus(){
 		state = State.none; 
-		myGui.LeaveBus(busroute.destinationX, busroute.destinationY, citymap.getDestination(Destination).width, citymap.getDestination(Destination).height);
+		if (myGui != null){
+			myGui.LeaveBus(busroute.destinationX, busroute.destinationY, citymap.getDestination(Destination).width, citymap.getDestination(Destination).height);
+		}
 		print("Passenger leaving bus");
 		busroute.bus.msgLeaving(this);
+	//	myPerson.msgFinishedEvent(this);
 	}
 	
 	//accessors/setters 

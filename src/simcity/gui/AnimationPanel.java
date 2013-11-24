@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class AnimationPanel extends JPanel implements ActionListener {
 	
-    private final int WINDOWX = 600;
-    private final int WINDOWY = 600;
+    private final int WINDOWX = 640;
+    private final int WINDOWY = 480;
     private Image bufferImage;
     private Dimension bufferSize;
 
@@ -42,20 +42,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
         
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
-        g2.fillRect(00,00,80,160); 
-        g2.fillRect(80, 80, 360,80);
-        g2.fillRect(440,80, 80, 400);
-        g2.fillRect(160, 480, 360, 80);
-        g2.fillRect(80, 160, 80, 400);
-
-
-
+        g2.fillRect(280, 0, 60, 480);
+        g2.fillRect(0, 220, 640, 60);
         
         //draw out random buildings
         g2.setColor(Color.GRAY);
-        g2.fillRect(550, 100, 50, 100);
-        
-        g2.fillRect(200, 400, 100, 50);
+        //g2.fillRect(550, 100, 50, 100); 
+        //g2.fillRect(200, 400, 100, 50);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
