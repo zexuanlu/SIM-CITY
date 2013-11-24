@@ -138,6 +138,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void leaveBank(){
 		bt.msgLeavingBank(this);
 		goToLocation("Outside");
+		//person.finishedEvent(this);
 		s = state.none;
 	}
 	
