@@ -1,7 +1,14 @@
 package market.test;
 
 import market.MarketCustomerRole;
+import person.Location;
+import person.PersonAgent;
+import person.Position;
+import person.SimEvent;
+import person.Location.LocationType;
+import person.SimEvent.EventType;
 import person.interfaces.*;
+import person.test.mock.PersonMock;
 import market.MarketCustomerRole.state;
 import market.Food;
 import market.gui.MarketCustomerGui;
@@ -15,18 +22,22 @@ public class CustomerTest extends TestCase {
 
 	EventLog log = new EventLog();
 	MarketCustomerRole customer;
-	Person p;
+	PersonMock p;
 	MockCashier cashier;
 	MarketCustomerGui customerGui;
+	List<Location> l;
 	
 	public void setUp() throws Exception{
 		super.setUp();	
+		p = new PersonMock("person");
 		customer = new MarketCustomerRole(p, "customer");
 		cashier = new MockCashier("cashier");
 		customerGui = new MarketCustomerGui();
+
 	}
 	
 	public void testNormalCustomerCashierCase(){
+
 		customer.addFood("Steak", 2);
 		
 		customer.addFood("Chicken", 2);
@@ -88,6 +99,9 @@ public class CustomerTest extends TestCase {
 		
 		assertTrue("employee should contain a customer with state == collected. It doesn't.",
 				customer.s == state.collected);
+		
+		assertTrue("person should return a string with word Youve finished your role and have returned to your PersonAgent, but the last event return "
+				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Youve finished your role and have returned to your PersonAgent"));
 		
 	}
 	

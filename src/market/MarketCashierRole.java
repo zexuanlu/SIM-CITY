@@ -127,6 +127,17 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
+		
+		if(!truck.isEmpty()){
+			for(Myrest rest: myrest){
+				if(rest.s1 == state1.ordering){
+					TakeOrderFromCook(rest, truck.get(0));
+					return true;
+				}
+			} 
+		}
+
+		
 		for(Mycustomer customer: mycustomer){
 			if(customer.s == state.ordering){
 				TakeOrder(customer);
@@ -152,14 +163,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			}
 		}
 		// end of in market scenario
-		if(!truck.isEmpty()){
-			for(Myrest rest: myrest){
-				if(rest.s1 == state1.ordering){
-					TakeOrderFromCook(rest, truck.get(0));
-					return true;
-				}
-			} 
-		}
 
 		return false;
 	}

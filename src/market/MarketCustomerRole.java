@@ -17,10 +17,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public List<Food> Receivedfood = new ArrayList<Food>();
 	double bill = 0;
 	int seatNumber;
-	public double money = 30;
+	public double money;
+	Person p;
 	
 	public MarketCustomerRole(Person person, String name){
 		super(person);
+		this.p = person;
 	}
 	
 	private Semaphore atTable = new Semaphore(0,true);
@@ -35,6 +37,14 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	public void addFood(String name, int amount){
 		food.add(new Food(name, amount));
+	}
+    
+    public void setMoney(double m){
+		money = m;
+	}
+	
+	public void setFoodList(List<Food> f){
+		food = f;
 	}
 	
 	public void setGui(MarketCustomerGui gui){
@@ -119,7 +129,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	void Wait(){
-		customerGui.DoGoToWaitingArea(seatNumber);/////!!!!!!!!!!!!!!!!!!!
+		customerGui.DoGoToWaitingArea(seatNumber);
 		s = state.GoWaiting;
 	}
 
@@ -138,6 +148,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	void CollectandLeave(){
 		s = state.collected;
 		customerGui.DoLeave();
+		p.msgFinishedEvent(this, Receivedfood, money );
 	}
 
 
