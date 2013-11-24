@@ -226,6 +226,21 @@ public class SimCityGui extends JFrame{
 		 caragent2.startThread();
 		 caragent2.gotoPosition(90,250);
 		 
+		 aStarTraversal = new AStarTraversal(grid);
+		 CarAgent caragent3 = new CarAgent(aStarTraversal);
+		 CarGui cgui3 = new CarGui(caragent3,400,240);
+		 caragent3.setGui(cgui3);
+		 animationPanel.addGui(cgui3);
+		 caragent3.startThread();
+		 caragent3.gotoPosition(300,300);
+		 
+		 aStarTraversal = new AStarTraversal(grid);
+		 CarAgent caragent4 = new CarAgent(aStarTraversal);
+		 CarGui cgui4 = new CarGui(caragent4,297,410);
+		 caragent4.setGui(cgui4);
+		 animationPanel.addGui(cgui4);
+		 caragent4.startThread();
+		 caragent4.gotoPosition(300,50);
 		 
 
 
