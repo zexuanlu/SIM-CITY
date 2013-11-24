@@ -11,6 +11,8 @@ public interface BankTeller {
 	
 	public void msgLeavingBank(BankCustomer bc);
 	
+	public void msgNewDestination(String location);
+	
 	public void msgDepositMoney(BankCustomer bc, double amount, int accountNumber);
 	
 	public void msgWithdrawMoney(BankCustomer bc, double amount, int accountNumber);
@@ -24,6 +26,8 @@ public interface BankTeller {
 	public void msgWithdrawDone(double balance, double money, BankCustomer bc);
 	
 	public void msgLoanGranted(double money, double debt, BankCustomer bc);
+	
+	public void msgLoanFailed(BankCustomer bc);
 		
 	public void msgAtDestination();
 }

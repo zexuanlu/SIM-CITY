@@ -10,8 +10,8 @@ public class MockBankTeller extends Mock implements BankTeller {
 		log = new EventLog();
 	}
 
-	public void msgBackToWork(BankHost bh){
-		log.add(new LoggedEvent("Received msgBackToWork from Person"));
+	public void msgNewDestination(String location){
+		log.add(new LoggedEvent("Received msgNewDestination from BankHost"));
 	}
 	
 	public void msgAtDestination(){
@@ -53,7 +53,7 @@ public class MockBankTeller extends Mock implements BankTeller {
 		log.add(new LoggedEvent("Received msgLoanGranted from BankDatabase"));
 	}
 	
-	public void msgDoneWithWork(double pay){
-		log.add(new LoggedEvent("Received msgDoneWithWork from BankTimeCard"));
+	public void msgLoanFailed(BankCustomer bc){
+		log.add(new LoggedEvent("Received msgLoanFailed from BankDatabase"));
 	}
 }

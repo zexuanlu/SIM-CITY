@@ -11,12 +11,12 @@ public class TimeCard extends Agent {
 	public void msgBackToWork(Person person, Role role) {
 		for(Role r : roles){
 			if(r == role){
-				myRoles.add(new MyRole(/*person,*/ role, roleState.replacement));
+				myRoles.add(new MyRole(person, role, roleState.replacement));
 				stateChanged();
 				return;
 			}
 		}
-		myRoles.add(new MyRole(/*person,*/ role, roleState.newWorker));
+		myRoles.add(new MyRole(person, role, roleState.newWorker));
 		stateChanged();
 		return;
 	}
@@ -48,32 +48,34 @@ public class TimeCard extends Agent {
 	
 	private void endOfDay(){
 		for(Role r : roles){
-			//r.getPerson().msgDoneWithWork(r, 500.00);
+			r.getPerson().msgAddMoney(500.00);
+			r.getPerson().msgGoOffWork(r);
 		}
 		roles.clear();
 	}
 	
 	private void goBackToWork(MyRole role){
-		//role.person.readyToWork(role.role);
+		role.person.msgReadyToWork(role.role);
 		myRoles.remove(role);
 		roles.add(role.role);
 	}
 	
 	private void goOffWork(MyRole role){
-		//double pay = 500.00;
-		//role.person.msgDoneWithWork(role.role, pay);
-		//role.role.switchPerson(Person person);
+		double pay = 500.00;
+		role.person.msgAddMoney(pay);
+		role.person.msgGoOffWork(role.role);
+		role.role.switchPerson(role.person);
 		myRoles.remove(role);
 	}
 	
 	public class MyRole{
 		public Role role;
 		public roleState rs;
-		//public Person person;
-		public MyRole(/*Person person,*/ Role role, roleState rs){
+		public Person person;
+		public MyRole(Person person, Role role, roleState rs){
 			this.role = role;
 			this.rs = rs;
-			//this.person = person;
+			this.person = person;
 		}
 	}
 	enum roleState {replacement, newWorker, endOfDay}

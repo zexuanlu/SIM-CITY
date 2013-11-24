@@ -19,7 +19,6 @@ import agent.*;
 public class BankTellerRole extends Role implements BankTeller {
 
 	//Data
-	//Person person;
 	public EventLog log;
 	String name;
 	public List<Task> tasks;
@@ -27,18 +26,25 @@ public class BankTellerRole extends Role implements BankTeller {
 	public BankHost bh;
 	public BankCustomer bc;
 	public BankTellerGui gui;
+	String destination;
 	Semaphore movement = new Semaphore(0, true);
 	public state s;
-	public enum state {working, backToWork, goingOffWork, none}
+	public enum state {working, backToWork, none, haveDestination}
 	
 	public BankTellerRole(Person person, String name){
 		super(person);
 		this.name = name;
 		log = new EventLog();
 		tasks = new ArrayList<Task>();
-		s = state.working;
+		s = state.none;
 	}
 	//Messages
+	public void msgNewDestination(String location){
+		log.add(new LoggedEvent("Received msgNewDestination from BankHost"));
+		s = state.haveDestination;
+		destination = location;
+		stateChanged();
+	}
 	
 	public void msgINeedAccount(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgINeedAccount from BankCustomer"));
@@ -118,6 +124,16 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
+	public void msgLoanFailed(BankCustomer bc){
+		log.add(new LoggedEvent("Received msgLoanFailed from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("getLoan")){
+				t.ts = taskState.failed;
+				stateChanged();
+			}
+		}
+	}
+	
 	public void msgLeavingBank(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgLeavingBank from BankCustomer"));
 		this.bc = null;
@@ -132,6 +148,17 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		if(s == state.haveDestination){
+			goToLocation(destination);
+			s = state.working;
+			return true;
+		}
+		for(Task t : tasks){
+			if(t.ts == taskState.failed){
+				loanFailed(t);
+				return true;
+			}
+		}
 		for(Task t : tasks){
 			if(t.ts == taskState.completed){
 				switch(t.type){
@@ -152,10 +179,6 @@ public class BankTellerRole extends Role implements BankTeller {
 				case "getLoan": getLoan(t); return true;
 				}
 			}
-		}
-		if(s == state.goingOffWork && bc == null){
-			doneWithWork();
-			return true;
 		}
 		if(s == state.backToWork){
 			informHost();
@@ -203,17 +226,15 @@ public class BankTellerRole extends Role implements BankTeller {
 		bd.msgLoanPlease(bc, t.amount, t.accountNumber, this);
 		t.ts = taskState.waiting;
 	}
-	private void loanMade(Task t){
-		bc.msgLoanGranted(t.amount, t.balance);
+	
+	private void loanFailed(Task t){
+		bc.msgLoanFailed();
 		tasks.remove(t);
 	}
 	
-	private void doneWithWork(){
-		goToLocation("Outside");
-		//person.addMoney(pay);
-		//person.deactivateRole(this);
-		//Person.getBankTimeCard().msgOffWork(this);
-		s = state.none;
+	private void loanMade(Task t){
+		bc.msgLoanGranted(t.amount, t.balance);
+		tasks.remove(t);
 	}
 	
 	private void informHost(){
@@ -261,5 +282,5 @@ public class BankTellerRole extends Role implements BankTeller {
 			ts = taskState.requested;
 		}
 	}
-	public enum taskState {requested, waiting, completed}
+	public enum taskState {requested, waiting, completed, failed}
 }
