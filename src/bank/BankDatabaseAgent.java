@@ -107,8 +107,13 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			requests.remove(r);
 		}
 		if(r.type.equals("getLoan")){
-			r.a.debt = r.amount;
-			r.bt.msgLoanGranted(r.amount, r.a.debt, r.bc);
+			if(r.a.debt == 0 && r.a.balance > r.amount/4){
+				r.a.debt = r.amount;
+				r.bt.msgLoanGranted(r.amount, r.a.debt, r.bc);
+			}
+			else{
+				r.bt.msgLoanFailed(r.bc);
+			}
 			requests.remove(r);
 		}
 }

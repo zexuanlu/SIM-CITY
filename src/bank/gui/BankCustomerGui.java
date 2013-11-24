@@ -23,10 +23,10 @@ public class BankCustomerGui implements Gui{
 
 	public BankCustomerGui(BankCustomer c, BankAnimationPanel gui){ //HostAgent m) {
 		bc = c;
-		xPos = -20;
-		yPos = 300;
-		xDestination = -20;
-		yDestination = 300;
+		xPos = 200;
+		yPos = -20;
+		xDestination = 200;
+		yDestination = -20;
 		this.gui = gui;
 		locations.put("Host", new Dimension(320,80));
 		locations.put("Teller1", new Dimension(40, 340));
@@ -40,6 +40,7 @@ public class BankCustomerGui implements Gui{
 		locations.put("Teller9", new Dimension(520, 340));
 		locations.put("Teller10", new Dimension(580, 340));
 		locations.put("Outside", new Dimension(280, -20));
+		gui.addGui(this);
 	}
 
 	public void updatePosition() {

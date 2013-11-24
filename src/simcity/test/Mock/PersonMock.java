@@ -1,20 +1,22 @@
-package person.test.mock;
+package simcity.test.Mock;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import agent.Role;
-import person.SimEvent;
-import person.Position;
-import person.interfaces.Person;
+import simcity.SimEvent;
+import simcity.Location;
+import simcity.Position;
+import simcity.interfaces.Person;
 
 public class PersonMock extends Mock implements Person {
 	
 	public EventLog log = new EventLog();
 	public int hunger;
 	public int currentTime;
-	public Wallet wallet = new Wallet(100.00, 100.00);
+	public Wallet wallet;
 	public List<String> groceryList = new ArrayList<String>();
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
 	public List<Role> roles = new ArrayList<Role>();
@@ -57,7 +59,7 @@ public class PersonMock extends Mock implements Person {
 		
 	}
 	@Override
-	public void msgAddMoney(double money) { //add money back to the person's wallet
+	public void msgAddMoney(int money) { //add money back to the person's wallet
 		log.add(new LoggedEvent("Cash has been added to your personagent's wallet to the tune of "+money+" dollars"));
 		wallet.setOnHand(money);
 	}	
@@ -84,28 +86,28 @@ public class PersonMock extends Mock implements Person {
 	}
 	public class Wallet {
 		
-		private double onHand;
-		private double inBank;
-		private double balance; 
+		private int onHand;
+		private int inBank;
+		private int balance; 
 
-		Wallet(double oh, double ib){
+		Wallet(int oh, int ib){
 			this.onHand = oh;
 			this.inBank = ib;
 			this.balance = oh + ib;
 		}
-		public double getOnHand(){
+		public int getOnHand(){
 			return onHand;
 		}
-		public double getInBank(){
+		public int getInBank(){
 			return inBank;
 		}
-		public double getBalance(){
+		public int getBalance(){
 			return balance;
 		}
-		public void setOnHand(double newAmount){
+		public void setOnHand(int newAmount){
 			onHand += newAmount;
 		}
-		public void setInBank(double newAmount){
+		public void setInBank(int newAmount){
 			inBank += newAmount;
 		}
 	}
