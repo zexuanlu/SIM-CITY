@@ -27,7 +27,7 @@ import bank.*;
  */
 public class CityMapTest extends TestCase{
 
-	PersonAgent person;
+	/*PersonAgent person;
 	List<Location> locs; 
 	Bank bank;
 	Restaurant cr;
@@ -74,6 +74,6 @@ public class CityMapTest extends TestCase{
 				person.cityMap.chooseByType(LocationType.Restaurant).getType() == LocationType.Restaurant);
 		assertTrue("Calling chooseByType for a market should return marketA, it does not", 
 				person.cityMap.chooseByType(LocationType.Market).getName() == "MarketA");
-	}
+	}*/
 
 }

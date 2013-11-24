@@ -33,7 +33,7 @@ public class PersonAgent extends Agent implements Person{
 	public boolean activeRole;
 
 	PersonGui gui = new PersonGui(this);
-	public List<Role> roles = new ArrayList<Role>();
+	public List<MyRole> roles = new ArrayList<MyRole>();
 
 	int accountNumber; 
 	public Wallet wallet;
@@ -52,17 +52,9 @@ public class PersonAgent extends Agent implements Person{
 	/* Home home; // home/apartment
 	Car car; // car if the person has a car */ //Who is in charge of these classes?
 
-	//ApartmentLandlord :  
-	//ApartmentTenant : msgGotHungry(), msgPayRent(), 
-	//HomeOwner  : msgGotHungry(), msgMaintainHome();
-	//MaintenancePerson : 
-
 	Semaphore going = new Semaphore(0, true);
 	Semaphore transport = new Semaphore(0, true);
 	Semaphore wait = new Semaphore(0, true);
-	/*HostRole hr = new HostRole(this.getName(), this);
-	Restaurant restaurant= new Restaurant("Work", hr, dest, LocationType.Restaurant);
-	Event e = new Event(restaurant, currentTime, currentTime, EventType.HostEvent);*/
 
 	public PersonAgent (String name, List<Location> l){
 		super();
@@ -71,9 +63,6 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
-		Location location = new Location("Work", LocationType.Restaurant, new Position(100, 100));
-		SimEvent e = new SimEvent(location, currentTime, currentTime, EventType.HostEvent);
-		//toDo.offer(e);
 	}
 	public PersonAgent () {
 		super();
@@ -81,13 +70,9 @@ public class PersonAgent extends Agent implements Person{
 	public PersonAgent (String name){
 		super();
 		this.name = name;
-		//this.name = name;
-		//this.cityMap = new CityMap(l);
 		activeRole = false;
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
-		currentTime = 7;
-		//toDo.offer(e);
 	}
 	/* Utilities */
 	public void setName(String name){this.name = name;}
@@ -96,7 +81,26 @@ public class PersonAgent extends Agent implements Person{
 
 	public boolean active() {return this.activeRole; }
 
+	public boolean containsRole(Role r){ 
+		for(MyRole role : roles){
+			if(role.role.getClass() == r.getClass()){
+				return true;
+			}
+		}
+		return false;
+	}
+	public MyRole getRoleOfType(Role r){
+		for(MyRole role : roles){
+			if(role.role.getClass() == r.getClass()){
+				return role;
+			}
+		}
+		return null;
+	}
+
 	public int getTime(){ return currentTime; }
+
+	public void setTime(int time){ currentTime = time; }
 
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
 
@@ -104,7 +108,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public void deactivateRole(Role r){ r.setActive(false); }
 
-	public void addRole(Role r){ roles.add(r); }
+	public void addRole(MyRole r){ roles.add(r); }
 
 	public void populateCityMap(List<Location> loc){ cityMap = new CityMap(loc); } 
 
@@ -139,16 +143,17 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgReadyToWork(Role r){
 		print("Recieved msgReadyToWork");
-		for(Role role : roles){
-			if(role == r ){
-				role.setActive(true);
+		for(MyRole role : roles){
+			if(role.role == r ){
+				role.isActive(true);
 			}
 		}
 		wait.release();
 		stateChanged();
 	}
-	public void msgGoOffWork(Role r /*, int pay*/){ 
-		//wallet.setOnHand(pay);
+	public void msgGoOffWork(Role r , int pay){ 
+		print("Recieved the message go off work");
+		wallet.setOnHand(pay);
 		deactivateRole(r);
 		activeRole = false;
 		stateChanged();
@@ -160,9 +165,10 @@ public class PersonAgent extends Agent implements Person{
 	public boolean pickAndExecuteAnAction() {
 		if(activeRole) {
 			print("Executing an event as a Role");
-			for(Role r : roles){
-				if(r.isActive() ){
-					return r.pickAndExecuteAnAction();
+			for(MyRole r : roles){
+				if(r.isActive){
+					print("Executing rule in role");
+					return r.role.pickAndExecuteAnAction();
 				}
 			}
 		}
@@ -170,7 +176,6 @@ public class PersonAgent extends Agent implements Person{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
 			if(nextEvent != null) {
 				print("Executing an event as a Person");
-				nextEvent.inProgress = true; //using in progress to keep these events in the pq like active not active 
 				goToAndDoEvent(nextEvent); 
 				toDo.remove(nextEvent);
 				return true;
@@ -186,7 +191,7 @@ public class PersonAgent extends Agent implements Person{
 		/*if(!isInWalkingDistance(e.location)){
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
-			if(!roles.contains(pRole)){
+			if(!containsRole(pRole)){
 				roles.add(pRole);
 			}
 			pRole.setActive(true);
@@ -209,7 +214,7 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){
 				activeRole = true;
 				CustomerRole cRole = new CustomerRole(this.name, this);
-				if(!roles.contains(cRole)){
+				if(!containsRole(cRole)){
 					roles.add(cRole);
 				}
 				rest.getHost().msgIWantFood(this, cRole);
@@ -220,7 +225,7 @@ public class PersonAgent extends Agent implements Person{
 				activeRole = true;
 				HostRole hostRole = new HostRole(this.name, this); 
 
-				if(!roles.contains(hostRole)){                                                       
+				if(!containsRole(hostRole)){                                                       
 
 					roles.add(hostRole);
 				}
@@ -236,39 +241,61 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){
 				activeRole = true;
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
-
-				if(!roles.contains(bcr)){                                                       
-					roles.add(bcr);
+				if(!containsRole(bcr)){   
+					MyRole newRole = new MyRole(bcr);
+					newRole.isActive(true);
+					roles.add(newRole);
+					bcr.msgGoToBank(e.directive, 10);
 				}
-				print("bank host "+bank.getHost()); 
-				bcr.msgGoToBank(e.directive, 10);
-				bcr.setActive(true);
+				else {
+					((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
+					getRoleOfType(bcr).isActive(true);
+				}
 			}
 			else if(e.type == EventType.TellerEvent){
 				activeRole = true;
-				BankTellerRole btr = new BankTellerRole(this, this.name);
+				BankTellerRole btr = new BankTellerRole(this, this.name);; 
+				if(!containsRole(btr)){ 
+					print("Teller not found");
+					MyRole newRole = new MyRole(btr);
+					bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
+					newRole.isActive(true);
+					roles.add(newRole);
 
-				if(!roles.contains(btr)){                                                       
-					roles.add(btr);
 				}
-				bank.getTimeCard().msgBackToWork(this, btr);
-				try {
+				else { 
+					bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
+					getRoleOfType(btr).isActive(true);
+				}
+
+				/*try {
 					wait.acquire();
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				btr.setActive(true);			
+				}*/		
 			}
 			else if(e.type == EventType.HostEvent){
 				activeRole = true;
 				BankHostRole bhr = new BankHostRole(this, this.name);
 
-				if(!roles.contains(bhr)){                                                       
-					roles.add(bhr);
+				if(!containsRole(bhr)){ 
+					print("Host not found");
+					MyRole newRole = new MyRole(bhr);
+					newRole.isActive(true);
+					bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
+					roles.add(newRole);
 				}
-				bank.getTimeCard().msgBackToWork(this, bhr);
-				bhr.setActive(true);
+				else { 
+					bank.getTimeCard().msgBackToWork(this, (BankHostRole)getRoleOfType(bhr).role); 
+					getRoleOfType(bhr).isActive(true);
+				}
+				/*try {
+					wait.acquire();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}*/
 			}
 		}
 		else if(e.location.type == LocationType.Market){
@@ -277,31 +304,60 @@ public class PersonAgent extends Agent implements Person{
 				activeRole = true;
 				MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
 
-				if(!roles.contains(mcr)){
-					roles.add(mcr);
+				if(!containsRole(mcr)){
+					print("Market customer not found");
+					MyRole newRole = new MyRole(mcr);
+					newRole.isActive(true);
+					roles.add(newRole);
+					((MarketCustomerRole)newRole.role).msgHello();
 				}
-				mcr.msgHello();
-				mcr.setActive(true);
+				else{ 
+					((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
+					getRoleOfType(mcr).isActive(true);
+				}
 			}
 			else if(e.type == EventType.EmployeeEvent){
 				activeRole = true;
 				MarketEmployeeRole mer = new MarketEmployeeRole(this, this.name);
 
-				if(!roles.contains(mer)){
-					roles.add(mer);
+				if(!containsRole(mer)){
+					MyRole newRole = new MyRole(mer);
+					newRole.isActive(true);
+					roles.add(newRole);
+					market.getTimeCard().msgBackToWork(this,(MarketEmployeeRole)getRoleOfType(mer).role );
 				}
-				market.getTimeCard().msgBackToWork(this, mer);
-				mer.setActive(true);
+				else {
+					market.getTimeCard().msgBackToWork(this,(MarketEmployeeRole)getRoleOfType(mer).role);
+					getRoleOfType(mer).isActive(true);
+				}
+				/*try {
+				wait.acquire();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
 			}
 			else if(e.type == EventType.CashierEvent){
 				activeRole = true;
 				MarketCashierRole mcash = new MarketCashierRole(this, this.name);
 
-				if(!roles.contains(mcash)){
-					roles.add(mcash);
+				if(!containsRole(mcash)){
+					MyRole newRole = new MyRole(mcash);
+					newRole.isActive(true);
+					roles.add(newRole);
+					market.getTimeCard().msgBackToWork(this,(MarketCashierRole)getRoleOfType(mcash).role );
 				}
-				market.getTimeCard().msgBackToWork(this,mcash);
-				mcash.setActive(true);
+				else{
+					market.getTimeCard().msgBackToWork(this,(MarketCashierRole)getRoleOfType(mcash).role);
+					getRoleOfType(mcash).isActive(true);
+				}
+
+				/*try {
+				wait.acquire();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
 			}
 		}
 		/*else if(e.location.type == LocationType.Home){
@@ -309,7 +365,7 @@ public class PersonAgent extends Agent implements Person{
 				Home home = (Home)e.location;
 				activeRole = true;
 				HomeOwnerRole hr = new HomeOwnerRole(this.name, this);
-				if(!roles.contains(hr)){
+				if(!containsRole(hr)){
 					roles.add(hr);
 				}
 				//set time and hunger 
@@ -320,7 +376,7 @@ public class PersonAgent extends Agent implements Person{
 				Home home = (Home)e.location;
 				activeRole = true;
 				MaintenenceRole mtr = new MaintenenaceRole(this.name, this);
-				if(!roles.contains(mtr)){
+				if(!containsRole(mtr)){
 					roles.add(mtr);
 				}
 				mtr.setActive(true);
@@ -330,7 +386,7 @@ public class PersonAgent extends Agent implements Person{
 				Apartment apt = (Apartment)e.location;
 				activeRole = true;
 				ApartmentTenantRole ten = new AprtmentTenantRole(this.name, this);
-				if(!roles.contains(ten)){
+				if(!containsRole(ten)){
 					roles.add(ten);
 				}
 				ten.msgUpdateVitals(hunger, currentTime);
@@ -340,7 +396,7 @@ public class PersonAgent extends Agent implements Person{
 				Apartment apt = (Apartment)e.location;
 				activeRole = true;
 				ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, this);
-				if(!roles.contains(llr)){
+				if(!containsRole(llr)){
 					roles.add(llr);
 				}
 				llr.setActive(true);
@@ -393,7 +449,16 @@ public class PersonAgent extends Agent implements Person{
 		}
 		return false;
 	}
+	public class MyRole{
+		public Role role;
+		boolean isActive;
 
+		MyRole(Role r){
+			role = r;
+			isActive = false;
+		}
+		void isActive(boolean tf){ isActive = tf; }
+	}
 	/* 
 	 * the cityMap will be the person's guide to locations in the city 
 	 * holds all methods relevant to choosing destinations by a few criteria
@@ -529,7 +594,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 	}
 	public class Wallet {
-		
+
 		private int onHand;
 		private int inBank;
 		private int balance; 
