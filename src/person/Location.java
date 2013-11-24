@@ -1,5 +1,9 @@
 package person;
 
+import person.interfaces.Host;
+import agent.Agent;
+import agent.Role;
+
 public class Location {
 
 	protected String name;

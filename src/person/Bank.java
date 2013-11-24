@@ -1,17 +1,22 @@
 package person;
 
-import agent.*;
-import bank.interfaces.*;
+import person.bank.interfaces.TimeCard;
+import person.Location.LocationType;
+import person.bank.BankHostRole;
+import person.bank.BankTimeCard;
+import person.bank.interfaces.BankHost;
+import person.interfaces.Host;
+
 public class Bank extends Location{
 	
 	private BankHost host;
-	private TimeCard timeCard;
+	private BankTimeCard timeCard;
 	
 	public Bank(String n, BankHost h, Position p, LocationType type){
 		super(n, type, p);
 		this.host = h;
 	}
-	public Bank(String n, TimeCard t, BankHost h, Position p, LocationType type){
+	public Bank(String n, BankTimeCard t, BankHost h, Position p, LocationType type){
 		super(n, type, p);
 		this.host = h;
 		this.timeCard = t;

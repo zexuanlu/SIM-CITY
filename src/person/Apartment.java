@@ -1,5 +1,7 @@
 package person;
 
+import person.Location.LocationType;
+
 public class Apartment extends Location{
 	
 	private PersonAgent host;

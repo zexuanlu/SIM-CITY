@@ -1,22 +1,25 @@
 package person;
 
-import market.MarketCashierRole;
-import market.interfaces.MarketCashier;
-import agent.*;
+import person.market.MarketTimeCard;
+import person.Location.LocationType;
+import person.bank.interfaces.TimeCard;
+import person.interfaces.Host;
 
 public class Market extends Location{
 	
-	private MarketCashier cashier;
+	private Host host;
 	private TimeCard timeCard;
-	
-	public Market(String n, Position p, LocationType type){
+	public Market(String n, Host h, Position p, LocationType type){
 		super(n, type, p);
+		this.host = h;
 	}
-	public Market(String n, MarketCashier cashier, TimeCard t, Position p, LocationType type){
+	public Market(String n, Host h, TimeCard t, Position p, LocationType type){
 		super(n, type, p);
+		this.host = h;
 		this.timeCard = t;
-		this.cashier = cashier;
 	}
 
+	public Host getHost(){ return host; }
 	public TimeCard getTimeCard(){ return timeCard; }
+	public void setHost(Host h){ this.host = h; }
 }
