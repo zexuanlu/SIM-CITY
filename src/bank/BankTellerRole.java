@@ -19,7 +19,6 @@ import agent.*;
 public class BankTellerRole extends Role implements BankTeller {
 
 	//Data
-	//Person person;
 	public EventLog log;
 	String name;
 	public List<Task> tasks;
@@ -29,7 +28,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	public BankTellerGui gui;
 	Semaphore movement = new Semaphore(0, true);
 	public state s;
-	public enum state {working, backToWork, goingOffWork, none}
+	public enum state {working, backToWork, none}
 	
 	public BankTellerRole(Person person, String name){
 		super(person);
@@ -153,10 +152,6 @@ public class BankTellerRole extends Role implements BankTeller {
 				}
 			}
 		}
-		if(s == state.goingOffWork && bc == null){
-			doneWithWork();
-			return true;
-		}
 		if(s == state.backToWork){
 			informHost();
 			return true;
@@ -208,32 +203,12 @@ public class BankTellerRole extends Role implements BankTeller {
 		tasks.remove(t);
 	}
 	
-	private void doneWithWork(){
-		goToLocation("Outside");
-		//person.addMoney(pay);
-		//person.deactivateRole(this);
-		//Person.getBankTimeCard().msgOffWork(this);
-		s = state.none;
-	}
-	
 	private void informHost(){
 		Do("Telling host that I am working");
 		bh.msgBackToWork(this);
 		s = state.working;
 	}
 	
-	private void goToLocation(String location){
-		if(gui != null){
-			gui.DoGoToLocation(location);
-			Do("Moving to " + location);
-			try{
-				movement.acquire();
-			}
-			catch(InterruptedException e){
-				e.printStackTrace();
-			}
-		}
-	}
 	//Utilities
 	public String toString(){
 		return name;
