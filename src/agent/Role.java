@@ -7,78 +7,78 @@ import java.util.concurrent.*;
 import person.interfaces.*;
 
 /**
- * Base class for simple agents
- */
+* Base class for simple agents
+*/
 public abstract class Role {
-	
-	public void switchPerson(Person person){
-		this.person = person;
-	}
-	
-	public Person getPerson(){
-		return person;
-	}
-	
-	private boolean isActive;
-	private Person person;
-	
+        
+        public void switchPerson(Person person){
+                this.person = person;
+        }
+        
+        public Person getPerson(){
+                return person;
+        }
+        
+        private boolean isActive;
+        private Person person;
+        
     protected Role(Person person) {
-    	isActive = false;
-    	this.person = person;
+            isActive = false;
+            this.person = person;
     }
 
     public boolean isActive() {
-    	
-    	return isActive;
+            
+            return isActive;
     }
     public void setActive(boolean active){
-    	
-    	this.isActive = active;
+            
+            this.isActive = active;
     }
 
     /**
-     * This should be called whenever state has changed that might cause
-     * the agent to do something.
-     */
+* This should be called whenever state has changed that might cause
+* the agent to do something.
+*/
     protected void stateChanged() {
         //This will call the agent's stateChanged function
     }
 
     /**
-     * Agents must implement this scheduler to perform any actions appropriate for the
-     * current state.  Will be called whenever a state change has occurred,
-     * and will be called repeated as long as it returns true.
-     *
-     * @return true iff some action was executed that might have changed the
-     *         state.
-     */
+* Agents must implement this scheduler to perform any actions appropriate for the
+* current state. Will be called whenever a state change has occurred,
+* and will be called repeated as long as it returns true.
+*
+* @return true iff some action was executed that might have changed the
+* state.
+*/
     public abstract boolean pickAndExecuteAnAction();
 
     /**
-     * Return agent name for messages.  Default is to return java instance
-     * name.
-     */
+* Return agent name for messages. Default is to return java instance
+* name.
+*/
     protected String getName() {
         return StringUtil.shortName(this);
     }
 
     /**
-     * The simulated action code
-     */
+* The simulated action code
+*/
     protected void Do(String msg) {
         print(msg, null);
     }
 
     /**
-     * Print message
-     */
+* Print message
+*/
     protected void print(String msg) {
         print(msg, null);
     }
 
     /**
-     * Print message with exception stack trace
-     */
+* Print message with exception stack trace
+*/
     protected void print(String msg, Throwable e) {
         StringBuffer sb = new StringBuffer();
         sb.append(getName());
@@ -91,4 +91,3 @@ public abstract class Role {
         System.out.print(sb.toString());
     }
 }
-
