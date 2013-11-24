@@ -117,6 +117,16 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
+	public void msgLoanFailed(BankCustomer bc){
+		log.add(new LoggedEvent("Received msgLoanFailed from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("getLoan")){
+				t.ts = taskState.failed;
+				stateChanged();
+			}
+		}
+	}
+	
 	public void msgLeavingBank(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgLeavingBank from BankCustomer"));
 		this.bc = null;
@@ -131,6 +141,12 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		for(Task t : tasks){
+			if(t.ts == taskState.failed){
+				loanFailed(t);
+				return true;
+			}
+		}
 		for(Task t : tasks){
 			if(t.ts == taskState.completed){
 				switch(t.type){
@@ -198,6 +214,12 @@ public class BankTellerRole extends Role implements BankTeller {
 		bd.msgLoanPlease(bc, t.amount, t.accountNumber, this);
 		t.ts = taskState.waiting;
 	}
+	
+	private void loanFailed(Task t){
+		bc.msgLoanFailed();
+		tasks.remove(t);
+	}
+	
 	private void loanMade(Task t){
 		bc.msgLoanGranted(t.amount, t.balance);
 		tasks.remove(t);
@@ -236,5 +258,5 @@ public class BankTellerRole extends Role implements BankTeller {
 			ts = taskState.requested;
 		}
 	}
-	public enum taskState {requested, waiting, completed}
+	public enum taskState {requested, waiting, completed, failed}
 }

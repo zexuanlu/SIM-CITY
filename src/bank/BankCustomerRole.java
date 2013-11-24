@@ -81,6 +81,12 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		this.s = state.atTeller;
 		stateChanged();
 	}
+	
+	public void msgLoanFailed(){
+		log.add(new LoggedEvent("Received msgLoanFailed from BankTeller"));
+		this.s = state.atTeller;
+		stateChanged();
+	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
 		if(s == state.needTeller){

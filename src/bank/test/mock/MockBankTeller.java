@@ -53,7 +53,7 @@ public class MockBankTeller extends Mock implements BankTeller {
 		log.add(new LoggedEvent("Received msgLoanGranted from BankDatabase"));
 	}
 	
-	public void msgDoneWithWork(double pay){
-		log.add(new LoggedEvent("Received msgDoneWithWork from BankTimeCard"));
+	public void msgLoanFailed(BankCustomer bc){
+		log.add(new LoggedEvent("Received msgLoanFailed from BankDatabase"));
 	}
 }
