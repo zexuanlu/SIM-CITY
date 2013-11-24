@@ -15,6 +15,10 @@ public abstract class Role {
 		this.person = person;
 	}*/
 	
+	/*public Person getPerson(){
+		return person;
+	}*/
+	
     protected Role() {
     }
 

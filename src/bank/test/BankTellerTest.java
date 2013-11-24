@@ -187,4 +187,8 @@ public class BankTellerTest extends TestCase {
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
 	}
+	
+	public void testEndOfDay(){
+		
+	}
 }

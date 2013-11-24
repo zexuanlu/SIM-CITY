@@ -5,6 +5,7 @@ import java.util.*;
 public class TimeCard extends Agent {
 	List<MyRole> myRoles = new ArrayList<MyRole>();
 	List<Role> roles = new ArrayList<Role>();
+	boolean endOfDay = false;
 	
 	public void msgBackToWork(/*Person person,*/ Role role) {
 		for(Role r : roles){
@@ -19,7 +20,16 @@ public class TimeCard extends Agent {
 		return;
 	}
 	
+	public void msgEndOfDay(){
+		endOfDay = true;
+		stateChanged();
+	}
+	
 	public boolean pickAndExecuteAnAction(){
+		if(endOfDay){
+			endOfDay();
+			return true;
+		}
 		for(MyRole r : myRoles){
 			if(r.rs == roleState.newWorker){
 				goBackToWork(r);
@@ -35,13 +45,20 @@ public class TimeCard extends Agent {
 		return false;
 	}
 	
-	void goBackToWork(MyRole role){
+	private void endOfDay(){
+		for(Role r : roles){
+			//r.getPerson().msgDoneWithWork(r, 500.00);
+		}
+		roles.clear();
+	}
+	
+	private void goBackToWork(MyRole role){
 		//role.person.readyToWork(role.role);
 		myRoles.remove(role);
 		roles.add(role.role);
 	}
 	
-	void goOffWork(MyRole role){
+	private void goOffWork(MyRole role){
 		//double pay = 500.00;
 		//role.person.msgDoneWithWork(role.role, pay);
 		//role.role.switchPerson(Person person);
@@ -58,5 +75,5 @@ public class TimeCard extends Agent {
 			//this.person = person;
 		}
 	}
-	enum roleState {replacement, newWorker}
+	enum roleState {replacement, newWorker, endOfDay}
 }
