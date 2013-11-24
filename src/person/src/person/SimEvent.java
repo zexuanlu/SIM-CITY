@@ -1,33 +1,34 @@
 package person;
 
-public class Event {
+public class SimEvent {
 	String directive;
     Location location;
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
     						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, 
-    						FreeEvent, BusEvent} 
+    						FreeEvent, BusEvent, AptTenantEvent, HomeOwnerEvent, LandlordEvent, 
+    						MaintenenaceEvent} 
     public EventType type;
     int priority; // for ordering in queue
     int start;
     int finish; 
     boolean inProgress; 
     
-    public Event(Location l, int p, int st, int et, EventType type ) {
+    public SimEvent(Location location, int priority, int start, int finish, EventType type ) {
     	
-    	this.location = l;
-    	this.priority = p;
-    	this.start = st;
-    	this.finish = et;
+    	this.location = location;
+    	this.priority = priority;
+    	this.start = start;
+    	this.finish = finish;
     	this.inProgress = false;
     	this.type = type;
     	
     }
     
-    Event(Location l, int st, int et, EventType type ) {
+    SimEvent(Location location, int start, int finish, EventType type ) {
     	
-    	this.location = l;
-    	this.start = st;
-    	this.finish = et;
+    	this.location = location;
+    	this.start = start;
+    	this.finish = finish;
     	this.inProgress = false;
     	this.priority = 5;
     	this.type = type;
@@ -37,7 +38,7 @@ public class Event {
      * create a time ambiguous event that will be ordered on the fly 
      * with regards to existing mandatory events
      */
-    public Event(String directive, Location l, int p, EventType t){ 
+    public SimEvent(String directive, Location l, int p, EventType t){ 
     	this.directive = directive;
     	this.location = l;
     	this.start = 0;

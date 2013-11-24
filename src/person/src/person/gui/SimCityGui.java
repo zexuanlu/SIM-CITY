@@ -31,10 +31,10 @@ public class SimCityGui extends JFrame implements ActionListener {
 		animationPanel.setMinimumSize(aniDim);
 		animationPanel.setMaximumSize(aniDim);
 		PersonAgent p = new PersonAgent("Grant");
-		p.startThread();
 		PersonGui pg = new PersonGui(p);
 		animationPanel.addGui(pg);
 		add(animationPanel);
+		p.startThread();
 
 	}
 	

@@ -8,10 +8,10 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import person.Event;
+import person.SimEvent;
 import person.PersonAgent;
 import person.Position;
-import person.Event.EventType;
+import person.SimEvent.EventType;
 import person.tests.mock.MockHostRole;
 /* Tests the ability of the PersonAgent to make decisions in his free time like: robbing the bank
  * buying a car, going home, going to eat, etc;
@@ -25,7 +25,7 @@ public class FreeTimeDecisionMaking extends TestCase{
 	public void setUp() throws Exception{
 		super.setUp();	
 		person = new PersonAgent("Grant", citySetUp.getLocationList());
-		List<Event> events = citySetUp.getEventList();
+		List<SimEvent> events = citySetUp.getEventList();
 		for(int i=0; i < events.size(); i++){
 			person.toDo.offer(events.get(i));
 		}

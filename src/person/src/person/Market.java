@@ -1,12 +1,14 @@
 package person;
 
+import person.market.MarketTimeCard;
 import person.Location.LocationType;
+import person.bank.interfaces.TimeCard;
 import person.interfaces.Host;
 
 public class Market extends Location{
 	
 	private Host host;
-	private TimeCard timeCard
+	private TimeCard timeCard;
 	public Market(String n, Host h, Position p, LocationType type){
 		super(n, type, p);
 		this.host = h;

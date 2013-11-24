@@ -2,7 +2,7 @@ package person.tests;
 
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
-import person.Event.EventType;
+import person.SimEvent.EventType;
 import person.Location.LocationType;
 import person.interfaces.*;
 
@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import person.Bank;
 import person.Location;
-import person.Event;
+import person.SimEvent;
 import person.Market;
 import person.PersonAgent;
 import person.Position;
@@ -39,20 +39,20 @@ public class EventComparatorTest extends TestCase{
 	Market market = new Market("B3", h3, p3, LocationType.Market);
 	
 	//Events to be enetered into pq
-	Event goToBank;
-	Event goToWork;
-	Event goToMarket;
-	Event goHome;
+	SimEvent goToBank;
+	SimEvent goToWork;
+	SimEvent goToMarket;
+	SimEvent goHome;
 	
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		goToBank = new Event("BANK", bank, 2, EventType.CustomerEvent);
+		goToBank = new SimEvent("BANK", bank, 2, EventType.CustomerEvent);
 		
-		goToWork = new Event(work, 1, 10, 14, EventType.HostEvent);
-		goToMarket = new Event("MARKET", market, 3, EventType.CustomerEvent);
+		goToWork = new SimEvent(work, 1, 10, 14, EventType.HostEvent);
+		goToMarket = new SimEvent("MARKET", market, 3, EventType.CustomerEvent);
 		
-		goHome = new Event(market, 1, 18, 24, EventType.HomeEvent);
+		goHome = new SimEvent(market, 1, 18, 24, EventType.HomeEvent);
 	}	
 	@Test
 	public void testEventScoring() {

@@ -5,29 +5,25 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import person.SimEvent;
-import person.HostRole;
+import person.Bank;
 import person.CustomerRole;
+import person.SimEvent;
 import person.Location;
-import person.Position;
 import person.PersonAgent;
+import person.Position;
+import person.Restaurant;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
-import person.Restaurant;
 import person.tests.mock.MockHostRole;
+import person.bank.BankCustomerRole;
+import person.bank.test.mock.*;
 
-/*
- * Tests the PersonAgent's ability to switch to a certain role and the entrance handshake between 
- * the person and the host of the particular location
- * 
- * @author Grant Collins
- */
-public class PersonRestaurantEntrance extends TestCase{
-
+public class BankHandshake extends TestCase{
+	
 	PersonAgent person;
-	MockHostRole host;
-	SimEvent goToRestaurant;
-	Location rest;
+	MockBankHost host;
+	SimEvent goToBank;
+	Bank bank;
 	Position p = new Position(10, 10);
 	
 	public void setUp() throws Exception{
@@ -35,12 +31,14 @@ public class PersonRestaurantEntrance extends TestCase{
 		super.setUp();	
 		person = new PersonAgent();
 		person.setName("Grant");
-		host = new MockHostRole("Gil");
-		rest = new Restaurant("Restaurant", host, p, LocationType.Restaurant);
-		goToRestaurant = new SimEvent(rest, 1, 9, 10, EventType.CustomerEvent);
-	}	
+		host = new MockBankHost("Gil");
+		bank = new Bank("Bank", host, p, LocationType.Bank);
+		goToBank = new SimEvent(bank, 1, 9, 10, EventType.CustomerEvent);
+	}
+	
 	@Test
 	public void testEntrance() {
+		
 		//Pre : Check event queue and activeRole
 		
 		assertTrue("The person we are testing (person) should have no events at creation, it does", person.toDo.peek() == null);
@@ -50,19 +48,17 @@ public class PersonRestaurantEntrance extends TestCase{
 		assertTrue("person's time should be 9, it is not", person.getTime() == 9);
 		
 		//Add the goToRestaurant event
-		person.toDo.offer(goToRestaurant);
-		assertTrue("person's toDo should now contain goToRestaurant, it does not", person.toDo.peek() == goToRestaurant);
+		person.toDo.offer(goToBank);
+		assertTrue("person's toDo should now contain goToRestaurant, it does not", person.toDo.peek() == goToBank);
 		assertTrue("person's scheduler should return true because we have added one event to his queue", person.pickAndExecuteAnAction());
 		
 		//Check customer role creation is correct
-		assertTrue("person should now have a customer role in his roles list, he does not", person.roles.get(0) instanceof CustomerRole);
+		assertTrue("person should now have a customer role in his roles list, he does not", person.roles.get(0) instanceof BankCustomerRole);
 		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).person == person);
 		
 		//Check that host for the restaurant received our message and both the person and the customer role
 		/*assertTrue("host's log should read: The customer role Grant has entered via the person Grant and is hungry, instead it reads: "+host.log.getLastLoggedEvent().getMessage(), 
 					host.log.containsString("The customer role Grant has entered via the person Grant and is hungry"));*/
-		assertTrue("host's people map should contain one entry for our person and role, it doesn't", 
-					host.people.get(person) == person.roles.get(0));
 		//the activity beyond the entrance up until exit is up to the person in charge of said role so we needn't test that
 		
 		//Now test whether the person scheduler runs or blocks

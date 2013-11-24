@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import person.Bank;
-import person.Event;
+import person.SimEvent;
 import person.Home;
 import person.Location;
 import person.Market;
 import person.PersonAgent;
 import person.Position;
 import person.Restaurant;
-import person.Event.EventType;
+import person.SimEvent.EventType;
 import person.Location.LocationType;
 import person.tests.mock.MockHostRole;
 
 public class CitySetUpHelper {
 	
 	List<Location> locs = new ArrayList<Location>();
-	List<Event> events = new ArrayList<Event>();
+	List<SimEvent> events = new ArrayList<SimEvent>();
 	//Bank bank = new Bank("Bank", new (BankHost)MockHostRole("BankHost"), new Position(10, 10), LocationType.Bank);
 	Restaurant cr = new Restaurant("Chinese", new MockHostRole("ChineseHost"), new Position(20, 20), LocationType.Restaurant);
 	Restaurant ir = new Restaurant("Italian", new MockHostRole("ItalianHost"), new Position(40, 40), LocationType.Restaurant);
@@ -27,9 +27,9 @@ public class CitySetUpHelper {
 	Market marketB = new Market("MarketB", new MockHostRole("MarketBHost"), new Position(30, 0), LocationType.Market);
 	Market marketC = new Market("MarketC", new MockHostRole("MarketCHost"), new Position(100, 0), LocationType.Market);
 	
-	Event goToWork = new Event(cr, 1, 9, 12, EventType.HostEvent); //should have a score of 2 + 1 = 3
-	Event goToRestaurant = new Event(fr, 3, 2, 3, EventType.CustomerEvent);//3 + 5 = 8;
-	Event goToMarket = new Event(marketA, 3, 4, 5, EventType.CustomerEvent);//3 + 3 = 6;
+	SimEvent goToWork = new SimEvent(cr, 1, 9, 12, EventType.HostEvent); //should have a score of 2 + 1 = 3
+	SimEvent goToRestaurant = new SimEvent(fr, 3, 2, 3, EventType.CustomerEvent);//3 + 5 = 8;
+	SimEvent goToMarket = new SimEvent(marketA, 3, 4, 5, EventType.CustomerEvent);//3 + 3 = 6;
 	
 	public CitySetUpHelper(){
 		
@@ -46,5 +46,5 @@ public class CitySetUpHelper {
 		events.add(goToRestaurant);
 	}
 	public List<Location> getLocationList(){ return locs; }
-	public List<Event> getEventList(){ return events; }
+	public List<SimEvent> getEventList(){ return events; }
 }

@@ -18,7 +18,7 @@ public class Location {
 	Location(){}//Blank constructor for copying etc
 	public String getName(){ return this.name; }
 	public LocationType getType(){ return this.type; }
-	protected Position getPosition(){ return this.position; }
+	public Position getPosition(){ return this.position; }
 	protected void setPosition(Position p){ this.position = p; } 
 
 }

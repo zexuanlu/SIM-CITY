@@ -5,42 +5,36 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import person.SimEvent;
-import person.HostRole;
 import person.CustomerRole;
+import person.SimEvent;
 import person.Location;
-import person.Position;
 import person.PersonAgent;
+import person.Position;
+import person.Restaurant;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
-import person.Restaurant;
 import person.tests.mock.MockHostRole;
 
-/*
- * Tests the PersonAgent's ability to switch to a certain role and the entrance handshake between 
- * the person and the host of the particular location
- * 
- * @author Grant Collins
- */
-public class PersonRestaurantEntrance extends TestCase{
-
+public class RoleSwitching extends TestCase{
 	PersonAgent person;
 	MockHostRole host;
 	SimEvent goToRestaurant;
 	Location rest;
-	Position p = new Position(10, 10);
+	Position p = new Position(0, 0);
+	Position start = new Position(0, 0);
 	
 	public void setUp() throws Exception{
 		
 		super.setUp();	
 		person = new PersonAgent();
 		person.setName("Grant");
+		person.currentLocation = start;
 		host = new MockHostRole("Gil");
 		rest = new Restaurant("Restaurant", host, p, LocationType.Restaurant);
 		goToRestaurant = new SimEvent(rest, 1, 9, 10, EventType.CustomerEvent);
-	}	
+	}
 	@Test
-	public void testEntrance() {
+	public void test() {
 		//Pre : Check event queue and activeRole
 		
 		assertTrue("The person we are testing (person) should have no events at creation, it does", person.toDo.peek() == null);
@@ -69,6 +63,11 @@ public class PersonRestaurantEntrance extends TestCase{
 		assertTrue("person's activeRole should be true, it is not", person.active());
 		assertFalse("person's scheduler should block if we run it because role's scheduler should return false", person.pickAndExecuteAnAction());
 		//the above test is vague atm but check the console and you should see "Killer, im running as a role" for a little extra verification 
+		
+		person.deactivateRole(person.roles.get(0));
+		person.toDo.offer(goToRestaurant);
+		assertTrue("person's scheduler should return true and go back to work now that we have deactivated the event and readded the event", 
+				person.pickAndExecuteAnAction());
 	}
 
 }

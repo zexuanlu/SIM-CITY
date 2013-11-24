@@ -6,10 +6,10 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import person.CustomerRole;
-import person.Event;
+import person.SimEvent;
 import person.Location;
 import person.PersonAgent;
-import person.Event.EventType;
+import person.SimEvent.EventType;
 import person.Location.LocationType;
 import person.tests.mock.MockCustomerRole;
 import person.tests.mock.MockHostRole;

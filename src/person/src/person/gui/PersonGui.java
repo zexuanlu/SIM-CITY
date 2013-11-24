@@ -7,40 +7,44 @@ import person.PersonAgent;
 import person.Position;
 
 public class PersonGui implements Gui{
-    private PersonAgent agent = null;
+	private PersonAgent agent = null;
 
-    private int xPos = 20, yPos = 20;//default player position
-    private int xDestination = 20, yDestination = 20;//default start position
-    public PersonGui(PersonAgent agent) {
-        this.agent = agent;
-    }
-	@Override
+	private int xPos = -20, yPos = -20;//default player position
+	private int xDestination = 20, yDestination = 20;//default start position
+	private boolean arrived; 
+	public PersonGui(PersonAgent agent) {
+		this.agent = agent;
+		arrived = false;
+	}
+
 	public void updatePosition() {
-        if (xPos < xDestination){ xPos++; }
-        else if (xPos > xDestination){ xPos--; }
+		if (xPos < xDestination){ xPos++; }
+		else if (xPos > xDestination){ xPos--; }
 
-        if (yPos < yDestination){ yPos++; }
-        else if (yPos > yDestination){ yPos--; }
-        
-        if(yPos == yDestination && xPos == xDestination){
-        	agent.msgAtDest(new Position(yPos, xPos));
-        }
+		if (yPos < yDestination){ yPos++; }
+		else if (yPos > yDestination){ yPos--; }
+
+		if(yPos == yDestination && xPos == xDestination && !arrived && xDestination != 20 && yDestination != 20){
+			arrived = true;
+			agent.msgAtDest(new Position(yPos, xPos));
+		}
 	}
 
-	@Override
 	public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+		g.setColor(Color.MAGENTA);
+		g.fillRect(xPos, yPos, 20, 20);
 	}
 
-	@Override
 	public boolean isPresent() {
 		return true;
 	}
-	
-	public void DoGoTo(Position p){
-		xDestination = p.getX();
-		yDestination = p.getY();
+
+	public void DoGoTo(){
+		System.out.println("Going to...");
+		xDestination = 100;//p.getX();
+		yDestination = 100;//p.getY();
+		System.out.println(xDestination);
+		arrived = false;
 	}
-	
+
 }

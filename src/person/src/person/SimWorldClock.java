@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
+ //msgEndOfDay()
 public class SimWorldClock {
 	Timer clock = new Timer();
 	List<PersonAgent> people;
 	int currentHour;
+	int endOfDay;
 
 	SimWorldClock(int currentHour, List<PersonAgent> people){
 		this.currentHour = currentHour;
@@ -25,6 +26,7 @@ public class SimWorldClock {
 			currentHour++;
 		}
 		else{ currentHour = 1; }
+
 		for(PersonAgent person : people){
 			person.msgNewHour(currentHour);
 		}

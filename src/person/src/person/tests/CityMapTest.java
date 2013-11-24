@@ -9,12 +9,12 @@ import org.junit.Test;
 
 import person.Bank;
 import person.BankHostRole;
-import person.Event;
+import person.SimEvent;
 import person.Location;
 import person.Location.LocationType;
 import person.Market;
 import person.PersonAgent;
-import person.Event.EventType;
+import person.SimEvent.EventType;
 import person.Position;
 import person.Restaurant;
 import person.interfaces.BankHost;
