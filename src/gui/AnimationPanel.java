@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class AnimationPanel extends JPanel implements ActionListener {
 	
-    private final int WINDOWX = 400;
-    private final int WINDOWY = 600;
+    private final int WINDOWX = 480;
+    private final int WINDOWY = 640;
     private static int fridgeX = 70;
     private static int fridgeY = 190;
     private static int stoveX = 100;
@@ -82,6 +82,10 @@ public class AnimationPanel extends JPanel implements ActionListener {
         // Drawing the bedroom
         g2.setColor(Color.LIGHT_GRAY);
         g2.fillRect(0, 230, 500, 450);
+        
+        // Drawing the bed
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(250, 350, 100, 150);
   
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -99,14 +103,14 @@ public class AnimationPanel extends JPanel implements ActionListener {
     public void addGui(HomeOwnerGui gui) {
         guis.add(gui);
     }
-/**
-    public void addGui(HostGui gui) {
+
+    public void addGui(ApartmentTenantGui gui) {
         guis.add(gui);
     }
-    public void addGui(WaiterGui gui){
+    public void addGui(MaintenanceGui gui){
     	guis.add(gui);
     }
-    public void addGui(FoodGui gui){
+    /**public void addGui(FoodGui gui){
     	guis.add(gui);
     }
     public void addGui(CookGui gui){

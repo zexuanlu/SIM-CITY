@@ -1,12 +1,12 @@
 package gui;
 
-import resident.HomeOwnerRole;
+import resident.ApartmentTenantRole;
 
 import java.awt.*;
 
-public class HomeOwnerGui implements Gui {
+public class ApartmentTenantGui implements Gui {
 
-    private HomeOwnerRole homeOwner = null;
+    private ApartmentTenantRole aptTenant = null;
     SimCityGui gui;
 
     private int xPos = 50, yPos = 50; // Default cook position
@@ -27,8 +27,8 @@ public class HomeOwnerGui implements Gui {
     private int bedX = 130;
     private int bedY = 170;
     
-    public HomeOwnerGui(HomeOwnerRole c, SimCityGui gui) {
-    	homeOwner = c;
+    public ApartmentTenantGui(ApartmentTenantRole c, SimCityGui gui) {
+    	aptTenant = c;
     	this.gui = gui;
     }
     
@@ -46,23 +46,23 @@ public class HomeOwnerGui implements Gui {
             yPos--;
         
         if (xPos == fridgeX && yPos == fridgeY) {
-        	homeOwner.msgAtFridge();
+        	aptTenant.msgAtFridge();
         }
         
         if (xPos == doorX && yPos == doorY) {
-        	homeOwner.msgAtDoor();
+        	aptTenant.msgAtDoor();
         }
         
         if (xPos == stoveX && yPos == stoveY) {
-        	homeOwner.msgAtStove();
+        	aptTenant.msgAtStove();
         }
         
         if (xPos == tableX && yPos == tableY) {
-        	homeOwner.msgAtTable();
+        	aptTenant.msgAtTable();
         }
         
         if (xPos == sinkX && yPos == sinkY) {
-        	homeOwner.msgAtSink();
+        	aptTenant.msgAtSink();
         }
 	}
 	

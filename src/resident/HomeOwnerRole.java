@@ -122,6 +122,7 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	private Timer cookingTimer = new Timer(); // Times the food cooking
 	private Timer eatingTimer = new Timer();
 	private Timer washingDishesTimer = new Timer();
+	private Timer sleepingTimer = new Timer();
 	private int houseNumber;
 	private String name;
 	private double myMoney;
@@ -391,7 +392,15 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	 */
 	private void sleep() {
 		// Gui goes to bed and timer begins to start sleeping
-		// Message update vitals and cook at home
+		homeGui.DoGoToBed();
+		
+		sleepingTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	updateVitals(3, 7);
+            }
+        }, 10000);
 	}
 		
 	private void checkFridge(MyPriority p) {
@@ -639,11 +648,30 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	
 	private void letHousekeeperIn(MyPriority p) {
 		toDoList.remove(p);
+		
+		homeGui.DoGoToFrontDoor();
+		
+		try {
+			atFrontDoor.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		housekeeper.msgPleaseComeIn(this, houseNumber);
 	}
 
 	private void payHousekeeper(MyPriority p) {
 		toDoList.remove(p);
+		
+		homeGui.DoGoToFrontDoor();
+		
+		try {
+			atFrontDoor.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if (myMoney >= (debt+maintenanceCost)) {
 			housekeeper.msgHereIsThePayment(this, debt+maintenanceCost);

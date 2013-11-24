@@ -1,14 +1,21 @@
 package resident;
 
-import java.util.*;
+import gui.MaintenanceGui;
 
+import java.util.*;
+import java.util.concurrent.Semaphore;
+
+import person.Location;
+import person.Position;
+import person.interfaces.Person;
 import resident.interfaces.HomeOwner;
 import resident.interfaces.MaintenancePerson;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
+import agent.Agent;
 import agent.Role;
 
-public class MaintenancePersonRole extends Role implements MaintenancePerson {
+public class MaintenancePersonRole extends Agent implements MaintenancePerson {
 	/**
 	 * Data for MaintenancePerson
 	 *
@@ -17,19 +24,22 @@ public class MaintenancePersonRole extends Role implements MaintenancePerson {
 	public EventLog log = new EventLog();
 	
 	// Constructor
-	public MaintenancePersonRole(String n) {
+	public MaintenancePersonRole(String n, Person p) {
 		super();
 		name = n;
+		person = p;
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
+	private Person person;
+	
 	public static class MyCustomer {
 		public HomeOwner customer;
 		private int houseNumber;
-		public enum MyCustomerState {NeedsMaintenance, GoingToMaintain, InMaintenance, Maintained, NeedsToPay, Paid}
+		public enum MyCustomerState {NeedsMaintenance, GoingToMaintain, InMaintenance, Maintaining, Maintained, NeedsToPay, Paid}
 		public MyCustomerState state;
 		public double amountOwed;
 		public double amountPaid;
@@ -43,6 +53,13 @@ public class MaintenancePersonRole extends Role implements MaintenancePerson {
 
 	public List<MyCustomer> homesToBeMaintained = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	private double maintenanceCost;
+	private Timer maintenanceTimer = new Timer();
+	
+	private MaintenanceGui maintainGui;
+	
+	public void setGui(MaintenanceGui m) {
+		maintainGui = m;
+	}
 	
 	// Getter for maintenance cost
 	public double getMaintenanceCost() {
@@ -56,6 +73,14 @@ public class MaintenancePersonRole extends Role implements MaintenancePerson {
 	
 	private String name;
 	private double myMoney;
+	
+	// Semaphores for housekeeper
+	private Semaphore atFridge = new Semaphore(0, true);
+	private Semaphore atFrontDoor = new Semaphore(0, true);
+	private Semaphore atTable = new Semaphore(0, true);
+	private Semaphore atSink = new Semaphore(0, true);
+	private Semaphore atStove = new Semaphore(0, true);
+	private Semaphore atBed = new Semaphore(0, true);
 	
 	/**
 	 * Messages for MaintenancePerson
@@ -91,6 +116,37 @@ public class MaintenancePersonRole extends Role implements MaintenancePerson {
 			}
 		}
 	}
+	
+	// For when the housekeeper is at the fridge
+	public void msgAtFridge() {
+		atFridge.release();
+	}
+	
+	// For when housekeeper is at the door
+	public void msgAtDoor() {
+		atFrontDoor.release();
+	}
+	
+	// For when the housekeeper is at the stove
+	public void msgAtStove() {
+		atStove.release();
+	}
+	
+	// For when the housekeeper has reached the dining table
+	public void msgAtTable() {
+		atTable.release();
+	}
+	
+	// For when the housekeeper has reached the sink
+	public void msgAtSink() {
+		atSink.release();
+	}
+	
+	// For when the housekeeper has reached the bed
+	public void msgAtBed() {
+		atBed.release();
+	}
+
 
 	/**
 	 * Scheduler for MaintenancePerson
@@ -134,25 +190,86 @@ public class MaintenancePersonRole extends Role implements MaintenancePerson {
 	private void goToHouse(MyCustomer c) {
 		log.add(new LoggedEvent("Going to maintain home.."));
 		print("Going to maintain home..");
-//		DoGoToCustomerHouse(c);
-		// Semaphore to indicate when at customer's house
+		
+		Location location = new Location("Customer's Home", Location.LocationType.Home, new Position(20,20));
+		
+		// GUI goes to customer's home, lets person agent know that no longer going to be a resident role
+		//person.msgAddEvent(new Event("Go to customer's home", location, 2, EventType.MaintenanceEvent));
+		
+		maintainGui.DoGoToFrontDoor(); // This is temporary. Will change once we have the full GUI up
+		
 		c.state = MyCustomer.MyCustomerState.GoingToMaintain;
 		
 		c.customer.msgReadyToMaintain();
 	}
 	
-	private void maintainHouse(MyCustomer c) {
+	private void maintainHouse(final MyCustomer c) {
 		log.add(new LoggedEvent("Maintaining home!"));
 		print("Maintaining home!");
 		
-		// Timer to maintain home
+		c.state = MyCustomer.MyCustomerState.Maintaining;
 		
-		c.state = MyCustomer.MyCustomerState.Maintained;
+		maintainGui.DoGoToBed();
+		try {
+			atBed.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		maintainGui.DoGoToFridge();
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		maintainGui.DoGoToSink();
+		try {
+			atSink.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		maintainGui.DoGoToStove();
+		try {
+			atStove.acquire(); 
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		maintainGui.DoGoToTable();
+		try {
+			atTable.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Timer to maintain home
+        maintenanceTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	c.state = MyCustomer.MyCustomerState.Maintained;
+            	maintainGui.DoGoToFrontDoor();
+            	try {
+					atFrontDoor.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	print("Done maintaining home!");
+            	stateChanged();
+            }
+        }, 5000);	
+		
 	}
 
-	private void letCustomerKnow(MyCustomer c) {
-//		maintenanceTimer.start{msgFinishedMaintenance(c)};
-		
+	private void letCustomerKnow(MyCustomer c) {		
 		log.add(new LoggedEvent("Finished maintaining " + c.customer.getName() + "'s home!"));
 		print("Finished maintaining " + c.customer.getName() + "'s home!");
 		c.customer.msgDoneMaintaining(maintenanceCost);

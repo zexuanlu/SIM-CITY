@@ -1,5 +1,7 @@
 package resident;
 
+import gui.ApartmentTenantGui;
+
 import java.text.DecimalFormat; 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import person.Event;
 import person.Location;
@@ -17,9 +21,10 @@ import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
+import agent.Agent;
 import agent.Role;
 
-public class ApartmentTenantRole extends Role implements ApartmentTenant {
+public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 	/**
 	 * Data for Apartment Tenant
 	 *
@@ -71,21 +76,30 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		}
 	}
 
-	private class MyFood {
+	public static class MyFood {
 		private String foodItem;
 		private int foodAmount;
 
-		MyFood(String f, int a) {
+		public MyFood(String f, int a) {
 			foodItem = f;
 			foodAmount = a;
+		}
+		
+		public String getFoodItem() {
+			return foodItem;
+		}
+		
+		public int getFoodAmount() {
+			return foodAmount;
 		}
 	}
 
 	public List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
-	private List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());
-	private Timer cookingTimer; // Times the food cooking
-	private Timer eatingTimer;
-	private Timer washingDishesTimer;
+	public List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());
+	private Timer cookingTimer = new Timer(); // Times the food cooking
+	private Timer eatingTimer = new Timer();
+	private Timer washingDishesTimer = new Timer();
+	private Timer sleepingTimer = new Timer();
 	private String name;
 	private double myMoney;
 	
@@ -105,6 +119,19 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	private static double rentCost = 100; // Static for now.
 	private ApartmentLandlord landlord;
 	private Person person;
+	private ApartmentTenantGui homeGui;
+	
+	public void setGui(ApartmentTenantGui g) {
+		homeGui = g;
+	}
+	
+	// All the gui semaphores
+	private Semaphore atFridge = new Semaphore(0, true);
+	private Semaphore atFrontDoor = new Semaphore(0, true);
+	private Semaphore waitForReturn = new Semaphore(0, true);
+	private Semaphore atStove = new Semaphore(0, true);
+	private Semaphore atTable = new Semaphore(0, true);
+	private Semaphore atSink = new Semaphore(0, true);
 	
 	public void setLandlord(ApartmentLandlord l) {
 		landlord = l;
@@ -114,10 +141,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 * Messages for Apartment Tenant
 	 * 
 	 */
-	public void msgUpdateVitals(int hunger, int time) {
+	public void updateVitals(int hunger, int timer) {
 		if (hunger >= hungerThreshold) {
-			myTime = time;
-			
 			// Add eating to the list of priorities that the resident has
 			toDoList.add(new MyPriority(MyPriority.Task.NeedToEat));
 			
@@ -164,6 +189,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	}
 
 	public void msgDoneGoingToMarket(List<MyFood> groceries) {		
+		waitForReturn.release();
+		
 		// If the customer has just finished going to the market, restock the fridge and then cook
 		log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
 		
@@ -180,6 +207,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	}
 
 	public void msgDoneEatingOut() {
+		waitForReturn.release();
+		
 		log.add(new LoggedEvent("I just finished eating out. I'm full now!"));
 		
 		print("I just finished eating out. I'm full now!");
@@ -203,6 +232,32 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		log.add(new LoggedEvent("I now have debt of $" + df.format(debt) + "."));
 		print("I now have debt of $" + df.format(debt) + ".");
 		stateChanged();
+	}
+	
+	// GUI semaphore release messages
+	// For when the home owner is at the fridge
+	public void msgAtFridge() {
+		atFridge.release();
+	}
+	
+	// For when home owner is at the door
+	public void msgAtDoor() {
+		atFrontDoor.release();
+	}
+	
+	// For when the home owner is at the stove
+	public void msgAtStove() {
+		atStove.release();
+	}
+	
+	// For when the home owner has reached the dining table
+	public void msgAtTable() {
+		atTable.release();
+	}
+	
+	// For when the home owner has reached the sink
+	public void msgAtSink() {
+		atSink.release();
 	}
 
 	/**
@@ -282,12 +337,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 //		log.add(new LoggedEvent("I have nothing else to do!"));
 //		print("I have nothing else to do!");
 //	}
-	
-	private void sleep() {
-		// Gui goes to bed and timer begins to start sleeping
-		// Message update vitals and cook at home
-	}
-	
+
 	private void payLandlord(MyPriority p) {
 		toDoList.remove(p);
 		
@@ -307,12 +357,32 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		}
 	}
 
+	private void sleep() {
+		// Gui goes to bed and timer begins to start sleeping
+		homeGui.DoGoToBed();
+		
+		sleepingTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	updateVitals(3, 7);
+            }
+        }, 10000);
+	}
+		
 	private void checkFridge(MyPriority p) {
 		toDoList.remove(p);
-
-//		DoGoToFridge(); // GUI goes to the fridge
+		
+		// GUI goes to the fridge
+		homeGui.DoGoToFridge();
 
 		// Semaphore to see if the GUI gets to the fridge
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
@@ -342,9 +412,9 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket));
 			
-			log.add(new LoggedEvent("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time."));
+			log.add(new LoggedEvent("I have enough money to go to the restaurant, and go to the market when I have time."));
 			
-			print("I don't have enough time to cook. I'm going to go to the restaurant instead, and go to the market when I have time.");
+			print("I have enough money to go to the restaurant, and go to the market when I have time.");
 		}
 	}
 	
@@ -354,7 +424,24 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
 		
 		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-		person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
+		//person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
+		
+		// GUI goes to market 
+		homeGui.DoGoToFrontDoor();
+		
+		try {
+			atFrontDoor.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			waitForReturn.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void goToMarket(MyPriority p) {
@@ -362,16 +449,42 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		
 		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
 		
-		// GUI goes to market, lets person agent know that no longer going to be a resident role
-		person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
+		Event event = new Event("Go to market", location, 2, EventType.MarketEvent);
+		
+		// Lets person agent know that no longer going to be a resident role
+		//person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
+		
+		// GUI goes to market 
+		homeGui.DoGoToFrontDoor();
+		
+		try {
+			atFrontDoor.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			waitForReturn.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void restockFridge(MyPriority p) {
 		toDoList.remove(p);
 
-//		DoGoToFridge(); // GUI will go to the fridge 
+		// GUI goes to the fridge
+		homeGui.DoGoToFridge();
 
-		// Semaphore to determine if GUI arrived at fridge
+		// Semaphore to see if the GUI gets to the fridge
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void cookFood(MyPriority p) {
@@ -405,38 +518,93 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			print("My fridge has no more " + maxChoice + ".");
 		}
 
-//		DoGoToStove(); // GUI animation to go to the stove and start cooking
-//
-//		// Semaphore to determine if the GUI has gotten to the stove location
-//
-//		cookingTimer.start{msgFoodDone()};
+		// GUI animation to go to the stove and start cooking
+		homeGui.DoGoToStove(); 
+
+		// Semaphore to determine if the GUI has gotten to the stove location
+		try {
+			atStove.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		print("Cooking food..");
+		
+        // Timer to cook the food
+        cookingTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	msgFoodDone();
+            }
+        }, 5000);
+        
+        homeGui.DoGoToHome();
 	}
 
 	private void eatFood(MyPriority p) {
 		toDoList.remove(p);
 
-//		DoGoToStove(); // GUI animation to go to stove
-//
-//		// Semaphore to determine if the GUI has gotten to the stove location
-//
-//		DoGoToDiningTable(); // GUI animation to go to the dining table
-//
-//		// Semaphore to determine if the GUI has gotten to the table location
-//
-//		eatingTimer.start{msgDoneEating()};
+		// GUI animation to go to the stove and start cooking
+		homeGui.DoGoToStove(); 
+
+		// Semaphore to determine if the GUI has gotten to the stove location
+		try {
+			atStove.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		homeGui.DoGoToTable(); // GUI animation to go to the dining table
+
+		// Semaphore to determine if the GUI has gotten to the table location
+		try {
+			atTable.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		print("Eating my food..");
+
+		// Timer to eat the food
+        eatingTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	msgDoneEating();
+            }
+        }, 8000);
+        
 		// person.hungerLevel = 0;
 	}
 
 	private void washDishes(MyPriority p) {
 		toDoList.remove(p);
 
-		toDoList.add(new MyPriority(MyPriority.Task.Washing));
+		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
+		toDoList.add(prior);
 
-//		DoGoToSink(); // GUI animation to go to the sink
-//
-//		// Semaphore to determine if the GUI has arrived at sink location
-//
-//		washingDishesTimer.start{msgDoneWashing(p)};
+		homeGui.DoGoToSink(); // GUI animation to go to the sink
+
+		// Semaphore to determine if the GUI has arrived at sink location
+		try {
+			atSink.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Timer to wash dishes
+        washingDishesTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	msgDoneWashing(prior);
+            	homeGui.DoGoToHome();
+            }
+        }, 2000);
 	}
 }

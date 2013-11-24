@@ -1,22 +1,22 @@
 package gui;
 
-import resident.HomeOwnerRole;
+import resident.MaintenancePersonRole;
 
 import java.awt.*;
 
-public class HomeOwnerGui implements Gui {
+public class MaintenanceGui implements Gui {
 
-    private HomeOwnerRole homeOwner = null;
+    private MaintenancePersonRole housekeeper = null;
     SimCityGui gui;
 
-    private int xPos = 50, yPos = 50; // Default cook position
-    private int xDestination = 50, yDestination = 50; // Default start position
+    private int xPos = 400, yPos = 50; // Default cook position
+    private int xDestination = 400, yDestination = 50; // Default start position
     
     private int homeX = 50;
     private int homeY = 50;
     private int fridgeX = 70;
     private int fridgeY = 170;
-    private int doorX = 400;
+    private int doorX = 430;
     private int doorY = 50;
     private int stoveX = 100;
     private int stoveY = 170;
@@ -24,11 +24,11 @@ public class HomeOwnerGui implements Gui {
     private int tableY = 170;
     private int sinkX = 130;
     private int sinkY = 170;
-    private int bedX = 130;
-    private int bedY = 170;
+    private int bedX = 250;
+    private int bedY = 350;
     
-    public HomeOwnerGui(HomeOwnerRole c, SimCityGui gui) {
-    	homeOwner = c;
+    public MaintenanceGui(MaintenancePersonRole c, SimCityGui gui) {
+    	housekeeper = c;
     	this.gui = gui;
     }
     
@@ -46,23 +46,27 @@ public class HomeOwnerGui implements Gui {
             yPos--;
         
         if (xPos == fridgeX && yPos == fridgeY) {
-        	homeOwner.msgAtFridge();
+        	housekeeper.msgAtFridge();
         }
         
         if (xPos == doorX && yPos == doorY) {
-        	homeOwner.msgAtDoor();
+        	housekeeper.msgAtDoor();
         }
         
         if (xPos == stoveX && yPos == stoveY) {
-        	homeOwner.msgAtStove();
+        	housekeeper.msgAtStove();
         }
         
         if (xPos == tableX && yPos == tableY) {
-        	homeOwner.msgAtTable();
+        	housekeeper.msgAtTable();
         }
         
         if (xPos == sinkX && yPos == sinkY) {
-        	homeOwner.msgAtSink();
+        	housekeeper.msgAtSink();
+        }
+        
+        if (xPos == bedX && yPos == bedY) {
+        	housekeeper.msgAtBed();
         }
 	}
 	

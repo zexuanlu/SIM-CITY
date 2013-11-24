@@ -5,12 +5,14 @@ import java.text.DecimalFormat;
 import resident.MaintenancePersonRole;
 import resident.MaintenancePersonRole.MyCustomer;
 import resident.test.mock.MockHomeOwner;
+import resident.test.mock.MockPerson;
 import junit.framework.TestCase;
 
 public class MaintenancePersonTest extends TestCase {
 	// These are instantiated for each test separately via the setUp() method.
 	MaintenancePersonRole housekeeper;
 	MockHomeOwner homeOwner;
+	MockPerson person;
 	
 	/**
 	 * This method is run before each test. You can use it to instantiate the class variables
@@ -18,8 +20,8 @@ public class MaintenancePersonTest extends TestCase {
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		
-		housekeeper = new MaintenancePersonRole("Maintenance Person");	
+		person = new MockPerson("Mock Person");
+		housekeeper = new MaintenancePersonRole("Maintenance Person", person);	
 		homeOwner = new MockHomeOwner("Mock HomeOwner", 1);		
 	} 
 	
