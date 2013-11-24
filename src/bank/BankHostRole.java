@@ -70,6 +70,7 @@ public class BankHostRole extends Role implements BankHost {
 	public void addTeller(BankTeller bt){
 		String location = "Teller" + (tellers.size()+1);
 		tellers.add(new MyTeller(bt, location));
+		bt.msgNewDestination(location);
 	}
 	
 	public String toString(){

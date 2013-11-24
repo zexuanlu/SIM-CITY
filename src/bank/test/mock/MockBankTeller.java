@@ -10,8 +10,8 @@ public class MockBankTeller extends Mock implements BankTeller {
 		log = new EventLog();
 	}
 
-	public void msgBackToWork(BankHost bh){
-		log.add(new LoggedEvent("Received msgBackToWork from Person"));
+	public void msgNewDestination(String location){
+		log.add(new LoggedEvent("Received msgNewDestination from BankHost"));
 	}
 	
 	public void msgAtDestination(){

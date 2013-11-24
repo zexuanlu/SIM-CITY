@@ -23,12 +23,11 @@ public class BankTellerGui implements Gui{
 
 	public BankTellerGui(BankTeller t, BankAnimationPanel gui){ //HostAgent m) {
 		bt = t;
-		xPos = -20;
-		yPos = 300;
-		xDestination = -20;
-		yDestination = 300;
+		xPos = 640;
+		yPos = 250;
+		xDestination = 640;
+		yDestination = 250;
 		this.gui = gui;
-		//locations.put("Host", new Dimension(320,80));
 		locations.put("Teller1", new Dimension(40, 340));
 		locations.put("Teller2", new Dimension(100, 340));
 		locations.put("Teller3", new Dimension(160, 340));

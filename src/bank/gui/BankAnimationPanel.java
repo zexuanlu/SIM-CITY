@@ -53,8 +53,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
         for(int i = 0; i < 10; i++){
             g2.setColor(Color.BLACK);
         	g2.fillRect(TELLERBOOTHX + 60*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE);
-        	//g2.setColor(Color.BLUE);
-        	//g2.fillRect(TELLERBOOTHX + 20, TELLERBOOTHY + 50*i, 20, 20);
         }
 
         g2.setColor(Color.RED);

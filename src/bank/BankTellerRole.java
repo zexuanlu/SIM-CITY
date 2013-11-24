@@ -26,18 +26,25 @@ public class BankTellerRole extends Role implements BankTeller {
 	public BankHost bh;
 	public BankCustomer bc;
 	public BankTellerGui gui;
+	String destination;
 	Semaphore movement = new Semaphore(0, true);
 	public state s;
-	public enum state {working, backToWork, none}
+	public enum state {working, backToWork, none, haveDestination}
 	
 	public BankTellerRole(Person person, String name){
 		super(person);
 		this.name = name;
 		log = new EventLog();
 		tasks = new ArrayList<Task>();
-		s = state.working;
+		s = state.none;
 	}
 	//Messages
+	public void msgNewDestination(String location){
+		log.add(new LoggedEvent("Received msgNewDestination from BankHost"));
+		s = state.haveDestination;
+		destination = location;
+		stateChanged();
+	}
 	
 	public void msgINeedAccount(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgINeedAccount from BankCustomer"));
@@ -141,6 +148,11 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
+		if(s == state.haveDestination){
+			goToLocation(destination);
+			s = state.working;
+			return true;
+		}
 		for(Task t : tasks){
 			if(t.ts == taskState.failed){
 				loanFailed(t);
@@ -231,6 +243,18 @@ public class BankTellerRole extends Role implements BankTeller {
 		s = state.working;
 	}
 	
+	private void goToLocation(String location){
+		if(gui != null){
+			gui.DoGoToLocation(location);
+			Do("Moving to " + location);
+			try{
+				movement.acquire();
+			}
+			catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}
+	}
 	//Utilities
 	public String toString(){
 		return name;

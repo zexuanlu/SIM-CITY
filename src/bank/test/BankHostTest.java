@@ -39,7 +39,9 @@ public class BankHostTest extends TestCase {
 		bh.addTeller(bt);
 		assertEquals("Bank Host should contain 1 Teller. It doesn't.", bh.tellers.size(), 1);
 		assertEquals("Bank Host should contain 0 Customers. It doesn't.", bh.waitingCustomers.size(), 0);
-	
+		assertTrue("BankTeller should have logged \"Received msgNewDestination\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgNewDestination"));
+		
 		bh.msgINeedTeller(bc);
 		assertTrue("BankHost should have logged \"Received msgINeedTeller\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgINeedTeller"));
@@ -68,7 +70,9 @@ public class BankHostTest extends TestCase {
 		assertEquals("Bank Host should contain 1 Teller. It doesn't.", bh.tellers.size(), 1);
 		assertEquals("Bank Host should contain 0 Customers. It doesn't.", bh.waitingCustomers.size(), 0);
 		assertTrue("The state of the Teller should be working. It isn't.", bh.tellers.get(0).s == state.working);
-
+		assertTrue("BankTeller should have logged \"Received msgNewDestination\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgNewDestination"));
+		
 		bh.msgINeedTeller(bc);
 		assertTrue("BankHost should have logged \"Received msgINeedTeller\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgINeedTeller"));

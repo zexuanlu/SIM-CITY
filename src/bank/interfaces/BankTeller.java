@@ -11,6 +11,8 @@ public interface BankTeller {
 	
 	public void msgLeavingBank(BankCustomer bc);
 	
+	public void msgNewDestination(String location);
+	
 	public void msgDepositMoney(BankCustomer bc, double amount, int accountNumber);
 	
 	public void msgWithdrawMoney(BankCustomer bc, double amount, int accountNumber);
