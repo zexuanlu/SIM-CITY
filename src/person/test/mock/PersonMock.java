@@ -14,7 +14,7 @@ public class PersonMock extends Mock implements Person {
 	public EventLog log = new EventLog();
 	public int hunger;
 	public int currentTime;
-	public Wallet wallet;
+	public Wallet wallet = new Wallet(100.00, 100.00);
 	public List<String> groceryList = new ArrayList<String>();
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
 	public List<Role> roles = new ArrayList<Role>();
