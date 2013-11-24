@@ -11,7 +11,7 @@ public interface BankCustomer {
 	
 	public void msgAtDestination();
 	
-	public void msgHereIsTeller(BankTeller bt);
+	public void msgHereIsTeller(BankTeller bt, String location);
 	
 	public void msgAccountMade(int accountNumber);
 	

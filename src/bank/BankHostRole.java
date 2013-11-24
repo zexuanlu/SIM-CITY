@@ -59,14 +59,15 @@ public class BankHostRole extends Role implements BankHost {
 	//Actions
 	private void assignCustomer(BankCustomer bc, MyTeller mt){
 		Do("Assigning a teller");
-		bc.msgHereIsTeller(mt.bt);
+		bc.msgHereIsTeller(mt.bt, mt.location);
 		mt.s = state.withCustomer;
 		waitingCustomers.remove(bc);
 	}
 	
 	//Utilities
 	public void addTeller(BankTeller bt){
-		tellers.add(new MyTeller(bt));
+		String location = "Teller" + (tellers.size()+1);
+		tellers.add(new MyTeller(bt, location));
 	}
 	
 	public String toString(){
@@ -76,8 +77,10 @@ public class BankHostRole extends Role implements BankHost {
 	public class MyTeller{
 		public BankTeller bt;
 		public state s;
-		MyTeller(BankTeller bt){
+		public String location;
+		MyTeller(BankTeller bt, String location){
 			this.bt = bt;
+			this.location = location;
 			s = state.working;
 		}
 	}

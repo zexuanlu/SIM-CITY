@@ -9,6 +9,12 @@ import java.util.concurrent.*;
  */
 public abstract class Role {
 
+	//Person person;
+	
+	/*public void switchPerson(Person person){
+		this.person = person;
+	}*/
+	
     protected Role() {
     }
 

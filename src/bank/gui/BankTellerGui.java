@@ -9,9 +9,9 @@ import java.util.*;
  * This class represents the 
  * customers in the bank
  */
-public class BankCustomerGui implements Gui{
+public class BankTellerGui implements Gui{
 
-	private BankCustomer bc = null;
+	private BankTeller bt = null;
 	private boolean isPresent = true;
 	private boolean atDestination = true;
 	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
@@ -21,14 +21,14 @@ public class BankCustomerGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public BankCustomerGui(BankCustomer c, BankAnimationPanel gui){ //HostAgent m) {
-		bc = c;
+	public BankTellerGui(BankTeller t, BankAnimationPanel gui){ //HostAgent m) {
+		bt = t;
 		xPos = -20;
 		yPos = 300;
 		xDestination = -20;
 		yDestination = 300;
 		this.gui = gui;
-		locations.put("Host", new Dimension(320,80));
+		//locations.put("Host", new Dimension(320,80));
 		locations.put("Teller1", new Dimension(40, 340));
 		locations.put("Teller2", new Dimension(100, 340));
 		locations.put("Teller3", new Dimension(160, 340));
@@ -39,7 +39,7 @@ public class BankCustomerGui implements Gui{
 		locations.put("Teller8", new Dimension(460, 340));
 		locations.put("Teller9", new Dimension(520, 340));
 		locations.put("Teller10", new Dimension(580, 340));
-		locations.put("Outside", new Dimension(280, -20));
+		locations.put("Outside", new Dimension(640, 250));
 	}
 
 	public void updatePosition() {
@@ -54,13 +54,13 @@ public class BankCustomerGui implements Gui{
 			yPos--;
 
 		if (!atDestination && xPos == xDestination && yPos == yDestination) {
-			bc.msgAtDestination();
+			bt.msgAtDestination();
 			atDestination = true;
 		}
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.GREEN);
+		g.setColor(Color.BLUE);
 		g.fillRect(xPos, yPos, 20, 20);
 	}
 

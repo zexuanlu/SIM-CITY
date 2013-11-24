@@ -13,20 +13,25 @@ import java.util.ArrayList;
  * The panel where all of the animation takes places
  * Handles movement and other animation things
  */
-public class AnimationPanel extends JPanel implements ActionListener {
+public class BankAnimationPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 2L;
-	private final int WINDOWX = 300;
-    private final int WINDOWY = 600;
+	private final int WINDOWX = 640;
+    private final int WINDOWY = 480;
     static final int TIMERCOUNT = 20;
     static final int TELLERBOOTHSIZE = 20;
-    static final int TELLERBOOTHX = 240;
-    static final int TELLERBOOTHY = 40;
+    static final int TELLERBOOTHX = 40;
+    static final int TELLERBOOTHY = 360;
+    static final int HOSTDESKWIDTH = 60;
+    static final int HOSTDESKHEIGHT = 20;
+    static final int HOSTDESKX = 300;
+    static final int HOSTDESKY = 100;
 
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 
-    public AnimationPanel() {
+    public BankAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
+    	setVisible(true);
  
     	Timer timer = new Timer(TIMERCOUNT, this );
     	timer.start();
@@ -47,13 +52,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.BLACK);
         for(int i = 0; i < 10; i++){
             g2.setColor(Color.BLACK);
-        	g2.fillRect(TELLERBOOTHX, TELLERBOOTHY + 50*i, 20, TELLERBOOTHSIZE);
-        	g2.setColor(Color.BLUE);
-        	g2.fillRect(TELLERBOOTHX + 20, TELLERBOOTHY + 50*i, 20, 20);
+        	g2.fillRect(TELLERBOOTHX + 60*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE);
+        	//g2.setColor(Color.BLUE);
+        	//g2.fillRect(TELLERBOOTHX + 20, TELLERBOOTHY + 50*i, 20, 20);
         }
 
         g2.setColor(Color.RED);
-        g2.fillRect(50, 245, 20, 60);
+        g2.fillRect(HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {

@@ -1,6 +1,9 @@
 package bank;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
+
+import bank.gui.*;
 import bank.test.mock.*;
 import bank.interfaces.*;
 import agent.*;
@@ -22,6 +25,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	public BankDatabase bd;
 	public BankHost bh;
 	public BankCustomer bc;
+	public BankTellerGui gui;
+	Semaphore movement = new Semaphore(0, true);
 	public state s;
 	public enum state {working, backToWork, goingOffWork, none}
 	
@@ -39,18 +44,20 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	public void msgBackToWork(BankHost bh){
+		log.add(new LoggedEvent("Received msgBackToWork from Person"));
 		s = state.backToWork;
-		this.bh = bh;
 		stateChanged();
 	}
 	
 	public void msgINeedAccount(BankCustomer bc){
+		log.add(new LoggedEvent("Received msgINeedAccount from BankCustomer"));
 		this.bc = bc;
 		tasks.add(new Task("openAccount"));
 		stateChanged();
 	}
 	
 	public void msgDepositMoney(BankCustomer bc, double amount, int accountNumber){
+		log.add(new LoggedEvent("Received msgDepositMoney from BankCustomer"));
 		Do("Received request for deposit");
 		this.bc = bc;
 		tasks.add(new Task("deposit", amount, accountNumber));
@@ -58,11 +65,13 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	public void msgWithdrawMoney(BankCustomer bc, double amount, int accountNumber){
+		log.add(new LoggedEvent("Received msgWithdrawMoney from BankCustomer"));
 		this.bc = bc;
 		tasks.add(new Task("withdraw", amount, accountNumber));
 		stateChanged();
 	}
 	public void msgINeedLoan(BankCustomer bc, double amount, int accountNumber){
+		log.add(new LoggedEvent("Received msgINeedLoan from BankCustomer"));
 		this.bc = bc;
 		tasks.add(new Task("getLoan", amount, accountNumber));
 		stateChanged();
@@ -123,6 +132,12 @@ public class BankTellerRole extends Role implements BankTeller {
 		this.bc = null;
 		s = state.backToWork;
 		stateChanged();		
+	}
+	
+	public void msgAtDestination(){
+		log.add(new LoggedEvent("Received msgAtDestination from BankTellerGui"));
+		movement.release();
+		stateChanged();
 	}
 	//Scheduler
 	public boolean pickAndExecuteAnAction(){
@@ -203,6 +218,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	
 	private void doneWithWork(){
+		goToLocation("Outside");
 		//person.addMoney(pay);
 		//person.deactivateRole(this);
 		//Person.getBankTimeCard().msgOffWork(this);
@@ -213,6 +229,19 @@ public class BankTellerRole extends Role implements BankTeller {
 		Do("Telling host that I am working");
 		bh.msgBackToWork(this);
 		s = state.working;
+	}
+	
+	private void goToLocation(String location){
+		if(gui != null){
+			gui.DoGoToLocation(location);
+			Do("Moving to " + location);
+			try{
+				movement.acquire();
+			}
+			catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}
 	}
 	//Utilities
 	public String toString(){

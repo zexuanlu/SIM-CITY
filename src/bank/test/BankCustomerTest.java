@@ -42,8 +42,9 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("BankHost should have logged \"Received msgINeedTeller\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgINeedTeller"));
 		
-		bc.msgHereIsTeller(bt);
+		bc.msgHereIsTeller(bt, "Teller1");
 		assertEquals("The Bank Teller should match the bank teller. It doesn't", bc.bt, bt);
+		assertEquals("The destination of Bank Customer should be Teller1. It isn't", bc.destination, "Teller1");
 		assertTrue("The state of the bank customer should be haveTeller. It isn't.", bc.s == state.haveTeller);
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
@@ -95,8 +96,9 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("BankHost should have logged \"Received msgINeedTeller\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgINeedTeller"));
 		
-		bc.msgHereIsTeller(bt);
+		bc.msgHereIsTeller(bt, "Teller1");
 		assertEquals("The Bank Teller should match the bank teller. It doesn't", bc.bt, bt);
+		assertEquals("The destination of Bank Customer should be Teller1. It isn't", bc.destination, "Teller1");
 		assertTrue("The state of the bank customer should be haveTeller. It isn't.", bc.s == state.haveTeller);
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
