@@ -113,7 +113,7 @@ public class PersonAgent extends Agent implements Person{
 	public void populateCityMap(List<Location> loc){ cityMap = new CityMap(loc); } 
 
 	/* Messages */
-	public void msgAddMoney(int money){ 
+	public void msgAddMoney(double money){ 
 		print("added an amount of "+money+" dollars");
 		wallet.setOnHand(money); 
 		stateChanged();
@@ -595,28 +595,28 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public class Wallet {
 
-		private int onHand;
-		private int inBank;
-		private int balance; 
+		private double onHand;
+		private double inBank;
+		private double balance; 
 
-		Wallet(int oh, int ib){
+		Wallet(double oh, double ib){
 			this.onHand = oh;
 			this.inBank = ib;
 			this.balance = oh + ib;
 		}
-		public int getOnHand(){
+		public double getOnHand(){
 			return onHand;
 		}
-		public int getInBank(){
+		public double getInBank(){
 			return inBank;
 		}
-		public int getBalance(){
+		public double getBalance(){
 			return balance;
 		}
-		public void setOnHand(int newAmount){
-			onHand += newAmount;
+		public void setOnHand(double money){
+			onHand += money;
 		}
-		public void setInBank(int newAmount){
+		public void setInBank(double newAmount){
 			inBank += newAmount;
 		}
 	}
