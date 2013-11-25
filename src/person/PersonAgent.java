@@ -487,6 +487,7 @@ public class PersonAgent extends Agent implements Person{
 					//Home home = (Home)e.location;
 					activeRole = true;
 					HomeOwnerRole hr = new HomeOwnerRole(this, this.name, homeNumber);
+					//hr.myFridge.add(new Food("Chicken", 5));
 					if(!containsRole(hr)){
 						MyRole newRole = new MyRole(hr);
 						newRole.isActive(true);

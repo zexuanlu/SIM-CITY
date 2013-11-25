@@ -38,11 +38,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
+	public ApartmentAnimationPanel aptPanel = new ApartmentAnimationPanel();
 	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
-	public ApartmentAnimationPanel aptPanel = new ApartmentAnimationPanel();
     private List<Gui> guis = new ArrayList<Gui>();
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private Image bufferImage;
@@ -74,6 +74,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		//Panel size initiations
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
+		homes.add(house1Panel);
+		homes.add(house2Panel);
+		homes.add(house3Panel);
+		homes.add(house4Panel);
 		
     	setSize(WIDTH, HEIGHT);
         setVisible(true);

@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import market.Food;
 import person.Event;
 import person.Location;
 import person.Event.EventType;
@@ -75,26 +76,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		}
 	}
 
-	public static class MyFood {
-		private String foodItem;
-		private int foodAmount;
-
-		public MyFood(String f, int a) {
-			foodItem = f;
-			foodAmount = a;
-		}
-		
-		public String getFoodItem() {
-			return foodItem;
-		}
-		
-		public int getFoodAmount() {
-			return foodAmount;
-		}
-	}
-
 	public List<MyPriority> toDoList = Collections.synchronizedList(new ArrayList<MyPriority>());
-	public List<MyFood> myFridge = Collections.synchronizedList(new ArrayList<MyFood>());
+	public List<Food> myFridge = Collections.synchronizedList(new ArrayList<Food>());
 	private Timer cookingTimer = new Timer(); // Times the food cooking
 	private Timer eatingTimer = new Timer();
 	private Timer washingDishesTimer = new Timer();
@@ -187,7 +170,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		stateChanged();
 	}
 
-	public void msgDoneGoingToMarket(List<MyFood> groceries) {		
+	public void msgDoneGoingToMarket(List<Food> groceries) {		
 		waitForReturn.release();
 		
 		// If the customer has just finished going to the market, restock the fridge and then cook
@@ -198,8 +181,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		// Add restocking fridge to the to do list
 		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));		
 
-		for (MyFood f : groceries) {
-			myFridge.add(new MyFood(f.foodItem, f.foodAmount));
+		for (Food f : groceries) {
+			myFridge.add(new Food(f.choice, f.amount));
 		}
 
 		stateChanged();
@@ -502,25 +485,25 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		String maxChoice = null;
 		int index = -1;
 
-		for (MyFood f : myFridge) { // Searches for the food item with the most inventory
-			if (f.foodAmount > max) {
-				max = f.foodAmount;
-				maxChoice = f.foodItem;
+		for (Food f : myFridge) { // Searches for the food item with the most inventory
+			if (f.amount > max) {
+				max = f.amount;
+				maxChoice = f.choice;
 			}
 		}
 
-		for (MyFood f : myFridge) { // Searches for and decreases the amount of food for the one with the most inventory
-			if (f.foodItem == maxChoice) {
-				--f.foodAmount;
+		for (Food f : myFridge) { // Searches for and decreases the amount of food for the one with the most inventory
+			if (f.choice == maxChoice) {
+				--f.amount;
 				++index;
-				log.add(new LoggedEvent("I'm going to cook " + f.foodItem + ". My inventory of it is now " + f.foodAmount + "."));
-				print("I'm going to cook " + f.foodItem + ". My inventory of it is now " + f.foodAmount + ".");
+				log.add(new LoggedEvent("I'm going to cook " + f.choice + ". My inventory of it is now " + f.amount + "."));
+				print("I'm going to cook " + f.choice + ". My inventory of it is now " + f.amount + ".");
 				break;
 			}
 		}
 		
 		// If there's no more of an item after the resident has removed it, then 
-		if (myFridge.get(index).foodAmount == 0) {
+		if (myFridge.get(index).amount == 0) {
 			myFridge.remove(index);
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
 			print("My fridge has no more " + maxChoice + ".");
@@ -604,6 +587,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.add(prior);
 
 		aptGui.DoGoToSink(); // GUI animation to go to the sink
+		
+		atSink.drainPermits();
 
 		// Semaphore to determine if the GUI has arrived at sink location
 		try {
