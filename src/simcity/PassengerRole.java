@@ -35,7 +35,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	//Messages 
 	public void msgHereIsPrice(Bus b, double fare){
-		
+		print("msg here is price called inpassenger");
 		busroute.fare = fare;  //should I first check if it's the correct bus? 
 		action = Action.toPay; 
 		stateChanged();
@@ -69,6 +69,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction() {
+		print ("Passenger scheduler called");
 		if (state == State.none && action == Action.asktoComeonBoard){
 			askBus();
 			return true; 

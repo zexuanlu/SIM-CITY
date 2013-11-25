@@ -2,12 +2,11 @@ package market.test.mock;
 
 import java.util.List;
 
-import market.CashAgent;
+import restaurant.Restaurant1CookRole;
+import restaurant.interfaces.Cashier;
 import market.MarketCashierRole;
-import market.CookAgent;
 import market.Food;
 import market.interfaces.MarketCashier;
-import market.interfaces.Cook;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketTruck;
 
@@ -44,22 +43,25 @@ public class MockCashier extends Mock implements MarketCashier{
 		log.add(new LoggedEvent("You are at the table"));
 	}
 
-	@Override
-	public void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food, int num) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void msgBillFromTheAir(CashAgent ca, double money) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 
 	@Override
 	public void msgTruckBack(MarketTruck t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void MsgIwantFood(Restaurant1CookRole cook, Cashier ca,
+			List<Food> food, int number) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgBillFromTheAir(Cashier ca, double money) {
 		// TODO Auto-generated method stub
 		
 	}

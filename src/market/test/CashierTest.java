@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import person.interfaces.*;
 import java.util.List;
 
-import market.CashAgent;
+import restaurant.*;
 import market.MarketCashierRole;
 import market.MarketCashierRole.state;
 import market.MarketCashierRole.state1;
-import market.interfaces.Cook;
 import market.interfaces.MarketCustomer;
 import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
+
+import restaurant.interfaces.Cook;
 
 public class CashierTest extends TestCase{
 
@@ -20,8 +21,8 @@ public class CashierTest extends TestCase{
 	Person p;
 	MockCustomer customer;
 	MockEmployee employee;
-	MockCook cook;
-	CashAgent cash;
+	Restaurant1CookRole cook;
+	Restaurant1CashierRole cash;
 	MockTruck truck;
 	
 	public void setUp() throws Exception{
@@ -29,8 +30,8 @@ public class CashierTest extends TestCase{
 		cashier = new MarketCashierRole(p, "cashier");
 		customer = new MockCustomer("customer");
 		employee = new MockEmployee("employee");
-		cook = new MockCook("cook");
-		cash = new CashAgent();
+		cook = new Restaurant1CookRole("cook");
+		cash = new Restaurant1CashierRole("ca");
 		truck = new MockTruck("truck");
 	}
 	

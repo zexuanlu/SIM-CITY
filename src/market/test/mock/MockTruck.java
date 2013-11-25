@@ -2,9 +2,8 @@ package market.test.mock;
 
 import java.util.List;
 
-import market.CookAgent;
+import restaurant.Restaurant1CookRole;
 import market.Food;
-import market.interfaces.Cook;
 import market.interfaces.MarketTruck;
 
 public class MockTruck extends Mock implements MarketTruck{
@@ -16,18 +15,18 @@ public class MockTruck extends Mock implements MarketTruck{
 		// TODO Auto-generated constructor stub
 	}
 
-
-	@Override
-	public void gotoPosition(Cook c, List<Food> food, int x, int y) {
-		// TODO Auto-generated method stub
-		log.add(new LoggedEvent("Got it"));
-	}
-
-
 	@Override
 	public void msgGoBack() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void gotoPosition(Restaurant1CookRole c, List<Food> food, int x,
+			int y) {
+		// TODO Auto-generated method stub
+		log.add(new LoggedEvent("Got it"));
 	}
 
 }
