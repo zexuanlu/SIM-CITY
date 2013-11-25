@@ -45,7 +45,7 @@ public class MockCashier extends Mock implements MarketCashier{
 	}
 
 	@Override
-	public void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food) {
+	public void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food, int num) {
 		// TODO Auto-generated method stub
 		
 	}

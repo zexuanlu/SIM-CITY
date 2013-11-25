@@ -26,7 +26,7 @@ public class MockEmployee extends Mock implements MarketEmployee{
 
 
 	@Override
-	public void msgCollectTheDilivery(Cook cook, List food, MarketTruck truck) {
+	public void msgCollectTheDilivery(Cook cook, List food, MarketTruck truck, int number) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got Your Order"));
 	}
