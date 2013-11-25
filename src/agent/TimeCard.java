@@ -48,8 +48,7 @@ public class TimeCard extends Agent {
 	
 	private void endOfDay(){
 		for(Role r : roles){
-			r.getPerson().msgAddMoney(500.00);
-			//r.getPerson().msgGoOffWork(r);
+			r.getPerson().msgGoOffWork(r, 500.00);
 		}
 		roles.clear();
 	}
@@ -62,8 +61,7 @@ public class TimeCard extends Agent {
 	
 	private void goOffWork(MyRole role){
 		double pay = 500.00;
-		role.person.msgAddMoney(pay);
-		//role.person.msgGoOffWork(role.role);
+		role.person.msgGoOffWork(role.role, pay);
 		role.role.switchPerson(role.person);
 		myRoles.remove(role);
 	}
