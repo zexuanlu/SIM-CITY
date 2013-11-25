@@ -487,13 +487,15 @@ public class PersonAgent extends Agent implements Person{
 					//Home home = (Home)e.location;
 					activeRole = true;
 					HomeOwnerRole hr = new HomeOwnerRole(this, this.name, homeNumber);
+					hr.myFridge.add(new Food("Chicken", 5));
 					if(!containsRole(hr)){
 						MyRole newRole = new MyRole(hr);
 						newRole.isActive(true);
 						roles.add(newRole);
-						((HomeOwnerRole)newRole.role).setGui(new HomeOwnerGui((HomeOwnerRole)newRole.role));
-						cap.getHouseGui(1);
-						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+						HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
+						((HomeOwnerRole)newRole.role).setGui(hog);
+						cap.getHouseGui(2).addGui(hog);
+						((HomeOwnerRole)newRole.role).updateVitals(3, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					else{
 						getRoleOfType(hr).isActive(true);

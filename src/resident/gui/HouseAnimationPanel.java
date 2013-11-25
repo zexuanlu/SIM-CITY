@@ -68,7 +68,8 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.CYAN);
         g2.fillRect(sinkX, sinkY, 20, 20);
         
-        g2.setColor(Color.blue);
+        // Drawing the front door
+        g2.setColor(Color.DARK_GRAY);
         g2.fillRect(600,20,40,130);
         
         // Drawing the fridge

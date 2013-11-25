@@ -7,10 +7,9 @@ import java.awt.*;
 public class ApartmentTenantGui implements Gui {
 
     private ApartmentTenantRole aptTenant = null;
-    ApartmentAnimationPanel gui;
 
-    private int xPos = 50, yPos = 50; // Default cook position
-    private int xDestination = 50, yDestination = 50; // Default start position
+    private int xPos = 600, yPos = 50; // Default apartment tenant position
+    private int xDestination = 600, yDestination = 50; // Default start position
     
     private int homeX = 50;
     private int homeY = 50;
