@@ -16,14 +16,12 @@ import bank.interfaces.*;
  */
 public class BankDatabaseAgent extends Agent implements BankDatabase {
 	
-	//Data\
+	//Data
 	public EventLog log;
-	String name;
 	public Map<Integer,Account> accounts;
 	public List<Request> requests = new ArrayList<Request>();
 	
-	public BankDatabaseAgent(String name){
-		this.name = name;
+	public BankDatabaseAgent(){
 		accounts = new HashMap<Integer, Account>();
 		log = new EventLog();
 	}
