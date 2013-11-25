@@ -232,14 +232,11 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("Active: "+ activeRole);
 		if(activeRole) { //run role code
-			print("Executing an event as a Role");
 			for(MyRole r : roles){
 				if(r.isActive){
 					print("Executing rule in role "+r.role);
 					boolean b = r.role.pickAndExecuteAnAction();
-					print("Status: "+b);
 					return b;
 				}
 			}
@@ -258,7 +255,6 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 		}
-		print("ending");
 		return false;
 	}
 
