@@ -63,6 +63,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgDepositDone(double balance, double money){
 		log.add(new LoggedEvent("Received msgDepositDone from BankTeller"));
 		this.balance = balance;
+		getPerson().msgNewBalance(balance);
 		getPerson().msgAddMoney((-money));
 		this.s = state.atTeller;
 		stateChanged();
@@ -71,6 +72,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgWithdrawDone(double balance, double money){
 		log.add(new LoggedEvent("Received msgWithdrawDone from BankTeller"));
 		this.balance = balance;
+		getPerson().msgNewBalance(balance);
 		getPerson().msgAddMoney(money);
 		this.s = state.atTeller;
 		stateChanged();

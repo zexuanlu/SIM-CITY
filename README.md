@@ -5,10 +5,11 @@
 
 ###Running the Program
   1.  To run the program, open Eclipse.
-  2.  Select 'File', then 'New Java Project.'
-  3.  Click the 'Next' button, and then deselect 'Use default location'. In the Location field, search for the project name under which it was cloned. Click 'Finish'.
-  4.  Select 'Run' from the menu bar, and then select 'Run Configurations'. In the Project field, click 'Browse' and search for the project name that was the program was saved under earlier. 
-  5.  In the main class field, select 'Browse' and search for 'gui.main.SimCityGUI'.
-  6.  Click run, and the SimCity should start.
+  2.  Select 'File', then 'Other', then 'New Java Project from Existing Ant Buildfile.'
+  3.  Click the 'Next' button, and then select Browse. Find the build.xml file in whatever folder you cloned into. (default name is team36)
+  4.  Hit Finish.
+  5.  Go into the project folder, into src, into the gui.main package, and select SimCityGUI.java.
+  6.  In the drop down menu for run, select run as, and click Java Application.
+  7.  SimCity should run
 
   
