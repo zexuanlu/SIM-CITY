@@ -18,11 +18,14 @@ import person.gui.PersonGui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CityAnimationPanel extends JPanel implements ActionListener {
+public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener{
 
     private List<Gui> guis = new ArrayList<Gui>();
     private Image bufferImage;
@@ -30,9 +33,19 @@ public class CityAnimationPanel extends JPanel implements ActionListener {
 	private String title = " City Animation ";
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = 480;
+	public static final int BUILDINGSIZE = 60;
+	Timer timer;
+	
+	//Buttons for buildings
+	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D market = new Rectangle2D.Double(220, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant1 = new Rectangle2D.Double(220,80, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house1 = new Rectangle2D.Double(340, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D apartment1 = new Rectangle2D.Double(340, 280, BUILDINGSIZE, BUILDINGSIZE);
 	
 	public CityAnimationPanel() {
 		//PANEL SETUP
+		this.addMouseListener(this);
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		
 		//Panel size initiations
@@ -44,24 +57,49 @@ public class CityAnimationPanel extends JPanel implements ActionListener {
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(8, this );
+    	timer = new Timer(8, this );
     	timer.start();
 	}
 	
+	public void mouseClicked(MouseEvent me){
+		   if (me.getButton() == 1 && bank.contains(me.getX(), me.getY())){
+			   //Switch to Bank
+		   }
+		   else if(me.getButton() == 1 && market.contains(me.getX(), me.getY())){
+			   //Switch to Market
+		   }
+		   else if(me.getButton() == 1 && restaurant1.contains(me.getX(), me.getY())){
+			   //Switch to Restaurant 1
+		   }
+		   else if(me.getButton() == 1 && house1.contains(me.getX(), me.getY())){
+			   //Switch to House 1
+		   }
+		   else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
+			   //Switch to Apartment 1
+		   }
+	}
 
 	public void actionPerformed(ActionEvent e) {
-		repaint();  //Will have paintComponent called
+		if(e.getSource() == timer)
+			repaint();  //Will have paintComponent called
 	}
 
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
+
 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WIDTH, HEIGHT );
 
         //Here is the table
-        
+        g2.setColor(Color.GRAY);
+        g2.fill(bank);
+        g2.fill(apartment1);
+        g2.fill(house1);
+        g2.fill(market);
+        g2.fill(restaurant1);
+
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
         g2.fillRect(280, 0, 60, 480);
@@ -110,6 +148,29 @@ public class CityAnimationPanel extends JPanel implements ActionListener {
     public void addGui(PersonGui gui) {
         guis.add(gui);
     }
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
     
 	
 }
