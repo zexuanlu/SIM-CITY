@@ -162,13 +162,13 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgAtDest(int x, int y){
 		print("Recieved the message AtDest(x,y)");
+		gui.xPos = x;
+		gui.yPos = y;
 		currentLocation.setX(x);
 		currentLocation.setY(y);
 		activeRole = false;
 		gui.setPresent(true);
 		arrived = true;
-		gui.xPos = x;
-		gui.yPos = y;
 		stateChanged();
 	}
 	
@@ -278,7 +278,12 @@ public class PersonAgent extends Agent implements Person{
 				((PassengerRole)newRole.role).setGui(pg);
 				cap.addGui(pg);
 				((PassengerRole)newRole.role).setCityMap(cityMap);
-				((PassengerRole)newRole.role).setPassDestination(100, 100);//e.location.position.getX(), e.location.position.getX());
+				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getX());
+				
+				//lizhi added this testing:
+				gui.xDestination = e.location.position.getX();
+				gui.yDestination = e.location.position.getY();
+				
 				((PassengerRole)newRole.role).gotoBus();
 				gui.setPresent(false);
 			}
