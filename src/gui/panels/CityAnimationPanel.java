@@ -7,6 +7,8 @@ package gui.panels;
 
 import javax.swing.*;
 
+import market.gui.MarketAnimationPanel;
+import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
@@ -27,6 +29,9 @@ import java.util.List;
 
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener{
 
+	public BuildingAnimationPanel BuildPanel;
+	public BankAnimationPanel bankPanel = new BankAnimationPanel();
+	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
     private List<Gui> guis = new ArrayList<Gui>();
     private Image bufferImage;
     private Dimension bufferSize;
@@ -63,10 +68,16 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	
 	public void mouseClicked(MouseEvent me){
 		   if (me.getButton() == 1 && bank.contains(me.getX(), me.getY())){
-			   //Switch to Bank
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));
+			   BuildPanel.repaint();
+			   BuildPanel.add(bankPanel);
 		   }
 		   else if(me.getButton() == 1 && market.contains(me.getX(), me.getY())){
-			   //Switch to Market
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(marketPanel);
 		   }
 		   else if(me.getButton() == 1 && restaurant1.contains(me.getX(), me.getY())){
 			   //Switch to Restaurant 1

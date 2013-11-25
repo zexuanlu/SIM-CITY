@@ -126,6 +126,7 @@ public class SimCityGUI extends JFrame {
 		this.add(bldngAnimPanel, BorderLayout.EAST);
 		this.add(cityCtrlPanel, BorderLayout.SOUTH);
 		
+		cityAnimPanel.BuildPanel = bldngAnimPanel;
 		
 		for (int i=0; i<gridX ; i++)
 		    for (int j = 0; j<gridY; j++)
