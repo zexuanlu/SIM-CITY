@@ -22,12 +22,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener{
+public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
 	public BuildingAnimationPanel BuildPanel;
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
@@ -36,10 +37,15 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     private Image bufferImage;
     private Dimension bufferSize;
 	private String title = " City Animation ";
+	state s = state.none;
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = 480;
 	public static final int BUILDINGSIZE = 60;
 	Timer timer;
+	
+	enum state {none, bank, market, restaurant1, house1, apartment1}
+	
+	
 	
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
@@ -51,6 +57,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public CityAnimationPanel() {
 		//PANEL SETUP
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		
 		//Panel size initiations
@@ -122,9 +129,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fillRect(400, 60, 50, 50); 
         g2.fillRect(500, 60, 50, 50); 
         g2.fillRect(500, 120, 50, 50); 
-        g2.fillRect(400, 120, 50, 50); 
-
-
+        g2.fillRect(400, 120, 50, 50);
+        
+        //Hover Text
+    	g2.setColor(Color.BLACK);
+        if(s == state.bank){
+        	g2.drawString("Bank", 155, 195);
+        }
+        else if(s == state.market){
+        	g2.drawString("Market", 232, 195);
+        }
+        
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -180,6 +195,26 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent me) {
+		   if (bank.contains(me.getX(), me.getY())){
+			   s = state.bank;
+		   }
+		   else if (market.contains(me.getX(), me.getY())){
+			   s = state.market;
+		   }
+		   else{
+			   s = state.none;
+		   }
 		
 	}
     
