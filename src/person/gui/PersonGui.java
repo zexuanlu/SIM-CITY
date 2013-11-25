@@ -22,7 +22,6 @@ public class PersonGui implements Gui{
 	}
 
 	public void updatePosition() {
-		System.out.println("xPos: "+xPos+" yPos: "+yPos+" : x "+xDestination+" y: "+yDestination );
 		if (xPos < xDestination){ 
 			xPos++; 
 		}

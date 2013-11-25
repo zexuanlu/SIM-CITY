@@ -273,7 +273,7 @@ public class PersonAgent extends Agent implements Person{
 				((PassengerRole)newRole.role).setGui(pg);
 				cap.addGui(pg);
 				((PassengerRole)newRole.role).setCityMap(cityMap);
-				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getX());
+				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getY());
 				
 				//lizhi added this testing:
 				gui.xDestination = e.location.position.getX();

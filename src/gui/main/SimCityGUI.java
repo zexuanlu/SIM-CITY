@@ -107,7 +107,7 @@ public class SimCityGUI extends JFrame {
 		
 		
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-				new Position(400, 60), LocationType.Bank);
+				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
 				new Position(500, 60), LocationType.Market);
 		
