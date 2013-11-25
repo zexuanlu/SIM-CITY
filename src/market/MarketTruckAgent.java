@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import market.gui.*;
-import market.interfaces.Cook;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketTruck;
 import simcity.astar.AStarNode;
@@ -12,7 +11,7 @@ import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
 
-
+import restaurant.Restaurant1CookRole;
 
 //to use: create CarAgent with aStarTraversal as parameter as well as Person Agent
 //Create gui with original starting position
@@ -38,7 +37,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	int destinationX; 
 	int destinationY; 
-	Cook cook;
+	Restaurant1CookRole cook;
 	List<Food> foodlist;
 	private int TravelTimes = 0;
 	
@@ -66,7 +65,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	public void msgatDestination(){
 		if(TravelTimes%2 == 1){
-			//cook.msgHereisYourFood(this, foodlist);
+			cook.msgHereisYourFood(this, foodlist);
 		}
 		else if(TravelTimes%2 == 0){
 			cashier.msgTruckBack(this);
@@ -89,8 +88,9 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
         myGui.atPosition(numx, numy);
 	}
 	
-	public void gotoPosition(Cook c, List<Food> food, int x, int y){
+	public void gotoPosition(Restaurant1CookRole c, List<Food> food, int x, int y){
 		TravelTimes++;
+		this.cook = c;
 		foodlist = food;
 		destinationX = x; 
 		destinationY = y; 

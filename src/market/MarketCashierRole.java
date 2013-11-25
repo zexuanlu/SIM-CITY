@@ -2,6 +2,8 @@ package market;
 
 import agent.*;
 import person.interfaces.*;
+import restaurant.Restaurant1CookRole;
+import restaurant.interfaces.Cashier;
 
 import java.util.*;
 
@@ -47,7 +49,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 
 	public class Myrest{
-		Cook ck;
+		Restaurant1CookRole ck;
 		CashAgent ca;
 		List<Food> order;
 		public List<Food> collectedOrder = new ArrayList<Food>();
@@ -57,7 +59,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		public int restNum;
 		public state1 s1 = state1.ordering;
 
-		Myrest(Cook ck, CashAgent ca, List<Food> order, int restNum){
+		Myrest(Restaurant1CookRole ck, CashAgent ca, List<Food> order, int restNum){
 			this.ck = ck;
 			this.ca = ca;
 			this.order = order;
@@ -110,12 +112,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}				
 	// end of in market scenario
 
-	public void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food, int number){
+	public void MsgIwantFood(Restaurant1CookRole cook, CashAgent ca, List<Food> food, int number){
 		myrest.add(new Myrest(cook, ca, food, number));
 		stateChanged();
 	}
 
-	public void msgBillFromTheAir(CashAgent ca, double money){
+	public void msgBillFromTheAir(Cashier ca, double money){
 		income += money;
 		stateChanged();
 	}

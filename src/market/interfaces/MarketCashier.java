@@ -3,6 +3,8 @@ package market.interfaces;
 import java.util.List;
 
 import market.*;
+import restaurant.Restaurant1CookRole;
+import restaurant.interfaces.Cashier;
 
 public interface MarketCashier {
 
@@ -15,9 +17,9 @@ public interface MarketCashier {
 	public abstract void msgGoToTable(MarketCustomer customer);
 	// end of in market scenario
 
-	public abstract void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food, int number);
+	public abstract void MsgIwantFood(Restaurant1CookRole cook, CashAgent ca, List<Food> food, int number);
 
-	public abstract void msgBillFromTheAir(CashAgent ca, double money);
+	public abstract void msgBillFromTheAir(Cashier ca, double money);
 	
 	public void msgTruckBack(MarketTruck t);
 	

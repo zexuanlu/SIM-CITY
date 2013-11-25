@@ -8,11 +8,12 @@ import market.CashAgent;
 import market.MarketCashierRole;
 import market.MarketCashierRole.state;
 import market.MarketCashierRole.state1;
-import market.interfaces.Cook;
 import market.interfaces.MarketCustomer;
 import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
+
+import restaurant.interfaces.Cook;
 
 public class CashierTest extends TestCase{
 
