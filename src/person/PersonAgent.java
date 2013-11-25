@@ -80,6 +80,7 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 	}
+	
 	/* Utilities */
 	public void setName(String name){this.name = name;}
 
@@ -546,6 +547,7 @@ public class PersonAgent extends Agent implements Person{
 		public List<Location> map;
 		public DistCompare comparator = new DistCompare();
 		public PriorityQueue distancePriority = new PriorityQueue<Double>(10, comparator);
+		
 		CityMap(List<Location> locations){ map = locations; }
 
 		public Location getByType(LocationType lt){
@@ -622,7 +624,7 @@ public class PersonAgent extends Agent implements Person{
 			//choose randomly from a list of nearby locations 
 			return types.get(i);
 		}
-		class DistCompare implements Comparator<Double> {
+		public class DistCompare implements Comparator<Double> {
 
 			@Override
 			public int compare(Double o1, Double o2) {
