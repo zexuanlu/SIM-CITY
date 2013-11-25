@@ -13,7 +13,7 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
     private final int WINDOWX = 600;
     private final int WINDOWY = 350;
     private final int lec = 200, lec1 = 300;
-    private final int wid = 250, wid1 = 150, res = 50, origion = 0;
+    private final int wid = 250, wid1 = 150, res = 50, origin = 0;
     private Image bufferImage;
     private Dimension bufferSize;
     
@@ -28,6 +28,7 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
     public Restaurant1AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
+		this.setBorder(BorderFactory.createTitledBorder("Restaurant 1"));
         
         bufferSize = this.getSize();
  
@@ -50,7 +51,7 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
-        g2.fillRect(origion, origion, WINDOWX, WINDOWY );
+        g2.fillRect(origin, origin, WINDOWX, WINDOWY );
 
         //Here is the table
         g2.setColor(Color.ORANGE);

@@ -10,6 +10,7 @@ import javax.swing.*;
 import market.gui.MarketAnimationPanel;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
+import restaurant.gui.Restaurant1AnimationPanel;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
@@ -33,6 +34,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BuildingAnimationPanel BuildPanel;
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
+	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
     private List<Gui> guis = new ArrayList<Gui>();
     private Image bufferImage;
     private Dimension bufferSize;
@@ -87,7 +89,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   BuildPanel.add(marketPanel);
 		   }
 		   else if(me.getButton() == 1 && restaurant1.contains(me.getX(), me.getY())){
-			   //Switch to Restaurant 1
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(rest1Panel);
 		   }
 		   else if(me.getButton() == 1 && house1.contains(me.getX(), me.getY())){
 			   //Switch to House 1
@@ -138,6 +143,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         else if(s == state.market){
         	g2.drawString("Market", 232, 195);
+        }
+        else if(s == state.restaurant1){
+        	g2.drawString("Restaurant 1", 217, 115);
         }
         
 
@@ -211,6 +219,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if (market.contains(me.getX(), me.getY())){
 			   s = state.market;
+		   }
+		   else if(restaurant1.contains(me.getX(), me.getY())){
+			   s = state.restaurant1;
 		   }
 		   else{
 			   s = state.none;
