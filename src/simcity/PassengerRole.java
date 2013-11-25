@@ -1,7 +1,7 @@
 package simcity;
-import agent.Role; 
-import agent.Agent; 
+
 import simcity.gui.PassengerGui; 
+import agent.Role;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 

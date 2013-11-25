@@ -4,7 +4,13 @@ import gui.panels.*;
 
 import javax.swing.*;
 
+import person.PersonAgent;
+import person.gui.PersonGui; 
+
 import java.awt.*;
+import bank.*; 
+import market.*; 
+import person.*;
 
 import simcity.BusRole; 
 import simcity.BusStopAgent; 
@@ -15,6 +21,8 @@ import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*; 
 
 /**
@@ -23,6 +31,8 @@ import java.util.concurrent.*;
  */
 
 public class SimCityGUI extends JFrame {
+	List<PersonAgent> people = new ArrayList<PersonAgent>();
+	List<PersonGui> peoplegui = new ArrayList<PersonGui>();
 	
 	 int WINDOWX = 640; //60 across
      int WINDOWY = 480; //60 across
@@ -34,9 +44,9 @@ public class SimCityGUI extends JFrame {
 	public static final int SCG_WIDTH = CityAnimationPanel.WIDTH + BuildingAnimationPanel.WIDTH;
 	public static final int SCG_HEIGHT = CityAnimationPanel.HEIGHT + CityControlPanel.HEIGHT;
 
-	CityAnimationPanel cityAnimPanel = new CityAnimationPanel();
+	public CityAnimationPanel cityAnimPanel = new CityAnimationPanel();
 	BuildingAnimationPanel bldngAnimPanel = new BuildingAnimationPanel();
-	CityControlPanel cityCtrlPanel = new CityControlPanel();
+	CityControlPanel cityCtrlPanel = new CityControlPanel(this);
 	
 ///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
 	CityMap citymap = new CityMap();
@@ -63,6 +73,7 @@ public class SimCityGUI extends JFrame {
 	BusStopGui bs6gui = new BusStopGui(busstop6, 340,140);
 	BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
 	BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
+
 	
 	public SimCityGUI() {
 		// SETUP
@@ -193,8 +204,26 @@ public class SimCityGUI extends JFrame {
 	     bus2.startThread();
 	     bus2.msgStartBus();
 	     
-	     ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
+
+	     for (int i=0; i<20; i++){
+		     PersonAgent p = new PersonAgent("Wilczynski");
+		     PersonGui pgui = new PersonGui(p);
+		     people.add(p);
+		     peoplegui.add(pgui);
+	     }
+	     for (PersonAgent p: people){
+	    	 p.startThread();
+	     }
+	     for (PersonGui pgui: peoplegui){
+	    	 cityAnimPanel.addGui(pgui);     
+	      }
+	
+	
+	
 	}
+	
+	
 	
 	public static void main(String[] args){
 		SimCityGUI scg = new SimCityGUI();

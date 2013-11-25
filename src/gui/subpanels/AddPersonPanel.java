@@ -1,13 +1,17 @@
 package gui.subpanels;
 
 import gui.panels.*;
+import gui.main.SimCityGUI; 
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+
 import javax.swing.*;
+
 import person.*; 
+import person.gui.PersonGui;
 
 /**
  * This panel allows the user to add a person
@@ -19,12 +23,13 @@ import person.*;
  */
 
 public class AddPersonPanel extends JPanel implements ActionListener{
-	
+	private SimCityGUI simcitygui = null; 
 	private String title = " Add Person Panel ";
 	private static final int WIDTH = 275;
 	private static final int HEIGHT = 310;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
 	
+	List<String> strRoles = new ArrayList<String>();	
 	// Main control panel reference
 	CityControlPanel cntrlPanel;
 	
@@ -55,19 +60,16 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		this.setMaximumSize(size);
 		
 		// ROLES TO ADD
-		roles.add(new JCheckBox("Role 1"));
-		roles.add(new JCheckBox("Role 2"));
-		roles.add(new JCheckBox("Role 3"));
-		roles.add(new JCheckBox("Role 4"));
+		roles.add(new JCheckBox("Bank Host"));
+		roles.add(new JCheckBox("Bank Teller"));
+		roles.add(new JCheckBox("Market Cashier"));
+		roles.add(new JCheckBox("Market Employee"));
 		roles.add(new JCheckBox("Role 5"));
 		roles.add(new JCheckBox("Role 6"));
 		roles.add(new JCheckBox("Role 7"));
 		roles.add(new JCheckBox("Role 8"));
 		roles.add(new JCheckBox("Role 9"));
 		roles.add(new JCheckBox("Role 10"));
-		
-		custom.addActionListener(this);
-		random.addActionListener(this);
 		
 		// ADD COMPONENTS
 		// Name info
@@ -89,39 +91,37 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e){
 		if (e.getSource() == custom){
-			System.out.println("Custom button clicked");
+			addCustomPerson();
 		}
 		else if (e.getSource()==random){
 			System.out.println("Random button clicked");
 		}
 	}
 	
-	
-	private void addPerson(String s) {
-		
+	public void setSimCityGUI(SimCityGUI scg){
+		simcitygui = scg; 
 	}
 	
 	public void addCustomPerson(){
 		// ArrayList<Role> selectedRoles
+		System.out.println("Custom button clicked");
+		PersonAgent pa = new PersonAgent(nameText.getText());
+		PersonGui pgui = new PersonGui(pa);
+		simcitygui.cityAnimPanel.addGui(pgui);
+		
 		
 		for(JCheckBox role : roles){
 			if(role.isSelected()){
-				if(role.getText().equals("Role 1")){
+				if(role.getText().equals("Bank Host")){
 					// selectedRoles.add(Role 1)
 				}
-				if(role.getText().equals("Role 2")){
+				if(role.getText().equals("Bank Teller")){
 					// selectedRoles.add(Role 2)
 				}
-				if(role.getText().equals("Role 3")){
-					// selectedRoles.add(Role 3)
-				}
-				if(role.getText().equals("Role 4")){
+				if(role.getText().equals("Market Cashier")){
 					// selectedRoles.add(Role 4)
 				}
-				if(role.getText().equals("Role 5")){
-					// selectedRoles.add(Role 5)
-				}
-				if(role.getText().equals("Role 6")){
+				if(role.getText().equals("Market Employee")){
 					// selectedRoles.add(Role 6)
 				}
 				if(role.getText().equals("Role 7")){

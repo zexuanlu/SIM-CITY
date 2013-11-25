@@ -1,7 +1,8 @@
 package gui.subpanels;
-
+import person.PersonAgent;
+import person.gui.PersonGui; 
 import gui.panels.CityControlPanel;
-
+import gui.main.SimCityGUI; 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -15,6 +16,9 @@ import javax.swing.*;
  */
 
 public class InteractPersonPanel extends JPanel {
+	
+	CityControlPanel citycontrolpanel; 
+	public SimCityGUI simcitygui; 
 
 	private String title = " Interact Person Panel ";
 	private static final int WIDTH = 275;
@@ -70,5 +74,5 @@ public class InteractPersonPanel extends JPanel {
 		this.add(new JLabel("Choose start time: "));
 		this.add(startTime);
 	}
-
+	
 }
