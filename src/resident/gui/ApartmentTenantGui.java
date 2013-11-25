@@ -32,9 +32,8 @@ public class ApartmentTenantGui implements Gui {
     
     private String choice;
     
-    public ApartmentTenantGui(ApartmentTenantRole c, ApartmentAnimationPanel gui) {
+    public ApartmentTenantGui(ApartmentTenantRole c) {
     	aptTenant = c;
-    	this.gui = gui;
     }
     
     public void setState(AptCookingState st, String ch) {

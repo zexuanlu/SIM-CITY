@@ -50,7 +50,7 @@ public class SimCityGUI extends JFrame {
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
 	public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 	public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); 
-	public HomeOwnerRole homeOwnerRole1 = new HomeOwnerRole(initPerson, "HMO1", 1);
+	public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO1", 2);
 
 	CityMap citymap; 
 

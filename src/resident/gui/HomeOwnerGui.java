@@ -7,7 +7,6 @@ import java.awt.*;
 public class HomeOwnerGui implements Gui {
 
     private HomeOwnerRole homeOwner = null;
-    HouseAnimationPanel gui;
 
     private int xPos = 50, yPos = 50; // Default cook position
     private int xDestination = 50, yDestination = 50; // Default start position
@@ -32,9 +31,8 @@ public class HomeOwnerGui implements Gui {
     
     private String choice;
     
-    public HomeOwnerGui(HomeOwnerRole c, HouseAnimationPanel gui) {
+    public HomeOwnerGui(HomeOwnerRole c) {
     	homeOwner = c;
-    	this.gui = gui;
     }
     
     public void setState(HomeCookingState st, String ch) {
