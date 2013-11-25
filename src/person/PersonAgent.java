@@ -233,14 +233,13 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			if(nextEvent != null && nextEvent.start == currentTime) {
+			if(nextEvent != null){ //&& nextEvent.start == currentTime) {
 				print("Executing an event as a Person");
 				goToAndDoEvent(nextEvent); 
-				//toDo.remove(nextEvent);
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
-				print("nextEvent was either null or not starting right now: "+nextEvent);
+				print("Nothing to do");
 				checkVitals();
 				return true;
 			}
