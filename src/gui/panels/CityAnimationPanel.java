@@ -5,11 +5,13 @@ package gui.panels;
  * 
  */
 
-import javax.swing.*;
+import javax.swing.*; 
 
 import market.gui.MarketAnimationPanel;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
+import resident.gui.ApartmentAnimationPanel;
+import resident.gui.HouseAnimationPanel;
 import restaurant.gui.Restaurant1AnimationPanel;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
@@ -35,6 +37,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
+	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
+	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
+	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
+	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
+	public ApartmentAnimationPanel aptPanel = new ApartmentAnimationPanel();
     private List<Gui> guis = new ArrayList<Gui>();
     private Image bufferImage;
     private Dimension bufferSize;
@@ -98,31 +105,31 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(house1Panel);
 		   }
 		   else if(me.getButton() == 1 && house2.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(house2Panel);
 		   }
 		   else if(me.getButton() == 1 && house3.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(house3Panel);
 		   }
 		   else if(me.getButton() == 1 && house4.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(house4Panel);
 		   }
 		   else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(aptPanel);
 		   }
 	}
 

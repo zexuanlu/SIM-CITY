@@ -33,7 +33,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 *
 	 */
 	// Constructor
-	public HomeOwnerRole(String n, int hn, Person p) {
+	public HomeOwnerRole(Person p, String n, int hn) {
 		super(p);
 		name = n;
 		houseNumber = hn;

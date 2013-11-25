@@ -24,19 +24,22 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     private static int tableY = 100;
     private static int sinkX = 130;
     private static int sinkY = 190;
+    private int houseNumber;
     
     private Image bufferImage;
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public HouseAnimationPanel() {
+    public HouseAnimationPanel(int n) {
+    	houseNumber = n; 
+    	
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
         
-        this.setBorder(BorderFactory.createTitledBorder("House 1"));
+        this.setBorder(BorderFactory.createTitledBorder("House " + houseNumber));
  
     	Timer timer = new Timer(8, this );
     	timer.start();

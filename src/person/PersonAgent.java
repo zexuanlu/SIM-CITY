@@ -477,7 +477,7 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.HomeOwnerEvent){
 					//Home home = (Home)e.location;
 					activeRole = true;
-					HomeOwnerRole hr = new HomeOwnerRole(this.name, homeNumber, this);
+					HomeOwnerRole hr = new HomeOwnerRole(this, this.name, homeNumber);
 					if(!containsRole(hr)){
 						MyRole newRole = new MyRole(hr);
 						newRole.isActive(true);
