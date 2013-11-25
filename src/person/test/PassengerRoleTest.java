@@ -43,7 +43,6 @@ public class PassengerRoleTest extends TestCase{
 		person.msgNewHour(9); 
 		assertTrue("person's time should be 9, it is not", person.getTime() == 9);
 		
-		//Add the goToRestaurant event
 		person.toDo.offer(goToBank);
 		assertTrue("person's toDo should now contain goToBank, it does not", person.toDo.peek() == goToBank);
 		assertTrue("person's scheduler should return true because we have added one event to his queue", person.pickAndExecuteAnAction());
@@ -53,8 +52,8 @@ public class PassengerRoleTest extends TestCase{
 		person.msgAtDest(100, 100);
 		assertTrue("person's current location should be 100 100 it is not", 
 				person.currentLocation.getX() == 100 && person.currentLocation.getY() == 100);
+		assertTrue("the same event should be on the stack so we can continue with the event", person.toDo.peek() == goToBank);
 		assertTrue("person's should be executing as a passenger role, it is not", person.pickAndExecuteAnAction());
-		
 	}
 
 }
