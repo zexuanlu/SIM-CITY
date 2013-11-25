@@ -35,7 +35,7 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 		log.add(new LoggedEvent("Received msgAccountMade from BankTeller. My number is " + accountNumber));
 	}
 	
-	public void msgDepositDone(double balance){
+	public void msgDepositDone(double balance, double money){
 		log.add(new LoggedEvent("Received msgDepositDone from BankTeller. My new balance is " + balance));
 	}
 	

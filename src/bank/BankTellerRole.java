@@ -208,7 +208,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	
 	private void depositMade(Task t){
 		Do("Telling customer of his deposit. Current balance is " + t.balance);
-		bc.msgDepositDone(t.balance);
+		bc.msgDepositDone(t.balance, t.amount);
 		tasks.remove(t);
 	}
 	

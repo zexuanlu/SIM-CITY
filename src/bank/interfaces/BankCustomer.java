@@ -15,7 +15,7 @@ public interface BankCustomer {
 	
 	public void msgAccountMade(int accountNumber);
 	
-	public void msgDepositDone(double balance);
+	public void msgDepositDone(double balance, double money);
 	
 	public void msgWithdrawDone(double balance, double money);
 	

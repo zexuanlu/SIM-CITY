@@ -70,7 +70,7 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("The state of the bank customer should be waiting. It isn't.", bc.s == state.waiting);
 		assertEquals("The bank customer should have 0 tasks in it. It doesn't.", bc.tasks.size(), 0);
 		
-		bc.msgDepositDone(200.00);
+		bc.msgDepositDone(200.00, 100.00);
 		assertTrue("The state of the bank customer should be atTeller. It isn't.", bc.s == state.atTeller);
 		assertTrue("BankCustomer should have logged \"Received msgDepositDone\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgDepositDone"));
@@ -169,7 +169,7 @@ public class BankCustomerTest extends TestCase {
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgDepositMoney"));
 		assertTrue("The state of the bank customer should be waiting. It isn't.", bc.s == state.waiting);
 		
-		bc.msgDepositDone(200.00);
+		bc.msgDepositDone(200.00, 100.00);
 		assertTrue("The state of the bank customer should be atTeller. It isn't.", bc.s == state.atTeller);
 		assertTrue("BankCustomer should have logged \"Received msgDepositDone\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgDepositDone"));

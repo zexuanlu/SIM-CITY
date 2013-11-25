@@ -60,9 +60,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
-	public void msgDepositDone(double balance){
+	public void msgDepositDone(double balance, double money){
 		log.add(new LoggedEvent("Received msgDepositDone from BankTeller"));
 		this.balance = balance;
+		getPerson().msgAddMoney((-money));
 		this.s = state.atTeller;
 		stateChanged();
 	}
