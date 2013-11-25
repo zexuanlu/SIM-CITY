@@ -1,5 +1,7 @@
 package person;
 
+import gui.panels.CityAnimationPanel;
+
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,6 +42,7 @@ public class PersonAgent extends Agent implements Person{
 	public boolean activeRole;
 
 	PersonGui gui = new PersonGui(this);
+	CityAnimationPanel cap = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
 
 	int accountNumber; 
@@ -92,6 +95,8 @@ public class PersonAgent extends Agent implements Person{
 
 	public boolean active() {return this.activeRole; }
 
+	public void setAnimationPanel(CityAnimationPanel c){ cap = c; }
+	
 	public boolean containsRole(Role r){ 
 		for(MyRole role : roles){
 			if(role.role.getClass() == r.getClass()){
@@ -257,7 +262,9 @@ public class PersonAgent extends Agent implements Person{
 				roles.add(newRole);
 				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.getX(), gui.getY());
 				((PassengerRole)newRole.role).setGui(pg);
-				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getX());
+				cap.addGui(pg);
+				((PassengerRole)newRole.role).setCityMap(cityMap);
+				((PassengerRole)newRole.role).setPassDestination(100, 100);//e.location.position.getX(), e.location.position.getX());
 				((PassengerRole)newRole.role).gotoBus();
 			}
 			else{ //if we already have a PassengerRole, use it
