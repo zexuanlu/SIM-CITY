@@ -5,6 +5,7 @@ import gui.panels.*;
 import javax.swing.*;
 
 import person.Bank;
+import person.Home;
 import person.Market;
 import person.Position;
 import person.PersonAgent; 
@@ -22,6 +23,7 @@ import bank.test.mock.MockBankHost;
 import market.*; 
 import market.test.mock.MockCashier;
 import person.Location; 
+import resident.HomeOwnerRole;
 import simcity.BusRole; 
 import simcity.BusStopAgent; 
 import simcity.PassengerRole; 
@@ -110,9 +112,11 @@ public class SimCityGUI extends JFrame {
 				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
 				new Position(500, 60), LocationType.Market);
-
+		Home home = new Home("Home 1", new HomeOwnerRole("Home Owner", 2, initPerson), 
+				new Position(350, 80), LocationType.Home);
 		locations.add(bank);
 		locations.add(market);
+		locations.add(home);
 		citymap = new CityMap(locations);
 
 		// SETUP
@@ -266,9 +270,11 @@ public class SimCityGUI extends JFrame {
 		}
 
 
-		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		people.get(0).setAnimationPanel(cityAnimPanel);
-		people.get(0).toDo.offer(goToBank);
+		//people.get(0).toDo.offer(goToBank);
+		people.get(0).toDo.offer(goHome);
 		simclock = new SimWorldClock(7,people);
 	}
 

@@ -260,7 +260,6 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
-				print("No event");
 				checkVitals();
 				return true;
 			}
@@ -476,7 +475,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 			else if(e.location.type == LocationType.Home){
 				if(e.type == EventType.HomeOwnerEvent){
-					Home home = (Home)e.location;
+					//Home home = (Home)e.location;
 					activeRole = true;
 					HomeOwnerRole hr = new HomeOwnerRole(this.name, homeNumber, this);
 					if(!containsRole(hr)){
@@ -492,7 +491,7 @@ public class PersonAgent extends Agent implements Person{
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.AptTenantEvent){
-					Apartment apt = (Apartment)e.location;
+					//Apartment apt = (Apartment)e.location;
 					activeRole = true;
 					ApartmentTenantRole tr = new ApartmentTenantRole(this.name, homeNumber, this);
 					if(!containsRole(tr)){
@@ -508,7 +507,7 @@ public class PersonAgent extends Agent implements Person{
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.LandlordEvent){
-					Apartment apt = (Apartment)e.location;
+					//Apartment apt = (Apartment)e.location;
 					activeRole = true;
 					ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, homeNumber, this);
 					if(!containsRole(llr)){
@@ -519,6 +518,7 @@ public class PersonAgent extends Agent implements Person{
 					else{
 						getRoleOfType(llr).isActive(true);
 					}
+					toDo.remove(e);
 				}
 			}
 		}
