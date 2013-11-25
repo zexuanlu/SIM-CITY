@@ -243,25 +243,24 @@ public class SimCityGUI extends JFrame {
 	     
 ////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-	     for (int i=0; i<5; i++){
+	     for (int i=0; i<1; i++){
 		     PersonAgent p = new PersonAgent("Person"+i,citymap);
 		     PersonGui pgui = new PersonGui(p);
+		     p.gui = pgui;
 		     people.add(p);
 		     peoplegui.add(pgui);
+		     cityAnimPanel.addGui(pgui);
 	     }
 	     people.get(0).addRole(banktellerrole1);
-	     people.get(1).addRole(banktellerrole2);
+	     /*people.get(1).addRole(banktellerrole2);
 	     people.get(2).addRole(bankhostrole);
 	     people.get(3).addRole(marketcashierrole);
-	     people.get(4).addRole(marketemployeerole);
+	     people.get(4).addRole(marketemployeerole);*/
 
 	     /*for (PersonAgent p: people){
 	    	 p.startThread();
 	     }*/
 		 people.get(0).startThread();
-	     for (PersonGui pgui: peoplegui){
-	    	 cityAnimPanel.addGui(pgui);     
-	     }
 	     
 		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		 people.get(0).setAnimationPanel(cityAnimPanel);

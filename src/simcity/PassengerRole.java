@@ -140,7 +140,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	//	}
 		print("Passenger leaving bus");
 		busroute.bus.msgLeaving(this);
-		myPerson.msgAtDest(new Position(myGui.xPos, myGui.yPos));
+		myPerson.msgAtDest(myGui.xPos, myGui.yPos);
 
 	//	myPerson.msgFinishedEvent(this);
 	}

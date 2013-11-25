@@ -41,7 +41,7 @@ public class PersonAgent extends Agent implements Person{
 	public int hunger; // tracks hunger level
 	public boolean activeRole;
 
-	PersonGui gui = new PersonGui(this);
+	public PersonGui gui;
 	CityAnimationPanel cap = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
 

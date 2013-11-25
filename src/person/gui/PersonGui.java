@@ -18,10 +18,11 @@ public class PersonGui implements Gui{
 	public PersonGui(PersonAgent agent) {
 		this.agent = agent;
 		arrived = false;
+		isPresent = true;
 	}
 
 	public void updatePosition() {
-
+		System.out.println(xPos+yPos+" : x "+xDestination+" y: "+yDestination );
 		if (xPos < xDestination){ 
 			xPos++; 
 		}
@@ -59,8 +60,8 @@ public class PersonGui implements Gui{
 	}
 	public void DoGoTo(Position p){
 		System.out.println("Going to...");
-		xDestination = (int)p.getX();
-		yDestination = (int)p.getY();
+		xDestination = p.getX();
+		yDestination = p.getY();
 		System.out.println(xDestination);
 		arrived = false;
 	}
