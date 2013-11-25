@@ -21,6 +21,7 @@ import market.interfaces.*;
 import agent.*;
 import person.gui.PersonGui;
 import person.interfaces.Person;
+import person.test.mock.EventLog;
 import simcity.PassengerRole;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
@@ -29,7 +30,7 @@ import simcity.PassengerRole;
  * @author Grant Collins
  */
 public class PersonAgent extends Agent implements Person{
-
+	EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores 
 
 	private String name;
@@ -62,10 +63,10 @@ public class PersonAgent extends Agent implements Person{
 	Semaphore wait = new Semaphore(0, true);
 	Semaphore driving = new Semaphore(0, true);
 
-	public PersonAgent (String name, List<Location> l){
+	public PersonAgent (String name, CityMap cm){
 		super();
 		this.name = name;
-		this.cityMap = new CityMap(l);
+		this.cityMap = cm;
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
