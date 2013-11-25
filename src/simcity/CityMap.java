@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import person.Location;
 import person.Position;
 import person.Location.LocationType;
-import person.PersonAgent.CityMap.DistCompare;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 

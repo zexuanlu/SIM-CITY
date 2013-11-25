@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
-
 import person.Location.LocationType;
 import person.Restaurant;
 import person.SimEvent.EventType;
