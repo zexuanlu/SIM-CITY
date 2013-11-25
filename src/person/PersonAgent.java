@@ -27,6 +27,7 @@ import person.test.mock.EventLog;
 import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
+import resident.gui.HomeOwnerGui;
 import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.gui.PassengerGui;
@@ -490,6 +491,8 @@ public class PersonAgent extends Agent implements Person{
 						MyRole newRole = new MyRole(hr);
 						newRole.isActive(true);
 						roles.add(newRole);
+						((HomeOwnerRole)newRole.role).setGui(new HomeOwnerGui((HomeOwnerRole)newRole.role));
+						cap.getHouseGui(1);
 						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					else{

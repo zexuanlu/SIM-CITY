@@ -11,6 +11,7 @@ import market.gui.MarketAnimationPanel;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
+import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant.gui.Restaurant1AnimationPanel;
 import simcity.gui.BusGui;
@@ -43,6 +44,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
 	public ApartmentAnimationPanel aptPanel = new ApartmentAnimationPanel();
     private List<Gui> guis = new ArrayList<Gui>();
+    private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private Image bufferImage;
     private Dimension bufferSize;
 	private String title = " City Animation ";
@@ -223,10 +225,15 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public void addGui(PersonGui gui) {
         guis.add(gui);
     }
-    
-    
-    
 
+    public HouseAnimationPanel getHouseGui(int houseNumber){
+    	for(HouseAnimationPanel h : homes){
+    		if(h.houseNumber == houseNumber){
+    			return h;
+    		}
+    	}
+    	return null;
+    }
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub

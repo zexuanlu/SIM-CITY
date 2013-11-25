@@ -24,7 +24,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     private static int tableY = 100;
     private static int sinkX = 130;
     private static int sinkY = 190;
-    private int houseNumber;
+    public int houseNumber;
     
     private Image bufferImage;
     private Dimension bufferSize;
