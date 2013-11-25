@@ -4,7 +4,7 @@ import agent.*;
 import bank.interfaces.*;
 public class Bank extends Location{
 	
-	private BankHost host;
+	BankHost host;
 	private TimeCard timeCard;
 	
 	public Bank(String n, BankHost h, Position p, LocationType type){
