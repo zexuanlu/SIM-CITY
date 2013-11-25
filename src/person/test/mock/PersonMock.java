@@ -127,5 +127,10 @@ public class PersonMock extends Mock implements Person {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void msgAtDest(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

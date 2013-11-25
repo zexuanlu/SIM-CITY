@@ -250,7 +250,6 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
-				print("Nothing to do");
 				checkVitals();
 				return true;
 			}
