@@ -1,5 +1,10 @@
 package person.test;
-
+/*
+ * Tests the person's ability to navigate to and from two events in his scheduler. 
+ * Tests the ordering of SimEvent in the person's toDo Priority Queue
+ * 
+ * @author Grant Collins 
+ */
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
 import market.interfaces.MarketCustomer;

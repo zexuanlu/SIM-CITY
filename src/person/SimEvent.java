@@ -1,11 +1,16 @@
 package person;
-
+/*
+ * An event for the PersonAgent. With all information for one occurrence in a simperson's day
+ * These events will be ordered by priority and time.
+ * 
+ * @author Grant Collins
+ */
 public class SimEvent {
 	String directive;
     public Location location;
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, CookEvent, CashierEvent, 
     						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, 
-    						FreeEvent, BusEvent, AptTenantEvent, HomeOwnerEvent, LandlordEvent, 
+    						BusEvent, AptTenantEvent, HomeOwnerEvent, LandlordEvent, 
     						MaintenenaceEvent} 
     public EventType type;
     int priority; // for ordering in queue
@@ -18,10 +23,8 @@ public class SimEvent {
     	this.priority = priority;
     	this.start = start;
     	this.inProgress = false;
-    	this.type = type;
-    	
+    	this.type = type;	
     }
-  
     /*
      * create a time ambiguous event that will be ordered on the fly 
      * with regards to existing mandatory events

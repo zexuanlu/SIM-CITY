@@ -13,7 +13,13 @@ import person.SimEvent.EventType;
 import person.Location.LocationType;
 import bank.*;
 import bank.test.mock.*;
-
+/*
+ * Tests the entrance role handoff between the TimeCard and the Person
+ * sends a role on work and the person will begin calling the role's 
+ * scheduler
+ * 
+ * @author Grant Collins
+ */
 public class BankHandshake extends TestCase{
 	
 	PersonAgent person;

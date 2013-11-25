@@ -14,7 +14,12 @@ import person.Position;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
 import bank.test.mock.*;
-
+/*
+ * Tests the role handoff between the TimeCard and the BankTellerRole sending the role off work 
+ * and the people on their way. 
+ * 
+ * @author Grant Collins
+ */
 public class BankExitHandshake extends TestCase{
 	PersonAgent person;
 	MockBankHost host;
