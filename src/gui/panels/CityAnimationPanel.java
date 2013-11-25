@@ -223,6 +223,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public void addGui(PersonGui gui) {
         guis.add(gui);
     }
+    
+    
+    
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
