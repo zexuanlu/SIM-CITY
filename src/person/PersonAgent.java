@@ -166,6 +166,11 @@ public class PersonAgent extends Agent implements Person{
 		gui.yPos = y;
 		currentLocation.setX(x);
 		currentLocation.setY(y);
+		for(MyRole role : roles){
+			if(role.role instanceof PassengerRole){
+				role.isActive(false);
+			}
+		}
 		activeRole = false;
 		gui.setPresent(true);
 		arrived = true;
@@ -232,6 +237,7 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		
 		if(activeRole) { //run role code
 			for(MyRole r : roles){
 				if(r.isActive){
@@ -243,13 +249,14 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			if(nextEvent != null && (!nextEvent.inProgress || nextEvent.start == currentTime)){ //&& nextEvent.start == currentTime) {
+			if(nextEvent != null){ //&& (!nextEvent.inProgress)){// || nextEvent.start == currentTime)){ //&& nextEvent.start == currentTime) {
 				print("Executing an event as a Person");
 				goToAndDoEvent(nextEvent); 
 				nextEvent.setProgress(true);
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
+				print("No event");
 				checkVitals();
 				return true;
 			}
@@ -290,6 +297,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		else{
+			print("going to location");
 			Location l = e.location;
 			DoGoTo(l); // Handles picking mode of transport and animating there
 			try {
