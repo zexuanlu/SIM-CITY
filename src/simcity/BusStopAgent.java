@@ -27,6 +27,9 @@ public class BusStopAgent extends Agent implements BusStop{//do i have to make i
 	
 	public enum BusState {notatStop, arrivedatStop, atStop}; 
 	public String name; 
+	public String getName(){
+		return name; 
+	}
 	
 
 	public BusStopAgent(String name){

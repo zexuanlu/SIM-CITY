@@ -166,6 +166,11 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(true);
 		stateChanged();
 	}
+	
+	public void setStateChanged(){
+		stateChanged();
+	}
+
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
 		print("Recieved the message AtDest");
 		going.release();
@@ -222,7 +227,7 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		print("Active as a: "+ activeRole);
+		print("Active: "+ activeRole);
 		if(activeRole) { //run role code
 			print("Executing an event as a Role");
 			for(MyRole r : roles){

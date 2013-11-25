@@ -38,6 +38,7 @@ public class CityMap {
 		b.busStopX = getDimension(b.busstop).width; 
 		b.busStopY = getDimension(b.busstop).height;
 
+		System.out.println("busstop start is" + b.busstop.getName() +"busstop end is "+ destStop.getName() );
 
 		return b;
 	}

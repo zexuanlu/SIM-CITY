@@ -7,7 +7,10 @@ package gui.panels;
 
 import javax.swing.*;
 
+import market.gui.MarketAnimationPanel;
+import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
+import restaurant.gui.Restaurant1AnimationPanel;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
@@ -20,21 +23,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener{
+public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
+	public BuildingAnimationPanel BuildPanel;
+	public BankAnimationPanel bankPanel = new BankAnimationPanel();
+	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
+	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
     private List<Gui> guis = new ArrayList<Gui>();
     private Image bufferImage;
     private Dimension bufferSize;
 	private String title = " City Animation ";
+	state s = state.none;
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = 480;
 	public static final int BUILDINGSIZE = 60;
 	Timer timer;
+	
+	enum state {none, bank, market, restaurant1, house1, apartment1}
+	
+	
 	
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
@@ -46,6 +59,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public CityAnimationPanel() {
 		//PANEL SETUP
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		
 		//Panel size initiations
@@ -63,13 +77,22 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	
 	public void mouseClicked(MouseEvent me){
 		   if (me.getButton() == 1 && bank.contains(me.getX(), me.getY())){
-			   //Switch to Bank
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));
+			   BuildPanel.repaint();
+			   BuildPanel.add(bankPanel);
 		   }
 		   else if(me.getButton() == 1 && market.contains(me.getX(), me.getY())){
-			   //Switch to Market
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(marketPanel);
 		   }
 		   else if(me.getButton() == 1 && restaurant1.contains(me.getX(), me.getY())){
-			   //Switch to Restaurant 1
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(rest1Panel);
 		   }
 		   else if(me.getButton() == 1 && house1.contains(me.getX(), me.getY())){
 			   //Switch to House 1
@@ -111,9 +134,20 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fillRect(400, 60, 50, 50); 
         g2.fillRect(500, 60, 50, 50); 
         g2.fillRect(500, 120, 50, 50); 
-        g2.fillRect(400, 120, 50, 50); 
-
-
+        g2.fillRect(400, 120, 50, 50);
+        
+        //Hover Text
+    	g2.setColor(Color.BLACK);
+        if(s == state.bank){
+        	g2.drawString("Bank", 155, 195);
+        }
+        else if(s == state.market){
+        	g2.drawString("Market", 232, 195);
+        }
+        else if(s == state.restaurant1){
+        	g2.drawString("Restaurant 1", 217, 115);
+        }
+        
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
@@ -169,6 +203,29 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent me) {
+		   if (bank.contains(me.getX(), me.getY())){
+			   s = state.bank;
+		   }
+		   else if (market.contains(me.getX(), me.getY())){
+			   s = state.market;
+		   }
+		   else if(restaurant1.contains(me.getX(), me.getY())){
+			   s = state.restaurant1;
+		   }
+		   else{
+			   s = state.none;
+		   }
 		
 	}
     

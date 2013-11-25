@@ -4,10 +4,10 @@ import junit.framework.TestCase;
 import market.Food;
 import market.MarketTruckAgent;
 import market.MarketTruckAgent.CarState;
-import market.interfaces.Cook;
+import restaurant.*;
 import market.test.mock.EventLog;
 import market.test.mock.MockCashier;
-import market.test.mock.MockCook;
+
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class TruckTest extends TestCase{
 	
 	EventLog log = new EventLog();
 	MarketTruckAgent truck;
-	MockCook cook;
+	Restaurant1CookRole cook;
 	MockCashier cashier;
 	AStarTraversal aStar;
 	
@@ -25,7 +25,7 @@ public class TruckTest extends TestCase{
 		super.setUp();
 		aStar = new AStarTraversal(null);
 		truck = new MarketTruckAgent(aStar);
-		cook = new MockCook("cook");
+		cook = new Restaurant1CookRole("cook");
 		cashier = new MockCashier("C");
 		
 	}
@@ -46,8 +46,6 @@ public class TruckTest extends TestCase{
 		assertTrue("truck should contain a state == sending. It doesn't.",
 				truck.carstate == CarState.moving);
 		
-		assertTrue("cook should return a string with word Your order arraived, but the last event return "
-				+ cook.log.getLastLoggedEvent().toString(), cook.log.containsString("Your order arraived"));
 	}
 	
 }

@@ -139,13 +139,7 @@ public class BusRole extends Agent implements Bus {
 					}
 				}
 			}
-			
-			
-			if (busState == BusState.toAnnounce){
-				announceStop();
-				return true; 
-			}
-			
+	
 			if (passengers.size() != 0){
 			for (myPassenger mp: passengers){
 				if (mp.state == PersonState.paid){
@@ -163,6 +157,13 @@ public class BusRole extends Agent implements Bus {
 					}
 				}
 			}
+			
+			
+			if (busState == BusState.toAnnounce){
+				announceStop();
+				return true; 
+			}
+			
 			if (busState == BusState.abouttoleave){
 				leaveStop();
 				return true; 
@@ -197,8 +198,10 @@ public class BusRole extends Agent implements Bus {
 		
 		public void announceStop(){
 			busState = BusState.stopped; 
+
 			for (myPassenger mp: passengers){
 				mp.p.msgNowAtStop(currentStop);
+				print ("Announcing Bus now at stop");
 			}
 			
 			timer.schedule(new TimerTask() {
