@@ -11,7 +11,7 @@ import market.Food;
 import market.gui.MarketEmployeeGui;
 import market.test.mock.EventLog;
 import market.test.mock.MockCashier;
-import market.test.mock.MockCook;
+import restaurant.*;
 import market.test.mock.MockCustomer;
 import market.test.mock.MockTruck;
 import junit.framework.TestCase;
@@ -23,7 +23,7 @@ public class EmployeeTest extends TestCase{
 	MockCashier cashier;
 	MockCustomer customer;
 	Person p;
-	MockCook cook;
+	Restaurant1CookRole cook;
 	MockTruck truck;
 	MarketEmployeeGui employeeGui;
 	
@@ -32,7 +32,7 @@ public class EmployeeTest extends TestCase{
 		employee = new MarketEmployeeRole(p, "employee");
 		cashier = new MockCashier("casheir");
 		customer = new MockCustomer("customer");
-		cook = new MockCook("cook");
+		cook = new Restaurant1CookRole("cook");
 		truck = new MockTruck("truck");
 		employeeGui = new MarketEmployeeGui();
 	}

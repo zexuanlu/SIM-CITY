@@ -17,7 +17,7 @@ public interface MarketCashier {
 	public abstract void msgGoToTable(MarketCustomer customer);
 	// end of in market scenario
 
-	public abstract void MsgIwantFood(Restaurant1CookRole cook, CashAgent ca, List<Food> food, int number);
+	public abstract void MsgIwantFood(Restaurant1CookRole cook, Cashier ca, List<Food> food, int number);
 
 	public abstract void msgBillFromTheAir(Cashier ca, double money);
 	
