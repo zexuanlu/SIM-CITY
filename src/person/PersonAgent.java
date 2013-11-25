@@ -336,6 +336,7 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
 					activeRole = true; 
 					BankCustomerRole bcr = new BankCustomerRole(this, this.name); //create the role
+					bcr.bh = bank.host;
 					if(!containsRole(bcr)){   //check if we dont already have it 
 						MyRole newRole = new MyRole(bcr); //make a new MyRole
 						newRole.isActive(true); //set it active
