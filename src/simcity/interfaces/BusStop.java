@@ -10,4 +10,5 @@ public interface BusStop {
 	public abstract boolean isBusAtStop(Bus b);
 	public abstract void msgBusLeaving(Bus b);
 	public abstract Dimension getDim();
+	public abstract String getName();
 }

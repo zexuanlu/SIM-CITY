@@ -42,6 +42,7 @@ public abstract class Role {
 */
     protected void stateChanged() {
         //This will call the agent's stateChanged function
+    	this.person.setStateChanged();
     }
 
     /**

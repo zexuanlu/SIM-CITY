@@ -47,7 +47,9 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	}
 	
 	public void msgNowAtStop(String stop){
+		print("atStop name is "+ stop + "bus stop destination is " + busroute.destination);
 		if (stop.equals(busroute.destination)){
+			System.out.println("hit in statechanged of msgnowatstop");
 			action = Action.leaveBus; 
 			stateChanged();
 		}
@@ -113,7 +115,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	public void payFare(){
 	//	if (myPerson. >= busroute.fare){
-			myPerson.msgAddMoney(-(int)busroute.fare);
+			//myPerson.msgAddMoney(-(int)busroute.fare);
 			state = State.paid; 
 			print("Passenger paid fare");
 			busroute.bus.msgHeresMyFare(this, busroute.fare);
