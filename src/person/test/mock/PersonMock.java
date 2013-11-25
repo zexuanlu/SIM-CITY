@@ -118,7 +118,7 @@ public class PersonMock extends Mock implements Person {
 		
 	}
 	@Override
-	public void msgNewBalane(double money) {
+	public void msgNewBalance(double money) {
 		// TODO Auto-generated method stub
 		
 	}
