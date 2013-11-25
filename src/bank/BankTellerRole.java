@@ -124,10 +124,10 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
-	public void msgLoanFailed(BankCustomer bc){
-		log.add(new LoggedEvent("Received msgLoanFailed from BankDatabase"));
+	public void msgRequestFailed(BankCustomer bc, String type){
+		log.add(new LoggedEvent("Received msgRequestFailed from BankDatabase"));
 		for(Task t : tasks){
-			if(t.type.equals("getLoan")){
+			if(t.type.equals(type)){
 				t.ts = taskState.failed;
 				stateChanged();
 			}
@@ -155,7 +155,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 		for(Task t : tasks){
 			if(t.ts == taskState.failed){
-				loanFailed(t);
+				RequestFailed(t);
 				return true;
 			}
 		}
@@ -227,8 +227,8 @@ public class BankTellerRole extends Role implements BankTeller {
 		t.ts = taskState.waiting;
 	}
 	
-	private void loanFailed(Task t){
-		bc.msgLoanFailed();
+	private void RequestFailed(Task t){
+		bc.msgRequestFailed(t.type);
 		tasks.remove(t);
 	}
 	

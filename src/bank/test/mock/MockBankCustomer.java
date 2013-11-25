@@ -47,8 +47,8 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 		log.add(new LoggedEvent("Received msgLoanGranted from BankTeller"));
 	}
 
-	public void msgLoanFailed(){
-		log.add(new LoggedEvent("Received msgLoanFailed from BankTeller"));
+	public void msgRequestFailed(String type){
+		log.add(new LoggedEvent("Received msgRequestFailed from BankTeller"));
 	}
 	
 }

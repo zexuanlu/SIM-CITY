@@ -321,10 +321,10 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("The state of the bank customer should be waiting. It isn't.", bc.s == state.waiting);
 		assertEquals("The bank customer should have 0 tasks in it. It doesn't.", bc.tasks.size(), 0);
 		
-		bc.msgLoanFailed();
+		bc.msgRequestFailed("getLoan");
 		assertTrue("The state of the bank customer should be atTeller. It isn't.", bc.s == state.atTeller);
-		assertTrue("BankCustomer should have logged \"Received msgLoanFailed\" but didn't. His log reads instead: " 
-				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgLoanFailed"));
+		assertTrue("BankCustomer should have logged \"Received msgRequestFailed\" but didn't. His log reads instead: " 
+				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgRequestFailed"));
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
@@ -409,10 +409,10 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("The state of the bank customer should be waiting. It isn't.", bc.s == state.waiting);
 		assertEquals("The bank customer should have 0 tasks in it. It doesn't.", bc.tasks.size(), 0);
 		
-		bc.msgLoanFailed();
+		bc.msgRequestFailed("getLoan");
 		assertTrue("The state of the bank customer should be atTeller. It isn't.", bc.s == state.atTeller);
-		assertTrue("BankCustomer should have logged \"Received msgLoanFailed\" but didn't. His log reads instead: " 
-				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgLoanFailed"));
+		assertTrue("BankCustomer should have logged \"Received msgRequestFailed\" but didn't. His log reads instead: " 
+				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgRequestFailed"));
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
