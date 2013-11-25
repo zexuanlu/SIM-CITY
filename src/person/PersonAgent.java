@@ -126,6 +126,9 @@ public class PersonAgent extends Agent implements Person{
 		wallet.setOnHand(money); 
 		stateChanged();
 	}
+	public void msgNewBalance(double money){
+		wallet.setNewBankBalance(money);
+	}
 	public void msgAtHome(){
 		print("Back home");
 	}
@@ -708,6 +711,9 @@ public class PersonAgent extends Agent implements Person{
 		}
 		public void setInBank(double newAmount){
 			inBank += newAmount;
+		}
+		public void setNewBankBalance(double newAmount){
+			inBank = newAmount;
 		}
 		class BankTicket {
 			String action;

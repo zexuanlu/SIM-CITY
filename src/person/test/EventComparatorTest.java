@@ -40,7 +40,7 @@ public class EventComparatorTest extends TestCase{
 	//Restaurant work = new Restaurant("B2", h2, p2, LocationType.Restaurant);
 	//Market market = new Market("B3", h3, p3, LocationType.Market);
 	
-	//Events to be enetered into pq
+	//Events to be entered into pq
 	SimEvent goToBank;
 	SimEvent goToWork;
 	SimEvent goToMarket;

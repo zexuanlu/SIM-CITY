@@ -19,6 +19,8 @@ public interface Person {
 	
 	public abstract void msgAddMoney(double money); //give money back to the person's wallet 
 
+	public abstract void msgNewBalance(double money); //set the inBank value of wallet
+	
 	public abstract void msgAddEvent(SimEvent e); //add an event to the person's scheduler
 	
 	public abstract void msgReadyToWork(Role r); //notify a waiting person that they can send their role to work
