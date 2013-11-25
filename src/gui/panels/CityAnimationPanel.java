@@ -45,12 +45,15 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int BUILDINGSIZE = 60;
 	Timer timer;
 	
-	enum state {none, bank, market, restaurant1, house1, apartment1}
+	enum state {none, bank, market, restaurant1, house1, house2, house3, house4, apartment1}
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D market = new Rectangle2D.Double(220, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D restaurant1 = new Rectangle2D.Double(220,80, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house1 = new Rectangle2D.Double(340, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house2 = new Rectangle2D.Double(340, 80, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house3 = new Rectangle2D.Double(450, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house4 = new Rectangle2D.Double(540, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D apartment1 = new Rectangle2D.Double(340, 280, BUILDINGSIZE, BUILDINGSIZE);
 	
 	public CityAnimationPanel() {
@@ -97,6 +100,24 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   BuildPanel.repaint();
 			   //BuildPanel.add(rest1Panel);
 		   }
+		   else if(me.getButton() == 1 && house2.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   //BuildPanel.add(rest1Panel);
+		   }
+		   else if(me.getButton() == 1 && house3.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   //BuildPanel.add(rest1Panel);
+		   }
+		   else if(me.getButton() == 1 && house4.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   //BuildPanel.add(rest1Panel);
+		   }
 		   else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
@@ -123,6 +144,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(bank);
         g2.fill(apartment1);
         g2.fill(house1);
+        g2.fill(house2);
+        g2.fill(house3);
+        g2.fill(house4);
         g2.fill(market);
         g2.fill(restaurant1);
 
@@ -144,10 +168,19 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         	g2.drawString("Restaurant 1", 217, 115);
         }
         else if(s == state.house1){
-        	g2.drawString("House 1", 100, 100);
+        	g2.drawString("House 1", 345, 195);
+        }
+        else if(s == state.house2){
+        	g2.drawString("House 2", 345, 115);
+        }
+        else if(s == state.house3){
+        	g2.drawString("House 3", 455, 195);
+        }
+        else if(s == state.house4){
+        	g2.drawString("House 4", 545, 195);
         }
         else if(s == state.apartment1){
-        	g2.drawString("Apartment 1", 100, 100);
+        	g2.drawString("Apartment 1", 335, 315);
         }
 
         for(Gui gui : guis) {
@@ -229,6 +262,15 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if(house1.contains(me.getX(), me.getY())){
 			   s = state.house1;
+		   }
+		   else if(house2.contains(me.getX(), me.getY())){
+			   s = state.house2;
+		   }
+		   else if(house3.contains(me.getX(), me.getY())){
+			   s = state.house3;
+		   }
+		   else if(house4.contains(me.getX(), me.getY())){
+			   s = state.house4;
 		   }
 		   else{
 			   s = state.none;
