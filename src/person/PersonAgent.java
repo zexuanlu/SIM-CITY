@@ -491,8 +491,9 @@ public class PersonAgent extends Agent implements Person{
 						MyRole newRole = new MyRole(hr);
 						newRole.isActive(true);
 						roles.add(newRole);
-						((HomeOwnerRole)newRole.role).setGui(new HomeOwnerGui((HomeOwnerRole)newRole.role));
-						cap.getHouseGui(1);
+						HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
+						((HomeOwnerRole)newRole.role).setGui(hog);
+						cap.getHouseGui(2).addGui(hog);
 						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					else{
