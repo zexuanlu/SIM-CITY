@@ -8,6 +8,7 @@ import bank.interfaces.*;
 public class BankGuardRole extends Role implements BankGuard {
 	
 	//Data
+	String name;
 	List<Robbery> robberies = new ArrayList<Robbery>();
 	
 	BankGuardRole(Person person, String name){
@@ -24,6 +25,11 @@ public class BankGuardRole extends Role implements BankGuard {
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	//Utilities
+	public String toString(){
+		return name;
 	}
 	
 	class Robbery{
