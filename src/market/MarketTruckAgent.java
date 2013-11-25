@@ -66,7 +66,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	public void msgatDestination(){
 		if(TravelTimes%2 == 1){
-			cook.msgHereisYourFood(this, foodlist);
+			//cook.msgHereisYourFood(this, foodlist);
 		}
 		else if(TravelTimes%2 == 0){
 			cashier.msgTruckBack(this);

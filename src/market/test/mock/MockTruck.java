@@ -23,4 +23,11 @@ public class MockTruck extends Mock implements MarketTruck{
 		log.add(new LoggedEvent("Got it"));
 	}
 
+
+	@Override
+	public void msgGoBack() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

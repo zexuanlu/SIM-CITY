@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
+
 import person.Location.LocationType;
 import person.Restaurant;
 import person.SimEvent.EventType;
@@ -23,6 +24,7 @@ import person.interfaces.Person;
 import person.test.mock.EventLog;
 import simcity.PassengerRole;
 import simcity.CityMap;
+import simcity.gui.PassengerGui;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
  * The PersonAgent, once a decision has been made, will switch to the appropriate role to carry out the task given in the event
@@ -126,7 +128,6 @@ public class PersonAgent extends Agent implements Person{
 		MyRole mr = new MyRole(r);
 		roles.add(mr);
 	}
-
 	public void populateCityMap(List<Location> loc){ cityMap = new CityMap(loc); } 
 
 	/* Messages */
@@ -254,7 +255,9 @@ public class PersonAgent extends Agent implements Person{
 				MyRole newRole = new MyRole(pRole);
 				newRole.isActive(true);
 				roles.add(newRole);
-				((PassengerRole)newRole.role).setDestination(e.location.name);
+				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.getX(), gui.getY());
+				((PassengerRole)newRole.role).setGui(pg);
+				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getX());
 				((PassengerRole)newRole.role).gotoBus();
 			}
 			else{ //if we already have a PassengerRole, use it

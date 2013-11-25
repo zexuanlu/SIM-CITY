@@ -47,5 +47,7 @@ public class PersonGui implements Gui{
 		System.out.println(xDestination);
 		arrived = false;
 	}
+	public int getX(){ return xPos;}
+	public int getY(){ return yPos; }
 
 }
