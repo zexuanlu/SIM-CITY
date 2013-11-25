@@ -24,7 +24,7 @@ public class BankDatabaseTest extends TestCase {
 	public void setUp() throws Exception{
 		super.setUp();		
 		bt = new MockBankTeller("BankTeller1");
-		bd = new BankDatabaseAgent("Bank Database");
+		bd = new BankDatabaseAgent();
 		bc = new MockBankCustomer("BankCustomer1");
 	}
 	
