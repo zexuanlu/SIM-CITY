@@ -8,9 +8,12 @@ import person.Bank;
 import person.Market;
 import person.Position;
 import person.PersonAgent; 
+import person.SimEvent;
 import person.Location.LocationType;
+import person.SimEvent.EventType;
 import person.gui.PersonGui; 
 import person.SimWorldClock; 
+
 import java.awt.*;
 
 import agent.TimeCard;
@@ -40,7 +43,6 @@ import java.util.concurrent.*;
 public class SimCityGUI extends JFrame {
 	private PersonAgent initPerson; 
 	public SimWorldClock simclock;
-	
 	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
 	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
@@ -251,13 +253,17 @@ public class SimCityGUI extends JFrame {
 	     people.get(2).addRole(bankhostrole);
 	     people.get(3).addRole(marketcashierrole);
 	     people.get(4).addRole(marketemployeerole);
-	     for (PersonAgent p: people){
+	     
+		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		 people.get(0).toDo.offer(goToBank);
+
+	     /*for (PersonAgent p: people){
 	    	 p.startThread();
-	     }
+	     }*/
+		 people.get(0).startThread();
 	     for (PersonGui pgui: peoplegui){
 	    	 cityAnimPanel.addGui(pgui);     
 	     }
-	     
 	     simclock = new SimWorldClock(7,people);
 	}
 	
