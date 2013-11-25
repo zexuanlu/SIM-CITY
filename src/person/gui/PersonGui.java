@@ -10,8 +10,8 @@ import simcity.gui.Gui;
 public class PersonGui implements Gui{
 	private PersonAgent agent = null;
 
-	private int xPos = -20, yPos = -20;//default player position
-	private int xDestination = 20, yDestination = 20;//default start position
+	public int xPos = -20, yPos = -20;//default player position
+	public int xDestination = 20, yDestination = 20;//default start position
 	private boolean arrived; 
 	private boolean isPresent;
 
@@ -22,7 +22,7 @@ public class PersonGui implements Gui{
 	}
 
 	public void updatePosition() {
-		System.out.println(xPos+yPos+" : x "+xDestination+" y: "+yDestination );
+		System.out.println("xPos: "+xPos+" yPos: "+yPos+" : x "+xDestination+" y: "+yDestination );
 		if (xPos < xDestination){ 
 			xPos++; 
 		}
@@ -37,7 +37,6 @@ public class PersonGui implements Gui{
 			yPos--; 
 		}
 		if(yPos == yDestination && xPos == xDestination && !arrived){
-			System.out.println("Up");
 			arrived = true;
 			agent.msgAtDest(new Position(yPos, xPos));
 		}
@@ -65,7 +64,7 @@ public class PersonGui implements Gui{
 		System.out.println(xDestination);
 		arrived = false;
 	}
-	public int getX(){ return xPos;}
-	public int getY(){ return yPos; }
+	public int getX(){return xPos;}
+	public int getY(){return yPos;}
 
 }
