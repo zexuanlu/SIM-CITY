@@ -253,9 +253,6 @@ public class SimCityGUI extends JFrame {
 	     people.get(2).addRole(bankhostrole);
 	     people.get(3).addRole(marketcashierrole);
 	     people.get(4).addRole(marketemployeerole);
-	     
-		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
-		 people.get(0).toDo.offer(goToBank);
 
 	     /*for (PersonAgent p: people){
 	    	 p.startThread();
@@ -264,6 +261,10 @@ public class SimCityGUI extends JFrame {
 	     for (PersonGui pgui: peoplegui){
 	    	 cityAnimPanel.addGui(pgui);     
 	     }
+	     
+		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		 people.get(0).setAnimationPanel(cityAnimPanel);
+		 people.get(0).toDo.offer(goToBank);
 	     simclock = new SimWorldClock(7,people);
 	}
 	
