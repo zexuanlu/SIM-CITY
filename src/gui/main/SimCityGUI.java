@@ -255,13 +255,16 @@ public class SimCityGUI extends JFrame {
 	     people.get(3).addRole(marketcashierrole);
 	     people.get(4).addRole(marketemployeerole);
 
+	     
+	     for (PersonGui pgui: peoplegui){
+	    	 cityAnimPanel.addGui(pgui);     
+	     }
+	     
 	     /*for (PersonAgent p: people){
 	    	 p.startThread();
 	     }*/
 		 people.get(0).startThread();
-	     for (PersonGui pgui: peoplegui){
-	    	 cityAnimPanel.addGui(pgui);     
-	     }
+
 	     
 		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		 people.get(0).setAnimationPanel(cityAnimPanel);
