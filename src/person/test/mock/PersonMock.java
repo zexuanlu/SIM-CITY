@@ -22,10 +22,6 @@ public class PersonMock extends Mock implements Person {
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
 	public List<Role> roles = new ArrayList<Role>();
 	
-	public void setStateChanged(){
-		
-	}
-	
 	public PersonMock(String name) {
 		super(name);
 		currentTime = 7;
