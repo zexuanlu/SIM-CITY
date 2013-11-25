@@ -11,7 +11,7 @@ public class SimWorldClock {
 	int currentHour;
 	int endOfDay;
 
-	SimWorldClock(int currentHour, List<PersonAgent> people){
+	public SimWorldClock(int currentHour, List<PersonAgent> people){
 		this.currentHour = currentHour;
 		this.people = people;
 		clock.scheduleAtFixedRate(new TimerTask() {

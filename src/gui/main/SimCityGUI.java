@@ -10,7 +10,7 @@ import person.Position;
 import person.PersonAgent; 
 import person.Location.LocationType;
 import person.gui.PersonGui; 
-
+import person.SimWorldClock; 
 import java.awt.*;
 
 import agent.TimeCard;
@@ -39,6 +39,8 @@ import java.util.concurrent.*;
 
 public class SimCityGUI extends JFrame {
 	private PersonAgent initPerson; 
+	public SimWorldClock simclock;
+	
 	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
 	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
@@ -238,21 +240,25 @@ public class SimCityGUI extends JFrame {
 	     
 ////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-	     for (int i=0; i<20; i++){
-		     PersonAgent p = new PersonAgent("Wilczynski",citymap);
+	     for (int i=0; i<5; i++){
+		     PersonAgent p = new PersonAgent("Person"+i,citymap);
 		     PersonGui pgui = new PersonGui(p);
 		     people.add(p);
 		     peoplegui.add(pgui);
 	     }
+	     people.get(0).addRole(banktellerrole1);
+	     people.get(1).addRole(banktellerrole2);
+	     people.get(2).addRole(bankhostrole);
+	     people.get(3).addRole(marketcashierrole);
+	     people.get(4).addRole(marketemployeerole);
 	     for (PersonAgent p: people){
 	    	 p.startThread();
 	     }
 	     for (PersonGui pgui: peoplegui){
 	    	 cityAnimPanel.addGui(pgui);     
-	      }
-	
-	
-	
+	     }
+	     
+	     simclock = new SimWorldClock(7,people);
 	}
 	
 	
