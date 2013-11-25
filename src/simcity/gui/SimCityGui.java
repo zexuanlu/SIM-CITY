@@ -10,7 +10,6 @@ import simcity.astar.*;
 import java.util.concurrent.*; 
 
 public class SimCityGui extends JFrame{
-	
 	 int WINDOWX = 640; //60 across
      int WINDOWY = 480; //60 across
      int scale = 20; 
@@ -248,12 +247,12 @@ public class SimCityGui extends JFrame{
 
 		 
 	}
-    
+    /**
 	public static void main(String[] args) {
         SimCityGui gui = new SimCityGui();
         gui.setTitle("SIMCITY");
         gui.setVisible(true);
         gui.setResizable(false);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+    }*/
 }

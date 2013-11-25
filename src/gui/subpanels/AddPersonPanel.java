@@ -4,11 +4,10 @@ import gui.panels.*;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import java.util.*;
 import java.util.List;
-
 import javax.swing.*;
+import person.*; 
 
 /**
  * This panel allows the user to add a person
@@ -67,6 +66,9 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		roles.add(new JCheckBox("Role 9"));
 		roles.add(new JCheckBox("Role 10"));
 		
+		custom.addActionListener(this);
+		random.addActionListener(this);
+		
 		// ADD COMPONENTS
 		// Name info
 		this.add(name);
@@ -86,6 +88,16 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e){
+		if (e.getSource() == custom){
+			System.out.println("Custom button clicked");
+		}
+		else if (e.getSource()==random){
+			System.out.println("Random button clicked");
+		}
+	}
+	
+	
+	private void addPerson(String s) {
 		
 	}
 	
@@ -127,5 +139,4 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 			}
 		}
 	}
-
 }

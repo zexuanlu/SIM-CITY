@@ -1,9 +1,10 @@
 package simcity.test;
 import simcity.test.Mock.MockBusRole;
 import simcity.test.Mock.MockBusStop; 
-import simcity.test.Mock.PersonMock; 
 import simcity.PassengerRole;
 import junit.framework.*;
+import person.interfaces.Person; 
+import person.test.mock.*; 
 
 public class PassengerTest extends TestCase{
 	MockBusStop busstop; 

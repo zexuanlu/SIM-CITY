@@ -5,8 +5,7 @@ import simcity.gui.PassengerGui;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
-import simcity.interfaces.Person; 
-
+import person.interfaces.Person; 
 import java.util.concurrent.Semaphore;
 
 //Passenger Role created with an original position and also an eventual Destination

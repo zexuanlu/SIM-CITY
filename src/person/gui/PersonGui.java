@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 import person.PersonAgent;
 import person.Position;
+import simcity.gui.Gui;
 
 public class PersonGui implements Gui{
 	private PersonAgent agent = null;
