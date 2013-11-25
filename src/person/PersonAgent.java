@@ -36,11 +36,12 @@ import simcity.gui.PassengerGui;
 public class PersonAgent extends Agent implements Person{
 	EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores 
-
+	
 	private String name;
 	public int hunger; // tracks hunger level
 	public boolean activeRole;
-
+	public boolean arrived;
+	
 	public PersonGui gui;
 	CityAnimationPanel cap = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
@@ -75,6 +76,7 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
+		arrived = false;
 	}
 
 	public PersonAgent () {
@@ -164,6 +166,9 @@ public class PersonAgent extends Agent implements Person{
 		currentLocation.setY(y);
 		activeRole = false;
 		gui.setPresent(true);
+		arrived = true;
+		gui.xPos = x;
+		gui.yPos = y;
 		stateChanged();
 	}
 	
@@ -261,7 +266,7 @@ public class PersonAgent extends Agent implements Person{
 
 	private void goToAndDoEvent(SimEvent e){
 		print("going");
-		if(!isInWalkingDistance(e.location)){ //if its not in walking distance we ride the bus
+		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
 			//make  a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
