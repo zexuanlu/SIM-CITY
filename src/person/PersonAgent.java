@@ -131,6 +131,9 @@ public class PersonAgent extends Agent implements Person{
 	public void msgNewBalance(double money){
 		wallet.setNewBankBalance(money);
 	}
+	public double msgCheckWallet(){
+		return wallet.getOnHand();
+	}
 	public void msgAtHome(){
 		print("Back home");
 	}
