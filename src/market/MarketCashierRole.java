@@ -54,12 +54,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		public int bill;
 		public double pay;
 		public int change;
+		public int restNum;
 		public state1 s1 = state1.ordering;
 
-		Myrest(Cook ck, CashAgent ca, List<Food> order){
+		Myrest(Cook ck, CashAgent ca, List<Food> order, int restNum){
 			this.ck = ck;
 			this.ca = ca;
 			this.order = order;
+			this.restNum = restNum;
 		}
 	}
 	public enum state1{ordering, ordered};
@@ -108,13 +110,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}				
 	// end of in market scenario
 
-	public void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food){
-		myrest.add(new Myrest(cook, ca, food));
+	public void MsgIwantFood(Cook cook, CashAgent ca, List<Food> food, int number){
+		myrest.add(new Myrest(cook, ca, food, number));
 		stateChanged();
 	}
 
 	public void msgBillFromTheAir(CashAgent ca, double money){
-		// don’t know what to do (⊙o⊙)
 		income += money;
 		stateChanged();
 	}
@@ -238,7 +239,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		else{
 			employeeCount = 0;
 		}
-		employee.get(s).msgCollectTheDilivery(rest.ck, rest.collectedOrder, t);
+		employee.get(s).msgCollectTheDilivery(rest.ck, rest.collectedOrder, t, rest.restNum);
 		truck.remove(t);
 	}
 

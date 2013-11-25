@@ -15,13 +15,24 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	MarketEmployeeGui employeeGui;
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
-	//public List<Truck> truck = new ArrayList<Truck>();
+	public Map<Integer, RestDes> CityMap = new HashMap<Integer, RestDes>();
 
 	private Semaphore atTable = new Semaphore(0,true);
 
 	public MarketEmployeeRole(Person person, String name){
 		super(person);
+		CityMap.put(1, new RestDes(100, 120));
 		
+	}
+	
+	public class RestDes{
+		int x;
+		int y;
+		
+		RestDes(int x, int y){
+			this.x = x;
+			this.y =y;
+		}
 	}
 	
 	public class Mycustomer{
@@ -40,11 +51,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		MarketTruck truck;
 		List<Food> order;
 		public state1 s1 = state1.collecting;
-		int listSize;
-		Myrest(Cook cook, List<Food> order, MarketTruck truck){
+		int restNum;
+		Myrest(Cook cook, List<Food> order, MarketTruck truck, int number){
 			this.cook = cook;
 			this.order = order;
 			this.truck = truck;
+			this.restNum = number;
 		}
 	}
 
@@ -68,8 +80,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		stateChanged();
 	}
 
-	public void msgCollectTheDilivery(Cook cook, List<Food> food, MarketTruck truck){
-		myrest.add(new Myrest(cook, food, truck));
+	public void msgCollectTheDilivery(Cook cook, List<Food> food, MarketTruck truck, int number){
+		myrest.add(new Myrest(cook, food, truck, number));
 		stateChanged();
 	}
 	
@@ -122,7 +134,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			e.printStackTrace();
 		}
 
-		rest.truck.msgPleaseDiliver(rest.cook, rest.order);
+		rest.truck.gotoPosition(rest.cook, rest.order, CityMap.get(rest.restNum).x, CityMap.get(rest.restNum).y);
 	}
 
 	void DoCollectFood(List<Food> order){

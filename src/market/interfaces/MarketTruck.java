@@ -7,5 +7,7 @@ import market.Food;
 
 public interface MarketTruck {
 	
-	public void msgPleaseDiliver(Cook c, List<Food> food);
+	public void gotoPosition(Cook c, List<Food> food, int x, int y);
+	
+	public void msgGoBack();
 }
