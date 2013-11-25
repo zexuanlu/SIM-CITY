@@ -8,10 +8,10 @@ import market.MarketCustomerRole;
 public class MarketCustomerGui implements Gui {
 	
 	private MarketCustomerRole agent = null;
-	private int xPos = 220, yPos = -20;
-	private int xDestination = 220, yDestination = 300;
+	private int xPos = -20, yPos = 240;
+	private int xDestination = 140, yDestination = 240;
 	private int distance = 20;
-	private int xTable =220, yTable = 300;
+	private int xTable =140, yTable = 240;
 	private boolean atTable = true;
 	
 	public void setAgent(MarketCustomerRole agent){
@@ -56,54 +56,54 @@ public class MarketCustomerGui implements Gui {
 
 	
 	public void DoGoToWaitingArea(int number){
-		xDestination = 50;
+		yDestination = 380;
 		if(number == 1){
-			yDestination = 100;
+			yDestination = 60;
 			
 		}
 		if(number == 2){
-			yDestination = 140;
+			yDestination = 100;
 			
 		}
 		if(number == 3){
-			yDestination = 180;
+			yDestination = 140;
 			
 		}
 		if(number == 4){
-			yDestination = 220;
+			yDestination = 180;
 			
 		}
 		if(number == 5){
-			yDestination = 260;
+			yDestination = 220;
 			
 		}
 		if(number == 6){
-			yDestination = 300;
+			yDestination = 260;
 			
 		}
 		if(number == 7){
-			yDestination = 340;
+			yDestination = 300;
 			
 		}
 		if(number == 8){
-			yDestination = 380;
+			yDestination = 340;
 			
 		}
 		if(number == 9){
-			yDestination = 420;
+			yDestination = 380;
 			
 		}
 	}
 	
 	public void DoGoToTable(){
-		xDestination = 220;
-		yDestination = 300;
+		xDestination = 140;
+		yDestination = 240;
 		atTable = true;
 	}
 
 	public void DoLeave(){
-		xDestination = 220;
-		yDestination = -20;
+		xDestination = -20;
+		yDestination = 240;
 	}
 	
 }

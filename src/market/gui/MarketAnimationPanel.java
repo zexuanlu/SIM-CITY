@@ -59,7 +59,6 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.green);
         g2.fillRect(400, 100, 40, 40);
         
-        
         g2.setColor(Color.green);
         g2.fillRect(500, 260, 40, 40);
 

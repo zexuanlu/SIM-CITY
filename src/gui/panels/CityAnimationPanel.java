@@ -95,10 +95,16 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   BuildPanel.add(rest1Panel);
 		   }
 		   else if(me.getButton() == 1 && house1.contains(me.getX(), me.getY())){
-			   //Switch to House 1
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   //BuildPanel.add(rest1Panel);
 		   }
 		   else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
-			   //Switch to Apartment 1
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   //BuildPanel.add(rest1Panel);
 		   }
 	}
 
@@ -146,6 +152,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         else if(s == state.restaurant1){
         	g2.drawString("Restaurant 1", 217, 115);
+        }
+        else if(s == state.house1){
+        	g2.drawString("House 1", 100, 100);
+        }
+        else if(s == state.apartment1){
+        	g2.drawString("Apartment 1", 100, 100);
         }
         
 
@@ -222,6 +234,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if(restaurant1.contains(me.getX(), me.getY())){
 			   s = state.restaurant1;
+		   }
+		   else if(apartment1.contains(me.getX(), me.getY())){
+			   s = state.apartment1;
+		   }
+		   else if(house1.contains(me.getX(), me.getY())){
+			   s = state.house1;
 		   }
 		   else{
 			   s = state.none;
