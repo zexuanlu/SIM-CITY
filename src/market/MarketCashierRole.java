@@ -24,10 +24,16 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	public MarketCashierRole(Person person, String name){
 		super(person);
-		inventory.put("Steak", 2);
-		inventory.put("Car", 2);
+		inventory.put("Steak", 90);
+		inventory.put("Car", 90);
+		inventory.put("Pizza", 90);
+		inventory.put("Chicken", 90);
+		inventory.put("Salad", 90);
 		price.put("Steak", (double) 2);
 		price.put("Car", (double) 2);
+		price.put("Pizza", (double) 2);
+		price.put("Chicken", (double) 2);
+		price.put("Salad", (double) 2);
 	}
 
 
@@ -129,7 +135,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
+
 		
 		if(!truck.isEmpty()){
 			for(Myrest rest: myrest){
