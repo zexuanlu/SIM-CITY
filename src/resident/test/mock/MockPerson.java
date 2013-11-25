@@ -5,10 +5,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import market.Food;
 import agent.Role;
 import person.Event;
 import person.Location;
 import person.Position;
+import person.SimEvent;
 import person.interfaces.Person;
 
 public class MockPerson extends Mock implements Person {
@@ -58,26 +60,26 @@ public class MockPerson extends Mock implements Person {
 		log.add(new LoggedEvent("You've finished your role and have returned to your PersonAgent"));
 		
 	}
-	@Override
-	public void msgAddMoney(int money) { //add money back to the person's wallet
-		log.add(new LoggedEvent("Cash has been added to your personagent's wallet to the tune of "+money+" dollars"));
-		wallet.setOnHand(money);
-	}	
-	@Override
-	public void msgAddEvent(Event e) { //add an event to the person's scheduler
-		log.add(new LoggedEvent("An event has been added to the personagent's queue"));
-		
-	}
+//	@Override
+//	public void msgAddMoney(int money) { //add money back to the person's wallet
+//		log.add(new LoggedEvent("Cash has been added to your personagent's wallet to the tune of "+money+" dollars"));
+//		wallet.setOnHand(money);
+//	}	
+//	@Override
+//	public void msgAddEvent(Event e) { //add an event to the person's scheduler
+//		log.add(new LoggedEvent("An event has been added to the personagent's queue"));
+//		
+//	}
 	@Override
 	public void msgReadyToWork(Role r) { //notify a person it can now send it's role to work (time card)
 		
 		
 	}
-	@Override
-	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
+//		// TODO Auto-generated method stub
+//		
+//	}
 	public void msgAddGroceries(List<String> gro){
 		log.add(new LoggedEvent("The personagent will grab : "+gro.toString()+" next time it goes out"));
 		for(String s : gro){
@@ -110,6 +112,41 @@ public class MockPerson extends Mock implements Person {
 		public void setInBank(int newAmount){
 			inBank += newAmount;
 		}
+	}
+	@Override
+	public void msgAtDest(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgFinishedEvent(Role r, List<Food> foodList, double change) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgAddMoney(double money) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgNewBalance(double money) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgAddEvent(SimEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgGoOffWork(Role r, double pay) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setStateChanged() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
