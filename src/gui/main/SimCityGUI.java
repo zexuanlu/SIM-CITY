@@ -263,7 +263,7 @@ public class SimCityGUI extends JFrame {
 	     for (PersonAgent p: people){
 	    	 p.startThread();
 	     }
-		 people.get(0).startThread();
+		 //people.get(0).startThread();
 
 	     
 		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
