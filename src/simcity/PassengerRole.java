@@ -9,7 +9,7 @@ import person.interfaces.Person;
 import java.util.concurrent.Semaphore;
 
 //Passenger Role created with an original position and also an eventual Destination
-public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MADE AGENT SO THAT IT WORKS
+public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE AGENT SO THAT IT WORKS
 	private Semaphore atStop = new Semaphore(0,true);
 	PassengerGui myGui = null; 
 	Person myPerson; 
@@ -25,15 +25,15 @@ public class PassengerRole extends Agent implements Passenger{   //TEMPORARY MAD
 	BusRoute busroute = new BusRoute(); 
 	String name; 
 	
-	public PassengerRole(String name){
-		super();
+	/*public PassengerRole(String name, Person p){
+		super(p);
 		this.name = name; 
 		state= State.none; 
 		Cash = 100; 
-	}
+	}*/
 	
 	public PassengerRole(String name,Person p){
-		super();
+		super(p);
 		this.name = name; 
 		state= State.none; 
 		Cash = 100; 
