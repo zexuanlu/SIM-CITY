@@ -6,6 +6,7 @@ import simcity.interfaces.BusStop;
 import simcity.interfaces.Bus; 
 import simcity.interfaces.Passenger; 
 import person.interfaces.Person; 
+
 import java.util.concurrent.Semaphore;
 
 //Passenger Role created with an original position and also an eventual Destination
@@ -47,9 +48,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	}
 	
 	public void msgNowAtStop(String stop){
-		print("atStop name is "+ stop + "bus stop destination is " + busroute.destination);
 		if (stop.equals(busroute.destination)){
-			System.out.println("hit in statechanged of msgnowatstop");
 			action = Action.leaveBus; 
 			stateChanged();
 		}
@@ -71,7 +70,6 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction() {
-		print ("Passenger scheduler called");
 		if (state == State.none && action == Action.asktoComeonBoard){
 			askBus();
 			return true; 
@@ -159,6 +157,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	}
 	
 	public void setPassDestination(int finalx, int finaly){
+		print("final x and final y" + finalx + " , " + finaly);
 		busroute = citymap.generateBusInformation(finalx,finaly, myGui.xPos, myGui.yPos);
 	}
 	
@@ -168,6 +167,10 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	public void setGui(PassengerGui pgui){
 		myGui = pgui; 
+	}
+
+	public String toString(){
+		return name; 
 	}
 	
 }

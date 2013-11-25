@@ -306,6 +306,10 @@ public class BusRole extends Agent implements Bus {
 	        originalPosition = currentPosition;
 		}
 		
+		public String toString(){
+			return name; 
+		}
+		
 		//this is just a subroutine for waiter moves. It's not an "Action"
 	    //itself, it is called by Actions.
 	    private void guiMoveFromCurrentPositionTo(Position to){

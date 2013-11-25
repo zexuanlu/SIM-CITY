@@ -154,7 +154,8 @@ public class CarAgent extends Agent {
         currentPosition.moveInto(aStar.getGrid());
         originalPosition = currentPosition;
     }
-    
+
+	
     protected boolean pickAndExecuteAnAction(){
     	if (carstate == CarState.goTo){
     		dogoto();
