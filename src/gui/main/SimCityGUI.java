@@ -50,6 +50,7 @@ public class SimCityGUI extends JFrame {
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
 	public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 	public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); 
+	public HomeOwnerRole homeOwnerRole1 = new HomeOwnerRole(initPerson, "HMO1", 1);
 
 	CityMap citymap; 
 
@@ -112,7 +113,7 @@ public class SimCityGUI extends JFrame {
 				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
 				new Position(500, 60), LocationType.Market);
-		Home home = new Home("Home 1", new HomeOwnerRole("Home Owner", 2, initPerson), 
+		Home home = new Home("Home 2", new HomeOwnerRole(initPerson, "Home Owner", 2), 
 				new Position(350, 80), LocationType.Home);
 		locations.add(bank);
 		locations.add(market);

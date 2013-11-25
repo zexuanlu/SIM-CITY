@@ -72,11 +72,11 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         
         // Drawing the bedroom
         g2.setColor(Color.LIGHT_GRAY);
-        g2.fillRect(230, 0, 300, 450);
+        g2.fillRect(230, 10, 300, 450);
         
         // Drawing the bed
         g2.setColor(Color.PINK);
-        g2.fillRect(250, 300, 50, 100);
+        g2.fillRect(300, 200, 50, 100);
   
         for(Gui gui : guis) {
             if (gui.isPresent()) {

@@ -24,8 +24,8 @@ public class ApartmentTenantGui implements Gui {
     private int sinkY = 160;
     private int doorX = 400;
     private int doorY = 50;
-    private int bedX = 130;
-    private int bedY = 170;
+    private int bedX = 300;
+    private int bedY = 200;
     
     public enum AptCookingState {GettingIngredients, Cooking, GettingCookedFood, Nothing};
     public AptCookingState state;
