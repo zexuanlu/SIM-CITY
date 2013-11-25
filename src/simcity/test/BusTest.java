@@ -8,7 +8,7 @@ import junit.framework.*;
 import java.util.*;
 
 public class BusTest extends TestCase{
-	CityMap citymap = new CityMap(); 
+	CityMap citymap = null; //TEMPORARY SO SO TEMPORARY 
 	BusRole busrole; 
 	MockBusStop busstop; 
 	MockBusStop busstop2;

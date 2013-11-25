@@ -1,5 +1,5 @@
 package simcity;
-
+import person.Position;
 import simcity.gui.PassengerGui; 
 import agent.Role;
 import simcity.interfaces.BusStop; 
@@ -13,7 +13,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	private Semaphore atStop = new Semaphore(0,true);
 	PassengerGui myGui = null; 
 	Person myPerson; 
-	public CityMap citymap = new CityMap(); 
+	public CityMap citymap = null; 
 	String Destination; //eventual place that he wants to get to
 	double Cash; // amount of money he has
 
@@ -23,7 +23,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	Action action; 
 	
 	BusRoute busroute = new BusRoute(); 
-	String name;
+	String name; 
 	
 	public PassengerRole(String name,Person p){
 		super(p);
@@ -111,17 +111,16 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	}
 	
 	public void payFare(){
-		if (Cash >= busroute.fare){
-		//	myPerson.msgAddMoney(-(int)busroute.fare);
-			Cash = Cash - busroute.fare; 
+	//	if (myPerson. >= busroute.fare){
+			myPerson.msgAddMoney(-(int)busroute.fare);
 			state = State.paid; 
 			print("Passenger paid fare");
 			busroute.bus.msgHeresMyFare(this, busroute.fare);
-		}
-		else { //can't pay has to leaveBus
-			print("Passenger can't afford fare, leaving bus");
-			LeaveBus();
-		}	
+	//	}
+	//	else { //can't pay has to leaveBus
+		//	print("Passenger can't afford fare, leaving bus");
+			//LeaveBus();
+	//	}	
 	}
 	
 	public void boardBus(){
@@ -133,11 +132,13 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	public void LeaveBus(){
 		state = State.none; 
-		if (myGui != null){
-			myGui.LeaveBus(busroute.destinationX, busroute.destinationY, citymap.getDestination(Destination).width, citymap.getDestination(Destination).height);
-		}
+	//	if (myGui != null){
+	//		myGui.LeaveBus(busroute.destinationX, busroute.destinationY, citymap.getDestination(Destination).width, citymap.getDestination(Destination).height);
+	//	}
 		print("Passenger leaving bus");
 		busroute.bus.msgLeaving(this);
+		myPerson.msgAtDest(new Position(myGui.xPos, myGui.yPos));
+
 	//	myPerson.msgFinishedEvent(this);
 	}
 	
@@ -154,9 +155,8 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 		busroute.destination = ds; 
 	}
 	
-	public void setPassDestination(String ds){
-		Destination = ds; 
-		busroute = citymap.generateBusInformation(ds, myGui.xPos, myGui.yPos);
+	public void setPassDestination(int finalx, int finaly){
+		busroute = citymap.generateBusInformation(finalx,finaly, myGui.xPos, myGui.yPos);
 	}
 	
 	public void setCityMap (CityMap cm){
