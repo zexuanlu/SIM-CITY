@@ -252,7 +252,8 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			if(nextEvent != null){ //&& (!nextEvent.inProgress)){// || nextEvent.start == currentTime)){ //&& nextEvent.start == currentTime) {
+			if((nextEvent != null && nextEvent.start == currentTime) 
+					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
 				goToAndDoEvent(nextEvent); 
 				nextEvent.setProgress(true);
@@ -272,7 +273,7 @@ public class PersonAgent extends Agent implements Person{
 	private void goToAndDoEvent(SimEvent e){
 		print("going");
 		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
-			//make  a PassengerRole and start it
+			//make a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
 			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
@@ -302,11 +303,13 @@ public class PersonAgent extends Agent implements Person{
 		else{
 			print("going to location");
 			Location l = e.location;
-			DoGoTo(l); // Handles picking mode of transport and animating there
-			try {
-				going.acquire();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+			DoGoTo(l); 
+			if(!testMode){
+				try {
+					going.acquire();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 			/*if(e.location.type == LocationType.Restaurant){
 			Restaurant rest = (Restaurant)e.location;
@@ -341,7 +344,7 @@ public class PersonAgent extends Agent implements Person{
 					activeRole = true; 
 					BankCustomerRole bcr = new BankCustomerRole(this, this.name); //create the role
 					bcr.bh = bank.host;
-					if(!containsRole(bcr)){   //check if we dont already have it 
+					if(!containsRole(bcr)){   //check if we don't already have it 
 						MyRole newRole = new MyRole(bcr); //make a new MyRole
 						newRole.isActive(true); //set it active
 						roles.add(newRole); 
@@ -557,16 +560,6 @@ public class PersonAgent extends Agent implements Person{
 
 	private void DoGoTo(Location loc){
 		gui.DoGoTo(loc.getPosition());
-	}
-	private Position calculateTransportation(Location loc){
-		//if the person has a car use it
-		/*
-		 * if(car){ return an event with the same location }
-		 */
-		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) > 10){
-			return cityMap.findNearestBusStop(currentLocation);
-		}
-		return currentLocation; //hack life
 	}
 	private boolean isInWalkingDistance(Location loc){
 		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){
