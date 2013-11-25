@@ -20,6 +20,5 @@ public class Location {
 	public String getName(){ return this.name; }
 	public LocationType getType(){ return this.type; }
 	public Position getPosition(){ return this.position; }
-	protected void setPosition(Position p){ this.position = p; } 
-
+	public void setPosition(Position p){ this.position = p; } 
 }

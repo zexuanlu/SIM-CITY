@@ -30,7 +30,7 @@ import simcity.PassengerRole;
  */
 public class PersonAgent extends Agent implements Person{
 
-	public boolean testMode = false;
+	public boolean testMode = false; //enabled for tests to skip semaphores 
 
 	private String name;
 	public int hunger; // tracks hunger level
@@ -209,7 +209,7 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(activeRole) {
+		if(activeRole) { //run role code
 			print("Executing an event as a Role");
 			for(MyRole r : roles){
 				if(r.isActive){
@@ -239,17 +239,18 @@ public class PersonAgent extends Agent implements Person{
 
 	private void goToAndDoEvent(SimEvent e){
 		print("going");
-		if(!isInWalkingDistance(e.location)){
+		if(!isInWalkingDistance(e.location)){ //if its not in walking distance we ride the bus
+			//make  a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
-			if(!containsRole(pRole)){
+			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
 				MyRole newRole = new MyRole(pRole);
 				newRole.isActive(true);
 				roles.add(newRole);
 				((PassengerRole)newRole.role).setDestination(e.location.name);
 				((PassengerRole)newRole.role).gotoBus();
 			}
-			else{
+			else{ //if we already have a PassengerRole, use it
 				((PassengerRole)getRoleOfType(pRole).role).setDestination(e.location.name);
 				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
 				getRoleOfType(pRole).isActive(true);
@@ -293,22 +294,22 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.CookEvent){}
 			else if(e.type == EventType.CashierEvent){}
 		}*/
-			if(e.location.type == LocationType.Bank){
+			if(e.location.type == LocationType.Bank){ //if our event happens at a bank
 				Bank bank = (Bank)e.location;
-				if(e.type == EventType.CustomerEvent){
-					activeRole = true;
-					BankCustomerRole bcr = new BankCustomerRole(this, this.name);
-					if(!containsRole(bcr)){   
-						MyRole newRole = new MyRole(bcr);
-						newRole.isActive(true);
-						roles.add(newRole);
-						bcr.msgGoToBank(e.directive, 10);
+				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
+					activeRole = true; 
+					BankCustomerRole bcr = new BankCustomerRole(this, this.name); //create the role
+					if(!containsRole(bcr)){   //check if we dont already have it 
+						MyRole newRole = new MyRole(bcr); //make a new MyRole
+						newRole.isActive(true); //set it active
+						roles.add(newRole); 
+						bcr.msgGoToBank(e.directive, 10); //message it with what we want to do
 					}
-					else {
+					else { //we already have one use it
 						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
 						getRoleOfType(bcr).isActive(true);
 					}
-					toDo.remove(e);
+					toDo.remove(e); //remove the event from the queue
 				}
 				else if(e.type == EventType.TellerEvent){
 					activeRole = true;
