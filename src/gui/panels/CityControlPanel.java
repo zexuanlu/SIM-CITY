@@ -5,7 +5,9 @@ package gui.panels;
 
 import java.util.*;
 import java.awt.*;
+
 import javax.swing.*;
+
 import gui.subpanels.*;
 
 public class CityControlPanel extends JPanel {
@@ -16,6 +18,7 @@ public class CityControlPanel extends JPanel {
 	
 	// SUB PANEL REFERENCES
 	AddPersonPanel addPPanel = new AddPersonPanel(this);
+	InteractPersonPanel interactPanel = new InteractPersonPanel(this);
 	TracePanel tracePanel = new TracePanel(this);
 
 	public CityControlPanel() {
@@ -30,6 +33,7 @@ public class CityControlPanel extends JPanel {
 		
 		// ADD COMPONENTS
 		this.add(addPPanel);
+		this.add(interactPanel);
 		this.add(tracePanel);
 	}
 
