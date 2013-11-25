@@ -1,12 +1,12 @@
-package gui;
+package resident.gui;
 
-import resident.HomeOwnerRole;
+import resident.ApartmentTenantRole; 
 
 import java.awt.*;
 
-public class HomeOwnerGui implements Gui {
+public class ApartmentTenantGui implements Gui {
 
-    private HomeOwnerRole homeOwner = null;
+    private ApartmentTenantRole aptTenant = null;
     SimCityGui gui;
 
     private int xPos = 50, yPos = 50; // Default cook position
@@ -14,30 +14,30 @@ public class HomeOwnerGui implements Gui {
     
     private int homeX = 50;
     private int homeY = 50;
-    private int fridgeX = 70;
-    private int fridgeY = 170;
+    private int fridgeX = 90;
+    private int fridgeY = 100;
+    private int stoveX = 90;
+    private int stoveY = 130;
+    private int tableX = 100;
+    private int tableY = 300;
+    private int sinkX = 90;
+    private int sinkY = 160;
     private int doorX = 400;
     private int doorY = 50;
-    private int stoveX = 100;
-    private int stoveY = 170;
-    private int tableX = 300;
-    private int tableY = 100;
-    private int sinkX = 130;
-    private int sinkY = 170;
-    private int bedX = 270;
-    private int bedY = 320;
+    private int bedX = 130;
+    private int bedY = 170;
     
-    public enum HomeCookingState {GettingIngredients, Cooking, GettingCookedFood, Nothing};
-    public HomeCookingState state;
+    public enum AptCookingState {GettingIngredients, Cooking, GettingCookedFood, Nothing};
+    public AptCookingState state;
     
     private String choice;
     
-    public HomeOwnerGui(HomeOwnerRole c, SimCityGui gui) {
-    	homeOwner = c;
+    public ApartmentTenantGui(ApartmentTenantRole c, SimCityGui gui) {
+    	aptTenant = c;
     	this.gui = gui;
     }
     
-    public void setState(HomeCookingState st, String ch) {
+    public void setState(AptCookingState st, String ch) {
     	state = st;
     	choice = ch;
     }
@@ -56,27 +56,23 @@ public class HomeOwnerGui implements Gui {
             yPos--;
         
         if (xPos == fridgeX && yPos == fridgeY) {
-        	homeOwner.msgAtFridge();
+        	aptTenant.msgAtFridge();
         }
         
         if (xPos == doorX && yPos == doorY) {
-        	homeOwner.msgAtDoor();
+        	aptTenant.msgAtDoor();
         }
         
         if (xPos == stoveX && yPos == stoveY) {
-        	homeOwner.msgAtStove();
+        	aptTenant.msgAtStove();
         }
         
         if (xPos == tableX && yPos == tableY) {
-        	homeOwner.msgAtTable();
+        	aptTenant.msgAtTable();
         }
         
         if (xPos == sinkX && yPos == sinkY) {
-        	homeOwner.msgAtSink();
-        }
-        
-        if (xPos == bedX && yPos == bedY) {
-        	homeOwner.msgAtBed();
+        	aptTenant.msgAtSink();
         }
 	}
 	
@@ -86,7 +82,7 @@ public class HomeOwnerGui implements Gui {
         
         String foodChoice = null;
         
-        if (state == HomeCookingState.GettingIngredients) {
+        if (state == AptCookingState.GettingIngredients) {
         	g.setColor(Color.BLUE);
     		
     		foodChoice = choice.substring(0, 2) + "?";
@@ -95,16 +91,16 @@ public class HomeOwnerGui implements Gui {
     		g.drawString(foodChoice, xPos, yPos);
         }
         
-        else if (state == HomeCookingState.Cooking) {
+        else if (state == AptCookingState.Cooking) {
         	g.setColor(Color.LIGHT_GRAY);
     		
     		foodChoice = choice.substring(0, 2) + "..";
     		
-    		g.fillRect(stoveX, stoveY+20, 20, 20);
+    		g.fillRect(stoveX-20, stoveY, 20, 20);
     		g.drawString(foodChoice, stoveX, stoveY+20);
         }
         
-        else if (state == HomeCookingState.GettingCookedFood) {
+        else if (state == AptCookingState.GettingCookedFood) {
         	g.setColor(Color.BLUE);
     		
     		foodChoice = choice.substring(0, 2);

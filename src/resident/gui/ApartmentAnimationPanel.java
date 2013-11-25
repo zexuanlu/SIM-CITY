@@ -1,6 +1,6 @@
-package gui;
+package resident.gui;
 
-import javax.swing.*; 
+import javax.swing.*;  
 
 import person.interfaces.Person;
 

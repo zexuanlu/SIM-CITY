@@ -1,7 +1,5 @@
 package resident;
 
-import gui.ApartmentTenantGui;
-
 import java.text.DecimalFormat; 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +15,7 @@ import person.Location;
 import person.Event.EventType;
 import person.Position;
 import person.interfaces.Person;
+import resident.gui.ApartmentTenantGui;
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
 import resident.test.mock.EventLog;
@@ -24,7 +23,7 @@ import resident.test.mock.LoggedEvent;
 import agent.Agent;
 import agent.Role;
 
-public class ApartmentTenantRole extends Agent implements ApartmentTenant {
+public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	/**
 	 * Data for Apartment Tenant
 	 *

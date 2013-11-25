@@ -1,7 +1,5 @@
 package resident;
 
-import gui.HomeOwnerGui;   
-
 import java.text.DecimalFormat;
 import java.util.ArrayList; 
 import java.util.Collections;
@@ -17,13 +15,14 @@ import person.Location;
 import person.Position;
 import person.Event.EventType;
 import person.interfaces.Person;
+import resident.gui.HomeOwnerGui;
 import resident.interfaces.HomeOwner;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
 import agent.Agent;
 import agent.Role;
 
-public class HomeOwnerRole extends Agent implements HomeOwner {
+public class HomeOwnerRole extends Role implements HomeOwner {
 	
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
