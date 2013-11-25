@@ -76,7 +76,7 @@ public class PersonAgent extends Agent implements Person{
 		this.hunger = 4;
 		currentTime = 7;
 	}
-	
+
 	public PersonAgent () {
 		super();
 	}
@@ -87,7 +87,7 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 	}
-	
+
 	/* Utilities */
 	public void setName(String name){this.name = name;}
 
@@ -96,7 +96,7 @@ public class PersonAgent extends Agent implements Person{
 	public boolean active() {return this.activeRole; }
 
 	public void setAnimationPanel(CityAnimationPanel c){ cap = c; }
-	
+
 	public boolean containsRole(Role r){ 
 		for(MyRole role : roles){
 			if(role.role.getClass() == r.getClass()){
@@ -128,7 +128,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
 
 	public void addRole(MyRole r){ roles.add(r); }
-	
+
 	public void addRole(Role r){
 		MyRole mr = new MyRole(r);
 		roles.add(mr);
@@ -160,10 +160,10 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgAtDest(int x, int y){
 		print("Recieved the message AtDest(x,y)");
-		//driving.release();
 		currentLocation.setX(x);
 		currentLocation.setY(y);
 		activeRole = false;
+		gui.setPresent(true);
 		stateChanged();
 	}
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
@@ -222,20 +222,24 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		print("Active as a: "+ activeRole);
 		if(activeRole) { //run role code
 			print("Executing an event as a Role");
 			for(MyRole r : roles){
 				if(r.isActive){
-					print("Executing rule in role");
-					return r.role.pickAndExecuteAnAction();
+					print("Executing rule in role "+r.role);
+					boolean b = r.role.pickAndExecuteAnAction();
+					print("Status: "+b);
+					return b;
 				}
 			}
 		}
 		else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			if(nextEvent != null){ //&& nextEvent.start == currentTime) {
+			if(nextEvent != null && (!nextEvent.inProgress || nextEvent.start == currentTime)){ //&& nextEvent.start == currentTime) {
 				print("Executing an event as a Person");
 				goToAndDoEvent(nextEvent); 
+				nextEvent.setProgress(true);
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
@@ -244,6 +248,7 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 		}
+		print("ending");
 		return false;
 	}
 
@@ -265,24 +270,25 @@ public class PersonAgent extends Agent implements Person{
 				((PassengerRole)newRole.role).setCityMap(cityMap);
 				((PassengerRole)newRole.role).setPassDestination(100, 100);//e.location.position.getX(), e.location.position.getX());
 				((PassengerRole)newRole.role).gotoBus();
+				gui.setPresent(false);
 			}
 			else{ //if we already have a PassengerRole, use it
 				((PassengerRole)getRoleOfType(pRole).role).setDestination(e.location.name);
 				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
 				getRoleOfType(pRole).isActive(true);
+				gui.setPresent(false);
 			}
 		}
 		else{
-			//Location l = e.location;
-			/*DoGoTo(l); // Handles picking mode of transport and animating there
-
-		try {
-			print("Acquired");
-			going.acquire();
-			print("Released");
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}*/
+			Location l = e.location;
+			DoGoTo(l); // Handles picking mode of transport and animating there
+			try {
+				print("Acquired");
+				going.acquire();
+				print("Released");
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 			/*if(e.location.type == LocationType.Restaurant){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
@@ -494,7 +500,7 @@ public class PersonAgent extends Agent implements Person{
 		}*/
 
 	//}
-	
+
 	/* checkVitals is a method to figure out misc things to do on the fly*/
 	private void checkVitals() { 
 		/*NOTE: the locations in this method are hard coded until we get the init script that 
@@ -530,7 +536,8 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
-		gui.DoGoTo();
+		print("GOING");
+		gui.DoGoTo(loc.getPosition());
 	}
 	private Position calculateTransportation(Location loc){
 		//if the person has a car use it

@@ -35,6 +35,7 @@ public class SimEvent {
     	this.start = 0;
     	this.priority = p;
     	this.type = t;
+    	this.inProgress = false;
     }
     public String getDirective(){
     	return this.directive;

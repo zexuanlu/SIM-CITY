@@ -13,19 +13,30 @@ public class PersonGui implements Gui{
 	private int xPos = -20, yPos = -20;//default player position
 	private int xDestination = 20, yDestination = 20;//default start position
 	private boolean arrived; 
+	private boolean isPresent;
+
 	public PersonGui(PersonAgent agent) {
 		this.agent = agent;
 		arrived = false;
 	}
 
 	public void updatePosition() {
-		if (xPos < xDestination){ xPos++; }
-		else if (xPos > xDestination){ xPos--; }
 
-		if (yPos < yDestination){ yPos++; }
-		else if (yPos > yDestination){ yPos--; }
+		if (xPos < xDestination){ 
+			xPos++; 
+		}
+		else if (xPos > xDestination){ 
+			xPos--; 
+		}
 
-		if(yPos == yDestination && xPos == xDestination && !arrived && xDestination != 20 && yDestination != 20){
+		if (yPos < yDestination){ 
+			yPos++; 
+		}
+		else if (yPos > yDestination){ 
+			yPos--; 
+		}
+		if(yPos == yDestination && xPos == xDestination && !arrived){
+			System.out.println("Up");
 			arrived = true;
 			agent.msgAtDest(new Position(yPos, xPos));
 		}
@@ -37,13 +48,19 @@ public class PersonGui implements Gui{
 	}
 
 	public boolean isPresent() {
-		return true;
+		if(isPresent){
+			return true;
+		}
+		else
+			return false;
 	}
-
-	public void DoGoTo(){
+	public void setPresent(boolean tf){
+		isPresent = tf;
+	}
+	public void DoGoTo(Position p){
 		System.out.println("Going to...");
-		xDestination = 100;//p.getX();
-		yDestination = 100;//p.getY();
+		xDestination = (int)p.getX();
+		yDestination = (int)p.getY();
 		System.out.println(xDestination);
 		arrived = false;
 	}
