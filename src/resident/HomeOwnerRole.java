@@ -1,6 +1,6 @@
 package resident;
 
-import gui.HomeOwnerGui;  
+import gui.HomeOwnerGui;   
 
 import java.text.DecimalFormat;
 import java.util.ArrayList; 
@@ -18,7 +18,6 @@ import person.Position;
 import person.Event.EventType;
 import person.interfaces.Person;
 import resident.interfaces.HomeOwner;
-import resident.interfaces.MaintenancePerson;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
 import agent.Agent;
@@ -72,7 +71,7 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	}
 	
 	public static class MyPriority {
-		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, CallHousekeeper, LetHousekeeperIn, PayHousekeeper, GoToMarket, RestockFridge, GoToRestaurant, NoFood}
+		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, MaintainHome, GoToMarket, RestockFridge, GoToRestaurant, NoFood}
 		public Task task;
 		public int timeDuration;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
@@ -86,9 +85,7 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 			taskTime.put(Task.Eating, 30);
 			taskTime.put(Task.WashDishes, 0);
 			taskTime.put(Task.Washing, 10);
-			taskTime.put(Task.CallHousekeeper, 5);
-			taskTime.put(Task.LetHousekeeperIn, 5);
-			taskTime.put(Task.PayHousekeeper, 5);
+			taskTime.put(Task.MaintainHome, 30);
 			taskTime.put(Task.GoToMarket, 20);
 			taskTime.put(Task.RestockFridge, 5);
 			taskTime.put(Task.GoToRestaurant, 40);
@@ -131,7 +128,7 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	private int myTime; // Keeps track of how much time the resident has
 	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
 	private static int hungerThreshold = 3;
-	private MaintenancePerson housekeeper;
+	//private MaintenancePerson housekeeper;
 	private Person person;
 	private HomeOwnerGui homeGui;
 	
@@ -142,11 +139,12 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	private Semaphore atStove = new Semaphore(0, true);
 	private Semaphore atTable = new Semaphore(0, true);
 	private Semaphore atSink = new Semaphore(0, true);
+	private Semaphore atBed = new Semaphore(0, true);
 	
 	// Hack to establish connection between maintenance person and home owner
-	public void setMaintenance(MaintenancePerson m) {
+	/*public void setMaintenance(MaintenancePerson m) {
 		housekeeper = m;
-	}
+	}*/
 	
 	// Hack to establish connection between GUI and role
 	public void setGui(HomeOwnerGui gui) {
@@ -235,46 +233,12 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	
 	public void msgMaintainHome() {
 		// Adds calling housekeeper to the list of priorities
-		toDoList.add(new MyPriority(MyPriority.Task.CallHousekeeper));
+		toDoList.add(new MyPriority(MyPriority.Task.MaintainHome));
 		
-		log.add(new LoggedEvent("It's been a day. I need to call the housekeeper now!"));
+		log.add(new LoggedEvent("It's been a day. I need to clean my house!"));
 		
-		print("It's been a day. I need to call the housekeeper now!");
+		print("It's been a day. I need to clean my house!");
 		
-		stateChanged();
-	}
-	
-	public void msgReadyToMaintain() {
-		// Adds letting housekeeper into the home to list of priorities
-		toDoList.add(new MyPriority(MyPriority.Task.LetHousekeeperIn));
-		
-		log.add(new LoggedEvent("The housekeeper is here, so I need to let him or her in."));
-		
-		print("The housekeeper is here, so I need to let him or her in.");
-		
-		stateChanged();
-	}
-
-	public void msgDoneMaintaining(double amount) {
-		toDoList.add(new MyPriority(MyPriority.Task.PayHousekeeper));
-		maintenanceCost = amount;
-		
-		log.add(new LoggedEvent("I received the housekeeper's bill of " + maintenanceCost + "."));
-		
-		print("I received the housekeeper's bill of " + maintenanceCost + ".");
-		
-		stateChanged();
-	}
-
-	public void msgReceivedPayment(double amount) {
-		DecimalFormat df = new DecimalFormat("###.##");
-		
-		debt += amount;
-		
-		log.add(new LoggedEvent("I now have debt of $" + df.format(debt) + "."));
-		
-		print("I now have debt of $" + df.format(debt) + ".");
-
 		stateChanged();
 	}
 	
@@ -302,6 +266,11 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 	// For when the home owner has reached the sink
 	public void msgAtSink() {
 		atSink.release();
+	}
+	
+	// For when the home owner has reached the bed
+	public void msgAtBed() {
+		atBed.release();
 	}
 
 	/**
@@ -342,20 +311,8 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 				}
 			}
 			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every day
-				if (p.task == MyPriority.Task.CallHousekeeper) {
-					callHousekeeper(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.LetHousekeeperIn) {
-					letHousekeeperIn(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.PayHousekeeper) {
-					payHousekeeper(p);
+				if (p.task == MyPriority.Task.MaintainHome) {
+					maintainHome(p);
 					return true;
 				}
 			}
@@ -522,6 +479,15 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 
 	private void cookFood(MyPriority p) {
 		toDoList.remove(p);
+		
+		homeGui.DoGoToFridge();
+		
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		int max = -1;
 		String maxChoice = null;
@@ -550,9 +516,13 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
 			print("My fridge has no more " + maxChoice + ".");
 		}
+		
+		homeGui.setState(HomeOwnerGui.HomeCookingState.GettingIngredients, maxChoice);
 
 		// GUI animation to go to the stove and start cooking
 		homeGui.DoGoToStove(); 
+		
+		atStove.drainPermits();
 
 		// Semaphore to determine if the GUI has gotten to the stove location
 		try {
@@ -561,6 +531,8 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		homeGui.state = HomeOwnerGui.HomeCookingState.Cooking;
 
 		print("Cooking food..");
 		
@@ -574,6 +546,8 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
         }, 5000);
         
         homeGui.DoGoToHome();
+        
+        
 	}
 
 	private void eatFood(MyPriority p) {
@@ -589,6 +563,8 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		homeGui.state = HomeOwnerGui.HomeCookingState.GettingCookedFood;
 
 		homeGui.DoGoToTable(); // GUI animation to go to the dining table
 
@@ -629,6 +605,8 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		homeGui.setState(HomeOwnerGui.HomeCookingState.Nothing, null);
 
 		// Timer to wash dishes
         washingDishesTimer.schedule(new TimerTask() 
@@ -641,7 +619,53 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
         }, 2000);
 	}
 
-	private void callHousekeeper(MyPriority p) {
+	private void maintainHome(MyPriority p) {
+		toDoList.remove(p);
+		
+		homeGui.DoGoToBed();
+		try {
+			atBed.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		homeGui.DoGoToFridge();
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		homeGui.DoGoToSink();
+		try {
+			atSink.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		homeGui.DoGoToStove();
+		try {
+			atStove.acquire(); 
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		homeGui.DoGoToTable();
+		try {
+			atTable.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		print("Done maintaining home!");
+	}
+	
+	/*private void callHousekeeper(MyPriority p) {
 		toDoList.remove(p);
 		housekeeper.msgPleaseComeMaintain(this, houseNumber);
 	}
@@ -682,5 +706,5 @@ public class HomeOwnerRole extends Agent implements HomeOwner {
 			housekeeper.msgHereIsThePayment(this, myMoney);
 			myMoney = 0;
 		}
-	}
+	}*/
 }

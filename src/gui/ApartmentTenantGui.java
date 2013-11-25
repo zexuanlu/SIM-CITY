@@ -1,6 +1,6 @@
 package gui;
 
-import resident.ApartmentTenantRole;
+import resident.ApartmentTenantRole; 
 
 import java.awt.*;
 
@@ -14,22 +14,32 @@ public class ApartmentTenantGui implements Gui {
     
     private int homeX = 50;
     private int homeY = 50;
-    private int fridgeX = 70;
-    private int fridgeY = 170;
+    private int fridgeX = 90;
+    private int fridgeY = 100;
+    private int stoveX = 90;
+    private int stoveY = 130;
+    private int tableX = 100;
+    private int tableY = 300;
+    private int sinkX = 90;
+    private int sinkY = 160;
     private int doorX = 400;
     private int doorY = 50;
-    private int stoveX = 100;
-    private int stoveY = 170;
-    private int tableX = 200;
-    private int tableY = 170;
-    private int sinkX = 130;
-    private int sinkY = 170;
     private int bedX = 130;
     private int bedY = 170;
+    
+    public enum AptCookingState {GettingIngredients, Cooking, GettingCookedFood, Nothing};
+    public AptCookingState state;
+    
+    private String choice;
     
     public ApartmentTenantGui(ApartmentTenantRole c, SimCityGui gui) {
     	aptTenant = c;
     	this.gui = gui;
+    }
+    
+    public void setState(AptCookingState st, String ch) {
+    	state = st;
+    	choice = ch;
     }
     
 	public void updatePosition() {
@@ -67,8 +77,37 @@ public class ApartmentTenantGui implements Gui {
 	}
 	
 	public void draw(Graphics2D g) {
-		g.setColor(Color.PINK);
+		g.setColor(Color.BLUE);
         g.fillRect(xPos, yPos, 20, 20);
+        
+        String foodChoice = null;
+        
+        if (state == AptCookingState.GettingIngredients) {
+        	g.setColor(Color.BLUE);
+    		
+    		foodChoice = choice.substring(0, 2) + "?";
+    		
+    		g.fillRect(xPos, yPos, 20, 20);
+    		g.drawString(foodChoice, xPos, yPos);
+        }
+        
+        else if (state == AptCookingState.Cooking) {
+        	g.setColor(Color.LIGHT_GRAY);
+    		
+    		foodChoice = choice.substring(0, 2) + "..";
+    		
+    		g.fillRect(stoveX-20, stoveY, 20, 20);
+    		g.drawString(foodChoice, stoveX, stoveY+20);
+        }
+        
+        else if (state == AptCookingState.GettingCookedFood) {
+        	g.setColor(Color.BLUE);
+    		
+    		foodChoice = choice.substring(0, 2);
+    		
+    		g.fillRect(xPos, yPos, 20, 20);
+    		g.drawString(foodChoice, xPos, yPos);
+        }
 	}
 	
 	public boolean isPresent() {

@@ -119,10 +119,10 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 	private static double rentCost = 100; // Static for now.
 	private ApartmentLandlord landlord;
 	private Person person;
-	private ApartmentTenantGui homeGui;
+	private ApartmentTenantGui aptGui;
 	
 	public void setGui(ApartmentTenantGui g) {
-		homeGui = g;
+		aptGui = g;
 	}
 	
 	// All the gui semaphores
@@ -359,7 +359,7 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 
 	private void sleep() {
 		// Gui goes to bed and timer begins to start sleeping
-		homeGui.DoGoToBed();
+		aptGui.DoGoToBed();
 		
 		sleepingTimer.schedule(new TimerTask() 
         {
@@ -374,7 +374,7 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 		toDoList.remove(p);
 		
 		// GUI goes to the fridge
-		homeGui.DoGoToFridge();
+		aptGui.DoGoToFridge();
 
 		// Semaphore to see if the GUI gets to the fridge
 		try {
@@ -427,7 +427,7 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 		//person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
 		
 		// GUI goes to market 
-		homeGui.DoGoToFrontDoor();
+		aptGui.DoGoToFrontDoor();
 		
 		try {
 			atFrontDoor.acquire();
@@ -455,7 +455,7 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 		//person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
 		
 		// GUI goes to market 
-		homeGui.DoGoToFrontDoor();
+		aptGui.DoGoToFrontDoor();
 		
 		try {
 			atFrontDoor.acquire();
@@ -476,7 +476,7 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 		toDoList.remove(p);
 
 		// GUI goes to the fridge
-		homeGui.DoGoToFridge();
+		aptGui.DoGoToFridge();
 
 		// Semaphore to see if the GUI gets to the fridge
 		try {
@@ -489,6 +489,15 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 
 	private void cookFood(MyPriority p) {
 		toDoList.remove(p);
+		
+		aptGui.DoGoToFridge();
+		
+		try {
+			atFridge.acquire();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		int max = -1;
 		String maxChoice = null;
@@ -517,9 +526,13 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
 			print("My fridge has no more " + maxChoice + ".");
 		}
+		
+		aptGui.setState(ApartmentTenantGui.AptCookingState.GettingIngredients, maxChoice);
 
 		// GUI animation to go to the stove and start cooking
-		homeGui.DoGoToStove(); 
+		aptGui.DoGoToStove(); 
+		
+		atStove.drainPermits();
 
 		// Semaphore to determine if the GUI has gotten to the stove location
 		try {
@@ -529,6 +542,8 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 			e.printStackTrace();
 		}
 
+		aptGui.state = ApartmentTenantGui.AptCookingState.Cooking;
+		
 		print("Cooking food..");
 		
         // Timer to cook the food
@@ -540,14 +555,14 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
             }
         }, 5000);
         
-        homeGui.DoGoToHome();
+        aptGui.DoGoToHome();
 	}
 
 	private void eatFood(MyPriority p) {
 		toDoList.remove(p);
 
 		// GUI animation to go to the stove and start cooking
-		homeGui.DoGoToStove(); 
+		aptGui.DoGoToStove(); 
 
 		// Semaphore to determine if the GUI has gotten to the stove location
 		try {
@@ -556,8 +571,10 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		aptGui.state = ApartmentTenantGui.AptCookingState.GettingCookedFood;
 
-		homeGui.DoGoToTable(); // GUI animation to go to the dining table
+		aptGui.DoGoToTable(); // GUI animation to go to the dining table
 
 		// Semaphore to determine if the GUI has gotten to the table location
 		try {
@@ -583,11 +600,11 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 
 	private void washDishes(MyPriority p) {
 		toDoList.remove(p);
-
+		
 		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
 		toDoList.add(prior);
 
-		homeGui.DoGoToSink(); // GUI animation to go to the sink
+		aptGui.DoGoToSink(); // GUI animation to go to the sink
 
 		// Semaphore to determine if the GUI has arrived at sink location
 		try {
@@ -596,6 +613,8 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		aptGui.setState(ApartmentTenantGui.AptCookingState.Nothing, null);
 
 		// Timer to wash dishes
         washingDishesTimer.schedule(new TimerTask() 
@@ -603,7 +622,7 @@ public class ApartmentTenantRole extends Agent implements ApartmentTenant {
             public void run() 
             {
             	msgDoneWashing(prior);
-            	homeGui.DoGoToHome();
+            	aptGui.DoGoToHome();
             }
         }, 2000);
 	}
