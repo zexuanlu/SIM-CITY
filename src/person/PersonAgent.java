@@ -24,6 +24,9 @@ import agent.*;
 import person.gui.PersonGui;
 import person.interfaces.Person;
 import person.test.mock.EventLog;
+import resident.ApartmentLandlordRole;
+import resident.ApartmentTenantRole;
+import resident.HomeOwnerRole;
 import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.gui.PassengerGui;
@@ -36,12 +39,13 @@ import simcity.gui.PassengerGui;
 public class PersonAgent extends Agent implements Person{
 	EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores 
-	
+
 	private String name;
 	public int hunger; // tracks hunger level
+	public int homeNumber;
 	public boolean activeRole;
 	public boolean arrived;
-	
+
 	public PersonGui gui;
 	CityAnimationPanel cap = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
@@ -175,7 +179,7 @@ public class PersonAgent extends Agent implements Person{
 		arrived = true;
 		stateChanged();
 	}
-	
+
 	public void setStateChanged(){
 		stateChanged();
 	}
@@ -236,7 +240,7 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		
+
 		if(activeRole) { //run role code
 			for(MyRole r : roles){
 				if(r.isActive){
@@ -280,11 +284,11 @@ public class PersonAgent extends Agent implements Person{
 				cap.addGui(pg);
 				((PassengerRole)newRole.role).setCityMap(cityMap);
 				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getY());
-				
+
 				//lizhi added this testing:
 				gui.xDestination = e.location.position.getX();
 				gui.yDestination = e.location.position.getY();
-				
+
 				((PassengerRole)newRole.role).gotoBus();
 				gui.setPresent(false);
 			}
@@ -467,52 +471,55 @@ public class PersonAgent extends Agent implements Person{
 					toDo.remove(e);
 				}
 			}
+			else if(e.location.type == LocationType.Home){
+				if(e.type == EventType.HomeOwnerEvent){
+					Home home = (Home)e.location;
+					activeRole = true;
+					HomeOwnerRole hr = new HomeOwnerRole(this.name, homeNumber, this);
+					if(!containsRole(hr)){
+						MyRole newRole = new MyRole(hr);
+						newRole.isActive(true);
+						roles.add(newRole);
+						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					else{
+						getRoleOfType(hr).isActive(true);
+						((HomeOwnerRole)getRoleOfType(hr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					toDo.remove(e);
+				}
+				else if(e.type == EventType.AptTenantEvent){
+					Apartment apt = (Apartment)e.location;
+					activeRole = true;
+					ApartmentTenantRole tr = new ApartmentTenantRole(this.name, homeNumber, this);
+					if(!containsRole(tr)){
+						MyRole newRole = new MyRole(tr);
+						newRole.isActive(true);
+						roles.add(newRole);
+						((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					else{
+						getRoleOfType(tr).isActive(true);
+						((ApartmentTenantRole)getRoleOfType(tr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					toDo.remove(e);
+				}
+				else if(e.type == EventType.LandlordEvent){
+					Apartment apt = (Apartment)e.location;
+					activeRole = true;
+					ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, homeNumber, this);
+					if(!containsRole(llr)){
+						MyRole newRole = new MyRole(llr);
+						newRole.isActive(true);
+						roles.add(newRole);
+					}
+					else{
+						getRoleOfType(llr).isActive(true);
+					}
+				}
+			}
 		}
 	}
-	/*else if(e.location.type == LocationType.Home){
-			if(e.type == EventType.HomeOwnerEvent){
-				Home home = (Home)e.location;
-				activeRole = true;
-				HomeOwnerRole hr = new HomeOwnerRole(this.name, this);
-				if(!containsRole(hr)){
-					roles.add(hr);
-				}
-				//set time and hunger 
-				hr.msgUpdateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
-				hr.setActive(true);			
-			}
-			else if(e.type == EventType.MaintenceRole){
-				Home home = (Home)e.location;
-				activeRole = true;
-				MaintenenceRole mtr = new MaintenenaceRole(this.name, this);
-				if(!containsRole(mtr)){
-					roles.add(mtr);
-				}
-				mtr.setActive(true);
-
-			}
-			else if(e.type == EventType.AptTenantEvent){
-				Apartment apt = (Apartment)e.location;
-				activeRole = true;
-				ApartmentTenantRole ten = new AprtmentTenantRole(this.name, this);
-				if(!containsRole(ten)){
-					roles.add(ten);
-				}
-				ten.msgUpdateVitals(hunger, currentTime);
-				ten.setActive(true);
-			}
-			else if(e.type == EventType.LandlordEvent){
-				Apartment apt = (Apartment)e.location;
-				activeRole = true;
-				ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, this);
-				if(!containsRole(llr)){
-					roles.add(llr);
-				}
-				llr.setActive(true);
-			}
-		}*/
-
-	//}
 
 	/* checkVitals is a method to figure out misc things to do on the fly*/
 	private void checkVitals() { 
