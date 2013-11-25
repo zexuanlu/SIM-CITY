@@ -74,7 +74,6 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("The state of the bank customer should be atTeller. It isn't.", bc.s == state.atTeller);
 		assertTrue("BankCustomer should have logged \"Received msgDepositDone\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgDepositDone"));
-		assertTrue("The balance of Bank Customer should be 200.00. It isn't.", bc.balance == 200.00);
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
@@ -130,7 +129,6 @@ public class BankCustomerTest extends TestCase {
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgWithdrawDone"));
 		assertTrue("Person should have logged \"Cash has been added\" but didn't. His log reads instead: "
 				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Cash has been added"));
-		assertTrue("The balance of Bank Customer should be 200.00. It isn't.", bc.balance == 200.00);
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
@@ -173,7 +171,6 @@ public class BankCustomerTest extends TestCase {
 		assertTrue("The state of the bank customer should be atTeller. It isn't.", bc.s == state.atTeller);
 		assertTrue("BankCustomer should have logged \"Received msgDepositDone\" but didn't. His log reads instead: " 
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgDepositDone"));
-		assertTrue("The balance of Bank Customer should be 200.00. It isn't.", bc.balance == 200.00);
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
@@ -219,7 +216,6 @@ public class BankCustomerTest extends TestCase {
 				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgWithdrawDone"));
 		assertTrue("Person should have logged \"Cash has been added\" but didn't. His log reads instead: "
 				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Cash has been added"));
-		assertTrue("The balance of Bank Customer should be 200.00. It isn't.", bc.balance == 200.00);
 		
 		assertTrue("The scheduler of the bank customer should return true. It didn't.", bc.pickAndExecuteAnAction());
 		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
