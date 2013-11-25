@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import market.Food;
 import agent.Role;
 import person.SimEvent;
 import person.Location;
@@ -25,11 +26,7 @@ public class PersonMock extends Mock implements Person {
 		super(name);
 		currentTime = 7;
 		hunger = 4;
-	}
-	public PersonMock(String name, String TypeOfScenario){ 
-		super(name);
-		currentTime = 7;//wakes up at 7am
-		hunger = 4;
+		wallet = new Wallet(100, 100);
 	}
 	public void addRole(Role r){
 		roles.add(r);
@@ -114,6 +111,11 @@ public class PersonMock extends Mock implements Person {
 		public void setInBank(double newAmount){
 			inBank += newAmount;
 		}
+	}
+	@Override
+	public void msgFinishedEvent(Role r, List<Food> foodList, double change) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
