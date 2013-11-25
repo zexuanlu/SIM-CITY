@@ -138,8 +138,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	/**
 	 * Received from the teller once a loan has failed
 	 */
-	public void msgLoanFailed(){
-		log.add(new LoggedEvent("Received msgLoanFailed from BankTeller"));
+	public void msgRequestFailed(String type){
+		log.add(new LoggedEvent("Received msgRequestFailed from BankTeller"));
 		this.s = state.atTeller;
 		stateChanged();
 	}
