@@ -8,11 +8,16 @@ import market.MarketEmployeeRole;
 public class MarketEmployeeGui implements Gui{
 	
 	private MarketEmployeeRole agent;
-	private int xPos = 280, yPos = 430;//default waiter position
-    private int xDestination = 280, yDestination = 430;//default start position
+	private int xPos = 400, yPos = 180;//default waiter position
+    private int xDestination = 400, yDestination = 180;//default start position
     private int distance= 20;
-    private int xTable = 280, yTable = 330;
-    private int xTruck = 280, yTruck = 580;
+    private int xTable = 180, yTable = 180;
+    private int xTruck = 620, yTruck = 180;
+    private int xSteak =300, ySteak = 140;
+    private int xChicken = 400, yChicken = 140;
+    private int xCar = 500, yCar = 140;
+    private int xPizza = 300, yPizza = 240;
+    private int xSalad = 400, ySalad = 240;
     private boolean takeFood = false;
     private boolean sendFood = false;
     
@@ -47,25 +52,31 @@ public class MarketEmployeeGui implements Gui{
         }
         
         if (xPos == xDestination &&takeFood&& yPos == yDestination
-        		& (xDestination == 320) & (yDestination == 400)) {
+        		& (xDestination == xSteak) & (yDestination == ySteak)) {
         	takeFood = false;
            agent.msgAtTable();
 
         }
         if (xPos == xDestination &&takeFood&& yPos == yDestination
-        		& (xDestination == 240) & (yDestination == 400)) {
+        		& (xDestination == xPizza) & (yDestination == yPizza)) {
         	takeFood = false;
            agent.msgAtTable();
 
         }
         if (xPos == xDestination &&takeFood&& yPos == yDestination
-        		& (xDestination == 320) & (yDestination == 460)) {
+        		& (xDestination == xCar) & (yDestination == yCar)) {
         	takeFood = false;
            agent.msgAtTable();
 
         }
         if (xPos == xDestination &&takeFood&& yPos == yDestination
-        		& (xDestination == 240) & (yDestination == 460)) {
+        		& (xDestination == xSalad) & (yDestination == ySalad)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xChicken) & (yDestination == yChicken)) {
         	takeFood = false;
            agent.msgAtTable();
 
@@ -90,33 +101,37 @@ public class MarketEmployeeGui implements Gui{
 	
 	public void DoCollectFood(String type){
 		if(type == "Steak"){
-			xDestination = 320;
-			yDestination = 400;
+			xDestination = 300;
+			yDestination = 140;
 		}
 		if(type == "Chicken"){
-			xDestination = 240;
-			yDestination = 400;
+			xDestination = 400;
+			yDestination = 140;
 		}
 		if(type == "Car"){
-			xDestination = 320;
-			yDestination = 460;
+			xDestination = 500;
+			yDestination = 140;
 		}
-		if(type == "Rice"){
-			xDestination = 240;
-			yDestination = 460;
+		if(type == "Pizza"){
+			xDestination = 300;
+			yDestination = 240;
+		}
+		if(type == "Salad"){
+			xDestination = 400;
+			yDestination = 240;
 		}
 		takeFood = true;
 	}
 	
 	public void DoSendToCashier(){
-		xDestination = 280;
-		yDestination = 330;
+		xDestination = 180;
+		yDestination = 180;
 		sendFood = true;
 	}
 	
 	public void DoSendToTruck(){
-		xDestination = 280;
-		yDestination = 580;
+		xDestination = 620;
+		yDestination = 180;
 		sendFood = true;
 	}
 	
