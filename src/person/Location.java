@@ -1,11 +1,16 @@
 package person;
-
+/*
+ * A class encapsulating info about a location, a place on the city map. This construct simplifies contacting and
+ * navigating to certain locations as the person and determining which actions to take on entrance. 
+ *
+ * @author Grant Collins 
+ */
 public class Location {
 
-	protected String name;
+	protected String name; 
 	public enum LocationType {Restaurant, Bank, Market, Home, BusStop};
 	public LocationType type;
-	public Position position;
+	public Position position; 
 	Location(String name, LocationType type, Position p){
 		this.name = name;
 		this.type = type;

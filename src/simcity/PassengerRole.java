@@ -23,14 +23,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	Action action; 
 	
 	BusRoute busroute = new BusRoute(); 
-	String name; 
-	
-	/*public PassengerRole(String name, Person p){
-		super(p);
-		this.name = name; 
-		state= State.none; 
-		Cash = 100; 
-	}*/
+	String name;
 	
 	public PassengerRole(String name,Person p){
 		super(p);
