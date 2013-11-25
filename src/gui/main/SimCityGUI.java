@@ -4,14 +4,21 @@ import gui.panels.*;
 
 import javax.swing.*;
 
-import person.PersonAgent;
+import person.Bank;
+import person.Market;
+import person.Position;
+import person.PersonAgent; 
+import person.Location.LocationType;
 import person.gui.PersonGui; 
 
 import java.awt.*;
-import bank.*; 
-import market.*; 
-import person.Location; 
 
+import agent.TimeCard;
+import bank.*; 
+import bank.test.mock.MockBankHost;
+import market.*; 
+import market.test.mock.MockCashier;
+import person.Location; 
 import simcity.BusRole; 
 import simcity.BusStopAgent; 
 import simcity.PassengerRole; 
@@ -25,13 +32,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*; 
 
-
 /**
  * Main Sim City 201 GUI Frame
  * This is where the 'main' function should be
  */
 
 public class SimCityGUI extends JFrame {
+	private PersonAgent initPerson; 
+	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
+	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
+	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
+	public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
+	public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); 
+	
+	CityMap citymap; 
+	
 	List<PersonAgent> people = new ArrayList<PersonAgent>();
 	List<PersonGui> peoplegui = new ArrayList<PersonGui>();
 	List<Location> locations = new ArrayList<Location>();
@@ -52,10 +67,6 @@ public class SimCityGUI extends JFrame {
 	
 ///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
 	
-	//here is where I initialize locations
-	
-	
-	CityMap citymap = new CityMap(locations);
 	Semaphore[][] grid = new Semaphore[gridX][gridY];
 	BusRole bus = new BusRole("BusRole");
 	BusRole bus2 = new BusRole("BusRole2");
@@ -82,6 +93,24 @@ public class SimCityGUI extends JFrame {
 
 	
 	public SimCityGUI() {
+		//here is where I initialize locations
+		/**
+		public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
+		public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
+		public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
+		public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
+		public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); */
+		
+		
+		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
+				new Position(400, 60), LocationType.Bank);
+		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
+				new Position(500, 60), LocationType.Market);
+		
+		locations.add(bank);
+		locations.add(market);
+		citymap = new CityMap(locations);
+		
 		// SETUP
 		this.setTitle(title);
 		this.setSize(SCG_WIDTH, SCG_HEIGHT);
@@ -210,7 +239,7 @@ public class SimCityGUI extends JFrame {
 ////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
 	     for (int i=0; i<20; i++){
-		     PersonAgent p = new PersonAgent("Wilczynski");
+		     PersonAgent p = new PersonAgent("Wilczynski",citymap);
 		     PersonGui pgui = new PersonGui(p);
 		     people.add(p);
 		     peoplegui.add(pgui);
