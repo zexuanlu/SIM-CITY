@@ -72,7 +72,7 @@ public class EmployeeTest extends TestCase{
 		
 		List<Food> food = new ArrayList<Food>();
 		
-		employee.msgCollectTheDilivery(cook, food, truck);
+		employee.msgCollectTheDilivery(cook, food, truck, 1);
 		
 		assertEquals("employee should have 1 order in it. It doesn't.", employee.myrest.size(), 1);
 		

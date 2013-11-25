@@ -103,7 +103,7 @@ public class CashierTest extends TestCase{
 		
 		assertEquals("cashier should have 1 employee in the list", cashier.employee.size(), 1);
 		
-		cashier.MsgIwantFood(cook, cash, food);
+		cashier.MsgIwantFood(cook, cash, food, 1);
 		
 		assertEquals("cashier should have 1 restaruant in it. It doesn't.", cashier.myrest.size(), 1);
 		
@@ -130,7 +130,7 @@ public class CashierTest extends TestCase{
 		
 		assertEquals("cashier should have 1 customer in it. It doesn't.", cashier.mycustomer.size(), 1);
 		
-		cashier.MsgIwantFood(cook, cash, food);
+		cashier.MsgIwantFood(cook, cash, food, 1);
 		
 		assertEquals("cashier should have 1 restaruant in it. It doesn't.", cashier.myrest.size(), 1);
 		

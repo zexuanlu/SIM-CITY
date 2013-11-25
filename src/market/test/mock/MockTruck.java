@@ -3,6 +3,7 @@ package market.test.mock;
 import java.util.List;
 
 import market.CookAgent;
+import market.Food;
 import market.interfaces.Cook;
 import market.interfaces.MarketTruck;
 
@@ -17,7 +18,7 @@ public class MockTruck extends Mock implements MarketTruck{
 
 
 	@Override
-	public void msgPleaseDiliver(Cook c, List food) {
+	public void gotoPosition(Cook c, List<Food> food, int x, int y) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got it"));
 	}
