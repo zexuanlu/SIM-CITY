@@ -121,6 +121,11 @@ public class PersonAgent extends Agent implements Person{
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
 
 	public void addRole(MyRole r){ roles.add(r); }
+	
+	public void addRole(Role r){
+		MyRole mr = new MyRole(r);
+		roles.add(mr);
+	}
 
 	public void populateCityMap(List<Location> loc){ cityMap = new CityMap(loc); } 
 
