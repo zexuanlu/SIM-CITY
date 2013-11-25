@@ -103,6 +103,8 @@ public class PersonAgent extends Agent implements Person{
 
 	public void setAnimationPanel(CityAnimationPanel c){ cap = c; }
 
+	public void setHomeNumber(int hn){ homeNumber = hn; }
+	
 	public boolean containsRole(Role r){ 
 		for(MyRole role : roles){
 			if(role.role.getClass() == r.getClass()){
@@ -353,6 +355,7 @@ public class PersonAgent extends Agent implements Person{
 						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
 						getRoleOfType(bcr).isActive(true);
 					}
+					gui.setPresent(false);
 					toDo.remove(e); //remove the event from the queue
 				}
 				else if(e.type == EventType.TellerEvent){
@@ -378,6 +381,7 @@ public class PersonAgent extends Agent implements Person{
 						}
 					}
 					print("releasing wait");
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.HostEvent){
@@ -403,6 +407,7 @@ public class PersonAgent extends Agent implements Person{
 							e1.printStackTrace();
 						}
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 			}
@@ -422,6 +427,7 @@ public class PersonAgent extends Agent implements Person{
 						((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
 						getRoleOfType(mcr).isActive(true);
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.EmployeeEvent){
@@ -446,6 +452,7 @@ public class PersonAgent extends Agent implements Person{
 							e1.printStackTrace();
 						}
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.CashierEvent){
@@ -470,6 +477,7 @@ public class PersonAgent extends Agent implements Person{
 							e1.printStackTrace();
 						}
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 			}
@@ -488,6 +496,7 @@ public class PersonAgent extends Agent implements Person{
 						getRoleOfType(hr).isActive(true);
 						((HomeOwnerRole)getRoleOfType(hr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.AptTenantEvent){
@@ -504,6 +513,7 @@ public class PersonAgent extends Agent implements Person{
 						getRoleOfType(tr).isActive(true);
 						((ApartmentTenantRole)getRoleOfType(tr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.LandlordEvent){
@@ -518,6 +528,7 @@ public class PersonAgent extends Agent implements Person{
 					else{
 						getRoleOfType(llr).isActive(true);
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 			}
