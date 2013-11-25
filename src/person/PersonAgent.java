@@ -23,6 +23,7 @@ import person.gui.PersonGui;
 import person.interfaces.Person;
 import person.test.mock.EventLog;
 import simcity.PassengerRole;
+import simcity.CityMap;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
  * The PersonAgent, once a decision has been made, will switch to the appropriate role to carry out the task given in the event
@@ -547,7 +548,7 @@ public class PersonAgent extends Agent implements Person{
 	 * the cityMap will be the person's guide to locations in the city 
 	 * holds all methods relevant to choosing destinations by a few criteria
 	 */
-	public class CityMap {
+	/*public class CityMap {
 
 		public List<Location> map;
 		public DistCompare comparator = new DistCompare();
@@ -643,7 +644,7 @@ public class PersonAgent extends Agent implements Person{
 				return 0;
 			} 
 		}
-	}
+	}*/
 	class EventComparator implements Comparator{
 
 		//this method calculates the priority based on the priority string in event
