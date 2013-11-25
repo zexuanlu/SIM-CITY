@@ -8,18 +8,20 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class MarketAnimationPanel extends JPanel implements ActionListener {
 	
-    private final int WINDOWX = 400;
-    private final int WINDOWY = 600;
+    private final int WINDOWX = 640;
+    private final int WINDOWY = 480;
     private Image bufferImage;
     private Dimension bufferSize;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public AnimationPanel() {
+    public MarketAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
+		this.setBorder(BorderFactory.createTitledBorder("Market"));
+
         
         bufferSize = this.getSize();
  
@@ -43,20 +45,26 @@ public class AnimationPanel extends JPanel implements ActionListener {
 //        g2.fillRect(200, 250, 50, 50);//200 and 250 need to be table params
 //        
         g2.setColor(Color.BLUE);
-        g2.fillRect(240, 250,80, 80);
+        g2.fillRect(100, 160, 80, 80);
         
         g2.setColor(Color.green);
-        g2.fillRect(340, 400, 20, 20);
+        g2.fillRect(300, 260, 40, 40);
         
         g2.setColor(Color.green);
-        g2.fillRect(220, 400, 20, 20);
+        g2.fillRect(300, 100, 40, 40);
+        
+        g2.setColor(Color.green);
+        g2.fillRect(400, 260, 40, 40);
+        
+        g2.setColor(Color.green);
+        g2.fillRect(400, 100, 40, 40);
         
         
         g2.setColor(Color.green);
-        g2.fillRect(340, 460, 20, 20);
+        g2.fillRect(500, 260, 40, 40);
 
         g2.setColor(Color.green);
-        g2.fillRect(220, 460, 20, 20);
+        g2.fillRect(500, 100, 40, 40);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {

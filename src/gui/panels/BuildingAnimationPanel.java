@@ -20,7 +20,7 @@ public class BuildingAnimationPanel extends JPanel {
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		
 		// Panel size initiations
-		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		this.setPreferredSize(new Dimension(WIDTH-10, HEIGHT));
 	}
 
 }
