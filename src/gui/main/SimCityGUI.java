@@ -175,8 +175,7 @@ public class SimCityGUI extends JFrame {
 	 	 busstop6.setGui(bs6gui);
 	 	 busstop7.setGui(bs7gui);
 	 	 busstop8.setGui(bs8gui);
-	 	 
-	 	 
+	 	
 	 	 busstop1.setDirection("down");
 	 	 busstop2.setDirection("down");
 	 	 busstop3.setDirection("up");
@@ -242,8 +241,8 @@ public class SimCityGUI extends JFrame {
 	     bus2.msgStartBus();
 	     
 ////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
-
-	     for (int i=0; i<1; i++){
+	     
+	     for (int i=0; i<5; i++){
 		     PersonAgent p = new PersonAgent("Person"+i,citymap);
 		     PersonGui pgui = new PersonGui(p);
 		     p.gui = pgui;
@@ -252,19 +251,18 @@ public class SimCityGUI extends JFrame {
 		     cityAnimPanel.addGui(pgui);
 	     }
 	     people.get(0).addRole(banktellerrole1);
-	     /*people.get(1).addRole(banktellerrole2);
+	     people.get(1).addRole(banktellerrole2);
 	     people.get(2).addRole(bankhostrole);
 	     people.get(3).addRole(marketcashierrole);
-	     people.get(4).addRole(marketemployeerole);*/
+	     people.get(4).addRole(marketemployeerole);
 
-	     
 	     for (PersonGui pgui: peoplegui){
 	    	 cityAnimPanel.addGui(pgui);     
 	     }
 	     
-	     /*for (PersonAgent p: people){
+	     for (PersonAgent p: people){
 	    	 p.startThread();
-	     }*/
+	     }
 		 people.get(0).startThread();
 
 	     

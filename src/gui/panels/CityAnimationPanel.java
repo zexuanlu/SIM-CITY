@@ -46,9 +46,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	Timer timer;
 	
 	enum state {none, bank, market, restaurant1, house1, apartment1}
-	
-	
-	
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D market = new Rectangle2D.Double(220, 160, BUILDINGSIZE, BUILDINGSIZE);
@@ -134,13 +131,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fillRect(280, 0, 60, 480);
         g2.fillRect(0, 220, 640, 60);
         
-        //draw out random buildings
-        g2.setColor(Color.GRAY);
-        //homes
-        g2.fillRect(400, 60, 50, 50); 
-        g2.fillRect(500, 60, 50, 50); 
-        g2.fillRect(500, 120, 50, 50); 
-        g2.fillRect(400, 120, 50, 50);
         
         //Hover Text
     	g2.setColor(Color.BLACK);
@@ -159,7 +149,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         else if(s == state.apartment1){
         	g2.drawString("Apartment 1", 100, 100);
         }
-        
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

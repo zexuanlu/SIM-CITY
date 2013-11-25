@@ -57,10 +57,8 @@ public class PersonGui implements Gui{
 		isPresent = tf;
 	}
 	public void DoGoTo(Position p){
-		System.out.println("Going to...");
 		xDestination = p.getX();
 		yDestination = p.getY();
-		System.out.println(xDestination);
 		arrived = false;
 	}
 	public int getX(){return xPos;}

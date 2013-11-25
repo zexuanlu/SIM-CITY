@@ -26,6 +26,9 @@ public class CityMap {
 		map = locations; 
 	}
 	
+	public CityMap(){
+		
+	}
 	public BusRoute generateBusInformation(int finalx, int finaly, int originx, int originy){
 		BusRoute b = new BusRoute();
 		BusStop destStop = getClosestStop(finalx, finaly);

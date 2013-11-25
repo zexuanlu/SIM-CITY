@@ -161,7 +161,6 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgAtDest(int x, int y){
-		print("Recieved the message AtDest(x,y)");
 		gui.xPos = x;
 		gui.yPos = y;
 		currentLocation.setX(x);
@@ -293,9 +292,7 @@ public class PersonAgent extends Agent implements Person{
 			Location l = e.location;
 			DoGoTo(l); // Handles picking mode of transport and animating there
 			try {
-				print("Acquired");
 				going.acquire();
-				print("Released");
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -347,7 +344,6 @@ public class PersonAgent extends Agent implements Person{
 					activeRole = true;
 					BankTellerRole btr = new BankTellerRole(this, this.name);; 
 					if(!containsRole(btr)){ 
-						print("Teller not found");
 						MyRole newRole = new MyRole(btr);
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
 						newRole.isActive(true);
@@ -360,7 +356,6 @@ public class PersonAgent extends Agent implements Person{
 					}
 					if(!testMode){
 						try {
-							print("acquiring wait");
 							wait.acquire();
 						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block
@@ -403,7 +398,6 @@ public class PersonAgent extends Agent implements Person{
 					MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
 
 					if(!containsRole(mcr)){
-						print("Market customer not found");
 						MyRole newRole = new MyRole(mcr);
 						newRole.isActive(true);
 						roles.add(newRole);
@@ -546,7 +540,6 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
-		print("GOING");
 		gui.DoGoTo(loc.getPosition());
 	}
 	private Position calculateTransportation(Location loc){
