@@ -317,6 +317,15 @@ public class PersonAgent extends Agent implements Person{
 						e1.printStackTrace();
 					}
 				}
+
+				/*try {
+					print("acquiring wait");
+					wait.acquire();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}*/
+
 				print("releasing wait");
 			}
 			else if(e.type == EventType.HostEvent){
@@ -407,6 +416,10 @@ public class PersonAgent extends Agent implements Person{
 						e1.printStackTrace();
 					}
 				}
+				else{
+					market.getTimeCard().msgBackToWork(this,(MarketCashierRole)getRoleOfType(mcash).role);
+					getRoleOfType(mcash).isActive(true);
+				}
 			}
 		}
 		/*else if(e.location.type == LocationType.Home){
@@ -460,7 +473,6 @@ public class PersonAgent extends Agent implements Person{
 			//if(event)
 			//createAndAddRole(eventToExec); // a stub for the procedure shown above of checking what type of event it is and creating a role for it
 		}*/
-
 	/* checkVitals is a method to figure out misc things to do on the fly*/
 	private void checkVitals() { 
 		/*NOTE: the locations in this method are hard coded until we get the init script that 
