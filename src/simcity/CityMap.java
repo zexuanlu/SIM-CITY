@@ -11,7 +11,8 @@ import simcity.interfaces.Bus;
 
 
 public class CityMap {
-	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
+//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
+	
 	//bus information
 
 	Map<Bus, ArrayList<BusStop>> routes = new HashMap<Bus, ArrayList<BusStop>>();
@@ -25,16 +26,10 @@ public class CityMap {
 	public CityMap(List<Location> locations){
 		map = locations; 
 	}
-	public CityMap(){}
-	public void addDestination(String s,Dimension d){
-		simMap.put(s, d);
-	}
-	public BusRoute generateBusInformation(String destination, int originx, int originy){
+	
+	public BusRoute generateBusInformation(int finalx, int finaly, int originx, int originy){
 		BusRoute b = new BusRoute();
-
-
-		Dimension destdim = simMap.get(destination);
-		BusStop destStop = getClosestStop(destdim.width, destdim.height);
+		BusStop destStop = getClosestStop(finalx, finaly);
 		b.destination = getStopName(destStop);
 		b.destinationX = dimensions.get(destStop).width;
 		b.destinationY = dimensions.get(destStop).height; 
@@ -118,10 +113,6 @@ public class CityMap {
 
 	public int getNumBusStops(){
 		return busstops.size();
-	}
-
-	public Dimension getDestination(String dest){
-		return simMap.get(dest);
 	}
 
 	public Location getByType(LocationType lt){

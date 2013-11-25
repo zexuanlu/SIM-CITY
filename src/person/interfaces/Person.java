@@ -8,7 +8,7 @@ import agent.Role;
 import market.Food;
 
 public interface Person {
-	
+   	
 	public abstract  void msgNewHour(int hour);//from the world timer
 
 	public abstract void msgAtDest(Position destination); // From the gui. now we can send the correct entrance message to the location manager

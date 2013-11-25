@@ -10,7 +10,7 @@ import person.gui.PersonGui;
 import java.awt.*;
 import bank.*; 
 import market.*; 
-import person.*;
+import person.Location; 
 
 import simcity.BusRole; 
 import simcity.BusStopAgent; 
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*; 
 
+
 /**
  * Main Sim City 201 GUI Frame
  * This is where the 'main' function should be
@@ -33,6 +34,7 @@ import java.util.concurrent.*;
 public class SimCityGUI extends JFrame {
 	List<PersonAgent> people = new ArrayList<PersonAgent>();
 	List<PersonGui> peoplegui = new ArrayList<PersonGui>();
+	List<Location> locations = new ArrayList<Location>();
 	
 	 int WINDOWX = 640; //60 across
      int WINDOWY = 480; //60 across
@@ -49,7 +51,11 @@ public class SimCityGUI extends JFrame {
 	CityControlPanel cityCtrlPanel = new CityControlPanel(this);
 	
 ///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
-	CityMap citymap = new CityMap();
+	
+	//here is where I initialize locations
+	
+	
+	CityMap citymap = new CityMap(locations);
 	Semaphore[][] grid = new Semaphore[gridX][gridY];
 	BusRole bus = new BusRole("BusRole");
 	BusRole bus2 = new BusRole("BusRole2");
@@ -164,9 +170,6 @@ public class SimCityGUI extends JFrame {
 	     citymap.addBus(busstop6, bus2);
 	     citymap.addBus(busstop7, bus2);
 	     citymap.addBus(busstop8, bus2);
-	     
-	     citymap.addDestination("Home", new Dimension(550, 100));
-	     citymap.addDestination("Food", new Dimension(200, 400));
 
 	     cityAnimPanel.addGui(bgui);
 	     cityAnimPanel.addGui(bgui2);

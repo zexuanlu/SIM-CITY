@@ -30,7 +30,7 @@ public class BusRole extends Agent implements Bus {
 	private Semaphore atSlot = new Semaphore(0,true);
 	
 	private BusGui busgui; 
-	public CityMap citymap = new CityMap(); 
+	public CityMap citymap = null; 
 	
 	Timer timer = new Timer();
 	public List<myPassenger> passengers = new ArrayList<myPassenger>(); 
