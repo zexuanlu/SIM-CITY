@@ -7,7 +7,7 @@ import java.awt.*;
 public class ApartmentTenantGui implements Gui {
 
     private ApartmentTenantRole aptTenant = null;
-    SimCityGui gui;
+    ApartmentAnimationPanel gui;
 
     private int xPos = 50, yPos = 50; // Default cook position
     private int xDestination = 50, yDestination = 50; // Default start position
@@ -32,7 +32,7 @@ public class ApartmentTenantGui implements Gui {
     
     private String choice;
     
-    public ApartmentTenantGui(ApartmentTenantRole c, SimCityGui gui) {
+    public ApartmentTenantGui(ApartmentTenantRole c, ApartmentAnimationPanel gui) {
     	aptTenant = c;
     	this.gui = gui;
     }

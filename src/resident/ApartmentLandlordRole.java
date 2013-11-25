@@ -25,7 +25,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	
 	// Constructor
 	public ApartmentLandlordRole(String n, int an, Person p) {
-		super();
+		super(p);
 		name = n;
 		apartmentNumber = an;
 		person = p;

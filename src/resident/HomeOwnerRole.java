@@ -34,7 +34,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 */
 	// Constructor
 	public HomeOwnerRole(String n, int hn, Person p) {
-		super();
+		super(p);
 		name = n;
 		houseNumber = hn;
 		person = p;
@@ -410,7 +410,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void goToRestaurant(MyPriority p) {
 		toDoList.remove(p);
 		
-		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		//Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
 		
 		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
 		//person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
@@ -436,9 +436,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
 		
-		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
-		
-		Event event = new Event("Go to market", location, 2, EventType.MarketEvent);
+//		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
+//		
+//		Event event = new Event("Go to market", location, 2, EventType.MarketEvent);
 		
 		// Lets person agent know that no longer going to be a resident role
 		//person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
