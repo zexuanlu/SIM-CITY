@@ -69,8 +69,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener {
         
         //draw out random buildings
         g2.setColor(Color.GRAY);
-        //g2.fillRect(550, 100, 50, 100); 
-        //g2.fillRect(200, 400, 100, 50);
+        //homes
+        g2.fillRect(400, 60, 50, 50); 
+        g2.fillRect(500, 60, 50, 50); 
+        g2.fillRect(500, 120, 50, 50); 
+        g2.fillRect(400, 120, 50, 50); 
+
+
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

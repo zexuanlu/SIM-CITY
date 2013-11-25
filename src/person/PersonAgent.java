@@ -71,6 +71,7 @@ public class PersonAgent extends Agent implements Person{
 		this.hunger = 4;
 		currentTime = 7;
 	}
+	
 	public PersonAgent () {
 		super();
 	}
