@@ -48,9 +48,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	}
 	
 	public void msgNowAtStop(String stop){
-		print("atStop name is "+ stop + "bus stop destination is " + busroute.destination);
 		if (stop.equals(busroute.destination)){
-			System.out.println("hit in statechanged of msgnowatstop");
 			action = Action.leaveBus; 
 			stateChanged();
 		}
@@ -72,7 +70,6 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction() {
-		print ("Passenger scheduler called");
 		if (state == State.none && action == Action.asktoComeonBoard){
 			askBus();
 			return true; 
