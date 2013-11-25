@@ -29,7 +29,7 @@ public class BankHandshake extends TestCase{
 		person.setName("Grant");
 		host = new MockBankHost("Gil");
 		bank = new Bank("Bank", host, p, LocationType.Bank);
-		goToBank = new SimEvent(bank, 1, 9, 10, EventType.CustomerEvent);
+		goToBank = new SimEvent(bank, 1, 9, EventType.CustomerEvent);
 	}
 	
 	@Test

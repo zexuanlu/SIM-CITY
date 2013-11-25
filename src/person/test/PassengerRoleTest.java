@@ -33,7 +33,7 @@ public class PassengerRoleTest extends TestCase{
 		person.setName("Grant");
 		host = new MockBankHost("Gil");
 		bank = new Bank("Bank", host, p, LocationType.Bank);
-		goToBank = new SimEvent(bank, 1, 9, 10, EventType.CustomerEvent);
+		goToBank = new SimEvent(bank, 1, 9, EventType.CustomerEvent);
 	}
 	@Test
 	public void testPassengerRole() {
@@ -49,6 +49,8 @@ public class PassengerRoleTest extends TestCase{
 		
 		assertTrue("person's role list should have a passenger role in it, it does not", person.roles.get(0).role instanceof PassengerRole);
 		assertTrue("person shoul dhave activeRole == true, it is false", person.activeRole);
+		
+		//message from the passenger role
 		person.msgAtDest(100, 100);
 		assertTrue("person's current location should be 100 100 it is not", 
 				person.currentLocation.getX() == 100 && person.currentLocation.getY() == 100);

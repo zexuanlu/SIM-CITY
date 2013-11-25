@@ -30,7 +30,7 @@ public class MultipleEvents extends TestCase{
 	
 	public void setUp() throws Exception{
 		super.setUp();	
-		goToBank = new SimEvent(bank, 1, 9, 12, EventType.TellerEvent);
+		goToBank = new SimEvent(bank, 1, 9, EventType.TellerEvent);
 		goToMarket = new SimEvent("Buy some stuff", market, 2, EventType.CustomerEvent);
 		person.setTime(7);
 		goToMarket.setStart(person.getTime());

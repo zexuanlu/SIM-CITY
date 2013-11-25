@@ -31,7 +31,7 @@ public class BankExitHandshake extends TestCase{
 		TimeCard tc = new TimeCard();
 		tc.startThread();
 		bank = new Bank("Bank", tc, host, p, LocationType.Bank);
-		goToBank = new SimEvent(bank, 1, 9, 10, EventType.TellerEvent);
+		goToBank = new SimEvent(bank, 1, 9, EventType.TellerEvent);
 		
 	}
 	

@@ -9,31 +9,19 @@ public class SimEvent {
     						MaintenenaceEvent} 
     public EventType type;
     int priority; // for ordering in queue
-    int start;
-    int finish; 
+    int start; 
     boolean inProgress; 
     
-    public SimEvent(Location location, int priority, int start, int finish, EventType type ) {
+    public SimEvent(Location location, int priority, int start, EventType type ) {
     	
     	this.location = location;
     	this.priority = priority;
     	this.start = start;
-    	this.finish = finish;
     	this.inProgress = false;
     	this.type = type;
     	
     }
-    
-    SimEvent(Location location, int start, int finish, EventType type ) {
-    	
-    	this.location = location;
-    	this.start = start;
-    	this.finish = finish;
-    	this.inProgress = false;
-    	this.priority = 5;
-    	this.type = type;
-    	
-    }
+  
     /*
      * create a time ambiguous event that will be ordered on the fly 
      * with regards to existing mandatory events
@@ -42,7 +30,6 @@ public class SimEvent {
     	this.directive = directive;
     	this.location = l;
     	this.start = 0;
-    	this.finish = 0;
     	this.priority = p;
     	this.type = t;
     }
@@ -64,17 +51,9 @@ public class SimEvent {
     public void setStart(int s) {    	
     	this.start = s;
     }
-    
-    void setFinish(int f) {    	
-    	this.finish = f;    	
-    }
-    
+   
     int getStart() {   	
     	return this.start;    	
-    }
-    
-    int getFinish() {    	
-    	return this.finish;
     }
     
     void setProgress(boolean inProgress) {    	
