@@ -8,6 +8,7 @@ import market.gui.MarketTruckGui;
 import person.Bank;
 import person.Home;
 import person.Market;
+import person.PersonAgent.MyRole;
 import person.Position;
 import person.PersonAgent;
 import person.Restaurant;
@@ -20,6 +21,7 @@ import person.SimWorldClock;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+import agent.Role;
 import agent.TimeCard;
 import bank.*;
 import bank.gui.BankHostGui;
@@ -27,6 +29,8 @@ import bank.gui.BankTellerGui;
 import bank.test.mock.MockBankHost;
 import market.*;
 import restaurant.*;
+import restaurant.gui.CookGui;
+import restaurant.gui.CustomerGui;
 import restaurant.gui.WaiterGui;
 import market.test.mock.MockCashier;
 import person.Location;
@@ -78,6 +82,8 @@ public class SimCityGUI extends JFrame {
 	 * Role gui's must be initialized in SimCityGui with the role as happens below
 	 */
 	public WaiterGui wg = new WaiterGui(waiter1, null);
+	public CookGui cg = new CookGui(cook1, null);
+	public CustomerGui custGui = new CustomerGui(customer1, null);
 	public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
 	public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
 	public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
@@ -85,8 +91,6 @@ public class SimCityGUI extends JFrame {
 	public BankTellerGui btg1 = new BankTellerGui(banktellerrole1);
 	public BankTellerGui btg2 = new BankTellerGui(banktellerrole2);
 	public BankHostGui bhg = new BankHostGui(bankhostrole);
-	
-	
 	
 	public CityMap citymap; 
 
@@ -148,7 +152,7 @@ public class SimCityGUI extends JFrame {
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(500, 60), LocationType.Market);
+				new Position(220, 160), LocationType.Market);
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
 				new Position(340, 160), LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
@@ -179,7 +183,7 @@ public class SimCityGUI extends JFrame {
 		this.add(bldngAnimPanel, BorderLayout.EAST);
 		this.add(cityCtrlPanel, BorderLayout.SOUTH);
 
-		cityAnimPanel.BuildPanel = bldngAnimPanel;
+		cityAnimPanel.setBuildPanel(bldngAnimPanel);
 
 		for (int i=0; i<gridX ; i++)
 			for (int j = 0; j<gridY; j++)
@@ -189,6 +193,18 @@ public class SimCityGUI extends JFrame {
 			for (int y=0;y<30;y++){  //Create dead position
 				grid[30][20].release();
 			}
+			for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
+				for (int y = 11; y<14; y++){
+					grid[0][y].release(); 
+				}
+			}
+			for (int y =0 ;y<50; y++){ //creation location
+				grid[0][12].release();
+			}
+			for (int y =0 ;y<50; y++){ //bank location
+				grid[7][12].release();
+			}
+			
 			for (int y = 0; y < 11; y ++){
 				for (int x = 0; x < 14; x++){
 					grid[x][y].acquire(); 
@@ -277,6 +293,14 @@ public class SimCityGUI extends JFrame {
 		waiter1.setGui(wg);
 		cityAnimPanel.rest1Panel.addGui(wg);
 		
+		cg.isPresent = false;
+		cook1.setGui(cg);
+		cityAnimPanel.rest1Panel.addGui(cg);
+		
+		custGui.isPresent = false;
+		customer1.setGui(custGui);
+		cityAnimPanel.rest1Panel.addGui(custGui);
+		
 		hg1.isPresent = false;
 		homeOwnerRole1.setGui(hg1);
 		cityAnimPanel.house1Panel.addGui(hg1);
@@ -301,7 +325,7 @@ public class SimCityGUI extends JFrame {
 		banktellerrole2.setGui(btg2);
 		cityAnimPanel.bankPanel.addGui(btg2);
 		
-		bhg.isPresent = false;
+		//bhg.isPresent = false;
 		bankhostrole.setGui(bhg);
 		cityAnimPanel.bankPanel.addGui(bhg);
 		
@@ -336,9 +360,11 @@ public class SimCityGUI extends JFrame {
 		 * Adds the people with a given house number. This is for homes. Any dynamically added person will
 		 * be added as an apartment tenant.
 		 */
-		for (int i=1; i<5; i++){
+
+//		for (int i=1; i<6; i++){
+		for (int i=0; i<11; i++){
 			aStarTraversal = new AStarTraversal(grid);
-			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
+			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 2000);
 			PersonGui pgui = new PersonGui(p);
 			p.gui = pgui;
 			p.homeNumber = i;
@@ -355,25 +381,25 @@ public class SimCityGUI extends JFrame {
 		people.get(1).addRole(homeOwnerRole2);
 		people.get(2).addRole(banktellerrole2);
 		people.get(2).addRole(homeOwnerRole3);
-		people.get(3).addRole(waiter1);
+		people.get(3).addRole(host1);
 		people.get(3).addRole(homeOwnerRole4);
-		//people.get(4).addRole(banktellerrole1);
+		people.get(4).addRole(cook1);
+		people.get(5).addRole(cashier1);
+		people.get(6).addRole(waiter1);
+		people.get(7).addRole(marketcashierrole);
+		people.get(8).addRole(marketemployeerole);
+		people.get(9).addRole(customer1);
 		
-		//people.get(4).addRole(customer1);		
-		//people.get(1).addRole(banktellerrole2);
-		//people.get(2).addRole(bankhostrole);
-		//people.get(3).addRole(marketcashierrole);
-		//people.get(4).addRole(marketemployeerole);
-		//people.get(5).addRole(waiter1);
-
 		bank.getTimeCard().startThread();
 		bankdatabase.startThread();
+		
+		// Starts the thread of all the people
 		for (PersonAgent p: people){
 			p.startThread();
 		}
+		
 		 //people.get(0).startThread();
 		//people.get(0).setAnimationPanel(cityAnimPanel);
-
 		/* 
 		 * Every person added to SimCity must have at least one SimEvent to do much of anything
 		 * SimEvent constructor goes like : Location, priority, start time, EventType
@@ -382,31 +408,25 @@ public class SimCityGUI extends JFrame {
 		 * 
 		 * Creating host, cook, cashier, waiter, and teller events
 		 * */
-		SimEvent hostGoToRestaurant = new SimEvent(rest1, 5, 9, EventType.HostEvent);
-		SimEvent cookGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.CookEvent);
-		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.CashierEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.WaiterEvent);
+		SimEvent hostGoToRestaurant = new SimEvent(rest1, 5, 7, EventType.HostEvent);
+		SimEvent cookGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.CookEvent);
+		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.CashierEvent);
+		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
+		SimEvent custGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.CustomerEvent);
 		SimEvent tellerGoToBank = new SimEvent(bank, 1, 7, EventType.TellerEvent);
 		SimEvent hostGoToBank = new SimEvent(bank, 1, 7, EventType.HostEvent);
 		
-		SimEvent goHome1 = new SimEvent(home1, 1, 12, EventType.HomeOwnerEvent);
-		SimEvent goHome2 = new SimEvent(home2, 1, 12, EventType.HomeOwnerEvent);
-		SimEvent goHome3 = new SimEvent(home3, 1, 12, EventType.HomeOwnerEvent);
-		SimEvent goHome4 = new SimEvent(home4, 1, 12, EventType.HomeOwnerEvent);
+		SimEvent goHome1 = new SimEvent(home1, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome2 = new SimEvent(home2, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome3 = new SimEvent(home3, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome4 = new SimEvent(home4, 1, 7, EventType.HomeOwnerEvent);
 		
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		goToBank.directive = "deposit";
-//		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 //		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
 //		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
 //		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
 //		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
-		
-		// people.get(0).startThread();
-		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
-		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
-		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
 		
 		/*
 		 * 2. Since the role is initialized with the initPerson who is null 
@@ -418,6 +438,13 @@ public class SimCityGUI extends JFrame {
 		 * The above = get the first (and only at the moment) role from person 5's role list and call switch person
 		 * replacing the initPerson with person 5 (the first person to play the role of waiter1)
 		 */
+		for(PersonAgent p : people){
+			for(MyRole r : p.roles){
+				r.role.switchPerson(p);
+			}
+		}
+		
+		/**
 		people.get(0).roles.get(0).role.switchPerson(people.get(0));
 		people.get(0).roles.get(1).role.switchPerson(people.get(0));
 		
@@ -429,6 +456,8 @@ public class SimCityGUI extends JFrame {
 		
 		people.get(3).roles.get(0).role.switchPerson(people.get(3));
 		people.get(3).roles.get(1).role.switchPerson(people.get(3));
+		
+		people.get(4).roles.get(0).role.switchPerson(people.get(4));
 		
 		//people.get(4).roles.get(0).role.switchPerson(people.get(4));
 		
@@ -442,41 +471,57 @@ public class SimCityGUI extends JFrame {
 		 */
 		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
 		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
-		bankhostrole.addTeller(banktellerrole1);
-		bankhostrole.addTeller(banktellerrole2);
-		banktellerrole1.bh = bankhostrole;
-		banktellerrole2.bh = bankhostrole;
-		banktellerrole1.bd = bankdatabase;
-		banktellerrole2.bd = bankdatabase;
+		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
+//		bankhostrole.addTeller(banktellerrole1);
+//		bankhostrole.addTeller(banktellerrole2);
+//		banktellerrole1.bh = bankhostrole;
+//		banktellerrole2.bh = bankhostrole;
+//		banktellerrole1.bd = bankdatabase;
+//		banktellerrole2.bd = bankdatabase;
+		
+		customer1.setHost(host1);
+		customer1.setCashier(cashier1);
+		waiter1.setcook(cook1);
+		waiter1.sethost(host1);
+		host1.msgaddwaiter(waiter1);
+		waiter1.setCashier(cashier1);
+		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
 		 * Host, cook, cashier, waiter and teller events
 		 */
-		people.get(0).toDo.offer(hostGoToBank);
+//		//people.get(0).toDo.offer(hostGoToBank);
+//		people.get(0).toDo.offer(hostGoToRestaurant);
+//		people.get(0).toDo.offer(goHome1);
+//		//people.get(1).toDo.offer(tellerGoToBank);
+//		people.get(1).toDo.offer(cookGoToRestaurant);
+//		people.get(1).toDo.offer(goHome2);
+//		//people.get(2).toDo.offer(tellerGoToBank);
+//		people.get(2).toDo.offer(waiterGoToRestaurant);
+//		people.get(2).toDo.offer(goHome3);
+//	   // people.get(3).toDo.offer(goToBank);
+//		people.get(3).toDo.offer(cashierGoToRestaurant);
+//		people.get(3).toDo.offer(goHome4);
+//		people.get(4).toDo.offer(custGoToRestaurant);
+//		//people.get(4).toDo.offer(tellerGoToBank);
+		//people.get(0).toDo.offer(hostGoToBank);
 		people.get(0).toDo.offer(goHome1);
 		people.get(1).toDo.offer(tellerGoToBank);
-		people.get(1).toDo.offer(goHome2);
+	//	people.get(1).toDo.offer(goHome2);
 		people.get(2).toDo.offer(tellerGoToBank);
-		people.get(2).toDo.offer(goHome3);
-		people.get(3).toDo.offer(goToBank);
-		people.get(3).toDo.offer(goHome4);
-		//people.get(4).toDo.offer(tellerGoToBank);
+	//	people.get(2).toDo.offer(goHome3);
+	    people.get(3).toDo.offer(hostGoToRestaurant);
+		//people.get(3).toDo.offer(goHome4);
+		people.get(4).toDo.offer(cookGoToRestaurant);
+		people.get(5).toDo.offer(cashierGoToRestaurant);
+		people.get(6).toDo.offer(waiterGoToRestaurant);
+		people.get(9).toDo.offer(custGoToRestaurant);
+	//	people.get(8).toDo
 		
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(6,people);
 		
-		// Sets the interact panel's sim city GUI
-		cityCtrlPanel.interactPanel.setSimCityGUI(this);
-		
-		/**
-		aStarTraversal = new AStarTraversal(grid);
-		MarketTruckAgent markettruckagent = new MarketTruckAgent(aStarTraversal);
-		MarketTruckGui mktgui = new MarketTruckGui(markettruckagent);
-		markettruckagent.setGui(mktgui);
-		cityAnimPanel.addGui(mktgui);
-		markettruckagent.startThread(); 
-		markettruckagent.msgGoBack();*/
-		
+
 		/*for(int i = 0; i < people.size(); i++){
 			people.get(i).setAnimationPanel(cityAnimPanel);
 		}*/

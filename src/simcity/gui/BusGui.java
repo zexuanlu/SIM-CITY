@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.List; 
 import java.awt.Graphics2D;
 
+import agent.Gui;
+
 public class BusGui implements Gui {
 	int scale = 20; 
 	

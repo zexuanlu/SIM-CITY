@@ -4,7 +4,6 @@ import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-
 import person.PersonAgent;
 
 import java.util.*;
@@ -24,20 +23,20 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	public int tablenum;
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
-	
-	boolean isBack = true, atCook = false;
+	private Semaphore atCook = new Semaphore(0,true);
+	boolean isBack = true;//, atCook = false;
 	public WaiterGui waiterGui = null;
 	private Restaurant1HostRole host = null;
 	private Restaurant1CookRole cook= null;
 	private Cashier cashier = null;
-	List<mycustomer> customer = new ArrayList<mycustomer>();
+	private List<mycustomer> customer = new ArrayList<mycustomer>();
 	
 	public Map<String, Double> menue = new HashMap<String, Double>();
 	
 	String names;
 		
 	enum waiterstate {none, working, applyingbreak};
-	waiterstate ws = waiterstate.working;
+	private waiterstate ws = waiterstate.working;
 	
 	
 	public Restaurant1WaiterRole(String name, PersonAgent pa){
@@ -105,7 +104,6 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	// Messages
 
 	public void msgIWantFood(Customer cust, int table, int loc) {
-		System.err.println("Customer added by waiter");
 		customer.add(new mycustomer(cust, table, loc));
 		stateChanged();
 	}
@@ -138,7 +136,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	}
 	
 	public void msgatCook(){
-		atCook = true;
+		atCook.release();
 		stateChanged();
 	}
 	
@@ -251,14 +249,6 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 			}
 		}
 		for(mycustomer customers: customer){
-			if(customers.s == state.eating){
-				if(atCook){
-				DogobacktoCustomer(customers);
-				return true;
-				}
-			}
-		}
-		for(mycustomer customers: customer){
 			if(customers.s == state.done){
 				Dofreetable(customers);
 				return true;
@@ -281,15 +271,11 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	}
 
 	// Actions
-	
-	
-
 	private void seatCustomer(mycustomer customer, int table) {
 		customer.s = state.seated;
 		tablenum = table;
 		Seating(customer.c);
 		//waiterGui.Dotakecustomer(customer.c);
-		
 	}
 	
 	public void Seating(Customer c){
@@ -324,7 +310,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	public void Dotakeorder(mycustomer customer){
 		//Dogototable(customer.table);
 		customer.s = state.askedtoorder;
-		Do("Comming!");
+		Do("Coming!");
 		waiterGui.DoGoToTakeOrder(customer.c, customer.table);
 		try {
 			atTable.acquire();
@@ -344,37 +330,45 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	
 	public void Dotakeordertocook(mycustomer customer){
 		customer.s = state.gotocook;
+		waiterGui.Dogotocook();
+		try {
+			atCook.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cook.msghereisorder(this, customer.choice, customer.table);
-		
+		waiterGui.DoGotoCHomePosition(tablenum);
 	}
 
 	public void Dogotocook(mycustomer customer){
-		customer.s = state.eating;
-		waiterGui.showfood(customer.choice);
-		waiterGui.Dogotocook(customer.table, customer.c);
+		waiterGui.Dogotocook();
+		
+		atCook.drainPermits();
+		
 		try {
-			atTable.acquire();
-		} catch (InterruptedException e) {
+			atCook.acquire();
+		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
-		msgatCook();
-	}
-	
-	public void DogobacktoCustomer(mycustomer customer) {
-		atCook = false;
+		
 		waiterGui.hidefood();
 		waiterGui.animationBringFood(customer.choice);
 		customer.s = state.available;
+		
 		waiterGui.DoBackToTable(customer.c ,customer.table);
+		atTable.drainPermits();
 		try {
 			atTable.acquire();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		msgordertotable(customer.c);
         waiterGui.DoLeaveCustomer();
+		//msgatCook();
 	}
 	
 	public void Docalltoeat(mycustomer customer){

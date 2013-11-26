@@ -22,7 +22,7 @@ public class Restaurant1CustomerRole extends Role implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
-	private CustomerGui customerGui;
+	public CustomerGui customerGui;
 	private Waiter waiter;
 	private int location = 0;
 	private int orderingtime = 4000;
@@ -324,6 +324,7 @@ public class Restaurant1CustomerRole extends Role implements Customer {
 		event = AgentEvent.abouttoleave;
 		waiter.msgLeavingTable(this);
 		customerGui.DoExitRestaurant();
+		person.msgFinishedEvent(this);
 	}
 
 

@@ -3,6 +3,7 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import agent.Gui;
 import market.MarketCustomerRole;
 
 public class MarketCustomerGui implements Gui {
@@ -14,7 +15,7 @@ public class MarketCustomerGui implements Gui {
 	private int xTable =140, yTable = 240;
 	private boolean atTable = true;
 	
-	public void setAgent(MarketCustomerRole agent){
+	public MarketCustomerGui(MarketCustomerRole agent){
 		this.agent = agent;
 	}
 	
@@ -36,7 +37,6 @@ public class MarketCustomerGui implements Gui {
         		& (xDestination == xTable) & (yDestination == yTable )) {
         	atTable = false;
            agent.msgAtTable();
-
         }
 
 	}
@@ -58,39 +58,39 @@ public class MarketCustomerGui implements Gui {
 	public void DoGoToWaitingArea(int number){
 		yDestination = 380;
 		if(number == 1){
-			yDestination = 60;
+			xDestination = 60;
 			
 		}
 		if(number == 2){
-			yDestination = 100;
+			xDestination = 100;
 			
 		}
 		if(number == 3){
-			yDestination = 140;
+			xDestination = 140;
 			
 		}
 		if(number == 4){
-			yDestination = 180;
+			xDestination = 180;
 			
 		}
 		if(number == 5){
-			yDestination = 220;
+			xDestination = 220;
 			
 		}
 		if(number == 6){
-			yDestination = 260;
+			xDestination = 260;
 			
 		}
 		if(number == 7){
-			yDestination = 300;
+			xDestination = 300;
 			
 		}
 		if(number == 8){
-			yDestination = 340;
+			xDestination = 340;
 			
 		}
 		if(number == 9){
-			yDestination = 380;
+			xDestination = 380;
 			
 		}
 	}

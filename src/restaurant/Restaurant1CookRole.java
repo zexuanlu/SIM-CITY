@@ -21,15 +21,15 @@ import market.Food;
 //Add case in scheduler to tell markettruck to go back
 
 public  class Restaurant1CookRole extends Role implements Cook {
-	private CookGui cookGui = null;
+	public CookGui cookGui = null;
 	private Cashier cashier;
 	private MarketTruck truck;
 	private MarketCashier marketCashier;
-	private Restaurant1RevolvingStand revStand;
-	String name;
+	private Restaurant1RevolvingStand revStand = new Restaurant1RevolvingStand();
+	public String name;
 	boolean opening = false;
 	public boolean sendTruckBack = false;
-	int count = 0;
+	public int count = 0;
 	public Map<String, MyFood> food = new HashMap<String, MyFood>();
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	private Semaphore AR = new Semaphore(0,true);
@@ -78,7 +78,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 	Timer timer = new Timer();
 
 	public void msghereisorder(Waiter w, String choice, int table){
-		order.add( new Order(w, choice, table));
+		order.add(new Order(w, choice, table));
 		stateChanged();
 	}
 
@@ -120,22 +120,18 @@ public  class Restaurant1CookRole extends Role implements Cook {
 			TakeOrderFromStand();
 			return true;
 		}
-		synchronized(order){
-			for(Order orders: order){
-				if(orders.s == Order.state.pending){
-					Docooking(orders);
-					return true;
-				}
+		for(Order orders: order){
+			if(orders.s == Order.state.pending){
+				Docooking(orders);
+				return true;
 			}
 		}
-		synchronized(order){
-			for(Order orders: order){
-				if(orders.s == Order.state.cooked){
-					Timerdone(orders);
-					return true;
-				}
-			}	
-		}
+		for(Order orders: order){
+			if(orders.s == Order.state.cooked){
+				Timerdone(orders);
+				return true;
+			}
+		}	
 
 		return false;
 	}

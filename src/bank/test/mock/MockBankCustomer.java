@@ -50,5 +50,10 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 	public void msgRequestFailed(String type){
 		log.add(new LoggedEvent("Received msgRequestFailed from BankTeller"));
 	}
+
+	@Override
+	public void msgNewLocation(String location) {
+		log.add(new LoggedEvent("Received msgNewLocation from BankHost"));
+	}
 	
 }

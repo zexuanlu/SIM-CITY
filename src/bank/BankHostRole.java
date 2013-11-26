@@ -103,6 +103,8 @@ public class BankHostRole extends Role implements BankHost {
 					return true;
 				}
 			}
+			waitHere();
+			return false;
 		}
 		if(waitingCustomers.isEmpty() && endOfDay){
 			workDayOver();
@@ -132,6 +134,12 @@ public class BankHostRole extends Role implements BankHost {
 		}
 		endOfDay = false;
 		getPerson().msgGoOffWork(this, 500.00);
+	}
+	
+	private void waitHere(){
+		for(int i = 0; i < waitingCustomers.size(); i++){
+			waitingCustomers.get(i).msgNewLocation("waitArea"+i);
+		}
 	}
 	
 	/**

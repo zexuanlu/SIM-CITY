@@ -6,6 +6,8 @@ import java.awt.*;
 
 import javax.swing.ImageIcon;
 
+import agent.Gui;
+
 public class CustomerGui implements Gui{
 
 	private Restaurant1CustomerRole agent = null;
@@ -15,8 +17,6 @@ public class CustomerGui implements Gui{
 	private int origion = 40;
 	private String order = "";
 	private String orderdone = "";
-	private ImageIcon img = new ImageIcon("image/grass.jpeg");
-	private Image i = img.getImage();
 	//private HostAgent host;
 	Restaurant1AnimationPanel gui;
 	
@@ -84,6 +84,7 @@ public class CustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
+		g.setColor(Color.green);
 		g.drawString(order, xPos, yPos + distance + distance);	
 		g.fillRect(xPos, yPos, distance, distance);
 	}

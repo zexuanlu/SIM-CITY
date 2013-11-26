@@ -3,6 +3,7 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import agent.Gui;
 import market.MarketEmployeeRole;
 
 public class MarketEmployeeGui implements Gui{
@@ -21,7 +22,7 @@ public class MarketEmployeeGui implements Gui{
     private boolean takeFood = false;
     private boolean sendFood = false;
     
-    public void setAgent(MarketEmployeeRole agent){
+     public MarketEmployeeGui(MarketEmployeeRole agent){
     	this.agent = agent;
     }
     

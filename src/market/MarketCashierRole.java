@@ -1,6 +1,7 @@
 package market;
 
 import agent.*;
+import person.PersonAgent;
 import person.interfaces.*;
 import restaurant.Restaurant1CookRole;
 import restaurant.interfaces.Cashier;
@@ -22,9 +23,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	int seatCount = 1;
 	double income = 0;
 	boolean endOfDay = false;
+	Person person;
+	
 
 	public MarketCashierRole(Person person, String name){
 		super(person);
+		this.person = person;
 		inventory.put("Steak", 90);
 		inventory.put("Car", 90);
 		inventory.put("Pizza", 90);
@@ -102,6 +106,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
+		Do(""+mycustomer.size());
+		Do("Yoooooooooooo");
 	}
 
 	public void msgPayment(MarketCustomer customer, double m){
@@ -141,7 +147,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-
+		Do("Schedule");
 		
 		if(!truck.isEmpty()){
 			for(Myrest rest: myrest){
@@ -190,6 +196,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	void TakeOrder(Mycustomer customer){
 		customer.s = state.ordered;
+		Do("Hey!!!!!!!");
 		customer.bill = DoCalculateBill(customer, customer.order);
 		customer.c.msgPleasePay(customer.bill);
 		int s = employeeCount;
@@ -199,6 +206,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		else{
 			employeeCount = 0;
 		}
+		Do("Here!!!!!!!");
 		employee.get(s).msgCollectOrer(customer.c, customer.collectedOrder);
 	}
 

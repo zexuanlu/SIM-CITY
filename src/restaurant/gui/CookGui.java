@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import agent.Gui;
 import restaurant.Restaurant1CookRole;
 
 public class CookGui implements Gui{
@@ -13,17 +14,12 @@ public class CookGui implements Gui{
 	private Restaurant1CookRole cook = null;
 	private boolean plating = false;
 	public boolean isPresent = false;
-	private ImageIcon img = new ImageIcon("image/cook.jpeg");
-	private ImageIcon img1 = new ImageIcon("image/refri.jpeg");
-	private Image i = img.getImage();
-	private Image j = img1.getImage();
-	private int xPos = 540;
-	private int yPos = 160;
+	private int xPos = 0;
+	private int yPos = 0;
 	private int distance = 20;
 	private int xfood = 540;
 	private int yfood = 150;
 	private int xRefri = 500;
-	private int xRefriPic = 480;
 	private int yRefri = 160;
 	private int xDestination = 540;
 	private int yDestination = 160;
@@ -31,11 +27,9 @@ public class CookGui implements Gui{
 	private int yPlate = 210;
 	private String food = "";
 	private String carryFood = "";
-	Restaurant1AnimationPanel gui = null;
+	private Restaurant1AnimationPanel gui = null;
 	private boolean cooking = false;
 	private boolean refrigerator = false;
-	
-	
 	
 	public CookGui(Restaurant1CookRole cook, Restaurant1AnimationPanel gui){
 		this.cook = cook;
@@ -55,7 +49,6 @@ public class CookGui implements Gui{
 		else if (yPos > yDestination)
 			yPos--;
 
-		
 		if(xPos == xDestination && refrigerator && yPos == yDestination
         		& (xDestination == xRefri) & (yDestination == yRefri)){
 			refrigerator = false;
@@ -75,9 +68,8 @@ public class CookGui implements Gui{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.drawImage(i,xPos, yPos, distance, distance, gui);
-		g.drawImage(j,xRefriPic, yRefri, distance, distance, gui);
 		g.setColor(Color.black);
+		g.fillRect(xPos, yPos, distance, distance);
         g.drawString(food, xfood, yfood);
         g.drawString(carryFood, xPos, yPos);
 		// TODO Auto-generated method stub
@@ -119,20 +111,7 @@ public class CookGui implements Gui{
     
 	@Override
 	public boolean isPresent() {
-		return true;
+		return isPresent;
 		// TODO Auto-generated method stub
 	}
-
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void zou() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

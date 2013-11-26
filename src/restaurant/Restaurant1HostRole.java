@@ -102,7 +102,6 @@ public class Restaurant1HostRole extends Role {
 	}
 
 	public void msgIWantFood(Restaurant1CustomerRole cust, int loc) {
-		System.err.print("Recieved a new customer");
 		waitingCustomers.add(new mycustomer(cust, loc));
 		stateChanged();
 
@@ -162,7 +161,6 @@ public class Restaurant1HostRole extends Role {
 				if (!table.isOccupied() ) {
 					hasemptytable = true;
 					if (!waitingCustomers.isEmpty()) {
-						//System.out.println("Host"+waiters.waiter.getName());
 						seatCustomer(waitingCustomers.get(0).c, table);//the action
 						return true;//return true to the abstract agent to reinvoke the scheduler.
 					}

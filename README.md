@@ -12,4 +12,38 @@
   6.  In the drop down menu for run, select run as, and click Java Application.
   7.  SimCity should run
 
- 
+###Team Members Contributions
+  1. Jennie Zhou - 
+	+ Houses and Apartments
+	+ Residents, Landlords, Apartment Tenants
+	+ Person Interaction Panel
+	+ Team Management
+	+ Fixes of other code and integration
+  2. Lizhi Fan -
+	+ Transportation
+	+ Busses and Cars
+	+ A* for Busses and Cars
+	+ City Layout
+	+ Person Initialization in Main Class
+	+ Fixes of other code and integration
+  3. Joseph Boman - 
+	+ Bank
+	+ Clickable buildings in City View
+	+ Time Card and Role Classes
+	+ Git (Merging Issues, Commits, Everything else)
+	+ Person Initialization in Main Class
+	+ Individual Location GUIs
+	+ Fixes of other code and integration
+  4. Grant Collins -
+	+ Person Agent
+	+ Person Initialization in Main Class
+	+ Global Clock and Locations
+	+ Integration
+  5. Rocky Luo -
+	+ Market
+	+ Market Trucks with A*
+	+ Integration
+  6. Mikhail -
+	+ Restaurant Upgrades
+	+ Overall gui layout
+	+ Integration 

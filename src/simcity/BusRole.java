@@ -15,8 +15,6 @@ import agent.Agent;
 public class BusRole extends Agent implements Bus {
 	int scale = 20; 
 	int heightofStreet = 20; 
-	
-	
 	int capacity; 
 	int Cash; 
 	int fare; 
@@ -33,7 +31,7 @@ public class BusRole extends Agent implements Bus {
 	public CityMap citymap = null; 
 	
 	Timer timer = new Timer();
-	public List<myPassenger> passengers = new ArrayList<myPassenger>(); 
+	public List<myPassenger> passengers = Collections.synchronizedList(new ArrayList<myPassenger>()); 
 	private class myPassenger{
 		public Passenger p; 
 		public PersonState state;
@@ -83,6 +81,7 @@ public class BusRole extends Agent implements Bus {
 	}
 	
 	public void msgHereisList(List<Passenger> sentpassengers){
+		
 		if (sentpassengers.size()>0){
 			for (Passenger p: sentpassengers){
 				myPassenger mp = new myPassenger(p);
@@ -131,6 +130,8 @@ public class BusRole extends Agent implements Bus {
 				return true; 
 			}
 			
+			
+			synchronized(passengers){
 			if (passengers.size() != 0){
 				for (myPassenger mp: passengers){
 					if (mp.state == PersonState.leaving){
@@ -139,7 +140,8 @@ public class BusRole extends Agent implements Bus {
 					}
 				}
 			}
-	
+			}
+			synchronized(passengers){
 			if (passengers.size() != 0){
 			for (myPassenger mp: passengers){
 				if (mp.state == PersonState.paid){
@@ -148,7 +150,10 @@ public class BusRole extends Agent implements Bus {
 				}
 			}
 			}
+			}
 			
+			synchronized(passengers){
+
 			if (passengers.size() != 0){
 				for (myPassenger mp:passengers){
 					if (mp.state == PersonState.waiting){
@@ -157,7 +162,7 @@ public class BusRole extends Agent implements Bus {
 					}
 				}
 			}
-			
+			}
 			
 			if (busState == BusState.toAnnounce){
 				announceStop();
