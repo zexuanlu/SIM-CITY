@@ -8,7 +8,7 @@ import junit.framework.*;
 import java.util.*;
 
 public class BusTest extends TestCase{
-	CityMap citymap = null; //TEMPORARY SO SO TEMPORARY 
+	CityMap citymap = new CityMap(); //TEMPORARY SO SO TEMPORARY 
 	BusRole busrole; 
 	MockBusStop busstop; 
 	MockBusStop busstop2;
@@ -101,9 +101,9 @@ public class BusTest extends TestCase{
 	
 	public void testTwoNormalCustomerScenario(){
 		//test initial conditions 
-		assertEquals("Busstop should have nothing in it's log", busstop.log.size(),0);
-		assertEquals("Passenger should have nothing in it's log", passenger1.log.size(),0);
-		assertEquals("Passenger should have nothing in it's log", passenger2.log.size(),0);
+		assertEquals("Busstop should have nothing in its log", busstop.log.size(),0);
+		assertEquals("Passenger should have nothing in its log", passenger1.log.size(),0);
+		assertEquals("Passenger should have nothing in its log", passenger2.log.size(),0);
 		assertEquals("Bus should have no passengers in his list",busrole.passengers.size(),0);
 		assertFalse("Bus should have no events in its scheduler",busrole.pickAndExecuteAnAction());
 		
