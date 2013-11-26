@@ -15,7 +15,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public MarketAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
