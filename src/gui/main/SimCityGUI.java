@@ -297,7 +297,6 @@ public class SimCityGUI extends JFrame {
 	}
 
 
-
 	public static void main(String[] args){
 		SimCityGUI scg = new SimCityGUI();
 		scg.setVisible(true);
