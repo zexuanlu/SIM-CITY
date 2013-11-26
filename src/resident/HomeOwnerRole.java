@@ -1,6 +1,6 @@
 package resident;
 
-import java.text.DecimalFormat;
+import java.text.DecimalFormat; 
 import java.util.ArrayList; 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,11 +17,10 @@ import resident.gui.HomeOwnerGui;
 import resident.interfaces.HomeOwner;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
-import agent.Agent;
-import agent.Role;
+import agent.*;
 
 public class HomeOwnerRole extends Role implements HomeOwner {
-	
+
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
 	
@@ -35,7 +34,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		super(p);
 		name = n;
 		houseNumber = hn;
-		person = p;
+		this.person = p;
 		state = MyState.Awake;
 	}
 	
@@ -98,11 +97,10 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private int houseNumber;
 	private String name;
 	private double myMoney;
-	private double debt;
 	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
 	private static int hungerThreshold = 3;
-	private Person person;
-	private HomeOwnerGui homeGui;
+
+	public HomeOwnerGui homeGui;
 	
 	// All the gui semaphores
 	private Semaphore atFridge = new Semaphore(0, true);

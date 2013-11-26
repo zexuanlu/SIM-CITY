@@ -66,7 +66,7 @@ public class PersonAgent extends Agent implements Person{
 	public AStarTraversal astar;
 
 	public PersonGui gui;
-	private CityAnimationPanel cap = new CityAnimationPanel();
+	private CityAnimationPanel cap;// = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
 
 	private int accountNumber; 
@@ -195,6 +195,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgAddEvent(SimEvent e){
 		toDo.offer(e);
+		print("Message add event received");
 		//stateChanged();
 	}
 	public void msgNewHour(int hour){ //from the world timer or gui 
@@ -222,7 +223,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
-		print("Recieved the message AtDest");
+		print("Received the message AtDest");
 		gui.setPresent(true);
 		currentLocation = destination;
 		going.release();
@@ -233,14 +234,14 @@ public class PersonAgent extends Agent implements Person{
 	}
 	
 	public void msgAtDest(Position destination,CarAgent c){ // From the gui. now we can send the correct entrance message to the location manager
-		print("Recieved the message AtDest from car");
+		print("Received the message AtDest from car");
 		gui.setPresent(true);
 		currentLocation = destination;
 		dowalkto(destination.getX(),destination.getY());
 	}
 	
 	public void msgFinishedEvent(Role r, List<Food> foodList, double change){
-		print("Recieved this message");
+		print("Received this message");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(false);
@@ -254,7 +255,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgFinishedEvent(Role r){ //The location manager will send this message as the persons role leaves the building
-		print("Recieved msgFinishedEvent");
+		print("Received msgFinishedEvent");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(false);
@@ -267,7 +268,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgReadyToWork(Role r){
 		wait.release();
-		print("Recieved msgReadyToWork");
+		print("Received msgReadyToWork");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(true);
@@ -276,7 +277,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r , double pay){ 
-		print("Recieved the message go off work");
+		print("Received the message go off work");
 		wallet.setOnHand(pay);
 		for(MyRole role : roles){
 			if(role.role == r ){
@@ -302,6 +303,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
+			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
 			if((nextEvent != null && nextEvent.start == currentTime) 
 					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
@@ -310,8 +312,7 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
-				checkVitals();
-				return true;
+				return checkVitals();
 			}
 		}
 		return false;
@@ -320,7 +321,7 @@ public class PersonAgent extends Agent implements Person{
 	/* Actions */
 
 	private void goToAndDoEvent(SimEvent e){
-		print("going");
+		print("Going");
 		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
 			//make a PassengerRole and start it
 			activeRole = true;
@@ -352,12 +353,12 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		else{
-			print("going to location");
+			print("Going to location");
 			Location l = e.location;
 			DoGoTo(l); 
 			if(!testMode){
 				try {
-					print("going acquire");
+					print("Going acquire");
 					going.acquire();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
@@ -499,6 +500,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
+						((BankTellerRole)getRoleOfType(btr).role).gui.isPresent = true;
 						getRoleOfType(btr).isActive(true);
 					}
 					if(!testMode){
@@ -529,6 +531,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankHostRole)getRoleOfType(bhr).role); 
+						((BankHostRole)getRoleOfType(bhr).role).gui.isPresent = true;
 						getRoleOfType(bhr).isActive(true);
 					}
 					if(!testMode){
@@ -625,11 +628,13 @@ public class PersonAgent extends Agent implements Person{
 						roles.add(newRole);
 						HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
 						((HomeOwnerRole)newRole.role).setGui(hog);
-						cap.getHouseGui(2).addGui(hog);
+						cap.getHouseGui(homeNumber).addGui(hog);
 						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					else{
 						getRoleOfType(hr).isActive(true);
+						// Set the GUI as visible
+						((HomeOwnerRole)getRoleOfType(hr).role).homeGui.isPresent = true;
 						((HomeOwnerRole)getRoleOfType(hr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					gui.setPresent(false);
@@ -647,6 +652,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else{
 						getRoleOfType(tr).isActive(true);
+						((ApartmentTenantRole)getRoleOfType(tr).role).aptGui.isPresent = true;
 						((ApartmentTenantRole)getRoleOfType(tr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					gui.setPresent(false);
@@ -693,9 +699,10 @@ public class PersonAgent extends Agent implements Person{
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
 				wallet.addTransaction("Deposit", 200);
-				addedAnEvent = true;
+				return true;
 			}
 		}
+		return false;
 		/*if(hunger >= 3){ //go eat
 			Location restaurantChoice = cityMap.chooseRandom(LocationType.Restaurant);
 			SimEvent needFood = new SimEvent("Go eat", (Restaurant)restaurantChoice, 4, EventType.CustomerEvent);
@@ -707,7 +714,6 @@ public class PersonAgent extends Agent implements Person{
 		//buy a car
 		//rob the bank
 		//etc
-		return addedAnEvent;
 	}
 
 	private void dowalkto(int originx, int originy){
@@ -726,7 +732,6 @@ public class PersonAgent extends Agent implements Person{
 		//else{ 
 		gui.DoGoTo(loc.getPosition()); //}
 		if(car != null){
-			print("i've got a car whore");
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
@@ -848,8 +853,8 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 		
-		if (this.wallet.getOnHand() >= 100){
-			print("Im rich gul");
+		if (this.wallet.getOnHand() >= 10000){
+			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
 	}

@@ -12,7 +12,7 @@ import java.util.*;
 public class BankHostGui implements Gui{
 
 	private BankHost bh = null;
-	private boolean isPresent = true;
+	public boolean isPresent = true;
 	private boolean atDestination = true;
 	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
 
@@ -29,7 +29,7 @@ public class BankHostGui implements Gui{
 		yDestination = -20;
 		//this.gui = gui;
 		locations.put("Host", new Dimension(320,120));
-		gui.addGui(this);
+		//gui.addGui(this);
 	}
 
 	public void updatePosition() {
