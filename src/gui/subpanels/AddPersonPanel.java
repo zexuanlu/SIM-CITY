@@ -186,6 +186,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 					pa.addRole(new MarketCashierRole(pa, pa.getName()));
 				}
 				if(role.getText().equals("Market Employee")){
+					pa.addRole(simcitygui.marketemployeerole);
 					// selectedRoles.add(Role 6)
 					System.out.println("Role of Market Employee added to " + pa.getName());
 					pa.addRole(new MarketEmployeeRole(pa, pa.getName()));

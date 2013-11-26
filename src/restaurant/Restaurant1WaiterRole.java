@@ -1,6 +1,5 @@
 package restaurant;
 
-import agent.Agent;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
@@ -16,7 +15,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the Restaurant1HostRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class Restaurant1WaiterRole extends Agent implements Waiter {
+public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements Waiter {
 
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
@@ -38,8 +37,6 @@ public class Restaurant1WaiterRole extends Agent implements Waiter {
 	enum waiterstate {none, working, applyingbreak};
 	waiterstate ws = waiterstate.working;
 	
-	public enum state 
-	{available, waiting, seated, readytoorder, askedtoorder, attable, ordered, gotocook, orderready,outoffood, eating,atcook, checkingbill, bringbill, bringattable, starteating, done};
 	
 	public Restaurant1WaiterRole(String name){
 		this.name = name;
@@ -48,26 +45,6 @@ public class Restaurant1WaiterRole extends Agent implements Waiter {
 		menue.put("Chicken", 10.99);
 		menue.put("Salad", 5.99);
 		menue.put("Pizza", 8.99);
-	}
-	
-	
-	public static class mycustomer {
-		Customer c;
-		int table;
-		int location;
-		String choice;
-		double price;
-		
-		state s = state.waiting;
-		
-		mycustomer(Customer c, int table, int location){
-			this.location = location;
-			this.c = c;
-			this.table = table;
-		}
-		
-			
-		
 	}
 	
 	public mycustomer findagent(Customer mc){
@@ -120,9 +97,6 @@ public class Restaurant1WaiterRole extends Agent implements Waiter {
 	public List getWaitingCustomers() {
 		return customer;
 	}
-
-
-	
 
 	
 	// Messages

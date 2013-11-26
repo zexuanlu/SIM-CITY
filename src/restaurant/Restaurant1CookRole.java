@@ -8,9 +8,10 @@ import java.util.concurrent.Semaphore;
 
 import restaurant.gui.CookGui;
 import restaurant.interfaces.Cook;
-import restaurant.interfaces.Market;
 import restaurant.interfaces.Waiter;
 import restaurant.interfaces.Cashier;
+import market.interfaces.MarketCashier;
+import restaurant.shareddata.*;
 
 import market.interfaces.MarketTruck;
 import market.Food;
@@ -22,15 +23,16 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	private CookGui cookGui = null;
 	private Cashier cashier;
 	private MarketTruck truck;
+	private MarketCashier marketCashier;
+	private Restaurant1RevolvingStand revStand;
 	String name;
 	boolean opening = false;
-	boolean sendTruckBack = false;
+	public boolean sendTruckBack = false;
 	int count = 0;
 	public Map<String, MyFood> food = new HashMap<String, MyFood>();
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	private Semaphore AR = new Semaphore(0,true);
-	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());		
-	public List<Market> market = Collections.synchronizedList(new ArrayList<Market>());
+	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
 
 	public Restaurant1CookRole(String name) {
 		super();
@@ -55,22 +57,6 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 			this.orderamount = a;
 		}
 	}
-
-	public static class Order {
-		Waiter w;
-		String choice;
-		int table;	
-
-		public state s = state.pending;
-
-		Order(Waiter w, String choice, int table){
-			this.w = w;
-			this.choice = choice;
-			this.table = table;
-		}
-
-
-	}
 	
 	public void setGui(CookGui cookGui){
 		this.cookGui = cookGui;
@@ -79,15 +65,16 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	public void setCashier(Cashier c){
 		cashier = c;
 	}
-
-	public enum state 
-	{ pending, cooking, cooked, readytotake};
-
-	Timer timer = new Timer();
-
-	public void msgAddMarket(Market m){
-		market.add(m);
+	
+	public void setRevStand(Restaurant1RevolvingStand rev){
+		this.revStand = rev;
 	}
+
+	public void setMarketCashier(MarketCashier c){
+		this.marketCashier = c;
+	}
+	
+	Timer timer = new Timer();
 
 	public void msghereisorder(Waiter w, String choice, int table){
 		order.add( new Order(w, choice, table));
@@ -95,7 +82,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	}
 
 	public void msgordercooked(Order order){
-		order.s = state.cooked;
+		order.s = Order.state.cooked;
 		stateChanged();
 	}
 
@@ -117,18 +104,24 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	}
 
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		if(opening){
 			Orderfoodislow();
 			return true;
 		}
-		if(sendTruckBack = true) {
+		if(sendTruckBack == true) {
+			System.out.println(sendTruckBack);
 			truck.msgGoBack();
+			return true;
+		}
+		if(order.size() <= 3 && !revStand.isEmpty()) {
+			TakeOrderFromStand();
+			return true;
 		}
 		synchronized(order){
 			for(Order orders: order){
-				if(orders.s == state.pending){
+				if(orders.s == Order.state.pending){
 					Docooking(orders);
 					return true;
 				}
@@ -136,7 +129,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		}
 		synchronized(order){
 			for(Order orders: order){
-				if(orders.s == state.cooked){
+				if(orders.s == Order.state.cooked){
 					Timerdone(orders);
 					return true;
 				}
@@ -178,7 +171,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		}
 		cookGui.hideCarryFoood();
 		cookGui.showfood(o.choice);
-		o.s = state.cooking;
+		o.s = Order.state.cooking;
 		long time = food.get(o.choice).cookingtime;
 		timer.schedule(new TimerTask() {
 			public void run() {
@@ -194,11 +187,16 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		opening = false;
 		int s = count;
 		Do("We need more food!");
-		// marketCashier.MsgIwantFood(this, cahier, foodlist, 1);
+		marketCashier.MsgIwantFood(this, cashier, foodlist, 1);
 	}
 
+	public void TakeOrderFromStand() {
+		Order o = revStand.removeOrder();
+		order.add(o);
+	}
+	
 	public void Timerdone(Order order){
-		order.s = state.readytotake;
+		order.s = Order.state.readytotake;
 		cookGui.hidefood();
 		cookGui.showCarryFood(order.choice);
 		cookGui.DoGotoPlatingArea();

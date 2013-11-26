@@ -32,6 +32,7 @@ import simcity.CityMap;
 import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
+import simcity.gui.CarGui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,9 @@ public class SimCityGUI extends JFrame {
 
 	private PersonAgent initPerson; 
 	public SimWorldClock simclock;
+	
+	List<BankTellerRole>banktellers = new ArrayList<BankTellerRole>();
+	List<MarketEmployeeRole> marketemployeeroles = new ArrayList<MarketEmployeeRole>();
 	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
 	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
@@ -109,7 +113,11 @@ public class SimCityGUI extends JFrame {
 		public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 		public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); */
 
-
+		banktellers.add(banktellerrole1); 
+		banktellers.add(banktellerrole2);
+		marketemployeeroles.add(marketemployeerole);
+		
+		
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
@@ -236,7 +244,7 @@ public class SimCityGUI extends JFrame {
 		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
 		bus.startThread();
-		bus.msgStartBus();
+	//	bus.msgStartBus();
 
 		bus2.setBusMap(citymap);
 		bus2.addtoRoute(busstop5.name);
@@ -244,11 +252,11 @@ public class SimCityGUI extends JFrame {
 		bus2.addtoRoute(busstop7.name);
 		bus2.addtoRoute(busstop6.name);
 		bus2.startThread();
-		bus2.msgStartBus();
+		//bus2.msgStartBus();*/
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-		for (int i=0; i<5; i++){
+		for (int i=0; i<1; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
@@ -258,10 +266,18 @@ public class SimCityGUI extends JFrame {
 			cityAnimPanel.addGui(pgui);
 		}
 		people.get(0).addRole(banktellerrole1);
-		people.get(1).addRole(banktellerrole2);
-		people.get(2).addRole(bankhostrole);
-		people.get(3).addRole(marketcashierrole);
-		people.get(4).addRole(marketemployeerole);
+		//people.get(1).addRole(banktellerrole2);
+		//people.get(2).addRole(bankhostrole);
+		//people.get(3).addRole(marketcashierrole);
+		//people.get(4).addRole(marketemployeerole);
+		
+        aStarTraversal = new AStarTraversal(grid);
+        CarAgent caragent = new CarAgent(aStarTraversal);
+        CarGui cgui = new CarGui(caragent,50,250);
+        caragent.setGui(cgui);
+        cityAnimPanel.addGui(cgui);
+        caragent.startThread();
+        caragent.gotoPosition(500,250);
 
 		for (PersonAgent p: people){
 			p.startThread();
@@ -272,10 +288,16 @@ public class SimCityGUI extends JFrame {
 		}*/
 
 
-		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+//		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+//			p.setAnimationPanel(cityAnimPanel);
+		// people.get(0).startThread();
+
+		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		people.get(0).setAnimationPanel(cityAnimPanel);
 		//people.get(0).toDo.offer(goToBank);
+		//people.get(0).toDo.offer(goToMarket);
 		people.get(0).toDo.offer(goHome);
 		simclock = new SimWorldClock(7,people);
 	}

@@ -2,6 +2,8 @@ package restaurant;
 
 import agent.Agent;
 
+import restaurant.interfaces.Waiter;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -103,7 +105,7 @@ public class Restaurant1HostRole extends Agent {
 
 	}
 
-	public void msgLeavingTable(Restaurant1WaiterRole w, Customer c) {
+	public void msgLeavingTable(Waiter w, Customer c) {
 		for (Table table : tables) {
 			if (table.getOccupant() == c) {
 				print(c + " leaving " + table);
