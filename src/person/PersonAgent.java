@@ -31,8 +31,10 @@ import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.HomeOwnerGui;
+import simcity.CarAgent;
 import simcity.PassengerRole;
 import simcity.CityMap;
+import simcity.astar.AStarTraversal;
 import simcity.gui.PassengerGui;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
@@ -49,6 +51,7 @@ public class PersonAgent extends Agent implements Person{
 	public int homeNumber;
 	public boolean activeRole;
 	public boolean arrived;
+	public AStarTraversal astar;
 
 	public PersonGui gui;
 	private CityAnimationPanel cap = new CityAnimationPanel();
@@ -57,10 +60,10 @@ public class PersonAgent extends Agent implements Person{
 	private int accountNumber; 
 	public Wallet wallet;
 	private int currentTime; 
-	
+
 	public Position currentLocation = new Position(0, 0); 
 	public Position dest = new Position(50, 50);
-	private Map<Integer, SimEvent> schedule = new HashMap<Integer, SimEvent>(); 
+	//private Map<Integer, SimEvent> schedule = new HashMap<Integer, SimEvent>(); 
 	public CityMap cityMap;
 
 	@SuppressWarnings("unchecked")
@@ -69,14 +72,13 @@ public class PersonAgent extends Agent implements Person{
 
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
 	public List<Food> shoppingBag = new ArrayList<Food>();
-
-	/* Home home; // home/apartment
-	Car car; // car if the person has a car */ //Who is in charge of these classes?
+	
+	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
 	private Semaphore going = new Semaphore(0, true);
-	private Semaphore transport = new Semaphore(0, true);
+	//private Semaphore transport = new Semaphore(0, true);
 	private Semaphore wait = new Semaphore(0, true);
-	private Semaphore driving = new Semaphore(0, true);
+	//private Semaphore driving = new Semaphore(0, true);
 
 	public PersonAgent (String name, CityMap cm){
 		super();
@@ -85,6 +87,16 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
+		arrived = false;
+	}
+	public PersonAgent (String name, CityMap cm, AStarTraversal astar){
+		super();
+		this.name = name;
+		this.cityMap = cm;
+		this.wallet = new Wallet(5000, 5000);//hacked in
+		this.hunger = 4;
+		currentTime = 7;
+		this.astar = astar;
 		arrived = false;
 	}
 
@@ -109,7 +121,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setAnimationPanel(CityAnimationPanel c){ cap = c; }
 
 	public void setHomeNumber(int hn){ homeNumber = hn; }
-	
+
 	public boolean containsRole(Role r){ 
 		for(MyRole role : roles){
 			if(role.role.getClass() == r.getClass()){

@@ -266,9 +266,9 @@ public class SimCityGUI extends JFrame {
 			p.startThread();
 		}
 		// people.get(0).startThread();
-		for (PersonGui pgui: peoplegui){
+		/*for (PersonGui pgui: peoplegui){
 			cityAnimPanel.addGui(pgui);     
-		}
+		}*/
 
 
 		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
