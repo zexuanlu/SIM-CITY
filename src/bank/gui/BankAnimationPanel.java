@@ -62,10 +62,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.RED);
         g2.fillRect(HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT);
-        
-        for(Gui gui : guis) {
-                gui.updatePosition();
-        }
 
         synchronized(guis){
 	        for(Gui gui : guis) {

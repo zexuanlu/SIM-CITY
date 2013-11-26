@@ -24,14 +24,14 @@ public class SimWorldClock {
 		}, 0, 60000); // one minute per hour 
 	}
 	private void updateWorldClock(){
+		System.out.println("Time is now " + currentHour );
+		for(PersonAgent person : people){
+			person.msgNewHour(currentHour);
+		}
 		if(currentHour != 24){
 			currentHour++;
 		}
 		else{ currentHour = 1; }
-
-		for(PersonAgent person : people){
-			person.msgNewHour(currentHour);
-		}
 	}
 	public void addPerson(PersonAgent p){
 		people.add(p);
