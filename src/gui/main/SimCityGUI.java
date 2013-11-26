@@ -399,7 +399,7 @@ public class SimCityGUI extends JFrame {
 		 * 
 		 * Creating host, cook, cashier, waiter, and teller events
 		 * */
-		SimEvent hostGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.HostEvent);
+		SimEvent hostGoToRestaurant = new SimEvent(rest1, 5, 9, EventType.HostEvent);
 		SimEvent cookGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.CookEvent);
 		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.CashierEvent);
 		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.WaiterEvent);
@@ -457,7 +457,7 @@ public class SimCityGUI extends JFrame {
 		 * Below is an example of how to do so. The cast is necessary since roles.role is a Role type and we need a specific 
 		 * child class of Role.
 		 */
-		
+		((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
 		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
 		bankhostrole.addTeller(banktellerrole1);
 		bankhostrole.addTeller(banktellerrole2);
@@ -465,7 +465,6 @@ public class SimCityGUI extends JFrame {
 		banktellerrole2.bh = bankhostrole;
 		banktellerrole1.bd = bankdatabase;
 		banktellerrole2.bd = bankdatabase;
-		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
 		 * Host, cook, cashier, waiter and teller events

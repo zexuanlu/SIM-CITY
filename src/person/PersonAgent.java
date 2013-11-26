@@ -292,13 +292,16 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		for(MyRole r : roles){
-			if(r.isActive){
-				print("Executing rule in role "+ r.role);
-				boolean b = r.role.pickAndExecuteAnAction();
-				return b;
+		if(activeRole) { //run role code
+			for(MyRole r : roles){
+				if(r.isActive){
+					print("Executing rule in role "+ r.role);
+					return r.role.pickAndExecuteAnAction();
+					//return b;
+				}
 			}
 		}
+		else{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
 			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
 			if((nextEvent != null && nextEvent.start == currentTime) 
@@ -311,6 +314,8 @@ public class PersonAgent extends Agent implements Person{
 			else{ //check vitals and find something to do on the fly
 				return checkVitals();
 			}
+		}
+		return false;
 	}
 
 	/* Actions */
@@ -678,13 +683,14 @@ public class PersonAgent extends Agent implements Person{
 		 * puts together the people's cityMap objects which then will allow the people to 
 		 * find locations on the fly via look up 
 		 */
+		boolean addedAnEvent = false;
 		if(wallet.getOnHand() <= 100){ //get cash
 			SimEvent needMoney = new SimEvent("Need Money", new Bank("Banco Popular", new TimeCard(), new MockBankHost("Gil"), 
 					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
 				wallet.addTransaction("Withdrawal", 100);
-				return true;
+				addedAnEvent = true;
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
@@ -696,17 +702,18 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 		}
+		return false;
 		/*if(hunger >= 3){ //go eat
 			Location restaurantChoice = cityMap.chooseRandom(LocationType.Restaurant);
 			SimEvent needFood = new SimEvent("Go eat", (Restaurant)restaurantChoice, 4, EventType.CustomerEvent);
 			if(!containsEvent("Go eat")){
 				toDo.add(needFood);
+				addedAnEvent = true;
 			}
 		}*/
 		//buy a car
 		//rob the bank
 		//etc
-		return false;
 	}
 
 	private void dowalkto(int originx, int originy){
@@ -725,7 +732,6 @@ public class PersonAgent extends Agent implements Person{
 		//else{ 
 		gui.DoGoTo(loc.getPosition()); //}
 		if(car != null){
-			print("i've got a car whore");
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
@@ -847,8 +853,8 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 		
-		if (this.wallet.getOnHand() >= 100){
-			print("Im rich gul");
+		if (this.wallet.getOnHand() >= 10000){
+			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
 	}
