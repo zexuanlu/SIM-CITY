@@ -1,7 +1,6 @@
 package person;
 
 import gui.panels.CityAnimationPanel;
-
 import gui.main.SimCityGUI;
 
 import java.lang.Math;
@@ -33,6 +32,7 @@ import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.HomeOwnerGui;
+import restaurant.Restaurant1CashierRole;
 import restaurant.Restaurant1CookRole;
 import restaurant.Restaurant1CustomerRole;
 import restaurant.Restaurant1HostRole;
@@ -373,6 +373,7 @@ public class PersonAgent extends Agent implements Person{
 						newRole.isActive(true);
 						roles.add(newRole);
 						CustomerGui cg = new CustomerGui((Restaurant1CustomerRole)newRole.role, null);
+						cg.isPresent = true;
 						cap.rest1Panel.addGui(cg);
 						((Restaurant1CustomerRole)newRole.role).gotHungry();
 					}
@@ -399,22 +400,27 @@ public class PersonAgent extends Agent implements Person{
 						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(hostRole).role); 
 						getRoleOfType(hostRole).isActive(true);
 					}
+					gui.setPresent(false);
+					toDo.remove(e);
 				}
 				else if(e.type == EventType.WaiterEvent){
 					activeRole = true;
 					Restaurant1WaiterRole wRole = new Restaurant1WaiterRole(this.name, this); 
-					if(!containsRole(wRole)){                                                       
+					if(!containsRole(wRole)){  
 						MyRole newRole = new MyRole(wRole);
 						newRole.isActive(true);
 						roles.add(newRole);
 						WaiterGui wg = new WaiterGui((Restaurant1WaiterRole)newRole.role, null);
+						wg.isPresent = true;
 						cap.rest1Panel.addGui(wg);
-						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1WaiterRole)newRole.role);
 					}
 					else{
-						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(wRole).role); 
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1WaiterRole)getRoleOfType(wRole).role); 
 						getRoleOfType(wRole).isActive(true);
 					}
+					gui.setPresent(false);
+					toDo.remove(e);
 				}
 				else if(e.type == EventType.CookEvent){
 					activeRole = true;
@@ -424,27 +430,32 @@ public class PersonAgent extends Agent implements Person{
 						newRole.isActive(true);
 						roles.add(newRole);
 						CookGui cg = new CookGui((Restaurant1CookRole)newRole.role, null);
+						cg.isPresent = true;
 						cap.rest1Panel.addGui(cg);
-						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1CookRole)newRole.role);
 					}
 					else{
-						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(cRole).role); 
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1CookRole)getRoleOfType(cRole).role); 
 						getRoleOfType(cRole).isActive(true);
 					}
+					gui.setPresent(false);
+					toDo.remove(e);
 				}
 				else if(e.type == EventType.CashierEvent){
 					activeRole = true;
-					Restaurant1WaiterRole cRole = new Restaurant1WaiterRole(this.name, this); 
+					Restaurant1CashierRole cRole = new Restaurant1CashierRole(this.name, this); 
 					if(!containsRole(cRole)){                                                       
 						MyRole newRole = new MyRole(cRole);
 						newRole.isActive(true);
 						roles.add(newRole);
-						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1CashierRole)newRole.role);
 					}
 					else{
-						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(cRole).role); 
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1CashierRole)getRoleOfType(cRole).role); 
 						getRoleOfType(cRole).isActive(true);
 					}
+					gui.setPresent(false);
+					toDo.remove(e);
 				}
 			}
 			if(e.location.type == LocationType.Bank){ //if our event happens at a bank

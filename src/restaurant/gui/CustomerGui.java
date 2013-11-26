@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 public class CustomerGui implements Gui{
 
 	private Restaurant1CustomerRole agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
 	private int location = 0;
 	private int origion = 40;
