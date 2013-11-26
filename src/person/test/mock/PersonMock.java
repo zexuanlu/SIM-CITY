@@ -71,8 +71,7 @@ public class PersonMock extends Mock implements Person {
 	}
 	@Override
 	public void msgGoOffWork(Role r, double pay) {
-		// TODO Auto-generated method stub
-		
+		log.add(new LoggedEvent("Received msgGoOffWork from Role " + r));
 	}
 	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
 		// TODO Auto-generated method stub

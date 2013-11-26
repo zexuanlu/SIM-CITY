@@ -27,6 +27,7 @@ public class BankTellerTest extends TestCase {
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
+		p = new PersonMock("Person");
 		bt = new BankTellerRole(p, "BankTeller1");
 		bc = new MockBankCustomer("BankCustomer1");
 		bd = new MockBankDatabase("BankDatabase");
@@ -188,5 +189,18 @@ public class BankTellerTest extends TestCase {
 		assertTrue("BankHost should have logged \"Received msgBackToWork\" but didn't. His log reads instead: " 
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 		assertFalse("The scheduler should return false. It didn't.", bt.pickAndExecuteAnAction());
+	}
+	
+	public void testEndOfDayNoCustomers(){
+		assertEquals("Bank Teller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+
+		bt.msgWorkDayOver();
+		assertTrue("The end of day boolean should be true. It isn't", bt.endOfDay);
+		assertTrue("Bank Teller should have logged \"Received msgWorkDayOver\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgWorkDayOver"));
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("Person should have logged \"Received msgGoOffWork\" but didn't. His log reads instead: " 
+				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Received msgGoOffWork"));
 	}
 }

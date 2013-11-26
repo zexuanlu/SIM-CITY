@@ -48,7 +48,7 @@ public class TimeCard extends Agent {
 	
 	private void endOfDay(){
 		for(Role r : roles){
-			r.getPerson().msgGoOffWork(r, 500.00);
+			r.msgEndOfDay();
 		}
 		roles.clear();
 	}
