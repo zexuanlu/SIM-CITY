@@ -12,4 +12,4 @@
   6.  In the drop down menu for run, select run as, and click Java Application.
   7.  SimCity should run
 
-  
+ 

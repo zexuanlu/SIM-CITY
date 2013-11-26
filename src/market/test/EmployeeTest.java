@@ -2,8 +2,9 @@ package market.test;
 
 
 import java.util.*;
-import person.interfaces.*;
 
+import person.interfaces.*;
+import person.test.mock.PersonMock;
 import market.MarketEmployeeRole;
 import market.MarketEmployeeRole.state;
 import market.MarketEmployeeRole.state1;
@@ -22,13 +23,14 @@ public class EmployeeTest extends TestCase{
 	MarketEmployeeRole employee;
 	MockCashier cashier;
 	MockCustomer customer;
-	Person p;
+	PersonMock p;
 	Restaurant1CookRole cook;
 	MockTruck truck;
 	MarketEmployeeGui employeeGui;
 	
 	public void setUp() throws Exception{
 		super.setUp();	
+		p = new PersonMock("one");
 		employee = new MarketEmployeeRole(p, "employee");
 		cashier = new MockCashier("casheir");
 		customer = new MockCustomer("customer");

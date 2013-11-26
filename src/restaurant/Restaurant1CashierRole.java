@@ -4,7 +4,6 @@ import java.util.*;
 
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
-import restaurant.interfaces.Market;
 import restaurant.interfaces.Waiter;
 import agent.Agent;
 
@@ -18,7 +17,7 @@ public class Restaurant1CashierRole extends Agent implements Cashier{
 	public Map<String, Double> Price = new HashMap<String, Double>();
 	public double money = 70;
 	boolean payingbill = false;
-	//MarketCashierRole marketCashier;
+	MarketCashier marketCashier;
 	
 	public Restaurant1CashierRole(String name){
 		super();
