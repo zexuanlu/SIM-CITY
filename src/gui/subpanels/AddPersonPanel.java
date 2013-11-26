@@ -10,8 +10,17 @@ import java.util.List;
 
 import javax.swing.*;
 
+import market.MarketCashierRole;
+import market.MarketEmployeeRole;
+import bank.BankHostRole;
+import bank.BankTellerRole;
 import person.*; 
+import person.Location.LocationType;
+import person.PersonAgent.HomeType;
 import person.gui.PersonGui;
+import resident.ApartmentLandlordRole;
+import resident.HomeOwnerRole;
+import simcity.astar.AStarTraversal;
 
 /**
  * This panel allows the user to add a person
@@ -28,6 +37,8 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	private static final int WIDTH = 275;
 	private static final int HEIGHT = 310;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
+	private int residentNum = 0;
+	private Random generator = new Random();
 	
 	List<String> strRoles = new ArrayList<String>();	
 	// Main control panel reference
@@ -64,7 +75,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		roles.add(new JCheckBox("Bank Teller"));
 		roles.add(new JCheckBox("Market Cashier"));
 		roles.add(new JCheckBox("Market Employee"));
-		roles.add(new JCheckBox("Role 5"));
+		roles.add(new JCheckBox("Apartment Landlord"));
 		roles.add(new JCheckBox("Role 6"));
 		roles.add(new JCheckBox("Role 7"));
 		roles.add(new JCheckBox("Role 8"));
@@ -94,7 +105,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 			addCustomPerson();
 		}
 		else if (e.getSource()==random){
-			System.out.println("Random button clicked");
+			addRandomPerson();
 		}
 	}
 	
@@ -102,31 +113,87 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		simcitygui = scg; 
 	}
 	
+	public void addRandomPerson() {
+		AStarTraversal aStarTraversal = new AStarTraversal(simcitygui.grid);
+		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal);
+		if (residentNum < 4) {
+			pa.homeNumber = ++residentNum;
+			pa.homeType = HomeType.Home;
+		}
+		else {
+			residentNum = 0;
+			pa.homeNumber = ++residentNum;
+			pa.homeType = HomeType.Apartment;
+		}
+		simcitygui.addPerson(pa);
+		
+		int role = generator.nextInt(4);
+		if (role == 0) {
+			System.out.println("Role of Bank Host added to " + pa.getName());
+			pa.addRole(new BankHostRole(pa, pa.getName()));
+		}
+		else if (role == 1) {
+			System.out.println("Role of Bank Teller added to " + pa.getName());
+			pa.addRole(new BankTellerRole(pa, pa.getName()));
+		}
+		else if (role == 2) {
+			System.out.println("Role of Market Cashier added to " + pa.getName());
+			pa.addRole(new MarketCashierRole(pa, pa.getName()));
+		}
+		else if (role == 3) {
+			System.out.println("Role of Market Employee added to " + pa.getName());
+			pa.addRole(new MarketEmployeeRole(pa, pa.getName()));
+		}
+		else {
+			System.out.println("Role of Apartment Landlord added to " + pa.getName());
+			pa.addRole(new ApartmentLandlordRole(pa.getName(), pa.homeNumber, pa));
+		}
+		pa.startThread();
+	}
+	
 	public void addCustomPerson(){
 		// ArrayList<Role> selectedRoles
+		AStarTraversal aStarTraversal = new AStarTraversal(simcitygui.grid);
 		System.out.println("Custom button clicked");
-		PersonAgent pa = new PersonAgent(nameText.getText(),simcitygui.citymap);
-		PersonGui pgui = new PersonGui(pa);
-		pa.gui = pgui; 
-		simcitygui.cityAnimPanel.addGui(pgui);
+		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal);
+		if (residentNum < 4) {
+			pa.homeNumber = ++residentNum;
+			pa.homeType = HomeType.Home;
+		}
+		else {
+			residentNum = 0;
+			pa.homeNumber = ++residentNum;
+			pa.homeType = HomeType.Apartment;
+		}
+		simcitygui.addPerson(pa);
 		pa.startThread();
 		
 		for(JCheckBox role : roles){
 			if(role.isSelected()){
 				if(role.getText().equals("Bank Host")){
-					pa.addRole(simcitygui.bankhostrole);
+					//pa.addRole(simcitygui.bankhostrole);
+					System.out.println("Role of Bank Host added to " + pa.getName());
+					pa.addRole(new BankHostRole(pa, pa.getName()));
 				}
 				if(role.getText().equals("Bank Teller")){
 					// selectedRoles.add(Role 2)
+					System.out.println("Role of Bank Teller added to " + pa.getName());
+					pa.addRole(new BankTellerRole(pa, pa.getName()));
 				}
 				if(role.getText().equals("Market Cashier")){
 					// selectedRoles.add(Role 4)
+					System.out.println("Role of Market Cashier added to " + pa.getName());
+					pa.addRole(new MarketCashierRole(pa, pa.getName()));
 				}
 				if(role.getText().equals("Market Employee")){
 					// selectedRoles.add(Role 6)
+					System.out.println("Role of Market Employee added to " + pa.getName());
+					pa.addRole(new MarketEmployeeRole(pa, pa.getName()));
 				}
-				if(role.getText().equals("Role 7")){
+				if(role.getText().equals("Apartment Landlord")){
 					// selectedRoles.add(Role 7)
+					System.out.println("Role of Apartment Landlord added to " + pa.getName());
+					pa.addRole(new ApartmentLandlordRole(pa.getName(), pa.homeNumber, pa));
 				}
 				if(role.getText().equals("Role 8")){
 					// selectedRoles.add(Role 8)
