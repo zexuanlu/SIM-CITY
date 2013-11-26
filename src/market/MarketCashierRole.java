@@ -21,6 +21,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	int truckCount = 0;
 	int seatCount = 1;
 	double income = 0;
+	boolean endOfDay = false;
 
 	public MarketCashierRole(Person person, String name){
 		super(person);
@@ -93,6 +94,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		employee.add(e);
 	}
 
+	public void msgEndOfDay(){
+		endOfDay = true;
+		stateChanged();
+	}
+	
 	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
@@ -173,6 +179,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 		// end of in market scenario
 
+		if(mycustomer.isEmpty() && myrest.isEmpty() && endOfDay){
+			workDayOver();
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -215,6 +226,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		customer.s = state.taken;
 		//DoGiveOrder();
 		customer.c.msgHereisYourOrder(customer.collectedOrder);
+		mycustomer.remove(customer);
 	}
 
 	int DoCalculateBill(Mycustomer customer, List<Food> order){
@@ -249,6 +261,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 		employee.get(s).msgCollectTheDilivery(rest.ck, rest.collectedOrder, t, rest.restNum);
 		truck.remove(t);
+		myrest.remove(rest);
 	}
 
 	int DocalculateThebillFromRest(Myrest rest, List<Food> order){
@@ -268,4 +281,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		return bill;
 	}
 
+	public void workDayOver(){
+		for(MarketEmployee e: employee){
+			e.msgWorkDayOver();
+		}
+		endOfDay = false;
+		getPerson().msgGoOffWork(this, 500.00);
+	}
+	
 }

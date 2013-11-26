@@ -17,7 +17,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
 	public Map<Integer, RestDes> CityMap = new HashMap<Integer, RestDes>();
-
+	private boolean endOfDay = false;
 	private Semaphore atTable = new Semaphore(0,true);
 
 	public MarketEmployeeRole(Person person, String name){
@@ -76,6 +76,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		this.employeeGui = gui;
 	}
 	
+	public void msgWorkDayOver(){
+		endOfDay = true;
+		stateChanged();
+	}
+	
 	public void msgCollectOrer(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
@@ -107,6 +112,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				return true;
 			}
 		}
+		
+		if(endOfDay && myrest.isEmpty() && mycustomer.isEmpty()){
+			goOffWork();
+			return true;
+		}
 
 		return false;
 	}
@@ -122,6 +132,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			e.printStackTrace();
 		}
 		cashier.msgHereisProduct(customer.c, customer.order);
+		mycustomer.remove(customer);
 	}
 
 	void CollectDilivery(Myrest rest){
@@ -136,6 +147,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		}
 
 		rest.truck.gotoPosition(rest.cook, rest.order, CityMap.get(rest.restNum).x, CityMap.get(rest.restNum).y);
+		myrest.remove(rest);
 	}
 
 	void DoCollectFood(List<Food> order){
@@ -148,6 +160,11 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	void goOffWork(){
+		endOfDay = false;
+		getPerson().msgGoOffWork(this, 500.00);
 	}
 
 }
