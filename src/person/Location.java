@@ -11,7 +11,7 @@ public class Location {
         public enum LocationType {Restaurant, Bank, Market, Home, BusStop};
         public LocationType type;
         public Position position; 
-        Location(String name, LocationType type, Position p){
+        public Location(String name, LocationType type, Position p){
                 this.name = name;
                 this.type = type;
                 this.position = p;
