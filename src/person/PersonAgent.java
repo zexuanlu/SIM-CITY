@@ -32,6 +32,7 @@ import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.HomeOwnerGui;
 import simcity.CarAgent;
+import simcity.gui.CarGui; 
 import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.astar.AStarTraversal;
@@ -94,6 +95,14 @@ public class PersonAgent extends Agent implements Person{
 		this.name = name;
 		this.cityMap = cm;
 		this.wallet = new Wallet(5000, 5000);//hacked in
+		if (this.wallet.getOnHand() >= 100){
+			AStarTraversal ast = new AStarTraversal(astar.getGrid());
+			car = new CarAgent(ast);
+			CarGui cgui = new CarGui(car, 600,400);
+			car.setGui(cgui);
+			cap.addGui(cgui);
+			car.startThread();
+		}
 		this.hunger = 4;
 		currentTime = 7;
 		this.astar = astar;

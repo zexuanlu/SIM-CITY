@@ -27,14 +27,14 @@ public class CarGui implements Gui {
 	public enum GuiState {gotoStop, atStop,canStop};
 	GuiState guistate; 
 	
-	CarGui(CarAgent c, int x, int y){
+	public CarGui(CarAgent c, int x, int y){
 		myCar = c; 
     	xPos = x; 
     	yPos = y; 
-    	xDestination = x+1; 
-    	yDestination = y+1; 
+    	xDestination = x; 
+    	yDestination = y; 
     	EastWest = true; 
-    	deadpos = false; 
+    	deadpos = true; 
 	}
 	
 	public void draw(Graphics2D g) {
