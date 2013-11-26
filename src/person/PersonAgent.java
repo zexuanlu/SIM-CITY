@@ -33,7 +33,13 @@ import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.HomeOwnerGui;
+import restaurant.Restaurant1CookRole;
 import restaurant.Restaurant1CustomerRole;
+import restaurant.Restaurant1HostRole;
+import restaurant.Restaurant1WaiterRole;
+import restaurant.gui.CookGui;
+import restaurant.gui.CustomerGui;
+import restaurant.gui.WaiterGui;
 import simcity.CarAgent;
 import simcity.gui.CarGui; 
 import simcity.PassengerRole;
@@ -357,50 +363,90 @@ public class PersonAgent extends Agent implements Person{
 					e1.printStackTrace();
 				}
 			}
-			/*if(e.location.type == LocationType.Restaurant){
+			if(e.location.type == LocationType.Restaurant){
 				Restaurant rest = (Restaurant)e.location;
 				if(e.type == EventType.CustomerEvent){
 					activeRole = true;
 					Restaurant1CustomerRole cRole = new Restaurant1CustomerRole(this.name, this);
 					if(!containsRole(cRole)){
 						MyRole newRole = new MyRole(cRole);
-						
-						roles.add(cRole);
+						newRole.isActive(true);
+						roles.add(newRole);
+						CustomerGui cg = new CustomerGui((Restaurant1CustomerRole)newRole.role, null);
+						cap.rest1Panel.addGui(cg);
+						((Restaurant1CustomerRole)newRole.role).gotHungry();
 					}
-					rest.getHost().msgIWantFood(this, cRole);
-				}
-				if(!containsRole(btr)){ 
-					MyRole newRole = new MyRole(btr);
-					bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
-					newRole.isActive(true);
-					roles.add(newRole);
-					//add a gui
-					BankTellerGui btg = new BankTellerGui((BankTellerRole)newRole.role);
-					((BankTellerRole)newRole.role).setGui(btg);
-					cap.bankPanel.addGui(btg);
-				}
-				else { 
-					bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
-					getRoleOfType(btr).isActive(true);
+					else{
+						((Restaurant1CustomerRole)getRoleOfType(cRole).role).gotHungry();
+						getRoleOfType(cRole).isActive(true);
+					}
+					gui.setPresent(false);
+					toDo.remove(e); //remove the event from the queue
 				}
 				else if(e.type == EventType.HostEvent){
 					print("Role");
 					activeRole = true;
 					Restaurant1HostRole hostRole = new Restaurant1HostRole(this.name, this); 
-
 					if(!containsRole(hostRole)){                                                       
-
-						roles.add(hostRole);
+						MyRole newRole = new MyRole(hostRole);
+						newRole.isActive(true);
+						roles.add(newRole);
+						//HostGui cg = new HostGui((Restaurant1HostRole)newRole.role);
+						//cap.rest1Panel(cg);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
 					}
-					rest.getHost().msgClockIn(this, hostRole);
-					hostRole.setActive(true);
+					else{
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(hostRole).role); 
+						getRoleOfType(hostRole).isActive(true);
+					}
 				}
 				else if(e.type == EventType.WaiterEvent){
-					
+					activeRole = true;
+					Restaurant1WaiterRole wRole = new Restaurant1WaiterRole(this.name, this); 
+					if(!containsRole(wRole)){                                                       
+						MyRole newRole = new MyRole(wRole);
+						newRole.isActive(true);
+						roles.add(newRole);
+						WaiterGui wg = new WaiterGui((Restaurant1WaiterRole)newRole.role, null);
+						cap.rest1Panel.addGui(wg);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
+					}
+					else{
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(wRole).role); 
+						getRoleOfType(wRole).isActive(true);
+					}
 				}
-				else if(e.type == EventType.CookEvent){}
-				else if(e.type == EventType.CashierEvent){}
-			}*/
+				else if(e.type == EventType.CookEvent){
+					activeRole = true;
+					Restaurant1CookRole cRole = new Restaurant1CookRole(this.name, this); 
+					if(!containsRole(cRole)){                                                       
+						MyRole newRole = new MyRole(cRole);
+						newRole.isActive(true);
+						roles.add(newRole);
+						CookGui cg = new CookGui((Restaurant1CookRole)newRole.role, null);
+						cap.rest1Panel.addGui(cg);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
+					}
+					else{
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(cRole).role); 
+						getRoleOfType(cRole).isActive(true);
+					}
+				}
+				else if(e.type == EventType.CashierEvent){
+					activeRole = true;
+					Restaurant1WaiterRole cRole = new Restaurant1WaiterRole(this.name, this); 
+					if(!containsRole(cRole)){                                                       
+						MyRole newRole = new MyRole(cRole);
+						newRole.isActive(true);
+						roles.add(newRole);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)newRole.role);
+					}
+					else{
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1HostRole)getRoleOfType(cRole).role); 
+						getRoleOfType(cRole).isActive(true);
+					}
+				}
+			}
 			if(e.location.type == LocationType.Bank){ //if our event happens at a bank
 				Bank bank = (Bank)e.location;
 				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer

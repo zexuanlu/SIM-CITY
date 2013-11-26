@@ -4,6 +4,7 @@ package restaurant.gui;
 import restaurant.Restaurant1HostRole;
 import restaurant.Restaurant1WaiterRole;
 import restaurant.interfaces.Customer;
+import simcity.gui.*;
 
 import java.awt.*;
 
