@@ -33,7 +33,7 @@ public class CashierTest extends TestCase{
 		cashier = new MarketCashierRole(p, "cashier");
 		customer = new MockCustomer("customer");
 		employee = new MockEmployee("employee");
-		cook = new Restaurant1CookRole("cook");
+		cook = new Restaurant1CookRole("cook", p);
 		cash = new Restaurant1CashierRole("ca");
 		truck = new MockTruck("truck");
 	}
