@@ -38,7 +38,12 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		name = n;
 		apartmentNumber = an;
 		person = p;
+		state = MyState.Awake;
 	}
+	
+	// States for the Apartment Tenant
+	public enum MyState {Sleeping, Awake};
+	private MyState state;
 	
 	public String getName() {
 		return name;
@@ -248,11 +253,11 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-//		if (!person.toDo.peek() && myTime >= 20 && hunger <= 2) {
-//			sleep();
-//			return true;
-//		}
-		if (!toDoList.isEmpty()) {
+		if (person.getTime() >= 20 && state == MyState.Awake) {
+			sleep();
+			return true;
+		}
+		if (!toDoList.isEmpty() && state == MyState.Awake) {
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.PayRent) {
 					payLandlord(p);
@@ -314,11 +319,24 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	/**
 	 * Actions for Apartment Tenant
 	 */
-//	private void activatePerson() {
-//		person.msgFinishedEvent(this);
-//		log.add(new LoggedEvent("I have nothing else to do!"));
-//		print("I have nothing else to do!");
-//	}
+	private void sleep() {
+		// Set home owner's state to sleeping
+		state = MyState.Sleeping;
+		
+		// Gui goes to bed and timer begins to start sleeping
+		print("Going to bed. It's sleepytime!");
+		
+		aptGui.DoGoToBed();
+		
+		sleepingTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	updateVitals(3, 7);
+            	state = MyState.Awake;
+            }
+        }, 540000);
+	}
 
 	private void payLandlord(MyPriority p) {
 		toDoList.remove(p);
@@ -338,20 +356,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			myMoney = 0;
 		}
 	}
-
-	private void sleep() {
-		// Gui goes to bed and timer begins to start sleeping
-		aptGui.DoGoToBed();
-		
-		sleepingTimer.schedule(new TimerTask() 
-        {
-            public void run() 
-            {
-            	updateVitals(3, 7);
-            }
-        }, 10000);
-	}
-		
+	
 	private void checkFridge(MyPriority p) {
 		toDoList.remove(p);
 		

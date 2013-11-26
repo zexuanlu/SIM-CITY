@@ -30,4 +30,6 @@ public interface Person {
         public abstract void msgGoOffWork(Role r, double pay); //return the person's role and have them continue with their day
         
         public abstract void setStateChanged();
+
+		public abstract int getTime();
 }

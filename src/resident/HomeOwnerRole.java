@@ -39,7 +39,12 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		name = n;
 		houseNumber = hn;
 		person = p;
+		state = MyState.Awake;
 	}
+	
+	// States for the home owner 
+	public enum MyState {Sleeping, Awake};
+	private MyState state;
 	
 	// Returns the name of the home owner
 	public String getName() {
@@ -59,15 +64,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	// Returns the amount of money for the home owner
 	public double getMoney() {
 		return myMoney;
-	}
-	
-	// Sets the amount of time that the home owner has
-	public void setTime(int t) {
-		myTime = t;
-	}
-	
-	public int getTime() {
-		return myTime;
 	}
 	
 	public static class MyPriority {
@@ -106,8 +102,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private String name;
 	private double myMoney;
 	private double debt;
-	private double maintenanceCost; // Static for now.
-	private int myTime; // Keeps track of how much time the resident has
 	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
 	private static int hungerThreshold = 3;
 	//private MaintenancePerson housekeeper;
@@ -122,11 +116,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private Semaphore atTable = new Semaphore(0, true);
 	private Semaphore atSink = new Semaphore(0, true);
 	private Semaphore atBed = new Semaphore(0, true);
-	
-	// Hack to establish connection between maintenance person and home owner
-	/*public void setMaintenance(MaintenancePerson m) {
-		housekeeper = m;
-	}*/
 	
 	// Hack to establish connection between GUI and role
 	public void setGui(HomeOwnerGui gui) {
@@ -262,11 +251,11 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-//		if (!person.toDo.peek() && myTime >= 20 && hunger <= 2) {
-//		sleep();
-//		return true;
-//	}
-		if (!toDoList.isEmpty()) {
+		if (person.getTime() >= 22 && state == MyState.Awake) {
+			sleep();
+			return true;
+		}
+		if (!toDoList.isEmpty() && state == MyState.Awake) {
 			for (MyPriority p : toDoList) { // Eating is the most important
 				if (p.task == MyPriority.Task.NeedToEat) {
 					checkFridge(p);
@@ -329,16 +318,23 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 * Actions for Homeowner
 	 */
 	private void sleep() {
+		// Set home owner's state to sleeping
+		state = MyState.Sleeping;
+		
 		// Gui goes to bed and timer begins to start sleeping
+		print("Going to bed. It's sleepytime!");
+		
 		homeGui.DoGoToBed();
 		
 		sleepingTimer.schedule(new TimerTask() 
         {
             public void run() 
             {
-            	updateVitals(3, 7);
+            	updateVitals(3, 23);
+            	msgMaintainHome();
+            	state = MyState.Awake;
             }
-        }, 10000);
+        }, 540000);
 	}
 		
 	private void checkFridge(MyPriority p) {

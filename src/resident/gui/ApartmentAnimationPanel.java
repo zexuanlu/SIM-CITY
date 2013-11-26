@@ -95,11 +95,6 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     public void addGui(ApartmentTenantGui gui) {
         guis.add(gui);
     }
-    /**public void addGui(FoodGui gui){
-    	guis.add(gui);
-    }
-    public void addGui(CookGui gui){
-    	guis.add(gui);
-    }*/
+
     
 }
