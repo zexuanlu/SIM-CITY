@@ -3,9 +3,9 @@ package person.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import agent.Gui;
 import person.PersonAgent;
 import person.Position;
-import simcity.gui.Gui;
 
 public class PersonGui implements Gui{
 	private PersonAgent agent = null;

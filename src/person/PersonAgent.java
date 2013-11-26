@@ -576,10 +576,10 @@ public class PersonAgent extends Agent implements Person{
 						MyRole newRole = new MyRole(mcr);
 						newRole.isActive(true);
 						roles.add(newRole);
-						((MarketCustomerRole)newRole.role).msgHello();
+						//((MarketCustomerRole)newRole.role).msgHello();
 					}
 					else{ 
-						((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
+						//((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
 						getRoleOfType(mcr).isActive(true);
 					}
 					gui.setPresent(false);

@@ -2,6 +2,7 @@ package resident.gui;
 
 import javax.swing.*;  
 
+import agent.Gui;
 import person.interfaces.Person;
 
 import java.awt.*;
@@ -28,7 +29,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     
     public int aptNum;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public ApartmentAnimationPanel(int an) {
     	aptNum = an;

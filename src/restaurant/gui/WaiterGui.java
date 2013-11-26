@@ -10,6 +10,8 @@ import simcity.gui.*;
 
 import java.awt.*;
 
+import agent.Gui;
+
 public class WaiterGui implements Gui {
 	
 

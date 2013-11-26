@@ -794,7 +794,7 @@ public class HomeOwnerTest extends TestCase
 		
 		// Checks that the home owner has 1 more logged event - to go to the market
 		assertEquals("Home owner has 4 logged events now.", 4, homeOwner.log.size());
-		assertTrue(homeOwner.log.containsString("I'm going to go to the market. I have enough time to go and come home."));
+		assertTrue(homeOwner.log.containsString("I'm going to go to the market. I have enough money to go and come home."));
 		
 		// Ensures home owner has going to market and cooking in to do list
 		assertEquals("Home owner has three tasks.", 3, homeOwner.toDoList.size());

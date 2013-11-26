@@ -1,5 +1,6 @@
 package bank.gui;
 
+import agent.Gui;
 import bank.interfaces.*;
 
 import java.awt.*;
