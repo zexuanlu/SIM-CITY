@@ -64,6 +64,9 @@ public class SimCityGUI extends JFrame {
 	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
 	public Restaurant1CustomerRole customer1 = new Restaurant1CustomerRole("Customer 1", initPerson);
 	public Restaurant1WaiterRole waiter1 = new Restaurant1WaiterRole("Waiter 1", initPerson);
+	/*
+	 * Role gui's must be initilized in SimCityGui with the role as happens below
+	 */
 	WaiterGui wg = new WaiterGui(waiter1, null);
 	public CityMap citymap; 
 
@@ -238,6 +241,11 @@ public class SimCityGUI extends JFrame {
 		cityAnimPanel.addGui(bs6gui);
 		cityAnimPanel.addGui(bs7gui);
 		cityAnimPanel.addGui(bs8gui);
+		/*
+		 * 1. For all "Job" roles the role's gui must be initialized and added to the role before 
+		 * that pointer is given to people. Below the waiter1 role's gui is set and added to the right animation panel
+		 * in cityAnimationPanel.
+		 */
 		wg.isPresent = false;
 		waiter1.setGui(wg);
 		cityAnimPanel.rest1Panel.addGui(wg);
@@ -296,29 +304,57 @@ public class SimCityGUI extends JFrame {
 			p.startThread();
 		}
 		 //people.get(0).startThread();
+		//people.get(0).setAnimationPanel(cityAnimPanel);
 
-
+		/* 
+		 * Every person added to SimCity must have at least one SimEvent to do muchof anything
+		 * SimEvent constructor goes like : Location, priority, start time, EventType
+		 * Locations will have been pre-made because they must be added to the CityMap (above)
+		 * so use these premade locations (Lines: 132 - 138)
+		 * */
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		// people.get(0).startThread();
-
 		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
+		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
 		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
-		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
 		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
 		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
+		/*
+		 * 2. Since the role is initialized with the initPerson who is null 
+		 * you must switch the person pointer in that role to be the first person to play the role
+		 * 
+		 * 
+		 * Ex: people.get(5).roles.get(0).role.switchPerson(people.get(5));
+		 * 
+		 * The above = get the first (and only at the moment) role from person 5's role list and call switch person
+		 * replacing the initPerson with person 5 (the first person to play the role of waiter1
+		 */
 		people.get(5).roles.get(0).role.switchPerson(people.get(5));
 		people.get(5).toDo.offer(goToRestaurant);
 		people.get(1).roles.get(0).role.switchPerson(people.get(1));
+		
+		/*
+		 * 3. Anyone who needs to know about other job roles in the building (like the host) must be notified of each role
+		 * this was done in the restaurant automatically via the gui be we have to add waiters to the host's lit of 
+		 * waiters manually. It is likewise for bankhosts and tellers and the market cashier and employees
+		 * 
+		 * Below is an example of how to do so. The cast is necessary since roles.role is a Role type and we need a specific 
+		 * child class of Role.
+		 */
+		
 		((Restaurant1HostRole)people.get(1).roles.get(0).role).msgaddwaiter(waiter1);
+		/*
+		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
+		 */
 		people.get(1).toDo.offer(goToHostRest);
-		people.get(0).setAnimationPanel(cityAnimPanel);
 		people.get(0).toDo.offer(goToBank);
-		//people.get(1).toDo.offer(goToBank);
 		people.get(4).toDo.offer(gotoRestaurant);
+		
+		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(7,people);
 		
 		/**
