@@ -274,9 +274,11 @@ public class SimCityGUI extends JFrame {
 
 
 		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		people.get(0).setAnimationPanel(cityAnimPanel);
 		//people.get(0).toDo.offer(goToBank);
+		//people.get(0).toDo.offer(goToMarket);
 		people.get(0).toDo.offer(goHome);
 		simclock = new SimWorldClock(7,people);
 	}
