@@ -9,6 +9,7 @@ import person.Home;
 import person.Market;
 import person.Position;
 import person.PersonAgent;
+import person.Restaurant;
 import person.SimEvent;
 import person.Location.LocationType;
 import person.SimEvent.EventType;
@@ -21,6 +22,7 @@ import agent.TimeCard;
 import bank.*;
 import bank.test.mock.MockBankHost;
 import market.*;
+import restaurant.*;
 import market.test.mock.MockCashier;
 import person.Location;
 import resident.HomeOwnerRole;
@@ -56,6 +58,11 @@ public class SimCityGUI extends JFrame {
 	public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 	public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); 
 	public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO1", 2);
+	public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
+	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
+	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
+	public Restaurant1CustomerRole customer1 = new Restaurant1CustomerRole("Customer 1", initPerson);
+	public Restaurant1WaiterRole waiter1 = new Restaurant1WaiterRole("Waiter 1", initPerson);
 
 	public CityMap citymap; 
 
@@ -124,9 +131,11 @@ public class SimCityGUI extends JFrame {
 				new Position(500, 60), LocationType.Market);
 		Home home = new Home("Home 2", new HomeOwnerRole(initPerson, "Home Owner", 2), 
 				new Position(350, 80), LocationType.Home);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new Position(220, 80), LocationType.Restaurant);
 		locations.add(bank);
 		locations.add(market);
 		locations.add(home);
+		locations.add(rest1);
 		citymap = new CityMap(locations);
 
 		// SETUP
@@ -256,7 +265,8 @@ public class SimCityGUI extends JFrame {
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-	/**	for (int i=0; i<1; i++){
+
+		for (int i=0; i<7; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
@@ -272,16 +282,18 @@ public class SimCityGUI extends JFrame {
 		//people.get(2).addRole(bankhostrole);
 		//people.get(3).addRole(marketcashierrole);
 		//people.get(4).addRole(marketemployeerole);
+		people.get(1).addRole(host1);
+		people.get(2).addRole(cook1);
+		people.get(3).addRole(cashier1);
+		people.get(4).addRole(customer1);
+		people.get(5).addRole(waiter1);
 
 		for (PersonAgent p: people){
 			p.startThread();
 		}
 		 //people.get(0).startThread();
-		/*for (PersonGui pgui: peoplegui){
-			cityAnimPanel.addGui(pgui);     
-		}*/
 
-/**
+
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		// people.get(0).startThread();
 
@@ -292,16 +304,30 @@ public class SimCityGUI extends JFrame {
 		people.get(0).setAnimationPanel(cityAnimPanel);
 		people.get(0).toDo.offer(goToBank);
 		people.get(0).toDo.offer(goToBank);
-		simclock = new SimWorldClock(7,people);*/
+		simclock = new SimWorldClock(7,people);
 		
-		
+		/**
 		aStarTraversal = new AStarTraversal(grid);
 		MarketTruckAgent markettruckagent = new MarketTruckAgent(aStarTraversal);
 		MarketTruckGui mktgui = new MarketTruckGui(markettruckagent);
 		markettruckagent.setGui(mktgui);
 		cityAnimPanel.addGui(mktgui);
 		markettruckagent.startThread(); 
-		markettruckagent.msgGoBack();
+		markettruckagent.msgGoBack();*/
+		
+		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
+		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
+		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
+		
+		for(int i = 0; i < people.size(); i++){
+			people.get(i).setAnimationPanel(cityAnimPanel);
+		}
+		//people.get(0).toDo.offer(goToBank);
+		//people.get(0).toDo.offer(goToBank);
+		people.get(5).toDo.offer(goToRestaurant);
+		people.get(1).toDo.offer(goToHostRest);
+		simclock = new SimWorldClock(7,people);
 	}
 
 	public CarAgent createCar(PersonAgent p){
