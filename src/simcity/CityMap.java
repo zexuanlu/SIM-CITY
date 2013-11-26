@@ -13,6 +13,10 @@ public class CityMap {
 //	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
 	
 	//bus information
+	int WIDTHTOTAL = 640; 
+	int HEIGHTTOTAL = 480; 
+	int Street1 = 240; 
+	int Street2 = 300; 
 
 	Map<Bus, ArrayList<BusStop>> routes = new HashMap<Bus, ArrayList<BusStop>>();
 	public Map<String,BusStop> busstops = new HashMap<String,BusStop>();  //map of name of stop to 
@@ -44,6 +48,15 @@ public class CityMap {
 		System.out.println("busstop start is" + b.busstop.getName() +"busstop end is "+ destStop.getName() );
 
 		return b;
+	}
+	
+	public Position getNearestStreet(int x, int y){
+		if (x < WIDTHTOTAL){
+			return(new Position(x,Street1));
+		}
+		else {
+			return (new Position(Street2,y));
+		}
 	}
 
 	public String getStopName(BusStop b){

@@ -1,3 +1,5 @@
+
+
 package gui.panels;
 /**
  * This panel is where the main City animations
@@ -5,11 +7,14 @@ package gui.panels;
  * 
  */
 
-import javax.swing.*;
+import javax.swing.*; 
 
 import market.gui.MarketAnimationPanel;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
+import resident.gui.ApartmentAnimationPanel;
+import resident.gui.HomeOwnerGui;
+import resident.gui.HouseAnimationPanel;
 import restaurant.gui.Restaurant1AnimationPanel;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
@@ -35,7 +40,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
+	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(1);
+	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(2);
+	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(3);
+	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(4);
+	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
+	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
+	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
+	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
     private List<Gui> guis = new ArrayList<Gui>();
+    private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
+    private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
     private Image bufferImage;
     private Dimension bufferSize;
 	private String title = " City Animation ";
@@ -45,13 +60,20 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int BUILDINGSIZE = 60;
 	Timer timer;
 	
-	enum state {none, bank, market, restaurant1, house1, apartment1}
+	enum state {none, bank, market, restaurant1, house1, house2, house3, house4, apartment}
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D market = new Rectangle2D.Double(220, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D restaurant1 = new Rectangle2D.Double(220,80, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house1 = new Rectangle2D.Double(340, 160, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D apartment1 = new Rectangle2D.Double(340, 280, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house2 = new Rectangle2D.Double(340, 80, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house3 = new Rectangle2D.Double(450, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house4 = new Rectangle2D.Double(540, 160, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D apartment = new Rectangle2D.Double(340, 280, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartment1 = new Rectangle2D.Double(340, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment2 = new Rectangle2D.Double(340, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment3 = new Rectangle2D.Double(380, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment4 = new Rectangle2D.Double(380, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
 	
 	public CityAnimationPanel() {
 		//PANEL SETUP
@@ -62,6 +84,15 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		//Panel size initiations
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
+		homes.add(house1Panel);
+		homes.add(house2Panel);
+		homes.add(house3Panel);
+		homes.add(house4Panel);
+		
+		apartments.add(apt1Panel);
+		apartments.add(apt2Panel);
+		apartments.add(apt3Panel);
+		apartments.add(apt4Panel);
 		
     	setSize(WIDTH, HEIGHT);
         setVisible(true);
@@ -95,13 +126,49 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(house1Panel);
+		   }
+		   else if(me.getButton() == 1 && house2.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(house2Panel);
+		   }
+		   else if(me.getButton() == 1 && house3.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(house3Panel);
+		   }
+		   else if(me.getButton() == 1 && house4.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(house4Panel);
 		   }
 		   else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
-			   //BuildPanel.add(rest1Panel);
+			   BuildPanel.add(apt1Panel);
+		   }
+		   else if(me.getButton() == 1 && apartment2.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(apt2Panel);
+		   }
+		   else if(me.getButton() == 1 && apartment3.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(apt3Panel);
+		   }
+		   else if(me.getButton() == 1 && apartment4.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(apt4Panel);
 		   }
 	}
 
@@ -111,8 +178,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	}
 
     public void paintComponent(Graphics g) {
+    	
         Graphics2D g2 = (Graphics2D)g;
-
 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
@@ -121,8 +188,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         //Here is the table
         g2.setColor(Color.GRAY);
         g2.fill(bank);
-        g2.fill(apartment1);
+        g2.fill(apartment);
         g2.fill(house1);
+        g2.fill(house2);
+        g2.fill(house3);
+        g2.fill(house4);
         g2.fill(market);
         g2.fill(restaurant1);
 
@@ -144,10 +214,23 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         	g2.drawString("Restaurant 1", 217, 115);
         }
         else if(s == state.house1){
-        	g2.drawString("House 1", 100, 100);
+        	g2.drawString("House 1", 345, 195);
         }
-        else if(s == state.apartment1){
-        	g2.drawString("Apartment 1", 100, 100);
+        else if(s == state.house2){
+        	g2.drawString("House 2", 345, 115);
+        }
+        else if(s == state.house3){
+        	g2.drawString("House 3", 455, 195);
+        }
+        else if(s == state.house4){
+        	g2.drawString("House 4", 545, 195);
+        }
+        else if(s == state.apartment){
+        	g2.drawString("Apartments", 335, 320);
+            g2.fill(apartment1);
+            g2.fill(apartment2);
+            g2.fill(apartment3);
+            g2.fill(apartment4);
         }
 
         for(Gui gui : guis) {
@@ -184,6 +267,24 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         guis.add(gui);
     }
 
+    public HouseAnimationPanel getHouseGui(int houseNumber){
+    	for(HouseAnimationPanel h : homes){
+    		if(h.houseNumber == houseNumber){
+    			return h;
+    		}
+    	}
+    	return null;
+    }
+    
+    public ApartmentAnimationPanel getAptGui(int aptNum){
+    	for(ApartmentAnimationPanel a : apartments){
+    		if(a.aptNum == aptNum){
+    			return a;
+    		}
+    	}
+    	return null;
+    }
+    
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -224,11 +325,20 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   else if(restaurant1.contains(me.getX(), me.getY())){
 			   s = state.restaurant1;
 		   }
-		   else if(apartment1.contains(me.getX(), me.getY())){
-			   s = state.apartment1;
+		   else if(apartment.contains(me.getX(), me.getY())){
+			   s = state.apartment;
 		   }
 		   else if(house1.contains(me.getX(), me.getY())){
 			   s = state.house1;
+		   }
+		   else if(house2.contains(me.getX(), me.getY())){
+			   s = state.house2;
+		   }
+		   else if(house3.contains(me.getX(), me.getY())){
+			   s = state.house3;
+		   }
+		   else if(house4.contains(me.getX(), me.getY())){
+			   s = state.house4;
 		   }
 		   else{
 			   s = state.none;
@@ -238,3 +348,5 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     
 	
 }
+
+

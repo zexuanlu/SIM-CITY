@@ -17,7 +17,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public List<Food> Receivedfood = new ArrayList<Food>();
 	double bill = 0;
 	int seatNumber;
-	public double money;
+	public double money = 30;
 	Person p;
 	
 	public MarketCustomerRole(Person person, String name){

@@ -1,7 +1,10 @@
 package market.test;
 
 import java.util.ArrayList;
+
 import person.interfaces.*;
+import person.test.mock.PersonMock;
+
 import java.util.List;
 
 import restaurant.*;
@@ -12,13 +15,12 @@ import market.interfaces.MarketCustomer;
 import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
-
 import restaurant.interfaces.Cook;
 
 public class CashierTest extends TestCase{
 
 	MarketCashierRole cashier;
-	Person p;
+	PersonMock p;
 	MockCustomer customer;
 	MockEmployee employee;
 	Restaurant1CookRole cook;
@@ -27,6 +29,7 @@ public class CashierTest extends TestCase{
 	
 	public void setUp() throws Exception{
 		super.setUp();	
+		p = new PersonMock("one");
 		cashier = new MarketCashierRole(p, "cashier");
 		customer = new MockCustomer("customer");
 		employee = new MockEmployee("employee");
@@ -54,7 +57,7 @@ public class CashierTest extends TestCase{
 		
 		assertEquals("customer list should have 1 collectedOrder", cashier.mycustomer.get(0).collectedOrder.size(), 1);
 		
-		assertTrue("cashier has a customer who has bill = 4", cashier.mycustomer.get(0).bill == 4);
+		assertTrue("cashier has a customer who has bill = 8", cashier.mycustomer.get(0).bill == 8);
 		
 		assertTrue("employee should return a string with word Got Your Order, but the last event return "
 				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("Got Your Order"));

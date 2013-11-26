@@ -1,6 +1,10 @@
 package person.test;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import agent.*;
 import junit.framework.TestCase;
 
@@ -8,11 +12,14 @@ import org.junit.Test;
 
 import bank.*;
 import person.Bank;
+import person.Location;
 import person.SimEvent;
 import person.PersonAgent;
 import person.Position;
 import person.SimEvent.EventType;
+import person.gui.PersonGui;
 import person.Location.LocationType;
+import simcity.CityMap;
 import bank.test.mock.*;
 /*
  * Tests the role handoff between the TimeCard and the BankTellerRole sending the role off work 
@@ -26,17 +33,22 @@ public class BankExitHandshake extends TestCase{
 	SimEvent goToBank;
 	Bank bank;
 	Position p = new Position(10, 10);
+	List<Location> locs = new ArrayList<Location>();
 	
 	public void setUp() throws Exception{
 		
 		super.setUp();	
-		person = new PersonAgent();
-		person.setName("Grant");
 		host = new MockBankHost("Gil");
 		TimeCard tc = new TimeCard();
 		tc.startThread();
 		bank = new Bank("Bank", tc, host, p, LocationType.Bank);
 		goToBank = new SimEvent(bank, 1, 9, EventType.TellerEvent);
+		locs.add(bank);
+		CityMap cm = new CityMap(locs);
+		person = new PersonAgent("Grant", cm);
+		PersonGui pgui = new PersonGui(person);
+		person.gui = pgui;
+		person.testMode = true;
 		
 	}
 	

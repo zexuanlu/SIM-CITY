@@ -1,15 +1,17 @@
 package person;
 
+import resident.HomeOwnerRole;
+
 
 public class Home extends Location{
 	
-	private PersonAgent host;
+	private HomeOwnerRole host;
 	
-	public Home(String n, PersonAgent person, Position p, LocationType type){
+	public Home(String n, HomeOwnerRole hor, Position p, LocationType type){
 		super(n, type, p);
-		this.host = person;
+		this.host = hor;
 	}
 
-	public PersonAgent getHost(){ return host; }
-	public void setHost(PersonAgent h){ this.host = h; }
+	public HomeOwnerRole getHost(){ return host; }
+	public void setHost(HomeOwnerRole h){ this.host = h; }
 }

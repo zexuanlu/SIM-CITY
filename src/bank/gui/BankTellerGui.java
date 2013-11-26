@@ -21,13 +21,13 @@ public class BankTellerGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public BankTellerGui(BankTeller t, BankAnimationPanel gui){ //HostAgent m) {
+	public BankTellerGui(BankTeller t){//, BankAnimationPanel gui){ //HostAgent m) {
 		bt = t;
 		xPos = 640;
 		yPos = 250;
 		xDestination = 640;
 		yDestination = 250;
-		this.gui = gui;
+		//this.gui = gui;
 		locations.put("Teller1", new Dimension(40, 380));
 		locations.put("Teller2", new Dimension(100, 380));
 		locations.put("Teller3", new Dimension(160, 380));
@@ -39,7 +39,7 @@ public class BankTellerGui implements Gui{
 		locations.put("Teller9", new Dimension(520, 380));
 		locations.put("Teller10", new Dimension(580, 380));
 		locations.put("Outside", new Dimension(640, 250));
-		gui.addGui(this);
+		//gui.addGui(this);
 	}
 
 	public void updatePosition() {
@@ -82,5 +82,4 @@ public class BankTellerGui implements Gui{
 		xDestination = x;
 		yDestination = y;
 	}
-
 }
