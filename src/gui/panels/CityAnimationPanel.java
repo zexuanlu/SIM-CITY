@@ -8,7 +8,7 @@ package gui.panels;
  */
 
 import javax.swing.*; 
-
+import market.gui.MarketTruckGui; 
 import market.gui.MarketAnimationPanel;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
@@ -271,6 +271,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         guis.add(gui);
     }
 
+    public void addGui(MarketTruckGui gui){
+    	guis.add(gui);
+    }
+    
     public HouseAnimationPanel getHouseGui(int houseNumber){
     	for(HouseAnimationPanel h : homes){
     		if(h.houseNumber == houseNumber){

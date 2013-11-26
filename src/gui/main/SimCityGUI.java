@@ -3,7 +3,7 @@ package gui.main;
 import gui.panels.*;
 
 import javax.swing.*;
-
+import market.gui.MarketTruckGui; 
 import person.Bank;
 import person.Home;
 import person.Market;
@@ -256,7 +256,7 @@ public class SimCityGUI extends JFrame {
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-		for (int i=0; i<1; i++){
+	/**	for (int i=0; i<1; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
@@ -281,7 +281,7 @@ public class SimCityGUI extends JFrame {
 			cityAnimPanel.addGui(pgui);     
 		}*/
 
-
+/**
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		// people.get(0).startThread();
 
@@ -292,7 +292,16 @@ public class SimCityGUI extends JFrame {
 		people.get(0).setAnimationPanel(cityAnimPanel);
 		people.get(0).toDo.offer(goToBank);
 		people.get(0).toDo.offer(goToBank);
-		simclock = new SimWorldClock(7,people);
+		simclock = new SimWorldClock(7,people);*/
+		
+		
+		aStarTraversal = new AStarTraversal(grid);
+		MarketTruckAgent markettruckagent = new MarketTruckAgent(aStarTraversal);
+		MarketTruckGui mktgui = new MarketTruckGui(markettruckagent);
+		markettruckagent.setGui(mktgui);
+		cityAnimPanel.addGui(mktgui);
+		markettruckagent.startThread(); 
+		markettruckagent.msgGoBack();
 	}
 
 	public CarAgent createCar(PersonAgent p){
