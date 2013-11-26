@@ -30,13 +30,13 @@ public class CookGui implements Gui{
 	private int yPlate = 210;
 	private String food = "";
 	private String carryFood = "";
-	RestaurantGui gui = null;
+	Restaurant1AnimationPanel gui = null;
 	private boolean cooking = false;
 	private boolean refrigerator = false;
 	
 	
 	
-	public CookGui(Restaurant1CookRole cook, RestaurantGui gui){
+	public CookGui(Restaurant1CookRole cook, Restaurant1AnimationPanel gui){
 		this.cook = cook;
 		this.gui = gui;
 	}

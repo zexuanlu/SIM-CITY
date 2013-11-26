@@ -203,4 +203,47 @@ public class BankTellerTest extends TestCase {
 		assertTrue("Person should have logged \"Received msgGoOffWork\" but didn't. His log reads instead: " 
 				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Received msgGoOffWork"));
 	}
+	
+	public void testEndOfDayWithCustomer(){
+		assertEquals("Bank Teller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+		
+		bt.msgINeedAccount(bc);
+		assertEquals("Bank Teller should have 1 task in it. It doesn't", bt.tasks.size(), 1);
+		assertEquals("The type of the task should be openAccount. It isn't", bt.tasks.get(0).type, "openAccount");
+		assertEquals("The account number of the task should be 0. It isn't", bt.tasks.get(0).accountNumber, 0);
+		assertEquals("The customer in the Bank Teller should be the same as bc. It isn't", bt.bc, bc);
+	
+		assertTrue("The scheduler should return true. It didn't", bt.pickAndExecuteAnAction());
+		assertTrue("BankDatabase should have logged \"Received msgOpenAccount\" but didn't. His log reads instead: " 
+				+ bd.log.getLastLoggedEvent().toString(), bd.log.containsString("Received msgOpenAccount"));
+		assertTrue("The state of the first task in Bank Teller should be waiting. It isn't.", bt.tasks.get(0).ts == taskState.waiting);		
+		
+		bt.msgWorkDayOver();
+		assertTrue("The end of day boolean should be true. It isn't", bt.endOfDay);
+		assertTrue("Bank Teller should have logged \"Received msgWorkDayOver\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgWorkDayOver"));
+		
+		assertFalse("The scheduler should return false. It didn't", bt.pickAndExecuteAnAction());
+		
+		bt.msgAccountCreated(789789, bc);
+		assertTrue("BankTeller should have logged \"Received msgAccountCreated\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgAccountCreated"));
+		assertTrue("The state of the first task in Bank Teller should be completed. It isn't", bt.tasks.get(0).ts == taskState.completed);
+		assertEquals("The account number of the first task should be 789789. It isn't", bt.tasks.get(0).accountNumber, 789789);
+	
+		assertTrue("The scheduler should  return true. It didn't", bt.pickAndExecuteAnAction());
+		assertTrue("BankCustomer should have logged \"Received msgAccountMade\" but didn't. His log reads instead: " 
+				+ bc.log.getLastLoggedEvent().toString(), bc.log.containsString("Received msgAccountMade"));
+		assertEquals("BankTeller should have 0 tasks in it. It doesn't", bt.tasks.size(), 0);
+	
+		bt.msgLeavingBank(bc);
+		assertTrue("BankTeller should have logged \"Received msgLeavingBank\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLeavingBank"));
+		assertTrue("The Bank Teller's state should be backToWork. It is instead " + bt.s, bt.s == state.backToWork);
+		assertEquals("Bank Customer inside Bank Teller should be null. It isn't.", bt.bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bt.pickAndExecuteAnAction());
+		assertTrue("Person should have logged \"Received msgGoOffWork\" but didn't. His log reads instead: " 
+				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Received msgGoOffWork"));
+	}
 }

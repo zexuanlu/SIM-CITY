@@ -63,6 +63,7 @@ public class BankHostRole extends Role implements BankHost {
 	}
 
 	public void msgEndOfDay(){
+		log.add(new LoggedEvent("Received msgEndOfDay from Time Card"));
 		endOfDay = true;
 		stateChanged();
 	}
