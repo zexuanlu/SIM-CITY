@@ -299,7 +299,7 @@ public class PersonAgent extends Agent implements Person{
 
 	private void goToAndDoEvent(SimEvent e){
 		print("going");
-		if(!isInWalkingDistance(e.location) && !arrived && !testMode){ //if its not in walking distance we ride the bus
+		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
 			//make a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
@@ -609,12 +609,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
-		if(car != null){
-			//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			//car.setatPosition(loc.position.getX(), loc.position.getY());
-			//car.goToPosition(p.getX(), p.getY());
-		}
-		else{ gui.DoGoTo(loc.getPosition()); }
+		gui.DoGoTo(loc.getPosition());
 	}
 	private boolean isInWalkingDistance(Location loc){
 		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){

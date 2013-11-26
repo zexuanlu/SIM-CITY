@@ -148,8 +148,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	}
 
     public void paintComponent(Graphics g) {
+    	
         Graphics2D g2 = (Graphics2D)g;
-
 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());

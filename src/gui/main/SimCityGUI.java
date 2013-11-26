@@ -46,6 +46,8 @@ public class SimCityGUI extends JFrame {
 
 	private PersonAgent initPerson; 
 	public SimWorldClock simclock;
+	
+	List<BankTellerRole>banktellers = new ArrayList<BankTellerRole>();
 	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
 	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
@@ -236,7 +238,7 @@ public class SimCityGUI extends JFrame {
 		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
 		bus.startThread();
-		bus.msgStartBus();
+	//	bus.msgStartBus();
 
 		bus2.setBusMap(citymap);
 		bus2.addtoRoute(busstop5.name);
@@ -244,7 +246,7 @@ public class SimCityGUI extends JFrame {
 		bus2.addtoRoute(busstop7.name);
 		bus2.addtoRoute(busstop6.name);
 		bus2.startThread();
-		bus2.msgStartBus();
+		//bus2.msgStartBus();*/
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
@@ -266,17 +268,14 @@ public class SimCityGUI extends JFrame {
 
 		for (PersonAgent p: people){
 			p.startThread();
-		}
+			p.setAnimationPanel(cityAnimPanel);
+	}
 		// people.get(0).startThread();
-		/*for (PersonGui pgui: peoplegui){
-			cityAnimPanel.addGui(pgui);     
-		}*/
 
-
-		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		people.get(0).setAnimationPanel(cityAnimPanel);
-		//people.get(0).toDo.offer(goToBank);
+		people.get(0).toDo.offer(goToBank);
 		people.get(0).toDo.offer(goHome);
 		simclock = new SimWorldClock(7,people);
 	}
