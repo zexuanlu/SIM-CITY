@@ -52,7 +52,7 @@ public class SimCityGUI extends JFrame {
         public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER");
         public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO1", 2);
 
-        CityMap citymap;
+       public CityMap citymap;
 
         List<PersonAgent> people = new ArrayList<PersonAgent>();
         List<PersonGui> peoplegui = new ArrayList<PersonGui>();
@@ -247,36 +247,42 @@ public class SimCityGUI extends JFrame {
 
                 ////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-                for (int i=0; i<5; i++){
+                
+               for (int i=0; i<5; i++){
                         PersonAgent p = new PersonAgent("Person"+i,citymap);
-                        PersonGui pgui = new PersonGui(p);
-                        p.gui = pgui;
-                        people.add(p);
-                        peoplegui.add(pgui);
-                        cityAnimPanel.addGui(pgui);
+            	   
+            	   
+                      //  PersonGui pgui = new PersonGui(p);
+                      //  p.gui = pgui;
+                      //  people.add(p);
+                       // peoplegui.add(pgui);
+                      //  cityAnimPanel.addGui(pgui);
                 }
-                people.get(0).addRole(banktellerrole1);
+               /** people.get(0).addRole(banktellerrole1);
                 people.get(1).addRole(banktellerrole2);
                 people.get(2).addRole(bankhostrole);
                 people.get(3).addRole(marketcashierrole);
-                people.get(4).addRole(marketemployeerole);
+                people.get(4).addRole(marketemployeerole);*/
 
 
-                for (PersonAgent p: people){
-                        p.startThread();
-                }
+
                 // people.get(0).startThread();
-                for (PersonGui pgui: peoplegui){
-                        cityAnimPanel.addGui(pgui);
-                }
+            //    for (PersonGui pgui: peoplegui){
+              //          cityAnimPanel.addGui(pgui);
+               // }
 
 
                 //SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
-                SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
-                people.get(0).setAnimationPanel(cityAnimPanel);
+      //          SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+       //         people.get(0).setAnimationPanel(cityAnimPanel);
                 //people.get(0).toDo.offer(goToBank);
-                people.get(0).toDo.offer(goHome);
-                simclock = new SimWorldClock(7,people);
+         //       people.get(0).toDo.offer(goHome);
+            //    simclock = new SimWorldClock(7,people);
+                
+              //  for (PersonAgent p: people){
+               //     p.startThread();
+           // }
+               // people.get(0).startThread();
         }
 
 

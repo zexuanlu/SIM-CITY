@@ -111,7 +111,6 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		simcitygui.cityAnimPanel.addGui(pgui);
 		pa.startThread();
 		
-		
 		for(JCheckBox role : roles){
 			if(role.isSelected()){
 				if(role.getText().equals("Bank Host")){

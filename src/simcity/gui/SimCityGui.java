@@ -17,7 +17,7 @@ public class SimCityGui extends JFrame{
           int gridX = WINDOWX/scale;
           int gridY = WINDOWY/scale;
         
-        CityMap citymap = new CityMap();
+        public CityMap citymap = new CityMap();
         
         Semaphore[][] grid = new Semaphore[gridX][gridY];
         //intialize the semaphore grid
