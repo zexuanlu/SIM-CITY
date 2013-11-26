@@ -244,7 +244,7 @@ public class SimCityGUI extends JFrame {
 		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
 		bus.startThread();
-	//	bus.msgStartBus();
+		bus.msgStartBus();
 
 		bus2.setBusMap(citymap);
 		bus2.addtoRoute(busstop5.name);
@@ -252,7 +252,7 @@ public class SimCityGUI extends JFrame {
 		bus2.addtoRoute(busstop7.name);
 		bus2.addtoRoute(busstop6.name);
 		bus2.startThread();
-		//bus2.msgStartBus();*/
+		bus2.msgStartBus();
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
