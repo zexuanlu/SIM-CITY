@@ -1,12 +1,14 @@
 package market.gui;
 import simcity.astar.*; 
-import simcity.CarAgent; 
-import simcity.gui.Gui; 
+import simcity.CarAgent;  
 import market.MarketTruckAgent; 
+
 import java.util.*; 
 import java.awt.*; 
 import java.util.List; 
 import java.awt.Graphics2D;
+
+import agent.Gui;
 
 	
 public class MarketTruckGui implements Gui {
