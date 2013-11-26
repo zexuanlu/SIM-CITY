@@ -58,22 +58,38 @@ public class CarAgent extends Agent {
      }
 
      
-     public void setatPosition(int x, int y){
+     public void setatPosition(int originx, int originy){
       currentPosition.release(aStar.getGrid());
-             currentPosition = new Position(x/scale, y/scale);
+             currentPosition = new Position(originx/scale, originy/scale);
      currentPosition.moveInto(aStar.getGrid());
      originalPosition = currentPosition;
      
-     int numx = x/scale;
+     		int numx = originx/scale;
              numx = numx*scale;
              
-             int numy = y/scale;
+             int numy = originy/scale;
              numy = numy*scale;
-     
-     myGui.atPosition(numx, numy);
+             
+             myGui.atPosition(numx, numy);
      }
      
-     public void gotoPosition(int x, int y){
+     public void gotoPosition(int originx, int originy, int x, int y){
+    	 
+         currentPosition.release(aStar.getGrid());
+         currentPosition = new Position(originx/scale, originy/scale);
+         currentPosition.moveInto(aStar.getGrid());
+         originalPosition = currentPosition;
+ 
+         int numx = originx/scale;
+         numx = numx*scale;
+         
+         int numy = originy/scale;
+         numy = numy*scale;
+ 
+         myGui.atPosition(numx, numy);
+    	 
+    	 
+    	 
              destinationX = x;
              destinationY = y;
              int num = x/scale;
@@ -93,7 +109,7 @@ public class CarAgent extends Agent {
      
      public void dogoto(){
              carstate = CarState.moving;
-         guiMoveFromCurrentPositionTo(new Position((destinationX/scale),(destinationY/scale)));
+             guiMoveFromCurrentPositionTo(new Position((destinationX/scale),(destinationY/scale)));
      }
      
      

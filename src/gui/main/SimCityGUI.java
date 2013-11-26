@@ -189,6 +189,18 @@ public class SimCityGUI extends JFrame {
 			for (int y=0;y<30;y++){  //Create dead position
 				grid[30][20].release();
 			}
+			for (int z = 0; z<20; z++){  
+				for (int y = 11; y<14; y++){
+					grid[0][y].release(); 
+				}
+			}
+			for (int y =0 ;y<50; y++){ //creation location
+				grid[0][12].release();
+			}
+			for (int y =0 ;y<50; y++){ //bank location
+				grid[7][12].release();
+			}
+			
 			for (int y = 0; y < 11; y ++){
 				for (int x = 0; x < 14; x++){
 					grid[x][y].acquire(); 
@@ -368,8 +380,13 @@ public class SimCityGUI extends JFrame {
 
 		bank.getTimeCard().startThread();
 		bankdatabase.startThread();
-		for (PersonAgent p: people){
-			p.startThread();
+	//	for (PersonAgent p: people){
+	//		p.startThread();
+	//	}
+		
+		
+		for (int i=0;i<4;i++){
+			people.get(i).startThread();
 		}
 		 //people.get(0).startThread();
 		//people.get(0).setAnimationPanel(cityAnimPanel);
@@ -458,7 +475,7 @@ public class SimCityGUI extends JFrame {
 		people.get(1).toDo.offer(goHome2);
 		people.get(2).toDo.offer(tellerGoToBank);
 		people.get(2).toDo.offer(goHome3);
-		people.get(3).toDo.offer(goToBank);
+	    people.get(3).toDo.offer(goToBank);
 		people.get(3).toDo.offer(goHome4);
 		//people.get(4).toDo.offer(tellerGoToBank);
 		

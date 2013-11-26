@@ -33,8 +33,8 @@ public class CarGui implements Gui {
                 myCar = c;
             xPos = x;
             yPos = y;
-            xDestination = x+1;
-            yDestination = y+1;
+            xDestination = 600;
+            yDestination = 400;
             EastWest = true;
             deadpos = true;
         }
@@ -107,6 +107,8 @@ public class CarGui implements Gui {
             }
             xPos = x;
             yPos = y;
+            xDestination = x;
+            yDestination = y; 
     }
     
         public void moveto(int x, int y){
