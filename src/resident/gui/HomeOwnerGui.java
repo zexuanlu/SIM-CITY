@@ -4,6 +4,8 @@ import resident.HomeOwnerRole;
 
 import java.awt.*;
 
+import agent.Gui;
+
 public class HomeOwnerGui implements Gui {
 
     private HomeOwnerRole homeOwner = null;

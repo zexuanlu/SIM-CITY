@@ -4,6 +4,8 @@ import resident.ApartmentTenantRole;
 
 import java.awt.*;
 
+import agent.Gui;
+
 public class ApartmentTenantGui implements Gui {
 
 	public boolean isPresent;

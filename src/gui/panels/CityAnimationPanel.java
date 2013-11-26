@@ -8,8 +8,10 @@ package gui.panels;
  */
 
 import javax.swing.*; 
+
 import market.gui.MarketTruckGui; 
 import market.gui.MarketAnimationPanel;
+import agent.Gui;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
@@ -20,7 +22,6 @@ import simcity.CarAgent;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
-import simcity.gui.Gui;
 import simcity.gui.PassengerGui;
 import person.gui.PersonGui; 
 
@@ -37,7 +38,7 @@ import java.util.List;
 
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
-	public BuildingAnimationPanel BuildPanel;
+	private BuildingAnimationPanel BuildPanel;
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
@@ -49,6 +50,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
+	private List<JPanel> panels = new ArrayList<JPanel>();
     private List<Gui> guis = new ArrayList<Gui>();
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
@@ -94,6 +96,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		apartments.add(apt2Panel);
 		apartments.add(apt3Panel);
 		apartments.add(apt4Panel);
+		
+		panels.add(bankPanel);
+		panels.add(marketPanel);
+		panels.add(rest1Panel);
 		
     	setSize(WIDTH, HEIGHT);
         setVisible(true);
@@ -233,11 +239,52 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
             g2.fill(apartment3);
             g2.fill(apartment4);
         }
+        //Update the position of the guis in the various buildings
+        for(Gui gui : marketPanel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : bankPanel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : rest1Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : apt1Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : apt2Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : apt3Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : apt4Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : house1Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : house2Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : house3Panel.guis){
+        	gui.updatePosition();
+        }
+        for(Gui gui : house4Panel.guis){
+        	gui.updatePosition();
+        }
+        for(JPanel p : panels){
+        	p.repaint();
+        }
+        for(JPanel p : homes){
+        	p.repaint();
+        }
+        for(JPanel p : apartments){
+        	p.repaint();
+        }
 
         for(Gui gui : guis) {
-            if (gui.isPresent()) {
                 gui.updatePosition();
-            }
         }
 
         for(Gui gui : guis) {
@@ -352,6 +399,14 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   s = state.none;
 		   }
 		
+	}
+
+	public BuildingAnimationPanel getBuildPanel() {
+		return BuildPanel;
+	}
+
+	public void setBuildPanel(BuildingAnimationPanel buildPanel) {
+		BuildPanel = buildPanel;
 	}
     
 	

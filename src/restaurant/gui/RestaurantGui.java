@@ -142,19 +142,6 @@ public class RestaurantGui extends JFrame implements ActionListener {
      * For v3, it will propose a break for the waiter.
      */
     public void actionPerformed(ActionEvent e) {
-    	if (e.getSource() == pause){ 
-    		if(pause.isSelected() && pause.getText().compareTo("pause") == 0){
-    		animationPanel.spause();
-    		pause.setText("resume");
-    		pause.setSelected(false);
-    		}
-    		if(pause.isSelected() && pause.getText().compareTo("resume") == 0)
-    		{
-    			animationPanel.zouni();	
-    			pause.setText("pause");
-    			pause.setSelected(false);
-    		}
-    		}
     	
     	if (e.getSource() == jiazhuozi){
     		String s = JOptionPane.showInputDialog("please enter x coordinate");
