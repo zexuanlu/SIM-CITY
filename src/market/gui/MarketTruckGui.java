@@ -1,6 +1,6 @@
 package market.gui;
 import simcity.astar.*; 
-import simcity.CarAgent; 
+import simcity.CarAgent;  
 import market.MarketTruckAgent; 
 
 import java.util.*; 

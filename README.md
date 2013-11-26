@@ -37,13 +37,16 @@
   4. Grant Collins -
 	+ Person Agent
 	+ Person Initialization in Main Class
+	+ CityMap Class
 	+ Global Clock and Locations
 	+ Integration
   5. Rocky Luo -
 	+ Market
 	+ Market Trucks with A*
 	+ Integration
-  6. Mikhail -
+  6. Mikhail Bhuta -
 	+ Restaurant Upgrades
+	+ Person Interaction Panel
+	+ Trace Panel
 	+ Overall gui layout
 	+ Integration 

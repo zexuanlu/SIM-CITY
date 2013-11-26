@@ -12,6 +12,7 @@ import java.util.concurrent.Semaphore;
 
 import market.Food;
 import person.*;
+import person.Location.LocationType;
 import person.interfaces.Person;
 import resident.gui.HomeOwnerGui;
 import resident.interfaces.HomeOwner;
@@ -375,7 +376,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		
 		DoGoToFrontDoor();
 		
-		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
 		
 		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
 		person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
@@ -386,7 +387,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		
 		DoGoToFrontDoor();
 		
-		Location location = new Location("Market", Location.LocationType.Market, new Position(220,160));
+		Market location = (Market)person.getMap().chooseByType(LocationType.Market);
 		
 		// Lets person agent know that no longer going to be a resident role
 		person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
