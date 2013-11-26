@@ -7,6 +7,8 @@ import restaurant.gui.*;
 
 import javax.swing.*;
 
+import agent.Gui;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,7 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
     private int checky = 0;
     
     
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public Restaurant1AnimationPanel() {
     	
@@ -92,18 +94,6 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
                 gui.draw(g2);
             }
         }
-    }
-    
-    public void spause(){
-    	for(Gui gui : guis){
-    		gui.stop();
-    	}
-    }
-    
-    public void zouni(){
-    	for(Gui gui : guis){
-    		gui.zou();
-    		}
     }
     
     public void addGui(CustomerGui gui) {
