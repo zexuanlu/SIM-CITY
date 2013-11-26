@@ -295,12 +295,12 @@ public class PersonAgent extends Agent implements Person{
 			for(MyRole r : roles){
 				if(r.isActive){
 					print("Executing rule in role "+ r.role);
-					boolean b = r.role.pickAndExecuteAnAction();
-					return b;
+					return r.role.pickAndExecuteAnAction();
+					//return b;
 				}
 			}
 		}
-		else {
+		else{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
 			if((nextEvent != null && nextEvent.start == currentTime) 
 					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
@@ -672,17 +672,19 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* checkVitals is a method to figure out misc things to do on the fly*/
-	private void checkVitals() { 
+	private boolean checkVitals() { 
 		/*NOTE: the locations in this method are hard coded until we get the init script that 
 		 * puts together the people's cityMap objects which then will allow the people to 
 		 * find locations on the fly via look up 
 		 */
+		boolean addedAnEvent = false;
 		if(wallet.getOnHand() <= 100){ //get cash
 			SimEvent needMoney = new SimEvent("Need Money", new Bank("Banco Popular", new TimeCard(), new MockBankHost("Gil"), 
 					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
 				wallet.addTransaction("Withdrawal", 100);
+				addedAnEvent = true;
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
@@ -691,6 +693,7 @@ public class PersonAgent extends Agent implements Person{
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
 				wallet.addTransaction("Deposit", 200);
+				addedAnEvent = true;
 			}
 		}
 		/*if(hunger >= 3){ //go eat
@@ -698,11 +701,13 @@ public class PersonAgent extends Agent implements Person{
 			SimEvent needFood = new SimEvent("Go eat", (Restaurant)restaurantChoice, 4, EventType.CustomerEvent);
 			if(!containsEvent("Go eat")){
 				toDo.add(needFood);
+				addedAnEvent = true;
 			}
 		}*/
 		//buy a car
 		//rob the bank
 		//etc
+		return addedAnEvent;
 	}
 
 	private void dowalkto(int originx, int originy){
