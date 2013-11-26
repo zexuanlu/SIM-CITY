@@ -148,7 +148,7 @@ public class SimCityGUI extends JFrame {
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(500, 60), LocationType.Market);
+				new Position(220, 160), LocationType.Market);
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
 				new Position(340, 160), LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
@@ -189,7 +189,7 @@ public class SimCityGUI extends JFrame {
 			for (int y=0;y<30;y++){  //Create dead position
 				grid[30][20].release();
 			}
-			for (int z = 0; z<20; z++){  
+			for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
 				for (int y = 11; y<14; y++){
 					grid[0][y].release(); 
 				}
@@ -406,17 +406,17 @@ public class SimCityGUI extends JFrame {
 		SimEvent tellerGoToBank = new SimEvent(bank, 1, 7, EventType.TellerEvent);
 		SimEvent hostGoToBank = new SimEvent(bank, 1, 7, EventType.HostEvent);
 		
-		SimEvent goHome1 = new SimEvent(home1, 1, 12, EventType.HomeOwnerEvent);
-		SimEvent goHome2 = new SimEvent(home2, 1, 12, EventType.HomeOwnerEvent);
-		SimEvent goHome3 = new SimEvent(home3, 1, 12, EventType.HomeOwnerEvent);
-		SimEvent goHome4 = new SimEvent(home4, 1, 12, EventType.HomeOwnerEvent);
+		SimEvent goHome1 = new SimEvent(home1, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome2 = new SimEvent(home2, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome3 = new SimEvent(home3, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome4 = new SimEvent(home4, 1, 7, EventType.HomeOwnerEvent);
 		
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		goToBank.directive = "deposit";
 //		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
-//		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
-//		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
-//		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
+		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
+		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
 //		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
 		
 		// people.get(0).startThread();
@@ -457,7 +457,7 @@ public class SimCityGUI extends JFrame {
 		 * Below is an example of how to do so. The cast is necessary since roles.role is a Role type and we need a specific 
 		 * child class of Role.
 		 */
-		((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
+		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
 		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
 		bankhostrole.addTeller(banktellerrole1);
 		bankhostrole.addTeller(banktellerrole2);
@@ -469,13 +469,13 @@ public class SimCityGUI extends JFrame {
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
 		 * Host, cook, cashier, waiter and teller events
 		 */
-		people.get(0).toDo.offer(hostGoToBank);
+		//people.get(0).toDo.offer(gotoMarket);
 		people.get(0).toDo.offer(goHome1);
-		people.get(1).toDo.offer(tellerGoToBank);
+	//	people.get(1).toDo.offer(gotoMarket);
 		people.get(1).toDo.offer(goHome2);
-		people.get(2).toDo.offer(tellerGoToBank);
+	//	people.get(2).toDo.offer(gotoMarket);
 		people.get(2).toDo.offer(goHome3);
-	    people.get(3).toDo.offer(goToBank);
+	   // people.get(3).toDo.offer(gotoMarket);
 		people.get(3).toDo.offer(goHome4);
 		//people.get(4).toDo.offer(tellerGoToBank);
 		
