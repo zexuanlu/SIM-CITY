@@ -4,7 +4,9 @@ import restaurant.gui.CustomerGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-import agent.Agent;
+import agent.Role;
+
+import person.PersonAgent;
 
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
@@ -16,7 +18,7 @@ import java.util.TimerTask;
 /**
  * Restaurant customer agent.
  */
-public class Restaurant1CustomerRole extends Agent implements Customer {
+public class Restaurant1CustomerRole extends Role implements Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
@@ -50,8 +52,8 @@ public class Restaurant1CustomerRole extends Agent implements Customer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public Restaurant1CustomerRole(String name){
-		super();
+	public Restaurant1CustomerRole(String name, PersonAgent pa){
+		super(pa);
 		this.name = name;
 	}
 
@@ -144,7 +146,7 @@ public class Restaurant1CustomerRole extends Agent implements Customer {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	Restaurant1CustomerRole is a finite state machine
 		try{
 		if ( event == AgentEvent.gotHungry ){

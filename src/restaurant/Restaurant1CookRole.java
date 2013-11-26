@@ -1,6 +1,7 @@
 package restaurant;
 
-import agent.Agent;
+import agent.Role;
+import person.PersonAgent;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -19,7 +20,7 @@ import market.Food;
 
 //Add case in scheduler to tell markettruck to go back
 
-public  class Restaurant1CookRole extends Agent implements Cook {
+public  class Restaurant1CookRole extends Role implements Cook {
 	private CookGui cookGui = null;
 	private Cashier cashier;
 	private MarketTruck truck;
@@ -34,8 +35,8 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	private Semaphore AR = new Semaphore(0,true);
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
 
-	public Restaurant1CookRole(String name) {
-		super();
+	public Restaurant1CookRole(String name, PersonAgent pa) {
+		super(pa);
 		this.name = name; 
 		food.put("Steak", new MyFood("Steak", 4000, 6, 2, 4));
 		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4));

@@ -5,6 +5,8 @@ import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 
+import person.PersonAgent;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -38,7 +40,8 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	waiterstate ws = waiterstate.working;
 	
 	
-	public Restaurant1WaiterRole(String name){
+	public Restaurant1WaiterRole(String name, PersonAgent pa){
+		super(pa);
 		this.name = name;
 		
 		menue.put("Steak", 15.99);
@@ -185,7 +188,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		/* Think of this next rule as:
             Does there exist a table and customer,
             so that table is unoccupied and customer is waiting.
