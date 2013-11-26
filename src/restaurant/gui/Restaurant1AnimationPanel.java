@@ -85,12 +85,6 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
                 gui.draw(g2);
             }
         }
