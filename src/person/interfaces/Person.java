@@ -3,6 +3,7 @@ package person.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
+import person.Restaurant;
 import person.SimEvent;
 import person.Position;
 import simcity.CityMap;
@@ -12,6 +13,8 @@ import market.Food;
 public interface Person {
            
         int homeNumber = 0;
+        
+		public abstract CityMap getMap();
        
 		public abstract void msgNewHour(int hour);//from the world timer
         
