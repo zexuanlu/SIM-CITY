@@ -60,7 +60,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		private int levelOfImportance;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>();
 
-		MyPriority(Task t) {
+		public MyPriority(Task t) {
 			task = t;
 			
 			// All basic tasks of a resident
@@ -106,7 +106,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	private static double rentCost = 100; // Static for now.
 	private ApartmentLandlord landlord;
 	private Person person;
-	private ApartmentTenantGui aptGui;
+	public ApartmentTenantGui aptGui;
 	
 	public void setGui(ApartmentTenantGui g) {
 		aptGui = g;

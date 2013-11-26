@@ -6,6 +6,8 @@ import java.awt.*;
 
 public class ApartmentTenantGui implements Gui {
 
+	public boolean isPresent;
+	
     private ApartmentTenantRole aptTenant = null;
 
     private int xPos = 600, yPos = 50; // Default apartment tenant position
@@ -109,7 +111,7 @@ public class ApartmentTenantGui implements Gui {
 	}
 	
 	public boolean isPresent() {
-		return true;
+		return isPresent;
 	}
 	
 	public void DoGoToFridge() {

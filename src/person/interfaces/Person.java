@@ -4,6 +4,7 @@ import java.util.List;
 
 import person.SimEvent;
 import person.Position;
+import simcity.CityMap;
 import agent.Role;
 import market.Food;
 

@@ -7,7 +7,8 @@ import java.awt.*;
 public class HomeOwnerGui implements Gui {
 
     private HomeOwnerRole homeOwner = null;
-
+    public boolean isPresent;
+    
     private int xPos = 600, yPos = 50; // Default home owner position
     private int xDestination = 600, yDestination = 50; // Default start position
     
@@ -113,7 +114,7 @@ public class HomeOwnerGui implements Gui {
 	}
 	
 	public boolean isPresent() {
-		return true;
+		return isPresent;
 	}
 	
 	public void DoGoToFridge() {

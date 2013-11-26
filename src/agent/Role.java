@@ -11,8 +11,8 @@ import person.interfaces.*;
 */
 public abstract class Role {
         
-        public void switchPerson(Person person){
-                this.person = person;
+        public void switchPerson(Person p){
+                this.person = p;
         }
         
         public Person getPerson(){
@@ -20,7 +20,7 @@ public abstract class Role {
         }
         
         private boolean isActive;
-        private Person person;
+        protected Person person;
         
         public void msgEndOfDay(){
         	

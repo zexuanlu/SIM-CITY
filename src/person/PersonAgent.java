@@ -66,7 +66,7 @@ public class PersonAgent extends Agent implements Person{
 	public AStarTraversal astar;
 
 	public PersonGui gui;
-	private CityAnimationPanel cap = new CityAnimationPanel();
+	private CityAnimationPanel cap;// = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
 
 	private int accountNumber; 
@@ -625,11 +625,13 @@ public class PersonAgent extends Agent implements Person{
 						roles.add(newRole);
 						HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
 						((HomeOwnerRole)newRole.role).setGui(hog);
-						cap.getHouseGui(2).addGui(hog);
+						cap.getHouseGui(homeNumber).addGui(hog);
 						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					else{
 						getRoleOfType(hr).isActive(true);
+						// Set the GUI as visible
+						((HomeOwnerRole)getRoleOfType(hr).role).homeGui.isPresent = true;
 						((HomeOwnerRole)getRoleOfType(hr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					gui.setPresent(false);
@@ -647,6 +649,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else{
 						getRoleOfType(tr).isActive(true);
+						((ApartmentTenantRole)getRoleOfType(tr).role).aptGui.isPresent = true;
 						((ApartmentTenantRole)getRoleOfType(tr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					}
 					gui.setPresent(false);
