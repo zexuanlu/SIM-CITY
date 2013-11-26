@@ -416,6 +416,7 @@ public class PersonAgent extends Agent implements Person{
 						rest.getTimeCard().msgBackToWork(this, (Restaurant1WaiterRole)newRole.role);
 					}
 					else{
+						((Restaurant1WaiterRole)getRoleOfType(wRole).role).waiterGui.isPresent = true;
 						rest.getTimeCard().msgBackToWork(this, (Restaurant1WaiterRole)getRoleOfType(wRole).role); 
 						getRoleOfType(wRole).isActive(true);
 					}

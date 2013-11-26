@@ -238,7 +238,8 @@ public class SimCityGUI extends JFrame {
 		cityAnimPanel.addGui(bs6gui);
 		cityAnimPanel.addGui(bs7gui);
 		cityAnimPanel.addGui(bs8gui);
-		wg.isPresent = true;
+		wg.isPresent = false;
+		waiter1.setGui(wg);
 		cityAnimPanel.rest1Panel.addGui(wg);
 		
 		busstop1.startThread();
