@@ -29,6 +29,7 @@
   3. Joseph Boman - 
 	+ Bank
 	+ Clickable buildings in City View
+	+ Time Card and Role Classes
 	+ Git (Merging Issues, Commits, Everything else)
 	+ Person Initialization in Main Class
 	+ Individual Location GUIs
