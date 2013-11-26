@@ -730,11 +730,11 @@ public class PersonAgent extends Agent implements Person{
 			gui.isPresent = false;
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
-			car.setatPosition(p.getX(), p.getY());
+			//car.setatPosition(p.getX(), p.getY());
 
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
 			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
-			car.gotoPosition(l.getX(), l.getY());
+			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
 			// car.gotoPosition(500,250);
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
