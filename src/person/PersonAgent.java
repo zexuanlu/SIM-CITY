@@ -609,7 +609,12 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
-		gui.DoGoTo(loc.getPosition());
+		if(car != null){
+			//cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+			//car.setatPosition(x, y);
+			//car.goToPosition(loc.position.getX(), loc.position.getY());
+		}
+		else{ gui.DoGoTo(loc.getPosition()); }
 	}
 	private boolean isInWalkingDistance(Location loc){
 		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){
