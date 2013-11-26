@@ -5,7 +5,7 @@ import market.Food;
 
 public interface MarketCustomer {
 
-	public abstract void msgHello();
+	public abstract void msgHello(double m, List<Food> f);
 	
 	public abstract void msgPleasePay(int b);
 
