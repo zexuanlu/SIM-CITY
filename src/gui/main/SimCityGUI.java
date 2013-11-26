@@ -264,20 +264,13 @@ public class SimCityGUI extends JFrame {
 			people.add(p);
 			peoplegui.add(pgui);
 			cityAnimPanel.addGui(pgui);
+			p.setcitygui(this);
 		}
 		people.get(0).addRole(banktellerrole1);
 		//people.get(1).addRole(banktellerrole2);
 		//people.get(2).addRole(bankhostrole);
 		//people.get(3).addRole(marketcashierrole);
 		//people.get(4).addRole(marketemployeerole);
-		
-        aStarTraversal = new AStarTraversal(grid);
-        CarAgent caragent = new CarAgent(aStarTraversal);
-        CarGui cgui = new CarGui(caragent,50,250);
-        caragent.setGui(cgui);
-        cityAnimPanel.addGui(cgui);
-        caragent.startThread();
-        caragent.gotoPosition(500,250);
 
 
 		for (PersonAgent p: people){
@@ -288,12 +281,23 @@ public class SimCityGUI extends JFrame {
 
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
 		people.get(0).setAnimationPanel(cityAnimPanel);
 		people.get(0).toDo.offer(goToBank);
-		people.get(0).toDo.offer(goHome);
+		people.get(0).toDo.offer(goToBank);
 		simclock = new SimWorldClock(7,people);
 	}
 
+	public CarAgent createCar(PersonAgent p){
+		AStarTraversal aStarTraversal = new AStarTraversal(grid);
+        CarAgent caragent = new CarAgent(aStarTraversal, p);
+        CarGui cgui = new CarGui(caragent,600,400);
+        caragent.setGui(cgui);
+        cityAnimPanel.addGui(cgui);
+        caragent.startThread();
+        
+        return caragent; 
+	}
 
 
 	public static void main(String[] args){

@@ -61,6 +61,13 @@ public class PersonGui implements Gui{
 		yDestination = p.getY();
 		arrived = false;
 	}
+	
+	public void walkto(int x, int y){
+		xPos = x; 
+		yPos = y; 
+		arrived = false; 
+	}
+	
 	public int getX(){return xPos;}
 	public int getY(){return yPos;}
 

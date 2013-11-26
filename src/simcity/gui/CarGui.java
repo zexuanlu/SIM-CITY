@@ -36,13 +36,13 @@ public class CarGui implements Gui {
             xDestination = x+1;
             yDestination = y+1;
             EastWest = true;
-            deadpos = false;
+            deadpos = true;
         }
         
         
         public void draw(Graphics2D g) {
                 
-            //    if (!deadpos){
+                if (!deadpos){
                         g.setColor(Color.RED);
                         if (EastWest){
                                 g.fillRect(xPos, yPos, 20, 20);
@@ -50,7 +50,7 @@ public class CarGui implements Gui {
                         else if (NorthSouth){
                                 g.fillRect(xPos, yPos, 20, 20);
                         }
-              //  }
+                }
     }
         
         public boolean isPresent() {
@@ -60,7 +60,6 @@ public class CarGui implements Gui {
         
     public void updatePosition() {
             //check orientation of the bus
-            
                if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
                     guistate = GuiState.canStop;
                     myCar.msgatSlot();
@@ -91,8 +90,8 @@ public class CarGui implements Gui {
         if (xPos == overallX && yPos == overallY && guistate == GuiState.canStop){
                 guistate = GuiState.atStop;
                 System.out.println("At Place where I'm supposed to be at/ dead position");
-                myCar.msgatDestination();
                 myCar.deadPos(deadpositionX, deadpositionY);
+                myCar.msgatDestination();
                 xDestination = deadpositionX;
                 yDestination = deadpositionY;
                 atPosition(deadpositionX, deadpositionY);

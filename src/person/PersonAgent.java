@@ -2,6 +2,8 @@ package person;
 
 import gui.panels.CityAnimationPanel;
 
+import gui.main.SimCityGUI;
+
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -74,6 +76,8 @@ public class PersonAgent extends Agent implements Person{
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
 	public List<Food> shoppingBag = new ArrayList<Food>();
 	
+	public SimCityGUI simcitygui;
+	
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
 	private Semaphore going = new Semaphore(0, true);
@@ -90,20 +94,13 @@ public class PersonAgent extends Agent implements Person{
 		currentTime = 7;
 		arrived = false;
 	}
-	public PersonAgent (String name, CityMap cm, AStarTraversal astar){
+	public PersonAgent (String name, CityMap cm, AStarTraversal astar2){
 		super();
 		this.name = name;
 		this.cityMap = cm;
+		astar = astar2; 
 		this.wallet = new Wallet(5000, 5000);//hacked in
-		if (this.wallet.getOnHand() >= 100){
-			print("Im rich gul");
-			AStarTraversal ast = new AStarTraversal(astar.getGrid());
-			car = new CarAgent(ast);
-			CarGui cgui = new CarGui(car, 600,400);
-			car.setGui(cgui);
-			cap.addGui(cgui);
-			car.startThread();
-		}
+
 		this.hunger = 4;
 		currentTime = 7;
 		this.astar = astar;
@@ -215,10 +212,19 @@ public class PersonAgent extends Agent implements Person{
 
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
 		print("Recieved the message AtDest");
-		going.release();
+		gui.setPresent(true);
 		currentLocation = destination;
+		going.release();
 		stateChanged();
 	}
+	
+	public void msgAtDest(Position destination,CarAgent c){ // From the gui. now we can send the correct entrance message to the location manager
+		print("Recieved the message AtDest from car");
+		gui.setPresent(true);
+		currentLocation = destination;
+		dowalkto(destination.getX(),destination.getY());
+	}
+	
 	public void msgFinishedEvent(Role r, List<Food> foodList, double change){
 		print("Recieved this message");
 		for(MyRole role : roles){
@@ -337,6 +343,7 @@ public class PersonAgent extends Agent implements Person{
 			DoGoTo(l); 
 			if(!testMode){
 				try {
+					print("going acquire");
 					going.acquire();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
@@ -612,6 +619,13 @@ public class PersonAgent extends Agent implements Person{
 		//etc
 	}
 
+	private void dowalkto(int originx, int originy){
+		gui.isPresent = true; 
+		gui.walkto(originx, originy);
+		//currentLocation.setX(originx);
+		//currentLocation.setY(originy);
+	}
+	
 	private void DoGoTo(Location loc){
 		//if(car != null){
 			//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
@@ -625,12 +639,12 @@ public class PersonAgent extends Agent implements Person{
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			print("My Location: "+currentLocation.getX()+" Position x: "+ p.getX() +" y: "+p.getY());
+			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
 			car.setatPosition(p.getX(), p.getY());
-			//car.setatPosition(50,250);
+		//	car.setatPosition(50,250);
 			
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print("My end Location: " + l.getX() + " , " +l.getY()); 
+			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
 			car.gotoPosition(l.getX(), l.getY());
            // car.gotoPosition(500,250);
 		}
@@ -738,6 +752,15 @@ public class PersonAgent extends Agent implements Person{
 			}
 			public String getAction(){ return this.action; }
 			public double getAmount(){ return this.amount; }
+		}
+	}
+	
+	public void setcitygui(SimCityGUI scg){
+		simcitygui = scg; 
+		
+		if (this.wallet.getOnHand() >= 100){
+			print("Im rich gul");
+			car = simcitygui.createCar(this);
 		}
 	}
 }
