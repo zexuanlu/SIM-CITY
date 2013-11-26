@@ -35,10 +35,9 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		waiterstate ws = waiterstate.working;
 		
 		
-		public Restaurant1SDWaiterRole(String name, Restaurant1RevolvingStand rev, PersonAgent pa){
+		public Restaurant1SDWaiterRole(String name, PersonAgent pa){
 			super(pa);
 			this.name = name;
-			this.revStand = rev;
 			
 			menue.put("Steak", 15.99);
 			menue.put("Chicken", 10.99);
@@ -85,7 +84,9 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			waiterGui.setOrigion(number);
 		}
 		
-		
+		public void setRevolvingStand(Restaurant1RevolvingStand rev){
+			this.revStand = rev;
+		}
 		
 		public String getMaitreDName() {
 			return name;
