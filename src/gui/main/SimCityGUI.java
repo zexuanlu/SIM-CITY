@@ -469,14 +469,14 @@ public class SimCityGUI extends JFrame {
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
 		 * Host, cook, cashier, waiter and teller events
 		 */
-		//people.get(0).toDo.offer(gotoMarket);
-		people.get(0).toDo.offer(goHome1);
-	//	people.get(1).toDo.offer(gotoMarket);
-		people.get(1).toDo.offer(goHome2);
-	//	people.get(2).toDo.offer(gotoMarket);
-		people.get(2).toDo.offer(goHome3);
-	   // people.get(3).toDo.offer(gotoMarket);
-		people.get(3).toDo.offer(goHome4);
+		people.get(0).toDo.offer(goToBank);
+	//	people.get(0).toDo.offer(goHome1);
+		people.get(1).toDo.offer(gotoMarket);
+	//	people.get(1).toDo.offer(goHome2);
+		people.get(2).toDo.offer(goToBank);
+	//	people.get(2).toDo.offer(goHome3);
+	    people.get(3).toDo.offer(gotoMarket);
+		//people.get(3).toDo.offer(goHome4);
 		//people.get(4).toDo.offer(tellerGoToBank);
 		
 		/*Create the SimWorldClock with the starting time and the list of people*/
