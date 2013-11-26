@@ -21,8 +21,6 @@ public class PersonMock extends Mock implements Person {
 	public List<String> groceryList = new ArrayList<String>();
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
 	public List<Role> roles = new ArrayList<Role>();
-	
-
 	public PersonMock(String name) {
 		super(name);
 		currentTime = 7;

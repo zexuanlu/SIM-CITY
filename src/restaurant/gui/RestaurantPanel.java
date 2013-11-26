@@ -8,6 +8,8 @@ import restaurant.Restaurant1CashierRole;
 
 import javax.swing.*;
 
+import person.PersonAgent;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
@@ -23,11 +25,12 @@ public class RestaurantPanel extends JPanel {
 	private int y = 2;
 	private int dis1 = 20;
 	private int dis2 = 10;
+	PersonAgent p = new PersonAgent();
 	//Host, cook, waiters and customers
-	private Restaurant1HostRole ho = new Restaurant1HostRole("Jack");
+	private Restaurant1HostRole ho = new Restaurant1HostRole("Jack", p);
 	//protected Restaurant1WaiterRole waiter= new Restaurant1WaiterRole("Ross");
-	private Restaurant1CookRole cook = new Restaurant1CookRole("BrotherCai");
-	private Restaurant1CashierRole cashier = new Restaurant1CashierRole("Yo");
+	private Restaurant1CookRole cook = new Restaurant1CookRole("BrotherCai", p);
+	private Restaurant1CashierRole cashier = new Restaurant1CashierRole("Yo", p);
 
 
 	private Vector<Restaurant1CustomerRole> customers = new Vector<Restaurant1CustomerRole>();
@@ -51,13 +54,13 @@ public class RestaurantPanel extends JPanel {
 		//waiter.setCashier(cashier);
 		//ho.setwaiter(host);
 		//waiter.startThread();
-		ho.startThread();
-		cook.startThread();
+		//ho.startThread();
+		//cook.startThread();
 		CookGui cg = new CookGui(cook, gui);
 		cook.setGui(cg);
 		cook.setCashier(cashier);
 		gui.animationPanel.addGui(cg);
-		cashier.startThread();
+		//cashier.startThread();
 		
 		
 		//ho.msgaddwaiter(waiter);
@@ -136,7 +139,7 @@ public class RestaurantPanel extends JPanel {
 			else{
 				Cuscount = 0;
 			}
-			Restaurant1CustomerRole c = new Restaurant1CustomerRole(name);	
+			Restaurant1CustomerRole c = new Restaurant1CustomerRole(name, p);	
 			CustomerGui g = new CustomerGui(c, gui);
 			
 			gui.animationPanel.addGui(g);// dw
@@ -145,7 +148,7 @@ public class RestaurantPanel extends JPanel {
 			c.setGui(g);
 			c.setCashier(cashier);
 			customers.add(c);
-			c.startThread();
+			//c.startThread();
 			c.setLocation(a);
 			if(name.compareTo("zero") == 0){
 				c.setMoney(0);
@@ -168,7 +171,7 @@ public class RestaurantPanel extends JPanel {
 	public void addWaiter(String name) {
 		int s = count;
 		count++;
-		Restaurant1WaiterRole c = new Restaurant1WaiterRole(name);	
+		Restaurant1WaiterRole c = new Restaurant1WaiterRole(name, p);	
 		WaiterGui g = new WaiterGui(c, ho);
 
 		gui.animationPanel.addGui(g);// dw
@@ -178,7 +181,7 @@ public class RestaurantPanel extends JPanel {
 		waiters.add(c);
 		c.setCashier(cashier);
 		waiters.add(c);
-		c.startThread();
+		//c.startThread();
 		c.setNumber(s);
 		ho.msgaddwaiter(c);
 

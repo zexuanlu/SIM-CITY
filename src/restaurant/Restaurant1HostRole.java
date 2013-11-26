@@ -1,8 +1,10 @@
 package restaurant;
 
-import agent.Agent;
+import agent.Role;
 
 import restaurant.interfaces.Waiter;
+
+import person.PersonAgent;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -17,22 +19,22 @@ import restaurant.interfaces.Customer;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the Restaurant1HostRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class Restaurant1HostRole extends Agent {
+public class Restaurant1HostRole extends Role {
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
 	public List<mycustomer> waitingCustomers = Collections.synchronizedList(new ArrayList<mycustomer>());
 	public Collection<Table> tables;
 	public List<mywaiter> waiter = Collections.synchronizedList(new ArrayList<mywaiter>());
-	public Restaurant1WaiterRole wa = new Restaurant1WaiterRole("Jim");
+	public Restaurant1WaiterRole wa;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 	public int tablenum;
 	private String name;;
 	private int counter = 0;
 
-	public Restaurant1HostRole(String name) {
-		super();
+	public Restaurant1HostRole(String name, PersonAgent pa) {
+		super(pa);
 
 		this.name = name;
 		// make some tables
@@ -140,7 +142,7 @@ public class Restaurant1HostRole extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 		try{
 		boolean hasemptytable = false;

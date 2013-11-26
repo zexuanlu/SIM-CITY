@@ -1,9 +1,9 @@
 package restaurant.test;
 
+import person.PersonAgent;
 import restaurant.Restaurant1CookRole;
 import restaurant.test.mock.MockSDWaiter;
 import restaurant.shareddata.*;
-
 import junit.framework.TestCase;
 
 public class CookSharedDataTest extends TestCase{
@@ -13,12 +13,14 @@ public class CookSharedDataTest extends TestCase{
 	Restaurant1CookRole cook;
 	Restaurant1RevolvingStand rStand;
 	Order order;
+	PersonAgent testPerson;
 	
 	protected void setUp(){
 		// initializing agents
+		testPerson = new PersonAgent();
 		waiter = new MockSDWaiter();
 		rStand = new Restaurant1RevolvingStand();
-		cook = new Restaurant1CookRole("TestCook");
+		cook = new Restaurant1CookRole("TestCook", testPerson);
 		cook.setRevStand(rStand);
 		order = new Order(waiter, "Steak", table);
 	}

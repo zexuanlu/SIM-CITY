@@ -2,15 +2,17 @@ package restaurant;
 
 import restaurant.interfaces.Customer;
 import agent.Agent;
+import agent.Role;
+import person.PersonAgent;
 
-public abstract class Restaurant1AbstractWaiter extends Agent {
+public abstract class Restaurant1AbstractWaiter extends Role {
 
 	public enum state 
 	{available, waiting, seated, readytoorder, askedtoorder, attable, ordered, gotocook, orderready,outoffood, eating,atcook, checkingbill, bringbill, bringattable, starteating, done};
 	
 	
-	public Restaurant1AbstractWaiter() {
-		// TODO Auto-generated constructor stub
+	public Restaurant1AbstractWaiter(PersonAgent pa) {
+		super(pa);
 	}
 	
 	public static class mycustomer {
@@ -28,7 +30,5 @@ public abstract class Restaurant1AbstractWaiter extends Agent {
 			this.table = table;
 		}
 	}
-	
-	
+}	
 
-}

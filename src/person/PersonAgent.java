@@ -50,6 +50,8 @@ public class PersonAgent extends Agent implements Person{
 
 	private String name;
 	public int hunger; // tracks hunger level
+	public enum HomeType {Apartment, Home}
+	public HomeType homeType;
 	public int homeNumber;
 	public boolean activeRole;
 	public boolean arrived;
