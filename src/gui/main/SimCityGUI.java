@@ -348,7 +348,7 @@ public class SimCityGUI extends JFrame {
 		 * Adds the people with a given house number. This is for homes. Any dynamically added person will
 		 * be added as an apartment tenant.
 		 */
-		for (int i=1; i<5; i++){
+		for (int i=1; i<8; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
@@ -369,7 +369,7 @@ public class SimCityGUI extends JFrame {
 		people.get(2).addRole(homeOwnerRole3);
 		people.get(3).addRole(waiter1);
 		people.get(3).addRole(homeOwnerRole4);
-		//people.get(4).addRole(banktellerrole1);
+		people.get(4).addRole(banktellerrole1);
 		
 		//people.get(4).addRole(customer1);		
 		//people.get(1).addRole(banktellerrole2);
@@ -385,7 +385,7 @@ public class SimCityGUI extends JFrame {
 	//	}
 		
 		
-		for (int i=0;i<4;i++){
+		for (int i=0;i<7;i++){
 			people.get(i).startThread();
 		}
 		 //people.get(0).startThread();
@@ -447,7 +447,7 @@ public class SimCityGUI extends JFrame {
 		people.get(3).roles.get(0).role.switchPerson(people.get(3));
 		people.get(3).roles.get(1).role.switchPerson(people.get(3));
 		
-		//people.get(4).roles.get(0).role.switchPerson(people.get(4));
+		people.get(4).roles.get(0).role.switchPerson(people.get(4));
 		
 		/*
 		 * 3. Anyone who needs to know about other job roles in the building (like the host) must be notified of each role
@@ -469,15 +469,17 @@ public class SimCityGUI extends JFrame {
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
 		 * Host, cook, cashier, waiter and teller events
 		 */
-		people.get(0).toDo.offer(goToBank);
-	//	people.get(0).toDo.offer(goHome1);
-		people.get(1).toDo.offer(gotoMarket);
-	//	people.get(1).toDo.offer(goHome2);
-		people.get(2).toDo.offer(goToBank);
-	//	people.get(2).toDo.offer(goHome3);
-	    people.get(3).toDo.offer(gotoMarket);
-		//people.get(3).toDo.offer(goHome4);
-		//people.get(4).toDo.offer(tellerGoToBank);
+		people.get(0).toDo.offer(hostGoToBank);
+		people.get(0).toDo.offer(goHome1);
+		people.get(1).toDo.offer(tellerGoToBank);
+		people.get(1).toDo.offer(goHome2);
+		people.get(2).toDo.offer(tellerGoToBank);
+		people.get(2).toDo.offer(goHome3);
+	    people.get(3).toDo.offer(goToBank);
+		people.get(3).toDo.offer(goHome4);
+		people.get(4).toDo.offer(goToBank);
+		people.get(5).toDo.offer(goToBank);
+		people.get(6).toDo.offer(goToBank);
 		
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(6,people);
