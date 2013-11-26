@@ -249,7 +249,7 @@ public class SimCityGUI extends JFrame {
 
                 
                for (int i=0; i<5; i++){
-                        PersonAgent p = new PersonAgent("Person"+i,citymap);
+                        PersonAgent p = new PersonAgent("Person"+i,citymap,aStarTraversal);
             	   
             	   
                       //  PersonGui pgui = new PersonGui(p);
