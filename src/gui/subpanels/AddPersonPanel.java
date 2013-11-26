@@ -105,15 +105,17 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	public void addCustomPerson(){
 		// ArrayList<Role> selectedRoles
 		System.out.println("Custom button clicked");
-		PersonAgent pa = new PersonAgent(nameText.getText());
+		PersonAgent pa = new PersonAgent(nameText.getText(),simcitygui.citymap);
 		PersonGui pgui = new PersonGui(pa);
+		pa.gui = pgui; 
 		simcitygui.cityAnimPanel.addGui(pgui);
+		pa.startThread();
 		
 		
 		for(JCheckBox role : roles){
 			if(role.isSelected()){
 				if(role.getText().equals("Bank Host")){
-					// selectedRoles.add(Role 1)
+					pa.addRole(simcitygui.bankhostrole);
 				}
 				if(role.getText().equals("Bank Teller")){
 					// selectedRoles.add(Role 2)

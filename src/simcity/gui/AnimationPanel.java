@@ -62,7 +62,6 @@ public class AnimationPanel extends JPanel implements ActionListener {
             }
         }
     }
-
     
     public void addGui(BusGui gui) {
         guis.add(gui);

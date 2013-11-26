@@ -49,7 +49,7 @@ public class SimCityGUI extends JFrame {
 	public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 	public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); 
 	
-	CityMap citymap; 
+	public CityMap citymap; 
 	
 	List<PersonAgent> people = new ArrayList<PersonAgent>();
 	List<PersonGui> peoplegui = new ArrayList<PersonGui>();
@@ -94,22 +94,47 @@ public class SimCityGUI extends JFrame {
 	BusStopGui bs6gui = new BusStopGui(busstop6, 340,140);
 	BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
 	BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
-
 	
+	
+	public Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
+			new Position(140, 160), LocationType.Bank);
+	public Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
+			new Position(500, 60), LocationType.Market);
+
 	public SimCityGUI() {
 		//here is where I initialize locations
-		/**
-		public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
-		public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
-		public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
-		public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
-		public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); */
-		
-		
-		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-				new Position(140, 160), LocationType.Bank);
-		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(500, 60), LocationType.Market);
+		for (int i=0; i<gridX ; i++)
+            for (int j = 0; j<gridY; j++)
+                   grid[i][j]=new Semaphore(1,true);
+           //build the animation areas
+           try {   
+                   for (int y=0;y<30;y++){
+                           grid[30][20].release();
+                   }
+                   
+                   for (int y = 0; y < 11; y ++){
+                           for (int x = 0; x < 14; x++){
+                                   grid[x][y].acquire();
+                           }
+                           for (int x=17; x<gridX; x++){
+                                   grid[x][y].acquire();
+                           }
+                   }
+                   
+                   for (int y = 14; y<gridY; y++){
+                           for (int x = 0; x < 14; x++){
+                                   grid[x][y].acquire();
+                           }
+                           for (int x=17; x<gridX; x++){
+                                   grid[x][y].acquire();
+                           }
+                   }
+                   
+           
+           }catch (Exception e) {
+            System.out.println("Unexpected exception caught in during setup:"+ e);
+           }
+
 		
 		locations.add(bank);
 		locations.add(market);
@@ -128,34 +153,6 @@ public class SimCityGUI extends JFrame {
 		
 		cityAnimPanel.BuildPanel = bldngAnimPanel;
 		
-		for (int i=0; i<gridX ; i++)
-		    for (int j = 0; j<gridY; j++)
-			grid[i][j]=new Semaphore(1,true);
-		//build the animation areas
-		try {
-			for (int y=0;y<30;y++){  //Create dead position
-				grid[30][20].release();
-			}
-			for (int y = 0; y < 11; y ++){
-				for (int x = 0; x < 14; x++){
-					grid[x][y].acquire(); 
-				}
-				for (int x=17; x<gridX; x++){
-					grid[x][y].acquire();
-				}
-			}
-			
-			for (int y = 14; y<gridY; y++){
-				for (int x = 0; x < 14; x++){
-					grid[x][y].acquire(); 
-				}
-				for (int x=17; x<gridX; x++){
-					grid[x][y].acquire();
-				}
-			}
-		}catch (Exception e) {
-		    System.out.println("Unexpected exception caught in during setup:"+ e);
-		}
 		
 		bgui = new BusGui(bus,0,220);	
 		bgui2 = new BusGui(bus2,280,00);
@@ -241,7 +238,7 @@ public class SimCityGUI extends JFrame {
 	     bus2.msgStartBus();
 	     
 ////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
-	     
+	   
 	     for (int i=0; i<5; i++){
 		     PersonAgent p = new PersonAgent("Person"+i,citymap);
 		     PersonGui pgui = new PersonGui(p);
@@ -263,7 +260,6 @@ public class SimCityGUI extends JFrame {
 	     for (PersonAgent p: people){
 	    	 p.startThread();
 	     }
-		 //people.get(0).startThread();
 
 	     
 		 SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
