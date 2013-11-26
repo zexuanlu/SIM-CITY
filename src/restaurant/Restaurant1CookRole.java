@@ -75,6 +75,10 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		this.marketCashier = c;
 	}
 	
+	public Restaurant1RevolvingStand getRevStand(){
+		return this.revStand;
+	}
+	
 	Timer timer = new Timer();
 
 	public void msghereisorder(Waiter w, String choice, int table){
@@ -82,6 +86,10 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		stateChanged();
 	}
 
+	public void msgAddedOrderToRevolvingStand(){
+		stateChanged();
+	}
+	
 	public void msgordercooked(Order order){
 		order.s = Order.state.cooked;
 		stateChanged();

@@ -1,11 +1,11 @@
 package restaurant;
 
+import restaurant.Restaurant1AbstractWaiter.state;
 import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import restaurant.shareddata.*;
-
 import person.PersonAgent;
 
 import java.util.*;
@@ -18,8 +18,8 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public int tablenum;
 		private String name;
 		private Semaphore atTable = new Semaphore(0,true);
-		
-		boolean isBack = true, atCook = false;
+		private Semaphore atCook = new Semaphore(0, true);
+		boolean isBack = true;
 		public WaiterGui waiterGui = null;
 		private Restaurant1HostRole host = null;
 		private Restaurant1CookRole cook= null;
@@ -137,7 +137,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		}
 		
 		public void msgatCook(){
-			atCook = true;
+			atCook.release();
 			stateChanged();
 		}
 		
@@ -250,14 +250,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 				}
 			}
 			for(mycustomer customers: customer){
-				if(customers.s == state.eating){
-					if(atCook){
-					DogobacktoCustomer(customers);
-					return true;
-					}
-				}
-			}
-			for(mycustomer customers: customer){
 				if(customers.s == state.done){
 					Dofreetable(customers);
 					return true;
@@ -339,34 +331,44 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		
 		public void Dotakeordertocook(mycustomer customer){
 			customer.s = state.gotocook;
+			waiterGui.Dogotocook();
+			try {
+				atCook.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			revStand.insertOrder(new Order(this, customer.choice, customer.table));	
+			cook.msgAddedOrderToRevolvingStand();
+			System.err.println("Added order to revolving stand");
+			waiterGui.DoGotoCHomePosition(tablenum);
 		}
 
 		public void Dogotocook(mycustomer customer){
-			customer.s = state.eating;
-			waiterGui.showfood(customer.choice);
 			waiterGui.Dogotocook();
+			
+			atCook.drainPermits();
+			
 			try {
-				atTable.acquire();
-			} catch (InterruptedException e) {
+				atCook.acquire();
+			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
-			msgatCook();
-		}
-		
-		public void DogobacktoCustomer(mycustomer customer) {
-			atCook = false;
+			
 			waiterGui.hidefood();
 			waiterGui.animationBringFood(customer.choice);
 			customer.s = state.available;
+			
 			waiterGui.DoBackToTable(customer.c ,customer.table);
+			atTable.drainPermits();
 			try {
 				atTable.acquire();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			msgordertotable(customer.c);
 	        waiterGui.DoLeaveCustomer();
 		}
