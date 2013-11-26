@@ -3,7 +3,7 @@ package gui.main;
 import gui.panels.*;
 
 import javax.swing.*;
-
+import market.gui.MarketTruckGui; 
 import person.Bank;
 import person.Home;
 import person.Market;
@@ -268,6 +268,7 @@ public class SimCityGUI extends JFrame {
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
+
 		for (int i=0; i<7; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
@@ -294,9 +295,6 @@ public class SimCityGUI extends JFrame {
 			p.startThread();
 		}
 		 //people.get(0).startThread();
-		/*for (PersonGui pgui: peoplegui){
-			cityAnimPanel.addGui(pgui);     
-		}*/
 
 
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
@@ -304,6 +302,22 @@ public class SimCityGUI extends JFrame {
 
 		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
+		people.get(0).setAnimationPanel(cityAnimPanel);
+		people.get(0).toDo.offer(goToBank);
+		people.get(0).toDo.offer(goToBank);
+		simclock = new SimWorldClock(7,people);
+		
+		/**
+		aStarTraversal = new AStarTraversal(grid);
+		MarketTruckAgent markettruckagent = new MarketTruckAgent(aStarTraversal);
+		MarketTruckGui mktgui = new MarketTruckGui(markettruckagent);
+		markettruckagent.setGui(mktgui);
+		cityAnimPanel.addGui(mktgui);
+		markettruckagent.startThread(); 
+		markettruckagent.msgGoBack();*/
+		
 		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
 		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
