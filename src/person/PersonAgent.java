@@ -749,7 +749,16 @@ public class PersonAgent extends Agent implements Person{
 		if(car != null){
 			return true;
 		}
-		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){
+		int Quadrant = 0;
+		if(currentLocation.getX() < 280 && currentLocation.getY() < 220)
+			Quadrant = 1;
+		else if(currentLocation.getX() > 280 && currentLocation.getY() < 220)
+			Quadrant = 2;
+		else if(currentLocation.getX() < 280 && currentLocation.getY() > 220)
+			Quadrant = 3;
+		else if(currentLocation.getX() > 280 && currentLocation.getY() > 220)
+			Quadrant = 4;
+		if(Quadrant == loc.Quadrant){
 			return true;
 		}
 		return false;

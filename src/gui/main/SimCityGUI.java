@@ -350,7 +350,9 @@ public class SimCityGUI extends JFrame {
 		 * Adds the people with a given house number. This is for homes. Any dynamically added person will
 		 * be added as an apartment tenant.
 		 */
+
 		for (int i=0; i<10; i++){
+
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
@@ -377,14 +379,15 @@ public class SimCityGUI extends JFrame {
 		people.get(7).addRole(customer1);
 		people.get(8).addRole(marketcashierrole);
 		people.get(9).addRole(marketemployeerole);
+
 		
 		bank.getTimeCard().startThread();
 		bankdatabase.startThread();
 		
 		
 		for (PersonAgent p: people){
-			p.startThread();
-		}
+			p.startThread();}
+
 
 		/* 
 		 * Every person added to SimCity must have at least one SimEvent to do much of anything
@@ -441,8 +444,7 @@ public class SimCityGUI extends JFrame {
 		
 		people.get(3).roles.get(0).role.switchPerson(people.get(3));
 		people.get(3).roles.get(1).role.switchPerson(people.get(3));
-		*/
-		//people.get(4).roles.get(0).role.switchPerson(people.get(4));
+
 		
 		/*
 		 * 3. Anyone who needs to know about other job roles in the building (like the host) must be notified of each role
