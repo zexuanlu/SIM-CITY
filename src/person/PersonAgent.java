@@ -41,7 +41,7 @@ import simcity.gui.PassengerGui;
  * @author Grant Collins
  */
 public class PersonAgent extends Agent implements Person{
-	EventLog log = new EventLog();
+	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores 
 
 	private String name;
@@ -51,19 +51,20 @@ public class PersonAgent extends Agent implements Person{
 	public boolean arrived;
 
 	public PersonGui gui;
-	CityAnimationPanel cap = new CityAnimationPanel();
+	private CityAnimationPanel cap = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
 
-	int accountNumber; 
+	private int accountNumber; 
 	public Wallet wallet;
-	int currentTime; 
+	private int currentTime; 
+	
 	public Position currentLocation = new Position(0, 0); 
 	public Position dest = new Position(50, 50);
-	Map<Integer, SimEvent> schedule = new HashMap<Integer, SimEvent>(); 
+	private Map<Integer, SimEvent> schedule = new HashMap<Integer, SimEvent>(); 
 	public CityMap cityMap;
 
 	@SuppressWarnings("unchecked")
-	Comparator<SimEvent> comparator = new EventComparator();
+	private Comparator<SimEvent> comparator = new EventComparator();
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>(10, comparator);
 
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
@@ -72,10 +73,10 @@ public class PersonAgent extends Agent implements Person{
 	/* Home home; // home/apartment
 	Car car; // car if the person has a car */ //Who is in charge of these classes?
 
-	Semaphore going = new Semaphore(0, true);
-	Semaphore transport = new Semaphore(0, true);
-	Semaphore wait = new Semaphore(0, true);
-	Semaphore driving = new Semaphore(0, true);
+	private Semaphore going = new Semaphore(0, true);
+	private Semaphore transport = new Semaphore(0, true);
+	private Semaphore wait = new Semaphore(0, true);
+	private Semaphore driving = new Semaphore(0, true);
 
 	public PersonAgent (String name, CityMap cm){
 		super();

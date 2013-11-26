@@ -101,14 +101,4 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         guis.add(gui);
     }
 
-    public void addGui(ApartmentTenantGui gui) {
-        guis.add(gui);
-    }
-    /**public void addGui(FoodGui gui){
-    	guis.add(gui);
-    }
-    public void addGui(CookGui gui){
-    	guis.add(gui);
-    }*/
-    
 }
