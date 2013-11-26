@@ -369,12 +369,15 @@ public class PersonAgent extends Agent implements Person{
 					activeRole = true;
 					Restaurant1CustomerRole cRole = new Restaurant1CustomerRole(this.name, this);
 					if(!containsRole(cRole)){
+						print("Customer not found");
 						MyRole newRole = new MyRole(cRole);
 						newRole.isActive(true);
 						roles.add(newRole);
 						CustomerGui cg = new CustomerGui((Restaurant1CustomerRole)newRole.role, null);
 						cg.isPresent = true;
+						((Restaurant1CustomerRole)newRole.role).setGui(cg);
 						cap.rest1Panel.addGui(cg);
+						((Restaurant1CustomerRole)newRole.role).setHost(rest.getHost());
 						((Restaurant1CustomerRole)newRole.role).gotHungry();
 					}
 					else{

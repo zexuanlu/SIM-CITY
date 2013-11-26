@@ -103,6 +103,7 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
     }
     
     public void addGui(CustomerGui gui) {
+    	//System.err.println("CustomerGui Added");
         guis.add(gui);
     }
 

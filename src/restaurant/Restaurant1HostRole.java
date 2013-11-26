@@ -102,6 +102,7 @@ public class Restaurant1HostRole extends Role {
 	}
 
 	public void msgIWantFood(Restaurant1CustomerRole cust, int loc) {
+		System.err.print("Recieved a new customer");
 		waitingCustomers.add(new mycustomer(cust, loc));
 		stateChanged();
 
