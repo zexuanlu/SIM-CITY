@@ -55,8 +55,8 @@ import simcity.gui.PassengerGui;
  */
 public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
-	public boolean testMode = false; //enabled for tests to skip semaphores 
-
+	public boolean testMode = false; //enabled for tests to skip semaphores
+	
 	private String name;
 	public int hunger; // tracks hunger level
 	public enum HomeType {Apartment, Home}
@@ -170,6 +170,10 @@ public class PersonAgent extends Agent implements Person{
 	public void setTime(int time){ currentTime = time; }
 
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
+	
+	public CityMap getMap() {
+		return cityMap;
+	}
 
 	public void addRole(MyRole r){ roles.add(r); }
 
