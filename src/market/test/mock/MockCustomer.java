@@ -1,6 +1,5 @@
 package market.test.mock;
 
-import market.Food;
 import market.interfaces.MarketCustomer;
 
 import java.util.*;
@@ -14,7 +13,11 @@ public class MockCustomer extends Mock implements MarketCustomer{
 		// TODO Auto-generated constructor stub
 	}
 
-
+	@Override
+	public void msgHello() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void msgPleasePay(int b) {
@@ -35,15 +38,8 @@ public class MockCustomer extends Mock implements MarketCustomer{
 		
 	}
 
-
 	@Override
-	public void msgHello(double m, List<Food> f) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void msgHereisYourOrder(List<Food> order) {
+	public void msgHereisYourOrder(List order) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Receive order"));
 	}

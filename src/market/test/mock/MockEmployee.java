@@ -32,11 +32,4 @@ public class MockEmployee extends Mock implements MarketEmployee{
 		log.add(new LoggedEvent("Got Your Order"));
 	}
 
-
-	@Override
-	public void msgWorkDayOver() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -45,7 +45,12 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 	
 	public void msgHello(double m, List<Food> f){
-
+		try {
+			atTable.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		food = f;
 		money = m;
 		s = state.ordering;
@@ -111,13 +116,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	void GiveOrder(){
-		customerGui.DoGoToTable();
-		try {
-			atTable.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		Do(""+food.size());
 		cashier.msgHereisOrder(this,  food);
 		s = state.ordered;
