@@ -165,6 +165,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		if(s == state.haveTeller){
 			goToLocation(destination);
 			s = state.atTeller;
+			destination = null;
 			return true;
 		}
 		//If the customer has a teller, but no account
