@@ -61,8 +61,9 @@ public class TimeCard extends Agent {
 	
 	private void goOffWork(MyRole role){
 		double pay = 500.00;
-		role.person.msgGoOffWork(role.role, pay);
+		role.role.getPerson().msgGoOffWork(role.role, pay);
 		role.role.switchPerson(role.person);
+		role.person.msgReadyToWork(role.role);
 		myRoles.remove(role);
 	}
 	
@@ -76,5 +77,5 @@ public class TimeCard extends Agent {
 			this.person = person;
 		}
 	}
-	enum roleState {replacement, newWorker, endOfDay}
+	enum roleState {replacement, newWorker}
 }
