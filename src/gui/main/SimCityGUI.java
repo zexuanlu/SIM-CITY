@@ -481,6 +481,7 @@ public class SimCityGUI extends JFrame {
 		customer1.setHost(host1);
 		customer1.setCashier(cashier1);
 		waiter1.setcook(cook1);
+		waiter1.sethost(host1);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
 		
