@@ -37,6 +37,7 @@ import restaurant.Restaurant1CookRole;
 import restaurant.Restaurant1CustomerRole;
 import restaurant.Restaurant1HostRole;
 import restaurant.Restaurant1WaiterRole;
+import restaurant.Restaurant1SDWaiterRole;
 import restaurant.gui.CookGui;
 import restaurant.gui.CustomerGui;
 import restaurant.gui.WaiterGui;
@@ -430,6 +431,24 @@ public class PersonAgent extends Agent implements Person{
 					}
 					gui.setPresent(false);
 					toDo.remove(e);
+				}
+				else if(e.type == EventType.SDWaiterEvent){
+					activeRole = true;
+					Restaurant1SDWaiterRole sdRole = new Restaurant1SDWaiterRole(this.name, this);
+					if(!containsRole(sdRole)){
+						MyRole newRole = new MyRole(sdRole);
+						newRole.isActive(true);
+						roles.add(newRole);
+						WaiterGui wg = new WaiterGui((Restaurant1SDWaiterRole)newRole.role, null);
+						wg.isPresent = true;
+						cap.rest1Panel.addGui(wg);
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1SDWaiterRole)newRole.role);
+					}
+					else {
+						((Restaurant1SDWaiterRole)getRoleOfType(sdRole).role).waiterGui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1SDWaiterRole)getRoleOfType(sdRole).role); 
+						getRoleOfType(sdRole).isActive(true);
+					}
 				}
 				else if(e.type == EventType.CookEvent){
 					activeRole = true;
