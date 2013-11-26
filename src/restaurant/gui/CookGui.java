@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import agent.Gui;
 import restaurant.Restaurant1CookRole;
 
 public class CookGui implements Gui{
@@ -113,17 +114,4 @@ public class CookGui implements Gui{
 		return isPresent;
 		// TODO Auto-generated method stub
 	}
-
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void zou() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

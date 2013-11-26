@@ -183,7 +183,7 @@ public class SimCityGUI extends JFrame {
 		this.add(bldngAnimPanel, BorderLayout.EAST);
 		this.add(cityCtrlPanel, BorderLayout.SOUTH);
 
-		cityAnimPanel.BuildPanel = bldngAnimPanel;
+		cityAnimPanel.setBuildPanel(bldngAnimPanel);
 
 		for (int i=0; i<gridX ; i++)
 			for (int j = 0; j<gridY; j++)
@@ -325,7 +325,7 @@ public class SimCityGUI extends JFrame {
 		banktellerrole2.setGui(btg2);
 		cityAnimPanel.bankPanel.addGui(btg2);
 		
-		bhg.isPresent = false;
+		//bhg.isPresent = false;
 		bankhostrole.setGui(bhg);
 		cityAnimPanel.bankPanel.addGui(bhg);
 		

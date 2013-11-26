@@ -6,6 +6,8 @@ import java.awt.*;
 
 import javax.swing.ImageIcon;
 
+import agent.Gui;
+
 public class CustomerGui implements Gui{
 
 	private Restaurant1CustomerRole agent = null;
