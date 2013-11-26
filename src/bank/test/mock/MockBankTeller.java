@@ -56,4 +56,9 @@ public class MockBankTeller extends Mock implements BankTeller {
 	public void msgRequestFailed(BankCustomer bc, String type){
 		log.add(new LoggedEvent("Received msgRequestFailed from BankDatabase"));
 	}
+
+	@Override
+	public void msgWorkDayOver() {
+		log.add(new LoggedEvent("Received msgWorkDayOver from Bank Host"));		
+	}
 }

@@ -33,6 +33,7 @@ import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.HomeOwnerGui;
+import restaurant.Restaurant1CustomerRole;
 import simcity.CarAgent;
 import simcity.gui.CarGui; 
 import simcity.PassengerRole;
@@ -51,6 +52,8 @@ public class PersonAgent extends Agent implements Person{
 
 	private String name;
 	public int hunger; // tracks hunger level
+	public enum HomeType {Apartment, Home}
+	public HomeType homeType;
 	public int homeNumber;
 	public boolean activeRole;
 	public boolean arrived;
@@ -75,9 +78,11 @@ public class PersonAgent extends Agent implements Person{
 
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
 	public List<Food> shoppingBag = new ArrayList<Food>();
+
 	
 	public SimCityGUI simcitygui;
 	
+
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
 	private Semaphore going = new Semaphore(0, true);
@@ -215,6 +220,9 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(true);
 		currentLocation = destination;
 		going.release();
+
+		//gui.setPresent(true);
+
 		stateChanged();
 	}
 	
@@ -350,32 +358,49 @@ public class PersonAgent extends Agent implements Person{
 				}
 			}
 			/*if(e.location.type == LocationType.Restaurant){
-			Restaurant rest = (Restaurant)e.location;
-			if(e.type == EventType.CustomerEvent){
-				activeRole = true;
-				CustomerRole cRole = new CustomerRole(this.name, this);
-				if(!containsRole(cRole)){
-					roles.add(cRole);
+				Restaurant rest = (Restaurant)e.location;
+				if(e.type == EventType.CustomerEvent){
+					activeRole = true;
+					Restaurant1CustomerRole cRole = new Restaurant1CustomerRole(this.name, this);
+					if(!containsRole(cRole)){
+						MyRole newRole = new MyRole(cRole);
+						
+						roles.add(cRole);
+					}
+					rest.getHost().msgIWantFood(this, cRole);
 				}
-				rest.getHost().msgIWantFood(this, cRole);
-				cRole.setActive(true);
-			}
-			else if(e.type == EventType.HostEvent){
-				print("Role");
-				activeRole = true;
-				HostRole hostRole = new HostRole(this.name, this); 
-
-				if(!containsRole(hostRole)){                                                       
-
-					roles.add(hostRole);
+				if(!containsRole(btr)){ 
+					MyRole newRole = new MyRole(btr);
+					bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
+					newRole.isActive(true);
+					roles.add(newRole);
+					//add a gui
+					BankTellerGui btg = new BankTellerGui((BankTellerRole)newRole.role);
+					((BankTellerRole)newRole.role).setGui(btg);
+					cap.bankPanel.addGui(btg);
 				}
-				rest.getHost().msgClockIn(this, hostRole);
-				hostRole.setActive(true);
-			}
-			else if(e.type == EventType.WaiterEvent){}
-			else if(e.type == EventType.CookEvent){}
-			else if(e.type == EventType.CashierEvent){}
-		}*/
+				else { 
+					bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
+					getRoleOfType(btr).isActive(true);
+				}
+				else if(e.type == EventType.HostEvent){
+					print("Role");
+					activeRole = true;
+					Restaurant1HostRole hostRole = new Restaurant1HostRole(this.name, this); 
+
+					if(!containsRole(hostRole)){                                                       
+
+						roles.add(hostRole);
+					}
+					rest.getHost().msgClockIn(this, hostRole);
+					hostRole.setActive(true);
+				}
+				else if(e.type == EventType.WaiterEvent){
+					
+				}
+				else if(e.type == EventType.CookEvent){}
+				else if(e.type == EventType.CashierEvent){}
+			}*/
 			if(e.location.type == LocationType.Bank){ //if our event happens at a bank
 				Bank bank = (Bank)e.location;
 				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
@@ -628,9 +653,9 @@ public class PersonAgent extends Agent implements Person{
 	
 	private void DoGoTo(Location loc){
 		//if(car != null){
-			//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			//car.setatPosition(loc.position.getX(), loc.position.getY());
-			//car.goToPosition(p.getX(), p.getY());
+		//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+		//car.setatPosition(loc.position.getX(), loc.position.getY());
+		//car.goToPosition(p.getX(), p.getY());
 		//}
 		//else{ 
 		gui.DoGoTo(loc.getPosition()); //}
@@ -641,12 +666,11 @@ public class PersonAgent extends Agent implements Person{
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
 			car.setatPosition(p.getX(), p.getY());
-		//	car.setatPosition(50,250);
-			
+
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
 			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
 			car.gotoPosition(l.getX(), l.getY());
-           // car.gotoPosition(500,250);
+			// car.gotoPosition(500,250);
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}

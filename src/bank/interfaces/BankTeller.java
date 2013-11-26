@@ -28,6 +28,8 @@ public interface BankTeller {
 	public void msgLoanGranted(double money, double debt, BankCustomer bc);
 	
 	public void msgRequestFailed(BankCustomer bc, String type);
+	
+	public void msgWorkDayOver();
 		
 	public void msgAtDestination();
 }
