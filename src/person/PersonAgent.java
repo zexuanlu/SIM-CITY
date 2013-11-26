@@ -610,9 +610,9 @@ public class PersonAgent extends Agent implements Person{
 
 	private void DoGoTo(Location loc){
 		if(car != null){
-			//cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			//car.setatPosition(x, y);
-			//car.goToPosition(loc.position.getX(), loc.position.getY());
+			//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+			//car.setatPosition(loc.position.getX(), loc.position.getY());
+			//car.goToPosition(p.getX(), p.getY());
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}
