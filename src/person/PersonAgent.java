@@ -292,17 +292,15 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(activeRole) { //run role code
-			for(MyRole r : roles){
-				if(r.isActive){
-					print("Executing rule in role "+ r.role);
-					boolean b = r.role.pickAndExecuteAnAction();
-					return b;
-				}
+		for(MyRole r : roles){
+			if(r.isActive){
+				print("Executing rule in role "+ r.role);
+				boolean b = r.role.pickAndExecuteAnAction();
+				return b;
 			}
 		}
-		else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
+			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
 			if((nextEvent != null && nextEvent.start == currentTime) 
 					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
@@ -311,11 +309,8 @@ public class PersonAgent extends Agent implements Person{
 				return true;
 			}
 			else{ //check vitals and find something to do on the fly
-				checkVitals();
-				return true;
+				return checkVitals();
 			}
-		}
-		return false;
 	}
 
 	/* Actions */
@@ -500,6 +495,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
+						((BankTellerRole)getRoleOfType(btr).role).gui.isPresent = true;
 						getRoleOfType(btr).isActive(true);
 					}
 					if(!testMode){
@@ -530,6 +526,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankHostRole)getRoleOfType(bhr).role); 
+						((BankHostRole)getRoleOfType(bhr).role).gui.isPresent = true;
 						getRoleOfType(bhr).isActive(true);
 					}
 					if(!testMode){
@@ -676,7 +673,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* checkVitals is a method to figure out misc things to do on the fly*/
-	private void checkVitals() { 
+	private boolean checkVitals() { 
 		/*NOTE: the locations in this method are hard coded until we get the init script that 
 		 * puts together the people's cityMap objects which then will allow the people to 
 		 * find locations on the fly via look up 
@@ -687,6 +684,7 @@ public class PersonAgent extends Agent implements Person{
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
 				wallet.addTransaction("Withdrawal", 100);
+				return true;
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
@@ -695,6 +693,7 @@ public class PersonAgent extends Agent implements Person{
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
 				wallet.addTransaction("Deposit", 200);
+				return true;
 			}
 		}
 		/*if(hunger >= 3){ //go eat
@@ -707,6 +706,7 @@ public class PersonAgent extends Agent implements Person{
 		//buy a car
 		//rob the bank
 		//etc
+		return false;
 	}
 
 	private void dowalkto(int originx, int originy){
