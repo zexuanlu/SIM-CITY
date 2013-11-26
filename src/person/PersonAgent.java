@@ -15,6 +15,9 @@ import java.util.concurrent.Semaphore;
 import person.Location.LocationType;
 import person.Restaurant;
 import person.SimEvent.EventType;
+import bank.gui.BankCustomerGui;
+import bank.gui.BankHostGui;
+import bank.gui.BankTellerGui;
 import bank.interfaces.*;
 import bank.test.mock.MockBankHost;
 import bank.*;
@@ -351,7 +354,10 @@ public class PersonAgent extends Agent implements Person{
 						MyRole newRole = new MyRole(bcr); //make a new MyRole
 						newRole.isActive(true); //set it active
 						roles.add(newRole); 
-						bcr.msgGoToBank(e.directive, 10); //message it with what we want to do
+						BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
+						((BankCustomerRole)newRole.role).setGui(bcg);
+						cap.bankPanel.addGui(bcg);
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10); //message it with what we want to do
 					}
 					else { //we already have one use it
 						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
@@ -368,7 +374,10 @@ public class PersonAgent extends Agent implements Person{
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
 						newRole.isActive(true);
 						roles.add(newRole);
-
+						//add a gui
+						BankTellerGui btg = new BankTellerGui((BankTellerRole)newRole.role);
+						((BankTellerRole)newRole.role).setGui(btg);
+						cap.bankPanel.addGui(btg);
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
@@ -394,8 +403,11 @@ public class PersonAgent extends Agent implements Person{
 						print("Host not found");
 						MyRole newRole = new MyRole(bhr);
 						newRole.isActive(true);
-						bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
 						roles.add(newRole);
+						BankHostGui btg = new BankHostGui((BankHostRole)newRole.role);
+						((BankHostRole)newRole.role).setGui(btg);
+						cap.bankPanel.addGui(btg);
+						bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankHostRole)getRoleOfType(bhr).role); 

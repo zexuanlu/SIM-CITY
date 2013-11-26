@@ -417,7 +417,10 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void setHost(BankHost bh){
 		this.bh = bh;
 	}
-	
+	//Grant's addition
+	public void setGui(BankTellerGui btg){
+		this.gui = btg;
+	}
 	/**
 	 * The Task class. Contains a type, an amount, a balance, an account number, 
 	 * and a taskState. Used to track things that the teller needs to do.
