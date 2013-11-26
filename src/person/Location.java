@@ -10,15 +10,25 @@ public class Location {
         protected String name; 
         public enum LocationType {Restaurant, Bank, Market, Home, BusStop};
         public LocationType type;
+        protected int Quadrant;
         public Position position; 
         public Location(String name, LocationType type, Position p){
                 this.name = name;
                 this.type = type;
                 this.position = p;
+        		if(p.getX() < 280 && p.getY() < 220)
+        			this.Quadrant = 1;
+        		else if(p.getX() > 280 && p.getY() < 220)
+        			this.Quadrant = 2;
+        		else if(p.getX() < 280 && p.getY() > 220)
+        			this.Quadrant = 3;
+        		else if(p.getX() > 280 && p.getY() > 220)
+        			this.Quadrant = 4;
         }
         public Location(){}//Blank constructor for copying etc
         public String getName(){ return this.name; }
         public LocationType getType(){ return this.type; }
+        public int getQuadrant(){return this.Quadrant; }
         public Position getPosition(){ return this.position; }
         public void setPosition(Position p){ this.position = p; } 
 }
