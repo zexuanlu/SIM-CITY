@@ -362,7 +362,7 @@ public class SimCityGUI extends JFrame {
 		 */
 
 //		for (int i=1; i<6; i++){
-		for (int i=0; i<10; i++){
+		for (int i=0; i<11; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 2000);
 			PersonGui pgui = new PersonGui(p);
@@ -375,34 +375,20 @@ public class SimCityGUI extends JFrame {
 			p.setcitygui(this);
 		}
 		
-//		people.get(0).addRole(bankhostrole);
-		people.get(0).addRole(host1);
+		people.get(0).addRole(bankhostrole);
 		people.get(0).addRole(homeOwnerRole1);
-//		people.get(1).addRole(banktellerrole1);
-		people.get(1).addRole(cook1);
+		people.get(1).addRole(banktellerrole1);
 		people.get(1).addRole(homeOwnerRole2);
-//		people.get(2).addRole(banktellerrole2);
-		people.get(2).addRole(waiter1);
+		people.get(2).addRole(banktellerrole2);
 		people.get(2).addRole(homeOwnerRole3);
-//		people.get(3).addRole(waiter1);
-		people.get(3).addRole(cashier1);
+		people.get(3).addRole(host1);
 		people.get(3).addRole(homeOwnerRole4);
-		people.get(4).addRole(customer1);
-		//people.get(4).addRole(banktellerrole1);
-		
-		//people.get(4).addRole(customer1);		
-		//people.get(1).addRole(banktellerrole2);
-		//people.get(2).addRole(bankhostrole);
-		//people.get(3).addRole(marketcashierrole);
-		//people.get(4).addRole(marketemployeerole);
-		//people.get(5).addRole(waiter1);
-		people.get(4).addRole(host1);
-		people.get(5).addRole(cook1);
-		people.get(6).addRole(cashier1);
-		people.get(7).addRole(customer1);
-		people.get(8).addRole(marketcashierrole);
-		people.get(9).addRole(marketemployeerole);
-
+		people.get(4).addRole(cook1);
+		people.get(5).addRole(cashier1);
+		people.get(6).addRole(waiter1);
+		people.get(7).addRole(marketcashierrole);
+		people.get(8).addRole(marketemployeerole);
+		people.get(9).addRole(customer1);
 		
 		bank.getTimeCard().startThread();
 		bankdatabase.startThread();
@@ -437,10 +423,10 @@ public class SimCityGUI extends JFrame {
 		
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		goToBank.directive = "deposit";
-		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
-		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
-		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
-		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
+//		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
+//		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
+//		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
+//		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
 		
 		/*
 		 * 2. Since the role is initialized with the initPerson who is null 
@@ -495,6 +481,7 @@ public class SimCityGUI extends JFrame {
 		customer1.setHost(host1);
 		customer1.setCashier(cashier1);
 		waiter1.setcook(cook1);
+		waiter1.sethost(host1);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
 		
@@ -522,12 +509,12 @@ public class SimCityGUI extends JFrame {
 	//	people.get(1).toDo.offer(goHome2);
 		people.get(2).toDo.offer(tellerGoToBank);
 	//	people.get(2).toDo.offer(goHome3);
-	    people.get(3).toDo.offer(goToRestaurant);
+	    people.get(3).toDo.offer(hostGoToRestaurant);
 		//people.get(3).toDo.offer(goHome4);
-		people.get(4).toDo.offer(goToHostRest);
-		people.get(5).toDo.offer(cookGoToRestaurant);
-		people.get(6).toDo.offer(cashierGoToRestaurant);
-		people.get(7).toDo.offer(gotoRestaurant);
+		people.get(4).toDo.offer(cookGoToRestaurant);
+		people.get(5).toDo.offer(cashierGoToRestaurant);
+		people.get(6).toDo.offer(waiterGoToRestaurant);
+		people.get(9).toDo.offer(custGoToRestaurant);
 	//	people.get(8).toDo
 		
 		/*Create the SimWorldClock with the starting time and the list of people*/

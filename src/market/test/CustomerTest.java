@@ -32,27 +32,29 @@ public class CustomerTest extends TestCase {
 		p = new PersonMock("person");
 		customer = new MarketCustomerRole(p, "customer");
 		cashier = new MockCashier("cashier");
-		customerGui = new MarketCustomerGui();
+		customerGui = new MarketCustomerGui(customer);
 
 	}
 	
 	public void testNormalCustomerCashierCase(){
 
-		customer.addFood("Steak", 2);
-		
-		customer.addFood("Chicken", 2);
 		
 		customer.setCashier(cashier);
 		
 		List<Food> food = new ArrayList<Food>();
 		
+		food.add(new Food("Steak", 2));
+		food.add(new Food("Chicken", 2));
+		
 		customer.setGui(customerGui);
+		
+		customer.msgAtTable();
+		
+		customer. msgHello(30, food);
 		
 		assertEquals("customer should have 2 in the list", customer.food.size(),2);
 		
-		customer. msgHello();
 		
-		customer.msgAtTable();
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", customer.pickAndExecuteAnAction());
 		
