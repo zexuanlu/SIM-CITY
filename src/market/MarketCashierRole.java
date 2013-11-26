@@ -102,6 +102,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
+		Do("Yoooooooooooo");
 	}
 
 	public void msgPayment(MarketCustomer customer, double m){

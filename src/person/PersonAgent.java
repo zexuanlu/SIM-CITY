@@ -303,7 +303,6 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-//			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
 			if((nextEvent != null && nextEvent.start == currentTime) 
 					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
@@ -751,7 +750,16 @@ public class PersonAgent extends Agent implements Person{
 		if(car != null){
 			return true;
 		}
-		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){
+		int Quadrant = 0;
+		if(currentLocation.getX() < 280 && currentLocation.getY() < 220)
+			Quadrant = 1;
+		else if(currentLocation.getX() > 280 && currentLocation.getY() < 220)
+			Quadrant = 2;
+		else if(currentLocation.getX() < 280 && currentLocation.getY() > 220)
+			Quadrant = 3;
+		else if(currentLocation.getX() > 280 && currentLocation.getY() > 220)
+			Quadrant = 4;
+		if(Quadrant == loc.Quadrant){
 			return true;
 		}
 		return false;
@@ -855,7 +863,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 		
-		if (this.wallet.getOnHand() >= 100){
+		if (this.wallet.getOnHand() >= 10000000){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}

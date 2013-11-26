@@ -144,6 +144,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	public void msgNewLocation(String location){
+		destination = location;
+		stateChanged();
+	}
+	
 	/**
 	 * The scheduler of the customer. Is called by the person.
 	 * 
@@ -160,6 +165,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		if(s == state.haveTeller){
 			goToLocation(destination);
 			s = state.atTeller;
+			destination = null;
 			return true;
 		}
 		//If the customer has a teller, but no account
@@ -175,6 +181,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		//If the customer has a teller, but no tasks left to perform
 		if(s == state.atTeller && tasks.isEmpty()){
 			leaveBank();
+			return true;
+		}
+		if(destination != null){
+			goToLocation(destination);
+			destination = null;
 			return true;
 		}
 		//If no action was selected

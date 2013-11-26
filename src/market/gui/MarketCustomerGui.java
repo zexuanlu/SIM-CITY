@@ -14,7 +14,7 @@ public class MarketCustomerGui implements Gui {
 	private int xTable =140, yTable = 240;
 	private boolean atTable = true;
 	
-	public void setAgent(MarketCustomerRole agent){
+	public MarketCustomerGui(MarketCustomerRole agent){
 		this.agent = agent;
 	}
 	
@@ -36,7 +36,6 @@ public class MarketCustomerGui implements Gui {
         		& (xDestination == xTable) & (yDestination == yTable )) {
         	atTable = false;
            agent.msgAtTable();
-
         }
 
 	}

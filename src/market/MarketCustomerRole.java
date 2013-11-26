@@ -53,6 +53,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public void msgHello(){
 		s = state.ordering;
+		Do("YOooooooo");
 		stateChanged();
 	}
 
@@ -81,6 +82,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	public void msgAtTable(){
+		Do("At table");
 		atTable.release();
 	}
 

@@ -73,9 +73,9 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 
 	
-	public void setatPosition(int dx, int dy){
-		int x = 297; 
-		int y = 410;
+	public void setatPosition(/*int dx, int dy*/){
+		int x = 540; 
+		int y = 60;
 	    currentPosition.release(aStar.getGrid());
 		currentPosition = new Position(x/scale, y/scale);
         currentPosition.moveInto(aStar.getGrid());
@@ -92,8 +92,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	public void gotoPosition(Restaurant1CookRole c, List<Food> food, int dx, int dy){
 		
-		int x = 297; 
-		int y = 410;
+		int x = 540; 
+		int y = 60;
 	    currentPosition.release(aStar.getGrid());
 		currentPosition = new Position(x/scale, y/scale);
         currentPosition.moveInto(aStar.getGrid());
@@ -110,8 +110,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		
 		
 		
-		x = 300; 
-		y =50; 
+		x = 540; 
+		y =30; 
 		
 		TravelTimes++;
 
@@ -134,8 +134,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	public void msgGoBack(){
 		
-		int x = 300; 
-		int y = 50;
+		int x = 540; 
+		int y = 30;
 	    currentPosition.release(aStar.getGrid());
 		currentPosition = new Position(x/scale, y/scale);
         currentPosition.moveInto(aStar.getGrid());
@@ -152,8 +152,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		
 		
 		TravelTimes++;
-		x = 297;   /////////////////////   !!!!!!!!!!!!!
-		y = 410;  //////////////////////   !!!!!!!!!!!!
+		x = 540;   /////////////////////   !!!!!!!!!!!!!
+		y = 30;  //////////////////////   !!!!!!!!!!!!
 		destinationX = x; 
 		destinationY = y; 
 		int num = x/scale; 

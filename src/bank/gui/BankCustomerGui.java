@@ -39,6 +39,16 @@ public class BankCustomerGui implements Gui{
 		locations.put("Teller8", new Dimension(460, 340));
 		locations.put("Teller9", new Dimension(520, 340));
 		locations.put("Teller10", new Dimension(580, 340));
+		locations.put("waitArea0", new Dimension(460 ,80));
+		locations.put("waitArea1", new Dimension(460 ,120));
+		locations.put("waitArea2", new Dimension(460 ,160));
+		locations.put("waitArea3", new Dimension(460 ,200));
+		locations.put("waitArea4", new Dimension(460 ,240));
+		locations.put("waitArea5", new Dimension(500 ,80));
+		locations.put("waitArea6", new Dimension(500 ,120));
+		locations.put("waitArea7", new Dimension(500 ,160));
+		locations.put("waitArea8", new Dimension(500 ,200));
+		locations.put("waitArea9", new Dimension(500 ,240));
 		locations.put("Outside", new Dimension(280, -20));
 		//gui.addGui(this);
 	}

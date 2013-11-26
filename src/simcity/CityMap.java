@@ -51,7 +51,7 @@ public class CityMap {
 	}
 	
 	public Position getNearestStreet(int x, int y){
-		if (x < WIDTHTOTAL){
+		if (x < WIDTHTOTAL/2){
 			return(new Position(x,Street1));
 		}
 		else {

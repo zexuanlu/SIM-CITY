@@ -21,7 +21,7 @@ public class MarketEmployeeGui implements Gui{
     private boolean takeFood = false;
     private boolean sendFood = false;
     
-    public void setAgent(MarketEmployeeRole agent){
+     public MarketEmployeeGui(MarketEmployeeRole agent){
     	this.agent = agent;
     }
     
