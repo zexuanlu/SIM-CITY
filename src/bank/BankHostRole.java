@@ -25,6 +25,7 @@ public class BankHostRole extends Role implements BankHost {
 	public List<MyTeller> tellers;//A list of all the tellers in the bank
 	public BankHostGui gui = null;//Used for animation
 	public boolean atDesk;//Used for animation
+	public boolean endOfDay = false;
 	Semaphore movement = new Semaphore(0,true);//Used for animation
 	/**
 	 * The constructor for Bank Host
@@ -61,6 +62,10 @@ public class BankHostRole extends Role implements BankHost {
 		stateChanged();
 	}
 
+	public void msgEndOfDay(){
+		endOfDay = true;
+		stateChanged();
+	}
 	/**
 	 * Received from the bank teller when they finish with a customer
 	 * 
@@ -98,6 +103,10 @@ public class BankHostRole extends Role implements BankHost {
 				}
 			}
 		}
+		if(waitingCustomers.isEmpty() && endOfDay){
+			workDayOver();
+			return true;
+		}
 		//If there are no actions
 		return false;
 	}
@@ -114,6 +123,14 @@ public class BankHostRole extends Role implements BankHost {
 		bc.msgHereIsTeller(mt.bt, mt.location);
 		mt.s = state.withCustomer;
 		waitingCustomers.remove(bc);
+	}
+	
+	private void workDayOver(){
+		for(MyTeller mt : tellers){
+			mt.bt.msgWorkDayOver();
+		}
+		endOfDay = false;
+		getPerson().msgGoOffWork(this, 500.00);
 	}
 	
 	/**

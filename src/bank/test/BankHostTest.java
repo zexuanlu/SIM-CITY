@@ -183,4 +183,37 @@ public class BankHostTest extends TestCase {
 				+ bh.log.getLastLoggedEvent().toString(), bh.log.containsString("Received msgBackToWork"));
 		assertFalse("The scheduler should return false. It didn't.", bh.pickAndExecuteAnAction());
 	}
+	
+	public void testEndOfDay(){
+		assertEquals("Bank Host should contain 0 Tellers. It doesn't.", bh.tellers.size(), 0);
+		assertFalse("Bank Host's atDesk should be false. It isn't", bh.atDesk);
+		
+		assertTrue("The scheduler should return true. It didn't.", bh.pickAndExecuteAnAction());
+		assertTrue("Bank Host's atDesk should be true. It isn't", bh.atDesk);
+		
+		bh.addTeller(bt);
+		assertEquals("Bank Host should contain 1 Teller. It doesn't.", bh.tellers.size(), 1);
+		assertEquals("Bank Host should contain 0 Customers. It doesn't.", bh.waitingCustomers.size(), 0);
+		assertTrue("The state of the Teller should be working. It isn't.", bh.tellers.get(0).s == state.working);
+		assertTrue("BankTeller should have logged \"Received msgNewDestination\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgNewDestination"));
+		
+		bh.addTeller(bt2);
+		assertEquals("Bank Host should contain 2 Tellers. It doesn't.", bh.tellers.size(), 2);
+		assertEquals("Bank Host should contain 0 Customers. It doesn't.", bh.waitingCustomers.size(), 0);
+		assertTrue("The state of the Teller should be working. It isn't.", bh.tellers.get(1).s == state.working);
+		assertTrue("BankTeller should have logged \"Received msgNewDestination\" but didn't. His log reads instead: " 
+				+ bt2.log.getLastLoggedEvent().toString(), bt2.log.containsString("Received msgNewDestination"));
+		
+		bh.msgEndOfDay();
+		assertTrue("The end of day boolean should be true. It isn't.", bh.endOfDay);
+		
+		assertTrue("The scheduler should return true. It didn't.", bh.pickAndExecuteAnAction());
+		assertTrue("BankTeller should have logged \"Received msgWorkDayOver\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgWorkDayOver"));
+		assertTrue("BankTeller should have logged \"Received msgWorkDayOver\" but didn't. His log reads instead: " 
+				+ bt2.log.getLastLoggedEvent().toString(), bt2.log.containsString("Received msgWorkDayOver"));
+		assertTrue("Person should have logged \"Received msgGoOffWork\" but didn't. His log reads instead: " 
+				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Received msgGoOffWork"));
+	}
 }

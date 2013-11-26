@@ -22,6 +22,10 @@ public abstract class Role {
         private boolean isActive;
         private Person person;
         
+        public void msgEndOfDay(){
+        	
+        }
+        
     protected Role(Person person) {
             isActive = false;
             this.person = person;
