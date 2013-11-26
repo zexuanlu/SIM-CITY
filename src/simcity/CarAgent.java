@@ -58,6 +58,7 @@ public class CarAgent extends Agent {
 
 	
 	public void setatPosition(int x, int y){
+		print ("Set at position");
 	    currentPosition.release(aStar.getGrid());
 		currentPosition = new Position(x/scale, y/scale);
         currentPosition.moveInto(aStar.getGrid());
@@ -73,6 +74,7 @@ public class CarAgent extends Agent {
 	}
 	
 	public void gotoPosition(int x, int y){
+		print("goto position");
 		destinationX = x; 
 		destinationY = y; 
 		int num = x/scale; 

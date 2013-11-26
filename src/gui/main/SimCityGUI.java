@@ -48,6 +48,7 @@ public class SimCityGUI extends JFrame {
 	public SimWorldClock simclock;
 	
 	List<BankTellerRole>banktellers = new ArrayList<BankTellerRole>();
+	List<MarketEmployeeRole> marketemployeeroles = new ArrayList<MarketEmployeeRole>();
 	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
 	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
@@ -111,7 +112,11 @@ public class SimCityGUI extends JFrame {
 		public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 		public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); */
 
-
+		banktellers.add(banktellerrole1); 
+		banktellers.add(banktellerrole2);
+		marketemployeeroles.add(marketemployeerole);
+		
+		
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(140, 160), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
@@ -250,7 +255,7 @@ public class SimCityGUI extends JFrame {
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
-		for (int i=0; i<5; i++){
+		for (int i=0; i<1; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person"+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
@@ -260,10 +265,10 @@ public class SimCityGUI extends JFrame {
 			cityAnimPanel.addGui(pgui);
 		}
 		people.get(0).addRole(banktellerrole1);
-		people.get(1).addRole(banktellerrole2);
-		people.get(2).addRole(bankhostrole);
-		people.get(3).addRole(marketcashierrole);
-		people.get(4).addRole(marketemployeerole);
+		//people.get(1).addRole(banktellerrole2);
+		//people.get(2).addRole(bankhostrole);
+		//people.get(3).addRole(marketcashierrole);
+		//people.get(4).addRole(marketemployeerole);
 
 
 		for (PersonAgent p: people){
