@@ -60,9 +60,7 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT);
         
         for(Gui gui : guis) {
-            if (gui.isPresent()) {
                 gui.updatePosition();
-            }
         }
 
         synchronized(guis){

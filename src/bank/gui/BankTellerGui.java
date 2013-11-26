@@ -12,7 +12,7 @@ import java.util.*;
 public class BankTellerGui implements Gui{
 
 	private BankTeller bt = null;
-	private boolean isPresent = true;
+	public boolean isPresent = true;
 	private boolean atDestination = true;
 	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
 

@@ -292,7 +292,6 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		//if(activeRole) { //run role code
 		for(MyRole r : roles){
 			if(r.isActive){
 				print("Executing rule in role "+ r.role);
@@ -301,9 +300,8 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if (toDo.peek() != null) {
-		//}
-		//else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
+			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
 			if((nextEvent != null && nextEvent.start == currentTime) 
 					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
@@ -500,6 +498,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
+						((BankTellerRole)getRoleOfType(btr).role).gui.isPresent = true;
 						getRoleOfType(btr).isActive(true);
 					}
 					if(!testMode){
@@ -530,6 +529,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankHostRole)getRoleOfType(bhr).role); 
+						((BankHostRole)getRoleOfType(bhr).role).gui.isPresent = true;
 						getRoleOfType(bhr).isActive(true);
 					}
 					if(!testMode){
