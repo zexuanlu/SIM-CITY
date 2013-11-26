@@ -15,7 +15,7 @@ public class HomeOwnerGui implements Gui {
     private int homeY = 50;
     private int fridgeX = 70;
     private int fridgeY = 170;
-    private int doorX = 400;
+    private int doorX = 600;
     private int doorY = 50;
     private int stoveX = 100;
     private int stoveY = 170;

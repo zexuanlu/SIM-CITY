@@ -187,7 +187,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgAddEvent(SimEvent e){
 		toDo.offer(e);
-		stateChanged();
+		//stateChanged();
 	}
 	public void msgNewHour(int hour){ //from the world timer or gui 
 		currentTime = hour;
@@ -241,6 +241,8 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		activeRole = false;
+		gui.setPresent(true);
+		//arrived = false;
 		stateChanged();
 	}
 	public void msgReadyToWork(Role r){
@@ -269,11 +271,10 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-
 		if(activeRole) { //run role code
 			for(MyRole r : roles){
 				if(r.isActive){
-					print("Executing rule in role "+r.role);
+					print("Executing rule in role "+ r.role);
 					boolean b = r.role.pickAndExecuteAnAction();
 					return b;
 				}
@@ -320,12 +321,14 @@ public class PersonAgent extends Agent implements Person{
 
 				((PassengerRole)newRole.role).gotoBus();
 				gui.setPresent(false);
+				arrived = false;
 			}
 			else{ //if we already have a PassengerRole, use it
 				((PassengerRole)getRoleOfType(pRole).role).setDestination(e.location.name);
 				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
 				getRoleOfType(pRole).isActive(true);
 				gui.setPresent(false);
+				arrived = false;
 			}
 		}
 		else{
@@ -586,7 +589,7 @@ public class PersonAgent extends Agent implements Person{
 					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
-				wallet.addTransaction("Witdrawl", 100);
+				wallet.addTransaction("Withdrawal", 100);
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
@@ -610,6 +613,13 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void DoGoTo(Location loc){
+		//if(car != null){
+			//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+			//car.setatPosition(loc.position.getX(), loc.position.getY());
+			//car.goToPosition(p.getX(), p.getY());
+		//}
+		//else{ 
+		gui.DoGoTo(loc.getPosition()); //}
 		if(car != null){
 			print("i've got a car whore");
 			car.myGui.isPresent = true;
