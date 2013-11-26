@@ -1,6 +1,10 @@
 package person.test;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -10,7 +14,10 @@ import person.SimEvent;
 import person.PersonAgent;
 import person.Position;
 import person.SimEvent.EventType;
+import person.gui.PersonGui;
 import person.Location.LocationType;
+import person.Location;
+import simcity.CityMap;
 import bank.*;
 import bank.test.mock.*;
 /*
@@ -27,15 +34,19 @@ public class BankHandshake extends TestCase{
 	SimEvent goToBank;
 	Bank bank;
 	Position p = new Position(10, 10);
-	
+	List<Location> locs = new ArrayList<Location>();
 	public void setUp() throws Exception{
 		
 		super.setUp();	
-		person = new PersonAgent();
-		person.setName("Grant");
 		host = new MockBankHost("Gil");
 		bank = new Bank("Bank", host, p, LocationType.Bank);
 		goToBank = new SimEvent(bank, 1, 9, EventType.CustomerEvent);
+		locs.add(bank);
+		CityMap cm = new CityMap(locs);
+		person = new PersonAgent("Grant", cm);
+		PersonGui pgui = new PersonGui(person);
+		person.gui = pgui;
+		person.testMode = true;
 	}
 	
 	@Test

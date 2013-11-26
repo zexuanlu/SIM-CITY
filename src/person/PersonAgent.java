@@ -96,6 +96,7 @@ public class PersonAgent extends Agent implements Person{
 		this.cityMap = cm;
 		this.wallet = new Wallet(5000, 5000);//hacked in
 		if (this.wallet.getOnHand() >= 100){
+			print("Im rich gul");
 			AStarTraversal ast = new AStarTraversal(astar.getGrid());
 			car = new CarAgent(ast);
 			CarGui cgui = new CarGui(car, 600,400);
@@ -300,7 +301,7 @@ public class PersonAgent extends Agent implements Person{
 
 	private void goToAndDoEvent(SimEvent e){
 		print("going");
-		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
+		if(!isInWalkingDistance(e.location) && !arrived && !testMode){ //if its not in walking distance we ride the bus
 			//make a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
@@ -619,8 +620,21 @@ public class PersonAgent extends Agent implements Person{
 		//}
 		//else{ 
 		gui.DoGoTo(loc.getPosition()); //}
+		if(car != null){
+			print("i've got a car whore");
+			car.myGui.isPresent = true;
+			gui.isPresent = false;
+			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+			print("My Location: "+currentLocation.getX()+" Position x: "+ p.getX() +" y: "+p.getY());
+			car.setatPosition(p.getX(), p.getY());
+			car.gotoPosition(loc.position.getX(), loc.position.getY());
+		}
+		else{ gui.DoGoTo(loc.getPosition()); }
 	}
 	private boolean isInWalkingDistance(Location loc){
+		if(car != null){
+			return true;
+		}
 		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){
 			return true;
 		}

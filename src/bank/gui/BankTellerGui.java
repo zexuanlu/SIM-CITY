@@ -39,7 +39,7 @@ public class BankTellerGui implements Gui{
 		locations.put("Teller9", new Dimension(520, 380));
 		locations.put("Teller10", new Dimension(580, 380));
 		locations.put("Outside", new Dimension(640, 250));
-		gui.addGui(this);
+		//gui.addGui(this);
 	}
 
 	public void updatePosition() {

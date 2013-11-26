@@ -19,6 +19,7 @@ public class CarGui implements Gui {
 	boolean NorthSouth; 
 	boolean EastWest; 
 	boolean deadpos; 
+	public boolean isPresent;
 	public int xPos, yPos, xDestination, yDestination; 
 	public int overallX, overallY; 
 	
@@ -35,6 +36,7 @@ public class CarGui implements Gui {
     	yDestination = y; 
     	EastWest = true; 
     	deadpos = true; 
+    	isPresent = false;
 	}
 	
 	public void draw(Graphics2D g) {
@@ -51,13 +53,14 @@ public class CarGui implements Gui {
     }
 	
 	public boolean isPresent() {
-        return true;
+		if(isPresent){ return true; }
+		else { return false; }
     }
     
 	
     public void updatePosition() {
     	//check orientation of the bus
-    	
+    	System.out.println("up");
        	if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
     		guistate = GuiState.canStop; 
     		System.out.println("msg at Stop");
@@ -96,8 +99,8 @@ public class CarGui implements Gui {
         	atPosition(deadpositionX, deadpositionY);
         }
     }
-    
-    public void atPosition(int x, int y){
+
+	public void atPosition(int x, int y){
     	if (deadpos){
     		deadpos = false; 
     	}

@@ -13,7 +13,7 @@ public class PersonGui implements Gui{
 	public int xPos = -20, yPos = -20;//default player position
 	public int xDestination = 20, yDestination = 20;//default start position
 	private boolean arrived; 
-	private boolean isPresent;
+	public boolean isPresent;
 
 	public PersonGui(PersonAgent agent) {
 		this.agent = agent;

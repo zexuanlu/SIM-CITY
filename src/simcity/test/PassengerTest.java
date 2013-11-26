@@ -18,7 +18,8 @@ public class PassengerTest extends TestCase{
 		super.setUp();
 		busfare = 10; 
 		Destination = "Palo Alto";
-		passenger = new PassengerRole("passenger",person);
+		person = new PersonMock("PersonMock");
+		passenger = new PassengerRole("passengerRole",person);
 		bus = new MockBusRole("bus");
 		busstop = new MockBusStop("busstop");
 	}
@@ -71,6 +72,11 @@ public class PassengerTest extends TestCase{
 		assertTrue("passenger sent message to bus saying that he's leaving",bus.log.containsString("Passenger leaving bus"));
 		
 		assertFalse("passenger has no actions",passenger.pickAndExecuteAnAction());
+	}
+	
+	public void testTwoNormalPassengerSituation(){
 		
 	}
+	
+	
 }
