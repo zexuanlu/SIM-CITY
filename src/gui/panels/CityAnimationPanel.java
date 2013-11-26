@@ -16,6 +16,7 @@ import resident.gui.ApartmentAnimationPanel;
 import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant.gui.Restaurant1AnimationPanel;
+import simcity.CarAgent;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
@@ -246,7 +247,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
     }
 
-    
+	public void startCar(CarAgent c){
+		c.startThread();
+	}
     public void addGui(BusGui gui) {
         guis.add(gui);
     }

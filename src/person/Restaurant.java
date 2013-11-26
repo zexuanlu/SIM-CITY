@@ -1,15 +1,17 @@
 package person;
 
+import restaurant.Restaurant1HostRole;
+
 public class Restaurant extends Location{
 	
-	//private Host host;
+	private Restaurant1HostRole host;
 	
-	public Restaurant(String n, /*Host h,*/ Position p, LocationType type){
+	public Restaurant(String n, Restaurant1HostRole h, Position p, LocationType type){
 		super(n, type, p);
-		//this.host = h;
+		this.host = h;
 	}
 
-	//public Host getHost(){ return host; }
-	//public void setHost(Host h){ this.host = h; }
+	public Restaurant1HostRole getHost(){ return host; }
+	public void setHost(Restaurant1HostRole h){ this.host = h; }
 
 }
