@@ -11,6 +11,7 @@ import restaurant.interfaces.Cook;
 import restaurant.interfaces.Market;
 import restaurant.interfaces.Waiter;
 import restaurant.interfaces.Cashier;
+import restaurant.shareddata.*;
 
 import market.interfaces.MarketTruck;
 import market.Food;
@@ -22,6 +23,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	private CookGui cookGui = null;
 	private Cashier cashier;
 	private MarketTruck truck;
+	private Restaurant1RevolvingStand revStand;
 	String name;
 	boolean opening = false;
 	boolean sendTruckBack = false;
@@ -55,22 +57,6 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 			this.orderamount = a;
 		}
 	}
-
-	public static class Order {
-		Waiter w;
-		String choice;
-		int table;	
-
-		public state s = state.pending;
-
-		Order(Waiter w, String choice, int table){
-			this.w = w;
-			this.choice = choice;
-			this.table = table;
-		}
-
-
-	}
 	
 	public void setGui(CookGui cookGui){
 		this.cookGui = cookGui;
@@ -79,9 +65,10 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	public void setCashier(Cashier c){
 		cashier = c;
 	}
-
-	public enum state 
-	{ pending, cooking, cooked, readytotake};
+	
+	public void setRevStand(Restaurant1RevolvingStand rev){
+		this.revStand = rev;
+	}
 
 	Timer timer = new Timer();
 
@@ -95,7 +82,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 	}
 
 	public void msgordercooked(Order order){
-		order.s = state.cooked;
+		order.s = Order.state.cooked;
 		stateChanged();
 	}
 
@@ -125,10 +112,14 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		}
 		if(sendTruckBack = true) {
 			truck.msgGoBack();
+			return true;
+		}
+		if(order.size() <= 3 && !revStand.isEmpty()) {
+			TakeOrderFromStand();
 		}
 		synchronized(order){
 			for(Order orders: order){
-				if(orders.s == state.pending){
+				if(orders.s == Order.state.pending){
 					Docooking(orders);
 					return true;
 				}
@@ -136,7 +127,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		}
 		synchronized(order){
 			for(Order orders: order){
-				if(orders.s == state.cooked){
+				if(orders.s == Order.state.cooked){
 					Timerdone(orders);
 					return true;
 				}
@@ -178,7 +169,7 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		}
 		cookGui.hideCarryFoood();
 		cookGui.showfood(o.choice);
-		o.s = state.cooking;
+		o.s = Order.state.cooking;
 		long time = food.get(o.choice).cookingtime;
 		timer.schedule(new TimerTask() {
 			public void run() {
@@ -197,8 +188,13 @@ public  class Restaurant1CookRole extends Agent implements Cook {
 		// marketCashier.MsgIwantFood(this, cahier, foodlist, 1);
 	}
 
+	public void TakeOrderFromStand() {
+		Order o = revStand.removeOrder();
+		order.add(o);
+	}
+	
 	public void Timerdone(Order order){
-		order.s = state.readytotake;
+		order.s = Order.state.readytotake;
 		cookGui.hidefood();
 		cookGui.showCarryFood(order.choice);
 		cookGui.DoGotoPlatingArea();
