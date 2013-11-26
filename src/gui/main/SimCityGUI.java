@@ -503,8 +503,8 @@ public class SimCityGUI extends JFrame {
 //		people.get(3).toDo.offer(goHome4);
 //		people.get(4).toDo.offer(custGoToRestaurant);
 //		//people.get(4).toDo.offer(tellerGoToBank);
-		people.get(0).toDo.offer(hostGoToBank);
-	//	people.get(0).toDo.offer(goHome1);
+		//people.get(0).toDo.offer(hostGoToBank);
+		people.get(0).toDo.offer(goHome1);
 		people.get(1).toDo.offer(tellerGoToBank);
 	//	people.get(1).toDo.offer(goHome2);
 		people.get(2).toDo.offer(tellerGoToBank);
