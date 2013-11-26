@@ -11,10 +11,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import market.Food;
-import person.Event;
-import person.Location;
-import person.Position;
-import person.Event.EventType;
+import person.*;
 import person.interfaces.Person;
 import resident.gui.HomeOwnerGui;
 import resident.interfaces.HomeOwner;
@@ -72,7 +69,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		public int timeDuration;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
 
-		MyPriority(Task t) {
+		public MyPriority(Task t) {
 			task = t;
 			
 			// Initializing all of the tasks and their times
@@ -104,7 +101,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private double debt;
 	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
 	private static int hungerThreshold = 3;
-	//private MaintenancePerson housekeeper;
 	private Person person;
 	private HomeOwnerGui homeGui;
 	
@@ -388,10 +384,10 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void goToRestaurant(MyPriority p) {
 		toDoList.remove(p);
 		
-		//Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
 		
 		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-		//person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
+		person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
 		
 		// GUI goes to market 
 		homeGui.DoGoToFrontDoor();
@@ -414,12 +410,12 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
 		
-//		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
-//		
-//		Event event = new Event("Go to market", location, 2, EventType.MarketEvent);
+		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
+		
+		//SimEvent event = new SimEvent("Go to market", location, 2, SimEvent.EventType.MarketEvent);
 		
 		// Lets person agent know that no longer going to be a resident role
-		//person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
+		//person.msgAddEvent(new SimEvent("Go to market", location, 2, SimEvent.EventType.MarketEvent));
 		
 		// GUI goes to market 
 		homeGui.DoGoToFrontDoor();
