@@ -1,5 +1,6 @@
 package person.interfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import person.SimEvent;
@@ -11,7 +12,7 @@ import market.Food;
 public interface Person {
            
         int homeNumber = 0;
-
+       
 		public abstract void msgNewHour(int hour);//from the world timer
         
         public abstract void msgAtDest(int x, int y);

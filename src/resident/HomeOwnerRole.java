@@ -97,7 +97,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private int houseNumber;
 	private String name;
 	private double myMoney;
-	private double debt;
 	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
 	private static int hungerThreshold = 3;
 

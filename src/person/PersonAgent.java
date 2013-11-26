@@ -195,6 +195,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgAddEvent(SimEvent e){
 		toDo.offer(e);
+		print("Message add event received");
 		//stateChanged();
 	}
 	public void msgNewHour(int hour){ //from the world timer or gui 
@@ -222,7 +223,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
-		print("Recieved the message AtDest");
+		print("Received the message AtDest");
 		gui.setPresent(true);
 		currentLocation = destination;
 		going.release();
@@ -233,14 +234,14 @@ public class PersonAgent extends Agent implements Person{
 	}
 	
 	public void msgAtDest(Position destination,CarAgent c){ // From the gui. now we can send the correct entrance message to the location manager
-		print("Recieved the message AtDest from car");
+		print("Received the message AtDest from car");
 		gui.setPresent(true);
 		currentLocation = destination;
 		dowalkto(destination.getX(),destination.getY());
 	}
 	
 	public void msgFinishedEvent(Role r, List<Food> foodList, double change){
-		print("Recieved this message");
+		print("Received this message");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(false);
@@ -254,7 +255,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgFinishedEvent(Role r){ //The location manager will send this message as the persons role leaves the building
-		print("Recieved msgFinishedEvent");
+		print("Received msgFinishedEvent");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(false);
@@ -267,7 +268,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgReadyToWork(Role r){
 		wait.release();
-		print("Recieved msgReadyToWork");
+		print("Received msgReadyToWork");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(true);
@@ -276,7 +277,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r , double pay){ 
-		print("Recieved the message go off work");
+		print("Received the message go off work");
 		wallet.setOnHand(pay);
 		for(MyRole role : roles){
 			if(role.role == r ){
@@ -320,7 +321,7 @@ public class PersonAgent extends Agent implements Person{
 	/* Actions */
 
 	private void goToAndDoEvent(SimEvent e){
-		print("going");
+		print("Going");
 		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
 			//make a PassengerRole and start it
 			activeRole = true;
@@ -352,12 +353,12 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		else{
-			print("going to location");
+			print("Going to location");
 			Location l = e.location;
 			DoGoTo(l); 
 			if(!testMode){
 				try {
-					print("going acquire");
+					print("Going acquire");
 					going.acquire();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();

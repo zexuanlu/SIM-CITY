@@ -54,8 +54,8 @@ public class SimCityGUI extends JFrame {
 	private PersonAgent initPerson; 
 	public SimWorldClock simclock;
 	
-	List<BankTellerRole> banktellers = new ArrayList<BankTellerRole>();
-	List<MarketEmployeeRole> marketemployeeroles = new ArrayList<MarketEmployeeRole>();
+	public List<BankTellerRole> banktellers = new ArrayList<BankTellerRole>();
+	public List<MarketEmployeeRole> marketemployeeroles = new ArrayList<MarketEmployeeRole>();
 	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
 	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
 	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
@@ -73,58 +73,58 @@ public class SimCityGUI extends JFrame {
 	/*
 	 * Role gui's must be initialized in SimCityGui with the role as happens below
 	 */
-	WaiterGui wg = new WaiterGui(waiter1, null);
-	HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
-	HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
-	HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
-	HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
+	public WaiterGui wg = new WaiterGui(waiter1, null);
+	public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
+	public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
+	public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
+	public HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
 	
 	
 	public CityMap citymap; 
 
-	List<PersonAgent> people = new ArrayList<PersonAgent>();
-	List<PersonGui> peoplegui = new ArrayList<PersonGui>();
-	List<Location> locations = new ArrayList<Location>();
+	public List<PersonAgent> people = new ArrayList<PersonAgent>();
+	public List<PersonGui> peoplegui = new ArrayList<PersonGui>();
+	public List<Location> locations = new ArrayList<Location>();
 
-	int WINDOWX = 640; //60 across
-	int WINDOWY = 480; //60 across
-	int scale = 20; 
-	int gridX = WINDOWX/scale; 
-	int gridY = WINDOWY/scale;
+	public int WINDOWX = 640; //60 across
+	public int WINDOWY = 480; //60 across
+	public int scale = 20; 
+	public int gridX = WINDOWX/scale; 
+	public int gridY = WINDOWY/scale;
 
 	private String title = " SIM CITY 201 ";
 	public static final int SCG_WIDTH = CityAnimationPanel.WIDTH + BuildingAnimationPanel.WIDTH;
 	public static final int SCG_HEIGHT = CityAnimationPanel.HEIGHT + CityControlPanel.HEIGHT;
 
 	public CityAnimationPanel cityAnimPanel = new CityAnimationPanel();
-	BuildingAnimationPanel bldngAnimPanel = new BuildingAnimationPanel();
-	CityControlPanel cityCtrlPanel = new CityControlPanel(this);
+	public BuildingAnimationPanel bldngAnimPanel = new BuildingAnimationPanel();
+	public CityControlPanel cityCtrlPanel = new CityControlPanel(this);
 
 	///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
 
 	public Semaphore[][] grid = new Semaphore[gridX][gridY];
-	BusRole bus = new BusRole("BusRole");
-	BusRole bus2 = new BusRole("BusRole2");
-	BusGui bgui2; 
-	BusGui bgui;
+	public BusRole bus = new BusRole("BusRole");
+	public BusRole bus2 = new BusRole("BusRole2");
+	public BusGui bgui2; 
+	public BusGui bgui;
 
-	BusStopAgent busstop1 = new BusStopAgent("Stop1");
-	BusStopAgent busstop2 = new BusStopAgent("Stop2");
-	BusStopAgent busstop3 = new BusStopAgent("Stop3");
-	BusStopAgent busstop4 = new BusStopAgent("Stop4");
-	BusStopAgent busstop5 = new BusStopAgent("Stop5");
-	BusStopAgent busstop6 = new BusStopAgent("Stop6");
-	BusStopAgent busstop7 = new BusStopAgent("Stop7");
-	BusStopAgent busstop8 = new BusStopAgent("Stop8");
+	public BusStopAgent busstop1 = new BusStopAgent("Stop1");
+	public BusStopAgent busstop2 = new BusStopAgent("Stop2");
+	public BusStopAgent busstop3 = new BusStopAgent("Stop3");
+	public BusStopAgent busstop4 = new BusStopAgent("Stop4");
+	public BusStopAgent busstop5 = new BusStopAgent("Stop5");
+	public BusStopAgent busstop6 = new BusStopAgent("Stop6");
+	public BusStopAgent busstop7 = new BusStopAgent("Stop7");
+	public BusStopAgent busstop8 = new BusStopAgent("Stop8");
 
-	BusStopGui bs1gui = new BusStopGui(busstop1,80,200);	
-	BusStopGui bs2gui = new BusStopGui(busstop2, 420, 200);
-	BusStopGui bs3gui = new BusStopGui(busstop3, 500, 280);
-	BusStopGui bs4gui = new BusStopGui(busstop4,180,280);
-	BusStopGui bs5gui = new BusStopGui(busstop5, 260,60);
-	BusStopGui bs6gui = new BusStopGui(busstop6, 340,140);
-	BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
-	BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
+	public BusStopGui bs1gui = new BusStopGui(busstop1,80,200);	
+	public BusStopGui bs2gui = new BusStopGui(busstop2, 420, 200);
+	public BusStopGui bs3gui = new BusStopGui(busstop3, 500, 280);
+	public BusStopGui bs4gui = new BusStopGui(busstop4,180,280);
+	public BusStopGui bs5gui = new BusStopGui(busstop5, 260,60);
+	public BusStopGui bs6gui = new BusStopGui(busstop6, 340,140);
+	public BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
+	public BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
 
 
 	public SimCityGUI() {
@@ -435,6 +435,9 @@ public class SimCityGUI extends JFrame {
 		
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(7,people);
+		
+		// Sets the interact panel's sim city GUI
+		cityCtrlPanel.interactPanel.setSimCityGUI(this);
 		
 		/**
 		aStarTraversal = new AStarTraversal(grid);
