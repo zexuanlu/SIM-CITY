@@ -25,16 +25,20 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     
     private Image bufferImage;
     private Dimension bufferSize;
+    
+    public int aptNum;
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public ApartmentAnimationPanel() {
+    public ApartmentAnimationPanel(int an) {
+    	aptNum = an;
+    	
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         
         bufferSize = this.getSize();
         
-        this.setBorder(BorderFactory.createTitledBorder("Apartment 1"));
+        this.setBorder(BorderFactory.createTitledBorder("Apartment " + aptNum));
  
     	Timer timer = new Timer(8, this );
     	timer.start();

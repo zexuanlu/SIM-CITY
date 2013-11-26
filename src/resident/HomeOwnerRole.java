@@ -171,7 +171,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	}
 
 	public void msgDoneGoingToMarket(List<Food> groceries) {		
-		waitForReturn.release();
+		//waitForReturn.release();
 		
 		// If the customer has just finished going to the market, restock the fridge and then cook
 		log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
@@ -189,7 +189,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	}
 
 	public void msgDoneEatingOut() {
-		waitForReturn.release();
+		//waitForReturn.release();
 		
 		log.add(new LoggedEvent("I just finished eating out. I'm full now!"));
 		
@@ -410,15 +410,10 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
 		
-		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
-		
-		//SimEvent event = new SimEvent("Go to market", location, 2, SimEvent.EventType.MarketEvent);
-		
-		// Lets person agent know that no longer going to be a resident role
-		//person.msgAddEvent(new SimEvent("Go to market", location, 2, SimEvent.EventType.MarketEvent));
-		
 		// GUI goes to market 
 		homeGui.DoGoToFrontDoor();
+		 
+		atFrontDoor.drainPermits();
 		
 		try {
 			atFrontDoor.acquire();
@@ -427,12 +422,19 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			e.printStackTrace();
 		}
 		
-		try {
-			waitForReturn.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Location location = new Location("Market", Location.LocationType.Market, new Position(220,160));
+		
+		// Lets person agent know that no longer going to be a resident role
+		person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
+		
+		person.msgFinishedEvent(this);
+	
+//		try {
+//			waitForReturn.acquire();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	private void restockFridge(MyPriority p) {
