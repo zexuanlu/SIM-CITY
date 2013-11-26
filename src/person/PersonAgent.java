@@ -96,21 +96,21 @@ public class PersonAgent extends Agent implements Person{
 	private Semaphore wait = new Semaphore(0, true);
 	//private Semaphore driving = new Semaphore(0, true);
 
-	public PersonAgent (String name, CityMap cm){
+	public PersonAgent (String name, CityMap cm, double money){
 		super();
 		this.name = name;
 		this.cityMap = cm;
-		this.wallet = new Wallet(5000, 5000);//hacked in
+		this.wallet = new Wallet(money, 5000);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
 		arrived = false;
 	}
-	public PersonAgent (String name, CityMap cm, AStarTraversal astar2){
+	public PersonAgent (String name, CityMap cm, AStarTraversal astar2, double money){
 		super();
 		this.name = name;
 		this.cityMap = cm;
 		astar = astar2; 
-		this.wallet = new Wallet(5000, 5000);//hacked in
+		this.wallet = new Wallet(money, 5000);//hacked in
 
 		this.hunger = 4;
 		currentTime = 7;
@@ -303,7 +303,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
+//			System.out.println("Current Time: " + currentTime + " Event Time: "+ nextEvent.start);
 			if((nextEvent != null && nextEvent.start == currentTime) 
 					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
@@ -382,6 +382,7 @@ public class PersonAgent extends Agent implements Person{
 						((Restaurant1CustomerRole)newRole.role).gotHungry();
 					}
 					else{
+						((Restaurant1CustomerRole)getRoleOfType(cRole).role).customerGui.isPresent = true;
 						((Restaurant1CustomerRole)getRoleOfType(cRole).role).gotHungry();
 						getRoleOfType(cRole).isActive(true);
 					}
@@ -442,6 +443,7 @@ public class PersonAgent extends Agent implements Person{
 					else{
 						rest.getTimeCard().msgBackToWork(this, (Restaurant1CookRole)getRoleOfType(cRole).role); 
 						getRoleOfType(cRole).isActive(true);
+						((Restaurant1CookRole)getRoleOfType(cRole).role).cookGui.isPresent = true;
 					}
 					gui.setPresent(false);
 					toDo.remove(e);
@@ -802,7 +804,7 @@ public class PersonAgent extends Agent implements Person{
 		private double balance; 
 		private List<BankTicket> transactions 
 		= new ArrayList<BankTicket>();
-		Wallet(double oh, double ib){
+		public Wallet(double oh, double ib){
 			this.onHand = oh;
 			this.inBank = ib;
 			this.balance = oh + ib;

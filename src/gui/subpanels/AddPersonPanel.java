@@ -115,7 +115,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	
 	public void addRandomPerson() {
 		AStarTraversal aStarTraversal = new AStarTraversal(simcitygui.grid);
-		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal);
+		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal, 2000);
 		if (residentNum < 4) {
 			pa.homeNumber = ++residentNum;
 			pa.homeType = HomeType.Home;

@@ -318,7 +318,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void Dotakeorder(mycustomer customer){
 			//Dogototable(customer.table);
 			customer.s = state.askedtoorder;
-			Do("Comming!");
+			Do("Coming!");
 			waiterGui.DoGoToTakeOrder(customer.c, customer.table);
 			try {
 				atTable.acquire();
@@ -344,7 +344,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void Dogotocook(mycustomer customer){
 			customer.s = state.eating;
 			waiterGui.showfood(customer.choice);
-			waiterGui.Dogotocook(customer.table, customer.c);
+			waiterGui.Dogotocook();
 			try {
 				atTable.acquire();
 			} catch (InterruptedException e) {

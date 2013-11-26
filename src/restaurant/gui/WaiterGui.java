@@ -18,7 +18,7 @@ public class WaiterGui implements Gui {
     private int customernumber = 0;
     private int xPos = -20, yPos = -20;//default waiter position
     private int xDestination = 50, yDestination = 50;//default start position
-    private int origion = 40;
+    private int origin = 40;
     private int chomeposition = 20;
     private int distance= 20;
 	private int xfood = 540;
@@ -26,6 +26,8 @@ public class WaiterGui implements Gui {
     private String order = "";
     private String food = "";
     private boolean go = false;
+    private static final int cookX = 520;
+    private static final int cookY = 230;
     public static final int xTable = 200;
     public static final int yTable = 250;
     public static final int x1Table = 300;
@@ -38,10 +40,10 @@ public class WaiterGui implements Gui {
     
     public void setOrigion(int number){
     	countNumber = number;
-    	yPos = origion;
-    	xPos = countNumber * origion;
-    	xDestination = countNumber * origion;
-    	yDestination = origion;
+    	yPos = origin;
+    	xPos = countNumber * origin;
+    	xDestination = countNumber * origin;
+    	yDestination = origin;
     }
     
     public void stop(){
@@ -63,7 +65,7 @@ public class WaiterGui implements Gui {
         else if (yPos > yDestination)
             yPos = yPos - 2;
         
-        if (xPos == (customernumber * origion + distance) && yPos == chomeposition){
+        if (xPos == (customernumber * origin + distance) && yPos == chomeposition){
         	agent.msgAtTable();
         }
         
@@ -91,8 +93,12 @@ public class WaiterGui implements Gui {
 
         } 
         
+        if (xPos == cookX && yPos == cookY) {
+        	agent.msgatCook();
+        }
+        
 
-        if(xPos == countNumber * origion && yPos == origion){
+        if(xPos == countNumber * origin && yPos == origin){
         	agent.msgIsback();
         }
         
@@ -126,7 +132,7 @@ public class WaiterGui implements Gui {
     }
     public void DoGotoCHomePosition(int number){
     	customernumber = number;
-    	xDestination = number * origion + distance;
+    	xDestination = number * origin + distance;
     	yDestination = chomeposition;
     }
     
@@ -185,14 +191,13 @@ public class WaiterGui implements Gui {
     
     
     public void DoLeaveCustomer() {
-    	xDestination = countNumber * origion;
-    	yDestination = origion;
+    	xDestination = countNumber * origin;
+    	yDestination = origin;
     }
     
-    public void Dogotocook(int a, Customer c){
-    	xDestination = 520;
-    	yDestination = 230;
-
+    public void Dogotocook(){
+    	xDestination = cookX;
+    	yDestination = cookY;
     }
     
     public void showfood(String order){
