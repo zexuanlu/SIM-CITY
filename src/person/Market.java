@@ -1,6 +1,6 @@
 package person;
 
-import market.MarketCashierRole;
+import market.MarketCashierRole; 
 import market.interfaces.MarketCashier;
 import agent.*;
 
