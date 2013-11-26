@@ -9,8 +9,8 @@ public class AStarTraversal extends GraphTraversal
     public AStarTraversal(Semaphore[][] grid){
 	super();
 	this.grid = grid; 
+	
 	//grid = new Object[1000][2000];
-	System.out.println("grid rows="+grid.length+",grid cols="+grid[0].length);
 	nodes = new PriorityQueue<Node>(6, new Comparator<Node>()
 	{
 	    public int compare(Node a, Node b)

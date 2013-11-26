@@ -244,7 +244,7 @@ public class SimCityGUI extends JFrame {
 		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
 		bus.startThread();
-	//	bus.msgStartBus();
+		bus.msgStartBus();
 
 		bus2.setBusMap(citymap);
 		bus2.addtoRoute(busstop5.name);
@@ -252,7 +252,7 @@ public class SimCityGUI extends JFrame {
 		bus2.addtoRoute(busstop7.name);
 		bus2.addtoRoute(busstop6.name);
 		bus2.startThread();
-		//bus2.msgStartBus();*/
+		bus2.msgStartBus();
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
 
@@ -264,20 +264,14 @@ public class SimCityGUI extends JFrame {
 			people.add(p);
 			peoplegui.add(pgui);
 			cityAnimPanel.addGui(pgui);
+			p.setAnimationPanel(cityAnimPanel);
+			p.setcitygui(this);
 		}
 		people.get(0).addRole(banktellerrole1);
 		//people.get(1).addRole(banktellerrole2);
 		//people.get(2).addRole(bankhostrole);
 		//people.get(3).addRole(marketcashierrole);
 		//people.get(4).addRole(marketemployeerole);
-		
-        aStarTraversal = new AStarTraversal(grid);
-        CarAgent caragent = new CarAgent(aStarTraversal);
-        CarGui cgui = new CarGui(caragent,50,250);
-        caragent.setGui(cgui);
-        cityAnimPanel.addGui(cgui);
-        caragent.startThread();
-        caragent.gotoPosition(500,250);
 
 		for (PersonAgent p: people){
 			p.startThread();
@@ -288,18 +282,27 @@ public class SimCityGUI extends JFrame {
 		}*/
 
 
-//		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
-//			p.setAnimationPanel(cityAnimPanel);
+		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		// people.get(0).startThread();
 
 		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
 		people.get(0).setAnimationPanel(cityAnimPanel);
-		//people.get(0).toDo.offer(goToBank);
-		//people.get(0).toDo.offer(goToMarket);
-		people.get(0).toDo.offer(goHome);
+		people.get(0).toDo.offer(goToBank);
+		people.get(0).toDo.offer(goToBank);
 		simclock = new SimWorldClock(7,people);
+	}
+
+	public CarAgent createCar(PersonAgent p){
+		AStarTraversal aStarTraversal = new AStarTraversal(grid);
+        CarAgent caragent = new CarAgent(aStarTraversal, p);
+        CarGui cgui = new CarGui(caragent,600,400);
+        caragent.setGui(cgui);
+        cityAnimPanel.addGui(cgui);
+        caragent.startThread();
+        return caragent; 
 	}
 	
 	public void addPerson(PersonAgent p) {

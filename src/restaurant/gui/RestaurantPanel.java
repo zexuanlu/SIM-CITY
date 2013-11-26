@@ -56,7 +56,7 @@ public class RestaurantPanel extends JPanel {
 		//waiter.startThread();
 		//ho.startThread();
 		//cook.startThread();
-		CookGui cg = new CookGui(cook, gui);
+		CookGui cg = new CookGui(cook, new Restaurant1AnimationPanel());
 		cook.setGui(cg);
 		cook.setCashier(cashier);
 		gui.animationPanel.addGui(cg);
@@ -140,7 +140,7 @@ public class RestaurantPanel extends JPanel {
 				Cuscount = 0;
 			}
 			Restaurant1CustomerRole c = new Restaurant1CustomerRole(name, p);	
-			CustomerGui g = new CustomerGui(c, gui);
+			CustomerGui g = new CustomerGui(c, new Restaurant1AnimationPanel());
 			
 			gui.animationPanel.addGui(g);// dw
 			c.setHost(ho);

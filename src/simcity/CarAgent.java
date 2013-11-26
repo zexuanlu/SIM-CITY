@@ -1,8 +1,9 @@
 package simcity;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-
+//import person.Position;
 import simcity.astar.AStarNode;
+import person.PersonAgent; 
 import simcity.astar.AStarTraversal;
 import simcity.astar.Position;
 import agent.Agent; 
@@ -33,9 +34,10 @@ public class CarAgent extends Agent {
      
      int destinationX;
      int destinationY;
-     
-     public CarAgent(AStarTraversal a){
+     PersonAgent myPerson; 
+     public CarAgent(AStarTraversal a, PersonAgent mp){
              aStar = a;
+             myPerson = mp;
 
      }
      
@@ -52,7 +54,7 @@ public class CarAgent extends Agent {
      }
      
      public void msgatDestination(){
-             //SOME SORT OF THING HERE FOR PERSON TO KNOW HE IS THERE
+    	 myPerson.msgAtDest(new person.Position(myGui.xPos, myGui.yPos),this);
      }
 
      
@@ -84,8 +86,10 @@ public class CarAgent extends Agent {
              System.out.println("overall is "+myGui.overallX +" , "+ myGui.overallY);
 
              carstate = CarState.goTo;
+
              stateChanged();        
      }
+     
      
      public void dogoto(){
              carstate = CarState.moving;

@@ -21,6 +21,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	//Data
 	public EventLog log;//Used for testing
 	String name;//The name of the bank teller
+	public boolean endOfDay = false; //Used at the end of the day
 	public List<Task> tasks;//A list of tasks that the teller needs to perform
 	public BankDatabase bd;//The bank database. Given to the teller upon creation
 	public BankHost bh;//The bank host. Given to the teller upon creation
@@ -227,6 +228,11 @@ public class BankTellerRole extends Role implements BankTeller {
 		stateChanged();
 	}
 	
+	public void msgWorkDayOver(){
+		log.add(new LoggedEvent("Received msgWorkDayOver from Bank Teller"));
+		endOfDay = true;
+		stateChanged();
+	}
 	/**
 	 * The scheduler for the teller
 	 * 
@@ -268,6 +274,10 @@ public class BankTellerRole extends Role implements BankTeller {
 				case "getLoan": getLoan(t); return true;
 				}
 			}
+		}
+		if(bc == null && endOfDay == true){
+			goOffWork();
+			return true;
 		}
 		//If the teller has no customer and is working
 		if(s == state.backToWork){
@@ -399,6 +409,11 @@ public class BankTellerRole extends Role implements BankTeller {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void goOffWork(){
+		endOfDay = false;
+		getPerson().msgGoOffWork(this, 500.00);
 	}
 	
 	//Utilities
