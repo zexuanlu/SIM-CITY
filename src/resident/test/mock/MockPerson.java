@@ -1,4 +1,4 @@
-package person.test.mock;
+package resident.test.mock;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,27 +7,31 @@ import java.util.PriorityQueue;
 
 import market.Food;
 import agent.Role;
-import person.SimEvent;
+import person.Event;
 import person.Location;
 import person.Position;
+import person.SimEvent;
 import person.interfaces.Person;
 
-public class PersonMock extends Mock implements Person {
+public class MockPerson extends Mock implements Person {
 	
 	public EventLog log = new EventLog();
 	public int hunger;
 	public int currentTime;
 	public Wallet wallet;
 	public List<String> groceryList = new ArrayList<String>();
-	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
+	public PriorityQueue<Event> toDo = new PriorityQueue<Event>();
 	public List<Role> roles = new ArrayList<Role>();
 	
-
-	public PersonMock(String name) {
+	public MockPerson(String name) {
 		super(name);
 		currentTime = 7;
 		hunger = 4;
-		wallet = new Wallet(100, 100);
+	}
+	public MockPerson(String name, String TypeOfScenario){ 
+		super(name);
+		currentTime = 7;//wakes up at 7am
+		hunger = 4;
 	}
 	public void addRole(Role r){
 		roles.add(r);
@@ -53,33 +57,29 @@ public class PersonMock extends Mock implements Person {
 	@Override
 	public void msgFinishedEvent(Role r) { //default message to notify person that he can return to his duties
 		
-		log.add(new LoggedEvent("Youve finished your role and have returned to your PersonAgent"));
+		log.add(new LoggedEvent("You've finished your role and have returned to your PersonAgent"));
 		
 	}
-	@Override
-	public void msgAddMoney(double money) { //add money back to the person's wallet
-		log.add(new LoggedEvent("Cash has been added to your personagent's wallet to the tune of "+money+" dollars"));
-		wallet.setOnHand(money);
-	}	
-	@Override
-	public void msgAddEvent(SimEvent e) { //add an event to the person's scheduler
-		log.add(new LoggedEvent("An event has been added to the personagent's queue"));
-		
-	}
+//	@Override
+//	public void msgAddMoney(int money) { //add money back to the person's wallet
+//		log.add(new LoggedEvent("Cash has been added to your personagent's wallet to the tune of "+money+" dollars"));
+//		wallet.setOnHand(money);
+//	}	
+//	@Override
+//	public void msgAddEvent(Event e) { //add an event to the person's scheduler
+//		log.add(new LoggedEvent("An event has been added to the personagent's queue"));
+//		
+//	}
 	@Override
 	public void msgReadyToWork(Role r) { //notify a person it can now send it's role to work (time card)
 		
 		
 	}
-	@Override
-	public void msgGoOffWork(Role r, double pay) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void msgGoOffWork(Role r) { //notify a person he is off work (time card)
+//		// TODO Auto-generated method stub
+//		
+//	}
 	public void msgAddGroceries(List<String> gro){
 		log.add(new LoggedEvent("The personagent will grab : "+gro.toString()+" next time it goes out"));
 		for(String s : gro){
@@ -88,33 +88,43 @@ public class PersonMock extends Mock implements Person {
 	}
 	public class Wallet {
 		
-		private double onHand;
-		private double inBank;
-		private double balance; 
+		private int onHand;
+		private int inBank;
+		private int balance; 
 
-		Wallet(double oh, double ib){
+		Wallet(int oh, int ib){
 			this.onHand = oh;
 			this.inBank = ib;
 			this.balance = oh + ib;
 		}
-		public double getOnHand(){
+		public int getOnHand(){
 			return onHand;
 		}
-		public double getInBank(){
+		public int getInBank(){
 			return inBank;
 		}
-		public double getBalance(){
+		public int getBalance(){
 			return balance;
 		}
-		public void setOnHand(double newAmount){
+		public void setOnHand(int newAmount){
 			onHand += newAmount;
 		}
-		public void setInBank(double newAmount){
+		public void setInBank(int newAmount){
 			inBank += newAmount;
 		}
 	}
 	@Override
+	public void msgAtDest(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
 	public void msgFinishedEvent(Role r, List<Food> foodList, double change) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgAddMoney(double money) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -124,12 +134,17 @@ public class PersonMock extends Mock implements Person {
 		
 	}
 	@Override
-	public void setStateChanged() {
+	public void msgAddEvent(SimEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public void msgAtDest(int x, int y) {
+	public void msgGoOffWork(Role r, double pay) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setStateChanged() {
 		// TODO Auto-generated method stub
 		
 	}

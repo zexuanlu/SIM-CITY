@@ -21,7 +21,7 @@ public class BankCustomerGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public BankCustomerGui(BankCustomer c, BankAnimationPanel gui){ //HostAgent m) {
+	public BankCustomerGui(BankCustomer c){//, BankAnimationPanel gui){ //HostAgent m) {
 		bc = c;
 		xPos = 200;
 		yPos = -20;

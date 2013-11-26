@@ -42,7 +42,7 @@ public class PersonGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.MAGENTA);
+		g.setColor(Color.BLUE);
 		g.fillRect(xPos, yPos, 20, 20);
 	}
 

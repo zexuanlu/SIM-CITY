@@ -152,6 +152,11 @@ public class BankHostRole extends Role implements BankHost {
 		return name;
 	}
 	
+	//Grant's addition
+	public void setGui(BankHostGui bhg){
+		this.gui = bhg;
+	}
+	
 	/**
 	 * The MyTeller class. Contains a bank teller, 
 	 * a state, and a location

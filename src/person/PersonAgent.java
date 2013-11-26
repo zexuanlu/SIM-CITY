@@ -15,6 +15,9 @@ import java.util.concurrent.Semaphore;
 import person.Location.LocationType;
 import person.Restaurant;
 import person.SimEvent.EventType;
+import bank.gui.BankCustomerGui;
+import bank.gui.BankHostGui;
+import bank.gui.BankTellerGui;
 import bank.interfaces.*;
 import bank.test.mock.MockBankHost;
 import bank.*;
@@ -24,6 +27,10 @@ import agent.*;
 import person.gui.PersonGui;
 import person.interfaces.Person;
 import person.test.mock.EventLog;
+import resident.ApartmentLandlordRole;
+import resident.ApartmentTenantRole;
+import resident.HomeOwnerRole;
+import resident.gui.HomeOwnerGui;
 import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.gui.PassengerGui;
@@ -34,28 +41,30 @@ import simcity.gui.PassengerGui;
  * @author Grant Collins
  */
 public class PersonAgent extends Agent implements Person{
-	EventLog log = new EventLog();
+	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores 
-	
+
 	private String name;
 	public int hunger; // tracks hunger level
+	public int homeNumber;
 	public boolean activeRole;
 	public boolean arrived;
-	
+
 	public PersonGui gui;
-	CityAnimationPanel cap = new CityAnimationPanel();
+	private CityAnimationPanel cap = new CityAnimationPanel();
 	public List<MyRole> roles = new ArrayList<MyRole>();
 
-	int accountNumber; 
+	private int accountNumber; 
 	public Wallet wallet;
-	int currentTime; 
+	private int currentTime; 
+	
 	public Position currentLocation = new Position(0, 0); 
 	public Position dest = new Position(50, 50);
-	Map<Integer, SimEvent> schedule = new HashMap<Integer, SimEvent>(); 
+	private Map<Integer, SimEvent> schedule = new HashMap<Integer, SimEvent>(); 
 	public CityMap cityMap;
 
 	@SuppressWarnings("unchecked")
-	Comparator<SimEvent> comparator = new EventComparator();
+	private Comparator<SimEvent> comparator = new EventComparator();
 	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>(10, comparator);
 
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
@@ -64,10 +73,10 @@ public class PersonAgent extends Agent implements Person{
 	/* Home home; // home/apartment
 	Car car; // car if the person has a car */ //Who is in charge of these classes?
 
-	Semaphore going = new Semaphore(0, true);
-	Semaphore transport = new Semaphore(0, true);
-	Semaphore wait = new Semaphore(0, true);
-	Semaphore driving = new Semaphore(0, true);
+	private Semaphore going = new Semaphore(0, true);
+	private Semaphore transport = new Semaphore(0, true);
+	private Semaphore wait = new Semaphore(0, true);
+	private Semaphore driving = new Semaphore(0, true);
 
 	public PersonAgent (String name, CityMap cm){
 		super();
@@ -99,6 +108,8 @@ public class PersonAgent extends Agent implements Person{
 
 	public void setAnimationPanel(CityAnimationPanel c){ cap = c; }
 
+	public void setHomeNumber(int hn){ homeNumber = hn; }
+	
 	public boolean containsRole(Role r){ 
 		for(MyRole role : roles){
 			if(role.role.getClass() == r.getClass()){
@@ -165,12 +176,17 @@ public class PersonAgent extends Agent implements Person{
 		gui.yPos = y;
 		currentLocation.setX(x);
 		currentLocation.setY(y);
+		for(MyRole role : roles){
+			if(role.role instanceof PassengerRole){
+				role.isActive(false);
+			}
+		}
 		activeRole = false;
 		gui.setPresent(true);
 		arrived = true;
 		stateChanged();
 	}
-	
+
 	public void setStateChanged(){
 		stateChanged();
 	}
@@ -231,6 +247,7 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+
 		if(activeRole) { //run role code
 			for(MyRole r : roles){
 				if(r.isActive){
@@ -242,7 +259,8 @@ public class PersonAgent extends Agent implements Person{
 		}
 		else {
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			if(nextEvent != null && (!nextEvent.inProgress || nextEvent.start == currentTime)){ //&& nextEvent.start == currentTime) {
+			if((nextEvent != null && nextEvent.start == currentTime) 
+					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
 				goToAndDoEvent(nextEvent); 
 				nextEvent.setProgress(true);
@@ -261,7 +279,7 @@ public class PersonAgent extends Agent implements Person{
 	private void goToAndDoEvent(SimEvent e){
 		print("going");
 		if(!isInWalkingDistance(e.location) && !arrived){ //if its not in walking distance we ride the bus
-			//make  a PassengerRole and start it
+			//make a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
 			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
@@ -273,11 +291,11 @@ public class PersonAgent extends Agent implements Person{
 				cap.addGui(pg);
 				((PassengerRole)newRole.role).setCityMap(cityMap);
 				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getY());
-				
+
 				//lizhi added this testing:
 				gui.xDestination = e.location.position.getX();
 				gui.yDestination = e.location.position.getY();
-				
+
 				((PassengerRole)newRole.role).gotoBus();
 				gui.setPresent(false);
 			}
@@ -289,12 +307,15 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		else{
+			print("going to location");
 			Location l = e.location;
-			DoGoTo(l); // Handles picking mode of transport and animating there
-			try {
-				going.acquire();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+			DoGoTo(l); 
+			if(!testMode){
+				try {
+					going.acquire();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 			/*if(e.location.type == LocationType.Restaurant){
 			Restaurant rest = (Restaurant)e.location;
@@ -328,16 +349,21 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
 					activeRole = true; 
 					BankCustomerRole bcr = new BankCustomerRole(this, this.name); //create the role
-					if(!containsRole(bcr)){   //check if we dont already have it 
+					bcr.bh = bank.host;
+					if(!containsRole(bcr)){   //check if we don't already have it 
 						MyRole newRole = new MyRole(bcr); //make a new MyRole
 						newRole.isActive(true); //set it active
 						roles.add(newRole); 
-						bcr.msgGoToBank(e.directive, 10); //message it with what we want to do
+						BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
+						((BankCustomerRole)newRole.role).setGui(bcg);
+						cap.bankPanel.addGui(bcg);
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10); //message it with what we want to do
 					}
 					else { //we already have one use it
 						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
 						getRoleOfType(bcr).isActive(true);
 					}
+					gui.setPresent(false);
 					toDo.remove(e); //remove the event from the queue
 				}
 				else if(e.type == EventType.TellerEvent){
@@ -348,7 +374,10 @@ public class PersonAgent extends Agent implements Person{
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
 						newRole.isActive(true);
 						roles.add(newRole);
-
+						//add a gui
+						BankTellerGui btg = new BankTellerGui((BankTellerRole)newRole.role);
+						((BankTellerRole)newRole.role).setGui(btg);
+						cap.bankPanel.addGui(btg);
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
@@ -363,6 +392,7 @@ public class PersonAgent extends Agent implements Person{
 						}
 					}
 					print("releasing wait");
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.HostEvent){
@@ -373,8 +403,11 @@ public class PersonAgent extends Agent implements Person{
 						print("Host not found");
 						MyRole newRole = new MyRole(bhr);
 						newRole.isActive(true);
-						bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
 						roles.add(newRole);
+						BankHostGui btg = new BankHostGui((BankHostRole)newRole.role);
+						((BankHostRole)newRole.role).setGui(btg);
+						cap.bankPanel.addGui(btg);
+						bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankHostRole)getRoleOfType(bhr).role); 
@@ -388,6 +421,7 @@ public class PersonAgent extends Agent implements Person{
 							e1.printStackTrace();
 						}
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 			}
@@ -407,6 +441,7 @@ public class PersonAgent extends Agent implements Person{
 						((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
 						getRoleOfType(mcr).isActive(true);
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.EmployeeEvent){
@@ -431,6 +466,7 @@ public class PersonAgent extends Agent implements Person{
 							e1.printStackTrace();
 						}
 					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 				else if(e.type == EventType.CashierEvent){
@@ -455,55 +491,67 @@ public class PersonAgent extends Agent implements Person{
 							e1.printStackTrace();
 						}
 					}
+					gui.setPresent(false);
+					toDo.remove(e);
+				}
+			}
+			else if(e.location.type == LocationType.Home){
+				if(e.type == EventType.HomeOwnerEvent){
+					//Home home = (Home)e.location;
+					activeRole = true;
+					HomeOwnerRole hr = new HomeOwnerRole(this, this.name, homeNumber);
+					//hr.myFridge.add(new Food("Chicken", 5));
+					if(!containsRole(hr)){
+						MyRole newRole = new MyRole(hr);
+						newRole.isActive(true);
+						roles.add(newRole);
+						HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
+						((HomeOwnerRole)newRole.role).setGui(hog);
+						cap.getHouseGui(2).addGui(hog);
+						((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					else{
+						getRoleOfType(hr).isActive(true);
+						((HomeOwnerRole)getRoleOfType(hr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					gui.setPresent(false);
+					toDo.remove(e);
+				}
+				else if(e.type == EventType.AptTenantEvent){
+					//Apartment apt = (Apartment)e.location;
+					activeRole = true;
+					ApartmentTenantRole tr = new ApartmentTenantRole(this.name, homeNumber, this);
+					if(!containsRole(tr)){
+						MyRole newRole = new MyRole(tr);
+						newRole.isActive(true);
+						roles.add(newRole);
+						((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					else{
+						getRoleOfType(tr).isActive(true);
+						((ApartmentTenantRole)getRoleOfType(tr).role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+					}
+					gui.setPresent(false);
+					toDo.remove(e);
+				}
+				else if(e.type == EventType.LandlordEvent){
+					//Apartment apt = (Apartment)e.location;
+					activeRole = true;
+					ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, homeNumber, this);
+					if(!containsRole(llr)){
+						MyRole newRole = new MyRole(llr);
+						newRole.isActive(true);
+						roles.add(newRole);
+					}
+					else{
+						getRoleOfType(llr).isActive(true);
+					}
+					gui.setPresent(false);
 					toDo.remove(e);
 				}
 			}
 		}
 	}
-	/*else if(e.location.type == LocationType.Home){
-			if(e.type == EventType.HomeOwnerEvent){
-				Home home = (Home)e.location;
-				activeRole = true;
-				HomeOwnerRole hr = new HomeOwnerRole(this.name, this);
-				if(!containsRole(hr)){
-					roles.add(hr);
-				}
-				//set time and hunger 
-				hr.msgUpdateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
-				hr.setActive(true);			
-			}
-			else if(e.type == EventType.MaintenceRole){
-				Home home = (Home)e.location;
-				activeRole = true;
-				MaintenenceRole mtr = new MaintenenaceRole(this.name, this);
-				if(!containsRole(mtr)){
-					roles.add(mtr);
-				}
-				mtr.setActive(true);
-
-			}
-			else if(e.type == EventType.AptTenantEvent){
-				Apartment apt = (Apartment)e.location;
-				activeRole = true;
-				ApartmentTenantRole ten = new AprtmentTenantRole(this.name, this);
-				if(!containsRole(ten)){
-					roles.add(ten);
-				}
-				ten.msgUpdateVitals(hunger, currentTime);
-				ten.setActive(true);
-			}
-			else if(e.type == EventType.LandlordEvent){
-				Apartment apt = (Apartment)e.location;
-				activeRole = true;
-				ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, this);
-				if(!containsRole(llr)){
-					roles.add(llr);
-				}
-				llr.setActive(true);
-			}
-		}*/
-
-	//}
 
 	/* checkVitals is a method to figure out misc things to do on the fly*/
 	private void checkVitals() { 
@@ -541,16 +589,6 @@ public class PersonAgent extends Agent implements Person{
 
 	private void DoGoTo(Location loc){
 		gui.DoGoTo(loc.getPosition());
-	}
-	private Position calculateTransportation(Location loc){
-		//if the person has a car use it
-		/*
-		 * if(car){ return an event with the same location }
-		 */
-		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) > 10){
-			return cityMap.findNearestBusStop(currentLocation);
-		}
-		return currentLocation; //hack life
 	}
 	private boolean isInWalkingDistance(Location loc){
 		if(cityMap.distanceTo(currentLocation.getX(), currentLocation.getY(), loc) < 10){

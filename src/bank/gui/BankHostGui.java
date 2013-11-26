@@ -21,13 +21,13 @@ public class BankHostGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public BankHostGui(BankHost t, BankAnimationPanel gui){ //HostAgent m) {
+	public BankHostGui(BankHost t){//, BankAnimationPanel gui){ //HostAgent m) {
 		bh = t;
 		xPos = 200;
 		yPos = -20;
 		xDestination = 200;
 		yDestination = -20;
-		this.gui = gui;
+		//this.gui = gui;
 		locations.put("Host", new Dimension(320,120));
 		gui.addGui(this);
 	}

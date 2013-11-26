@@ -264,7 +264,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public String toString(){
 		return name;
 	}
-	
+	//Grant's addition
+	public void setGui(BankCustomerGui bcg){
+		this.gui = bcg;
+	}
 	/**
 	 * A class that contains a type and amount, used to allow the 
 	 * customer to tell the teller what he needs
