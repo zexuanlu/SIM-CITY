@@ -360,16 +360,16 @@ public class SimCityGUI extends JFrame {
 		 * 
 		 * Creating host, cook, cashier, waiter, and teller events
 		 * */
-		SimEvent hostGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.HostEvent);
+		SimEvent hostGoToRestaurant = new SimEvent(rest1, 5, 9, EventType.HostEvent);
 		SimEvent cookGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.CookEvent);
 		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.CashierEvent);
 		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 9, EventType.WaiterEvent);
 		SimEvent tellerGoToBank = new SimEvent(bank, 1, 9, EventType.TellerEvent);
 		
-		SimEvent goHome1 = new SimEvent(home1, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent goHome2 = new SimEvent(home2, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent goHome3 = new SimEvent(home3, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent goHome4 = new SimEvent(home4, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent goHome1 = new SimEvent(home1, 1, 8, EventType.HomeOwnerEvent);
+		SimEvent goHome2 = new SimEvent(home2, 1, 8, EventType.HomeOwnerEvent);
+		SimEvent goHome3 = new SimEvent(home3, 1, 8, EventType.HomeOwnerEvent);
+		SimEvent goHome4 = new SimEvent(home4, 1, 8, EventType.HomeOwnerEvent);
 		
 //		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 //		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
@@ -417,7 +417,7 @@ public class SimCityGUI extends JFrame {
 		 * child class of Role.
 		 */
 		
-		//((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
+		((Restaurant1HostRole)people.get(0).roles.get(0).role).msgaddwaiter(waiter1);
 		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
@@ -435,10 +435,7 @@ public class SimCityGUI extends JFrame {
 		
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(7,people);
-		
-		// Sets the interact panel's sim city GUI
-		cityCtrlPanel.interactPanel.setSimCityGUI(this);
-		
+
 		/**
 		aStarTraversal = new AStarTraversal(grid);
 		MarketTruckAgent markettruckagent = new MarketTruckAgent(aStarTraversal);
