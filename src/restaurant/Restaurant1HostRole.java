@@ -161,7 +161,6 @@ public class Restaurant1HostRole extends Role {
 				if (!table.isOccupied() ) {
 					hasemptytable = true;
 					if (!waitingCustomers.isEmpty()) {
-						System.err.println("Host found waiter");
 						seatCustomer(waitingCustomers.get(0).c, table);//the action
 						return true;//return true to the abstract agent to reinvoke the scheduler.
 					}

@@ -638,6 +638,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		}
 		
 		print("Done maintaining home!");
+		log.add(new LoggedEvent("Done maintaining home!"));
 	}
 	
 	/*private void callHousekeeper(MyPriority p) {
