@@ -14,20 +14,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Restaurant1AnimationPanel extends JPanel implements ActionListener {
-	//******************* DATA TO TEST GUI *******************************
-	
-	PersonAgent p = new PersonAgent();
-	Restaurant1HostRole host = new Restaurant1HostRole("Host", p);
-	Restaurant1CookRole cook = new Restaurant1CookRole("Cook", p);
-	CookGui ckgui = new CookGui(cook, this);
-	Restaurant1CashierRole cashier = new Restaurant1CashierRole("Cashier", p);
-	Restaurant1RevolvingStand rStand = new Restaurant1RevolvingStand();
-	Restaurant1CustomerRole customer = new Restaurant1CustomerRole("Customer", p);
-	CustomerGui cgui = new CustomerGui(customer, this);
-	Restaurant1WaiterRole waiter = new Restaurant1WaiterRole("Waiter", p);
-	WaiterGui wgui = new WaiterGui(waiter, host);
-	
-	//********************************************************************
     private final int WINDOWX = 640;
     private final int WINDOWY = 480;
     private final int lec = 200, lec1 = 300;
@@ -44,13 +30,6 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
     private List<Gui> guis = new ArrayList<Gui>();
 
     public Restaurant1AnimationPanel() {
-    	// ************* DATA TO TEST GUI ********************
-    	
-    	host.msgaddwaiter(waiter);
-    	cook.setCashier(cashier);
-    	cook.setRevStand(rStand);
-    	
-    	// ***************************************************
     	
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
