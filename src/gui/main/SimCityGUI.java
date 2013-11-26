@@ -23,6 +23,7 @@ import bank.*;
 import bank.test.mock.MockBankHost;
 import market.*;
 import restaurant.*;
+import restaurant.gui.WaiterGui;
 import market.test.mock.MockCashier;
 import person.Location;
 import resident.HomeOwnerRole;
@@ -63,7 +64,7 @@ public class SimCityGUI extends JFrame {
 	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
 	public Restaurant1CustomerRole customer1 = new Restaurant1CustomerRole("Customer 1", initPerson);
 	public Restaurant1WaiterRole waiter1 = new Restaurant1WaiterRole("Waiter 1", initPerson);
-
+	WaiterGui wg = new WaiterGui(waiter1, null);
 	public CityMap citymap; 
 
 	List<PersonAgent> people = new ArrayList<PersonAgent>();
@@ -131,7 +132,7 @@ public class SimCityGUI extends JFrame {
 				new Position(500, 60), LocationType.Market);
 		Home home = new Home("Home 2", new HomeOwnerRole(initPerson, "Home Owner", 2), 
 				new Position(350, 80), LocationType.Home);
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new Position(220, 80), LocationType.Restaurant);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
 		locations.add(bank);
 		locations.add(market);
 		locations.add(home);
@@ -216,7 +217,7 @@ public class SimCityGUI extends JFrame {
 		citymap.addBusStop(busstop6.name, busstop6);
 		citymap.addBusStop(busstop7.name, busstop7);
 		citymap.addBusStop(busstop8.name, busstop8);
-
+		
 		//all these are along Bus 1's route so you have to add it to citymap
 		citymap.addBus(busstop1, bus);
 		citymap.addBus(busstop2, bus);
@@ -237,7 +238,10 @@ public class SimCityGUI extends JFrame {
 		cityAnimPanel.addGui(bs6gui);
 		cityAnimPanel.addGui(bs7gui);
 		cityAnimPanel.addGui(bs8gui);
-
+		wg.isPresent = false;
+		waiter1.setGui(wg);
+		cityAnimPanel.rest1Panel.addGui(wg);
+		
 		busstop1.startThread();
 		busstop2.startThread();
 		busstop3.startThread();
@@ -285,7 +289,7 @@ public class SimCityGUI extends JFrame {
 		people.get(1).addRole(host1);
 		people.get(2).addRole(cook1);
 		people.get(3).addRole(cashier1);
-		people.get(4).addRole(customer1);
+		//people.get(4).addRole(customer1);
 		people.get(5).addRole(waiter1);
 
 		for (PersonAgent p: people){
@@ -301,9 +305,20 @@ public class SimCityGUI extends JFrame {
 		//SimEvent goToMarket = new SimEvent(market, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
+		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
+		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
+		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
+		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
+		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
+		people.get(5).roles.get(0).role.switchPerson(people.get(5));
+		people.get(5).toDo.offer(goToRestaurant);
+		people.get(1).roles.get(0).role.switchPerson(people.get(1));
+		((Restaurant1HostRole)people.get(1).roles.get(0).role).msgaddwaiter(waiter1);
+		people.get(1).toDo.offer(goToHostRest);
 		people.get(0).setAnimationPanel(cityAnimPanel);
 		people.get(0).toDo.offer(goToBank);
-		people.get(0).toDo.offer(goToBank);
+		//people.get(1).toDo.offer(goToBank);
+		people.get(4).toDo.offer(gotoRestaurant);
 		simclock = new SimWorldClock(7,people);
 		
 		/**
@@ -315,19 +330,12 @@ public class SimCityGUI extends JFrame {
 		markettruckagent.startThread(); 
 		markettruckagent.msgGoBack();*/
 		
-		/*SimEvent goHome = new SimEvent(home, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);*/
-		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
-		SimEvent goToHostRest = new SimEvent(rest1, 1, 7, EventType.HostEvent);
 		
-		for(int i = 0; i < people.size(); i++){
+		/*for(int i = 0; i < people.size(); i++){
 			people.get(i).setAnimationPanel(cityAnimPanel);
-		}
+		}*/
 		//people.get(0).toDo.offer(goToBank);
 		//people.get(0).toDo.offer(goToBank);
-		people.get(5).toDo.offer(goToRestaurant);
-		people.get(1).toDo.offer(goToHostRest);
-		simclock = new SimWorldClock(7,people);
 	}
 
 	public CarAgent createCar(PersonAgent p){

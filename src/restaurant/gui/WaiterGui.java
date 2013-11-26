@@ -13,10 +13,11 @@ public class WaiterGui implements Gui {
 
     private Restaurant1WaiterRole agent = null;
     private Restaurant1HostRole host;
+    public boolean isPresent = false;
     private int countNumber = 0;
     private int customernumber = 0;
     private int xPos = -20, yPos = -20;//default waiter position
-    private int xDestination = -20, yDestination = -20;//default start position
+    private int xDestination = 50, yDestination = 50;//default start position
     private int origion = 40;
     private int chomeposition = 20;
     private int distance= 20;
@@ -118,10 +119,11 @@ public class WaiterGui implements Gui {
     }
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
-    
-
+    public void setPresent(boolean tf){
+    	isPresent = tf;
+    }
     public void DoGotoCHomePosition(int number){
     	customernumber = number;
     	xDestination = number * origion + distance;

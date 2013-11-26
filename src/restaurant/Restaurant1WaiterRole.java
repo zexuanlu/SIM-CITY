@@ -105,9 +105,9 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	// Messages
 
 	public void msgIWantFood(Customer cust, int table, int loc) {
+		System.err.println("Customer added by waiter");
 		customer.add(new mycustomer(cust, table, loc));
 		stateChanged();
-
 	}
 
 	public void msgreadytoorder(Customer customer){

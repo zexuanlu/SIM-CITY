@@ -12,6 +12,7 @@ public class CookGui implements Gui{
 
 	private Restaurant1CookRole cook = null;
 	private boolean plating = false;
+	public boolean isPresent = false;
 	private ImageIcon img = new ImageIcon("image/cook.jpeg");
 	private ImageIcon img1 = new ImageIcon("image/refri.jpeg");
 	private Image i = img.getImage();

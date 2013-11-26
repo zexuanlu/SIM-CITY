@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 public class CustomerGui implements Gui{
 
 	private Restaurant1CustomerRole agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
 	private int location = 0;
 	private int origion = 40;
@@ -37,10 +37,10 @@ public class CustomerGui implements Gui{
 		agent = c;
 		xPos = 0;
 		yPos = 0;
-		xDestination = 0;
-		yDestination = 0;
+		xDestination = 40;
+		yDestination = 40;
 		//maitreD = m;
-		this.gui = gui;
+		//this.gui = gui;
 	}
 	
 
@@ -77,7 +77,7 @@ public class CustomerGui implements Gui{
 				agent.msgAnimationFinishedLeaveRestaurant();
 				System.out.println("about to call gui.setCustomerEnabled(agent);");
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
+				//gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		}
@@ -85,7 +85,7 @@ public class CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.drawString(order, xPos, yPos + distance + distance);	
-		g.drawImage(i,xPos, yPos, distance, distance, gui);
+		g.fillRect(xPos, yPos, distance, distance);
 	}
 	
 	public void ordered(String a){
