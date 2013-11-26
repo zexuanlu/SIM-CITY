@@ -45,6 +45,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
     private List<Gui> guis = new ArrayList<Gui>();
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
+    private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
     private Image bufferImage;
     private Dimension bufferSize;
 	private String title = " City Animation ";
