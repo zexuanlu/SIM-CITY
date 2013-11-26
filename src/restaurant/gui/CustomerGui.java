@@ -18,7 +18,7 @@ public class CustomerGui implements Gui{
 	private ImageIcon img = new ImageIcon("image/grass.jpeg");
 	private Image i = img.getImage();
 	//private HostAgent host;
-	RestaurantGui gui;
+	Restaurant1AnimationPanel gui;
 	
 	private int distance = 20;
 	private int xPos, yPos;
@@ -33,7 +33,7 @@ public class CustomerGui implements Gui{
 	public static final int y1Table = 250;
 	public static final int y2Table = 150;
 
-	public CustomerGui(Restaurant1CustomerRole c, RestaurantGui gui){ //HostAgent m) {
+	public CustomerGui(Restaurant1CustomerRole c, Restaurant1AnimationPanel gui){ //HostAgent m) {
 		agent = c;
 		xPos = 0;
 		yPos = 0;
