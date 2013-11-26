@@ -5,11 +5,12 @@ import java.util.*;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-import agent.Agent;
+import agent.Role;
+import person.PersonAgent;
 
 import market.interfaces.MarketCashier;
 
-public class Restaurant1CashierRole extends Agent implements Cashier{
+public class Restaurant1CashierRole extends Role implements Cashier{
 	
 	String name;
 	public List<Check> check = Collections.synchronizedList(new ArrayList<Check>());
@@ -19,8 +20,8 @@ public class Restaurant1CashierRole extends Agent implements Cashier{
 	boolean payingbill = false;
 	MarketCashier marketCashier;
 	
-	public Restaurant1CashierRole(String name){
-		super();
+	public Restaurant1CashierRole(String name, PersonAgent pa){
+		super(pa);
 		this.name = name;
 		Price.put("Steak", 15.99);
 		Price.put("Chicken", 10.99);

@@ -416,6 +416,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		// GUI goes to market 
 		aptGui.DoGoToFrontDoor();
 		
+		atFrontDoor.drainPermits();
+		
 		try {
 			atFrontDoor.acquire();
 		} catch (InterruptedException e) {
@@ -444,6 +446,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		// GUI goes to market 
 		aptGui.DoGoToFrontDoor();
 		
+		atFrontDoor.drainPermits();
+		
 		try {
 			atFrontDoor.acquire();
 		} catch (InterruptedException e) {
@@ -464,6 +468,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 
 		// GUI goes to the fridge
 		aptGui.DoGoToFridge();
+		
+		atFridge.drainPermits();
 
 		// Semaphore to see if the GUI gets to the fridge
 		try {
@@ -478,6 +484,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.remove(p);
 		
 		aptGui.DoGoToFridge();
+		
+		atFridge.drainPermits();
 		
 		try {
 			atFridge.acquire();

@@ -79,7 +79,7 @@ public class SimCityGUI extends JFrame {
 
 	///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
 
-	Semaphore[][] grid = new Semaphore[gridX][gridY];
+	public Semaphore[][] grid = new Semaphore[gridX][gridY];
 	BusRole bus = new BusRole("BusRole");
 	BusRole bus2 = new BusRole("BusRole2");
 	BusGui bgui2; 
@@ -279,11 +279,17 @@ public class SimCityGUI extends JFrame {
         caragent.startThread();
         caragent.gotoPosition(500,250);
 
-
 		for (PersonAgent p: people){
 			p.startThread();
-			p.setAnimationPanel(cityAnimPanel);
-	}
+		}
+		 //people.get(0).startThread();
+		/*for (PersonGui pgui: peoplegui){
+			cityAnimPanel.addGui(pgui);     
+		}*/
+
+
+//		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
+//			p.setAnimationPanel(cityAnimPanel);
 		// people.get(0).startThread();
 
 		//SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
@@ -295,7 +301,15 @@ public class SimCityGUI extends JFrame {
 		people.get(0).toDo.offer(goHome);
 		simclock = new SimWorldClock(7,people);
 	}
-
+	
+	public void addPerson(PersonAgent p) {
+		PersonGui pgui = new PersonGui(p);
+		p.gui = pgui;
+		p.setAnimationPanel(cityAnimPanel);
+		people.add(p);
+		peoplegui.add(pgui);
+		cityAnimPanel.addGui(pgui);
+	}
 
 
 	public static void main(String[] args){

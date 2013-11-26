@@ -6,6 +6,8 @@ import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import restaurant.shareddata.*;
 
+import person.PersonAgent;
+
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -33,7 +35,8 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		waiterstate ws = waiterstate.working;
 		
 		
-		public Restaurant1SDWaiterRole(String name, Restaurant1RevolvingStand rev){
+		public Restaurant1SDWaiterRole(String name, Restaurant1RevolvingStand rev, PersonAgent pa){
+			super(pa);
 			this.name = name;
 			this.revStand = rev;
 			
@@ -183,7 +186,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		/**
 		 * Scheduler.  Determine what action is called for, and do it.
 		 */
-		protected boolean pickAndExecuteAnAction() {
+		public boolean pickAndExecuteAnAction() {
 			/* Think of this next rule as:
 	            Does there exist a table and customer,
 	            so that table is unoccupied and customer is waiting.
