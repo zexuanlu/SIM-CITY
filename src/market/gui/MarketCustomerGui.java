@@ -3,7 +3,6 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import agent.Gui;
 import market.MarketCustomerRole;
 
 public class MarketCustomerGui implements Gui {
@@ -13,7 +12,7 @@ public class MarketCustomerGui implements Gui {
 	private int xDestination = 140, yDestination = 240;
 	private int distance = 20;
 	private int xTable =140, yTable = 240;
-	private boolean atTable = true;
+	private boolean atTable = false;
 	
 	public MarketCustomerGui(MarketCustomerRole agent){
 		this.agent = agent;

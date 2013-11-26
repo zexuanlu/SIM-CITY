@@ -2,8 +2,6 @@ package market.gui;
 
 import javax.swing.*;
 
-import agent.Gui;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +15,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     private Image bufferImage;
     private Dimension bufferSize;
 
-    public List<Gui> guis = new ArrayList<Gui>();
+    private List<Gui> guis = new ArrayList<Gui>();
 
     public MarketAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
