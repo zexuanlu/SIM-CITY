@@ -211,7 +211,7 @@ public class SimCityGui extends JFrame{
                   passenger3.setPassDestination("Food");
                   passenger3.gotoBus();
                  */
-                 
+                 /**
                  aStarTraversal = new AStarTraversal(grid);
                 
                  CarAgent caragent = new CarAgent(aStarTraversal);
@@ -236,13 +236,14 @@ public class SimCityGui extends JFrame{
                  animationPanel.addGui(cgui3);
                  caragent3.startThread();
                  caragent3.gotoPosition(300,300);
-                
+                */
                  aStarTraversal = new AStarTraversal(grid);
                  CarAgent caragent4 = new CarAgent(aStarTraversal);
                  CarGui cgui4 = new CarGui(caragent4,297,410);
                  caragent4.setGui(cgui4);
                  animationPanel.addGui(cgui4);
                  caragent4.startThread();
+                 caragent4.setatPosition(297, 410);
                  caragent4.gotoPosition(300,50);
 
 

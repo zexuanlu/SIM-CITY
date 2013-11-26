@@ -32,6 +32,7 @@ import simcity.CityMap;
 import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
+import simcity.gui.CarGui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -257,7 +258,7 @@ public class SimCityGUI extends JFrame {
 
 		for (int i=0; i<1; i++){
 			aStarTraversal = new AStarTraversal(grid);
-			PersonAgent p = new PersonAgent("Person"+i,citymap,aStarTraversal);
+			PersonAgent p = new PersonAgent("Person "+i,citymap,aStarTraversal);
 			PersonGui pgui = new PersonGui(p);
 			p.gui = pgui;
 			people.add(p);
@@ -269,6 +270,14 @@ public class SimCityGUI extends JFrame {
 		//people.get(2).addRole(bankhostrole);
 		//people.get(3).addRole(marketcashierrole);
 		//people.get(4).addRole(marketemployeerole);
+		
+        aStarTraversal = new AStarTraversal(grid);
+        CarAgent caragent = new CarAgent(aStarTraversal);
+        CarGui cgui = new CarGui(caragent,50,250);
+        caragent.setGui(cgui);
+        cityAnimPanel.addGui(cgui);
+        caragent.startThread();
+        caragent.gotoPosition(500,250);
 
 
 		for (PersonAgent p: people){
