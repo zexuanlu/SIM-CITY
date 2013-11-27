@@ -12,6 +12,10 @@ import person.PersonAgent;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
 import person.Restaurant;
+import restaurant.Restaurant1CustomerRole;
+import restaurant.Restaurant1HostRole;
+import person.interfaces.*;
+import person.test.mock.MockHostRole;
 
 /*
  * Tests the PersonAgent's ability to switch to a certain role and the entrance handshake between 
@@ -21,7 +25,7 @@ import person.Restaurant;
  */
 public class PersonRestaurantEntrance extends TestCase{
 
-	/*PersonAgent person;
+	PersonAgent person;
 	MockHostRole host;
 	SimEvent goToRestaurant;
 	Location rest;
@@ -31,10 +35,12 @@ public class PersonRestaurantEntrance extends TestCase{
 		
 		super.setUp();	
 		person = new PersonAgent();
+		PersonAgent dummyPerson = new PersonAgent();
 		person.setName("Grant");
-		host = new MockHostRole("Gil");
-		rest = new Restaurant("Restaurant", host, p, LocationType.Restaurant);
-		goToRestaurant = new SimEvent(rest, 1, 9, 10, EventType.CustomerEvent);
+		host = new MockHostRole("Grant");
+		rest = new Restaurant("Restaurant", new Restaurant1HostRole("DUMMY", dummyPerson), p, LocationType.Restaurant);
+		goToRestaurant = new SimEvent(rest, 1, 9, EventType.CustomerEvent);
+		person.testMode = true;
 	}	
 	@Test
 	public void testEntrance() {
@@ -52,20 +58,17 @@ public class PersonRestaurantEntrance extends TestCase{
 		assertTrue("person's scheduler should return true because we have added one event to his queue", person.pickAndExecuteAnAction());
 		
 		//Check customer role creation is correct
-		assertTrue("person should now have a customer role in his roles list, he does not", person.roles.get(0) instanceof CustomerRole);
-		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).person == person);
+		assertTrue("person should now have a customer role in his roles list, he does not", person.roles.get(0).role instanceof Restaurant1CustomerRole);
+		assertTrue("the customer's person pointer should be equivalent to person it is not", person.roles.get(0).role.person == person);
 		
 		//Check that host for the restaurant received our message and both the person and the customer role
-		assertTrue("host's log should read: The customer role Grant has entered via the person Grant and is hungry, instead it reads: "+host.log.getLastLoggedEvent().getMessage(), 
-					host.log.containsString("The customer role Grant has entered via the person Grant and is hungry"));
-		assertTrue("host's people map should contain one entry for our person and role, it doesn't", 
-					host.people.get(person) == person.roles.get(0));
+		assertTrue("person's scheduler should return true because we have added one role to his queue", person.pickAndExecuteAnAction());
 		//the activity beyond the entrance up until exit is up to the person in charge of said role so we needn't test that
 		
 		//Now test whether the person scheduler runs or blocks
 		assertTrue("person's activeRole should be true, it is not", person.active());
 		assertFalse("person's scheduler should block if we run it because role's scheduler should return false", person.pickAndExecuteAnAction());
 		//the above test is vague atm but check the console and you should see "Killer, im running as a role" for a little extra verification 
-	}*/
+	}
 
 }
