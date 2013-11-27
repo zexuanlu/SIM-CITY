@@ -771,7 +771,7 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
-		if(!addedAnEvent && containsEvent("Go home")){
+		if(!addedAnEvent && !containsEvent("Go home")){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);

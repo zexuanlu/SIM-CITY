@@ -141,5 +141,10 @@ public class PersonMock extends Mock implements Person {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public double msgCheckWallet() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

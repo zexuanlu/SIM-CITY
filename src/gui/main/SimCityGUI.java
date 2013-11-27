@@ -216,31 +216,31 @@ public class SimCityGUI extends JFrame {
 				new Position(380, 280), 7, LocationType.Apartment);
 		Apartment apt4 = new Apartment("Apartment 4", apartmentTenant4, 
 				new Position(380, 320), 8, LocationType.Apartment);
-		Apartment apt5 = new Apartment("Apartment 5", apartmentTenant4, 
+		Apartment apt5 = new Apartment("Apartment 5", apartmentTenant5, 
 				new Position(340, 280), 9, LocationType.Apartment);
-		Apartment apt6 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt6 = new Apartment("Apartment 1", apartmentTenant6, 
 				new Position(340, 280), 10, LocationType.Apartment);
-		Apartment apt7 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt7 = new Apartment("Apartment 1", apartmentTenant7, 
 				new Position(340, 280), 11, LocationType.Apartment);
-		Apartment apt8 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt8 = new Apartment("Apartment 1", apartmentTenant8, 
 				new Position(340, 280), 12, LocationType.Apartment);
-		Apartment apt9 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt9 = new Apartment("Apartment 1", apartmentTenant9, 
 				new Position(340, 280), 13, LocationType.Apartment);
-		Apartment apt10 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt10 = new Apartment("Apartment 1", apartmentTenant10, 
 				new Position(340, 280), 14, LocationType.Apartment);
-		Apartment apt11 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt11 = new Apartment("Apartment 1", apartmentTenant11, 
 				new Position(340, 280), 15, LocationType.Apartment);
-		Apartment apt12 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt12 = new Apartment("Apartment 1", apartmentTenant12, 
 				new Position(340, 280), 16, LocationType.Apartment);
-		Apartment apt13 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt13 = new Apartment("Apartment 1", apartmentTenant13, 
 				new Position(340, 280), 17, LocationType.Apartment);
-		Apartment apt14 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt14 = new Apartment("Apartment 1", apartmentTenant14, 
 				new Position(340, 280), 18, LocationType.Apartment);
-		Apartment apt15 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt15 = new Apartment("Apartment 1", apartmentTenant15, 
 				new Position(340, 280), 19, LocationType.Apartment);
-		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant16, 
 				new Position(340, 280), 20, LocationType.Apartment);
-		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant4, 
+		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant17, 
 				new Position(340, 280), 21, LocationType.Apartment);
 		
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
