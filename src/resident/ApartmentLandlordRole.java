@@ -48,7 +48,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 		public double amountOwed;
 		public double amountPaying;
 
-		MyTenant(ApartmentTenant at, int apt) {
+		public MyTenant(ApartmentTenant at, int apt) {
 			aptRes = at;
 			apartmentNumber = apt;
 			amountOwed = 0;
@@ -67,7 +67,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	 * Messages for Apartment Landlord
 	 */
 	
-	public void msgNewTenant(ApartmentTenant apartmentTenantAgent, int atNum) {
+	public void msgNewTenant(ApartmentTenantRole apartmentTenantAgent, int atNum) {
 		tenants.add(new MyTenant(apartmentTenantAgent, atNum));
 		stateChanged();
 	}
