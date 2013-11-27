@@ -42,10 +42,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
-	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(1);
-	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(2);
-	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(3);
-	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(4);
+	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(5);
+	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(6);
+	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(7);
+	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(8);
 	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);

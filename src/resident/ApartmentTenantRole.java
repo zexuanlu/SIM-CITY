@@ -1,6 +1,6 @@
 package resident;
 
-import java.text.DecimalFormat; 
+import java.text.DecimalFormat;  
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,17 +11,16 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import market.Food;
-import person.Event;
-import person.Location;
-import person.Event.EventType;
-import person.Position;
+import person.Market;
+import person.Restaurant;
+import person.SimEvent;
+import person.Location.LocationType;
 import person.interfaces.Person;
 import resident.gui.ApartmentTenantGui;
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
 import resident.test.mock.EventLog;
 import resident.test.mock.LoggedEvent;
-import agent.Agent;
 import agent.Role;
 
 public class ApartmentTenantRole extends Role implements ApartmentTenant {
@@ -37,7 +36,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		super(p);
 		name = n;
 		apartmentNumber = an;
-		person = p;
+		this.person = p;
 		state = MyState.Awake;
 	}
 	
@@ -100,12 +99,10 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	
 	private double debt;
 	private int apartmentNumber;
-	private double myTime; // Keeps track of how much time the resident has
 	private static int hungerThreshold = 3;
 	private static double minRestaurantMoney = 70; // Minimum amount in the restaurant
 	private static double rentCost = 100; // Static for now.
 	private ApartmentLandlord landlord;
-	private Person person;
 	public ApartmentTenantGui aptGui;
 	
 	public void setGui(ApartmentTenantGui g) {
@@ -222,22 +219,22 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	}
 	
 	// GUI semaphore release messages
-	// For when the home owner is at the fridge
+	// For when the apt tenant is at the fridge
 	public void msgAtFridge() {
 		atFridge.release();
 	}
 	
-	// For when home owner is at the door
+	// For when apt tenant is at the door
 	public void msgAtDoor() {
 		atFrontDoor.release();
 	}
 	
-	// For when the home owner is at the stove
+	// For when the apt tenant is at the stove
 	public void msgAtStove() {
 		atStove.release();
 	}
 	
-	// For when the home owner has reached the dining table
+	// For when the apt tenant has reached the dining table
 	public void msgAtTable() {
 		atTable.release();
 	}
@@ -253,7 +250,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 */
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		if (person.getTime() >= 20 && state == MyState.Awake) {
+		if (person.getTime() >= 22 && state == MyState.Awake) {
 			sleep();
 			return true;
 		}
@@ -319,24 +316,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	/**
 	 * Actions for Apartment Tenant
 	 */
-	private void sleep() {
-		// Set home owner's state to sleeping
-		state = MyState.Sleeping;
-		
-		// Gui goes to bed and timer begins to start sleeping
-		print("Going to bed. It's sleepytime!");
-		
-		aptGui.DoGoToBed();
-		
-		sleepingTimer.schedule(new TimerTask() 
-        {
-            public void run() 
-            {
-            	updateVitals(3, 7);
-            	state = MyState.Awake;
-            }
-        }, 540000);
-	}
 
 	private void payLandlord(MyPriority p) {
 		toDoList.remove(p);
@@ -357,19 +336,29 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		}
 	}
 	
+	private void sleep() {
+		// Set home owner's state to sleeping
+		state = MyState.Sleeping;
+		
+		// Gui goes to bed and timer begins to start sleeping
+		print("Going to bed. It's sleepytime!");
+		
+		DoGoToBed();
+		
+		sleepingTimer.schedule(new TimerTask() 
+        {
+            public void run() 
+            {
+            	updateVitals(3, 7);
+            	state = MyState.Awake;
+            }
+        }, 540000);
+	}
+		
 	private void checkFridge(MyPriority p) {
 		toDoList.remove(p);
 		
-		// GUI goes to the fridge
-		aptGui.DoGoToFridge();
-
-		// Semaphore to see if the GUI gets to the fridge
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DoGoToFridge();
 
 		if (myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
@@ -387,13 +376,13 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	private void decideMarketOrGoOut(MyPriority p) {
 		toDoList.remove(p);
 
-		if (myMoney < minRestaurantMoney) { 
+		if (person.msgCheckWallet() < minRestaurantMoney) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			
-			log.add(new LoggedEvent("I'm going to go to the market. I have enough time to go and come home."));
+			log.add(new LoggedEvent("I'm going to go to the market. I have enough money to go and come home."));
 			
-			print("I'm going to go to the market. I have enough time to go and come home.");
+			print("I'm going to go to the market. I have enough money to go and come home.");
 		}
 		else { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
@@ -408,91 +397,43 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	private void goToRestaurant(MyPriority p) {
 		toDoList.remove(p);
 		
-		//Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		DoGoToFrontDoor();
 		
-		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-		//person.msgAddEvent(new Event("Go to restaurant", location, 2, EventType.CustomerEvent));
-		
-		// GUI goes to market 
-		aptGui.DoGoToFrontDoor();
-		
-		atFrontDoor.drainPermits();
-		
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (person.getMap() != null) {
+			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
+
+			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
+			person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
 		}
 		
-		try {
-			waitForReturn.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		person.msgFinishedEvent(this);
 	}
 	
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
 		
-//		Location location = new Location("Market", Location.LocationType.Market, new Position(50,50));
-//		
-//		Event event = new Event("Go to market", location, 2, EventType.MarketEvent);
-//		
-		// Lets person agent know that no longer going to be a resident role
-		//person.msgAddEvent(new Event("Go to market", location, 2, EventType.MarketEvent));
+		DoGoToFrontDoor();
 		
-		// GUI goes to market 
-		aptGui.DoGoToFrontDoor();
-		
-		atFrontDoor.drainPermits();
-		
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (person.getMap() != null) {
+			Market location = (Market)person.getMap().chooseByType(LocationType.Market);
+			
+			// Lets person agent know that no longer going to be a resident role
+			person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
 		}
 		
-		try {
-			waitForReturn.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		person.msgFinishedEvent(this);
 	}
 
 	private void restockFridge(MyPriority p) {
 		toDoList.remove(p);
 
-		// GUI goes to the fridge
-		aptGui.DoGoToFridge();
-		
-		atFridge.drainPermits();
-
-		// Semaphore to see if the GUI gets to the fridge
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DoGoToFridge();
 	}
 
 	private void cookFood(MyPriority p) {
 		toDoList.remove(p);
 		
-		aptGui.DoGoToFridge();
-		
-		atFridge.drainPermits();
-		
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		DoGoToFridge();
 
 		int max = -1;
 		String maxChoice = null;
@@ -522,96 +463,26 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			print("My fridge has no more " + maxChoice + ".");
 		}
 		
-		aptGui.setState(ApartmentTenantGui.AptCookingState.GettingIngredients, maxChoice);
-
-		// GUI animation to go to the stove and start cooking
-		aptGui.DoGoToStove(); 
-		
-		atStove.drainPermits();
-
-		// Semaphore to determine if the GUI has gotten to the stove location
-		try {
-			atStove.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		aptGui.state = ApartmentTenantGui.AptCookingState.Cooking;
-		
-		print("Cooking food..");
-		
-        // Timer to cook the food
-        cookingTimer.schedule(new TimerTask() 
-        {
-            public void run() 
-            {
-            	msgFoodDone();
-            }
-        }, 5000);
-        
-        aptGui.DoGoToHome();
+		DoCookFood(maxChoice);
 	}
+	
 
 	private void eatFood(MyPriority p) {
 		toDoList.remove(p);
 
-		// GUI animation to go to the stove and start cooking
-		aptGui.DoGoToStove(); 
-
-		// Semaphore to determine if the GUI has gotten to the stove location
-		try {
-			atStove.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		aptGui.state = ApartmentTenantGui.AptCookingState.GettingCookedFood;
-
-		aptGui.DoGoToTable(); // GUI animation to go to the dining table
-
-		// Semaphore to determine if the GUI has gotten to the table location
-		try {
-			atTable.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		print("Eating my food..");
-
-		// Timer to eat the food
-        eatingTimer.schedule(new TimerTask() 
-        {
-            public void run() 
-            {
-            	msgDoneEating();
-            }
-        }, 8000);
+		DoGetCookedFood();
         
 		// person.hungerLevel = 0;
 	}
 
 	private void washDishes(MyPriority p) {
 		toDoList.remove(p);
-		
+
 		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
+		final HomeOwnerRole temp = new HomeOwnerRole(this.person, this.name, this.apartmentNumber);
 		toDoList.add(prior);
 
-		aptGui.DoGoToSink(); // GUI animation to go to the sink
-		
-		atSink.drainPermits();
-
-		// Semaphore to determine if the GUI has arrived at sink location
-		try {
-			atSink.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		aptGui.setState(ApartmentTenantGui.AptCookingState.Nothing, null);
+		DoWashDishes();
 
 		// Timer to wash dishes
         washingDishesTimer.schedule(new TimerTask() 
@@ -620,7 +491,147 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
             {
             	msgDoneWashing(prior);
             	aptGui.DoGoToHome();
+            	person.msgFinishedEvent(temp);
             }
         }, 2000);
+	}
+	
+	
+	/**
+	 * GUI ACTIONS
+	 */
+	private void DoGoToBed() {
+		if (aptGui != null) {
+			aptGui.DoGoToBed();
+		}
+	}
+	
+	private void DoGoToFridge() {
+		if (aptGui != null) {
+			// GUI goes to the fridge
+			aptGui.DoGoToFridge();
+	
+			atFridge.drainPermits();
+			
+			// Semaphore to see if the GUI gets to the fridge
+			try {
+				atFridge.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void DoGoToFrontDoor() {
+		if (aptGui != null) {
+			// GUI goes to market 
+			aptGui.DoGoToFrontDoor();
+			
+			atFrontDoor.drainPermits();
+			
+			try {
+				atFrontDoor.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			aptGui.isPresent = false;
+		}
+	}
+	
+	private void DoCookFood(String s) {
+		if (aptGui != null) {
+			aptGui.setState(ApartmentTenantGui.AptCookingState.GettingIngredients, s);
+
+			// GUI animation to go to the stove and start cooking
+			aptGui.DoGoToStove(); 
+			
+			atStove.drainPermits();
+
+			// Semaphore to determine if the GUI has gotten to the stove location
+			try {
+				atStove.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			aptGui.state = ApartmentTenantGui.AptCookingState.Cooking;
+
+			print("Cooking food..");
+			
+	        // Timer to cook the food
+	        cookingTimer.schedule(new TimerTask() 
+	        {
+	            public void run() 
+	            {
+	            	msgFoodDone();
+	            }
+	        }, 5000);
+	        
+	        aptGui.DoGoToHome();
+		}
+	}
+	
+	private void DoGetCookedFood() {
+		if (aptGui != null) {
+			// GUI animation to go to the stove and start cooking
+			aptGui.DoGoToStove(); 
+
+			atStove.drainPermits();
+			
+			// Semaphore to determine if the GUI has gotten to the stove location
+			try {
+				atStove.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			aptGui.state = ApartmentTenantGui.AptCookingState.GettingCookedFood;
+
+			aptGui.DoGoToTable(); // GUI animation to go to the dining table
+
+			atTable.drainPermits();
+			
+			// Semaphore to determine if the GUI has gotten to the table location
+			try {
+				atTable.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			print("Eating my food..");
+
+			// Timer to eat the food
+	        eatingTimer.schedule(new TimerTask() 
+	        {
+	            public void run() 
+	            {
+	            	msgDoneEating();
+	            }
+	        }, 8000);
+		}
+	}
+	
+	private void DoWashDishes() {
+		if (aptGui != null) {
+			aptGui.DoGoToSink(); // GUI animation to go to the sink
+			
+			atSink.drainPermits();
+
+			// Semaphore to determine if the GUI has arrived at sink location
+			try {
+				atSink.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			aptGui.setState(ApartmentTenantGui.AptCookingState.Nothing, null);
+		}
 	}
 }

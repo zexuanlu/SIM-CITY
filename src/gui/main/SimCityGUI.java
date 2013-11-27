@@ -208,39 +208,39 @@ public class SimCityGUI extends JFrame {
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
 				new Position(540, 160), 4, LocationType.Home);
 		Apartment apt1 = new Apartment("Apartment 1", apartmentTenant1, 
-				new Position(540, 260), 5, LocationType.Apartment);
+				new Position(340, 280), 5, LocationType.Apartment);
 		Apartment apt2 = new Apartment("Apartment 2", apartmentTenant2, 
-				new Position(540, 260), 6, LocationType.Apartment);
+				new Position(340, 320), 6, LocationType.Apartment);
 		Apartment apt3 = new Apartment("Apartment 3", apartmentTenant3, 
-				new Position(540, 260), 7, LocationType.Apartment);
+				new Position(380, 280), 7, LocationType.Apartment);
 		Apartment apt4 = new Apartment("Apartment 4", apartmentTenant4, 
-				new Position(540, 260), 8, LocationType.Apartment);
+				new Position(380, 320), 8, LocationType.Apartment);
 		Apartment apt5 = new Apartment("Apartment 5", apartmentTenant4, 
-				new Position(540, 260), 9, LocationType.Apartment);
+				new Position(340, 280), 9, LocationType.Apartment);
 		Apartment apt6 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 10, LocationType.Apartment);
+				new Position(340, 280), 10, LocationType.Apartment);
 		Apartment apt7 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 11, LocationType.Apartment);
+				new Position(340, 280), 11, LocationType.Apartment);
 		Apartment apt8 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 12, LocationType.Apartment);
+				new Position(340, 280), 12, LocationType.Apartment);
 		Apartment apt9 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 13, LocationType.Apartment);
+				new Position(340, 280), 13, LocationType.Apartment);
 		Apartment apt10 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 14, LocationType.Apartment);
+				new Position(340, 280), 14, LocationType.Apartment);
 		Apartment apt11 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 15, LocationType.Apartment);
+				new Position(340, 280), 15, LocationType.Apartment);
 		Apartment apt12 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 16, LocationType.Apartment);
+				new Position(340, 280), 16, LocationType.Apartment);
 		Apartment apt13 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 17, LocationType.Apartment);
+				new Position(340, 280), 17, LocationType.Apartment);
 		Apartment apt14 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 18, LocationType.Apartment);
+				new Position(340, 280), 18, LocationType.Apartment);
 		Apartment apt15 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 19, LocationType.Apartment);
+				new Position(340, 280), 19, LocationType.Apartment);
 		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 20, LocationType.Apartment);
+				new Position(340, 280), 20, LocationType.Apartment);
 		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 22, LocationType.Apartment);
+				new Position(340, 280), 22, LocationType.Apartment);
 		
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
 		
@@ -492,15 +492,15 @@ public class SimCityGUI extends JFrame {
 		
 		btg1.isPresent = false;
 		banktellerrole1.setGui(btg1);
-		//cityAnimPanel.bankPanel.addGui(btg1);
+		cityAnimPanel.bankPanel.addGui(btg1);
 		
 		btg2.isPresent = false;
 		banktellerrole2.setGui(btg2);
-		//cityAnimPanel.bankPanel.addGui(btg2);
+		cityAnimPanel.bankPanel.addGui(btg2);
 		
 		bhg.isPresent = false;
 		bankhostrole.setGui(bhg);
-		//cityAnimPanel.bankPanel.addGui(bhg);
+		cityAnimPanel.bankPanel.addGui(bhg);
 		
 		
 		
@@ -567,15 +567,25 @@ public class SimCityGUI extends JFrame {
 		people.get(7).addRole(marketemployeerole);
 		people.get(7).addRole(apartmentTenant4);
 		people.get(8).addRole(marketcashierrole);
+		people.get(8).addRole(apartmentTenant5);
 		people.get(9).addRole(marketcashierrole);
+		people.get(9).addRole(apartmentTenant6);
 		people.get(10).addRole(cashier1);
+		people.get(10).addRole(apartmentTenant7);
 		people.get(11).addRole(cashier1);
+		people.get(11).addRole(apartmentTenant8);
 		people.get(12).addRole(cook1);
+		people.get(12).addRole(apartmentTenant9);
 		people.get(13).addRole(cook1);
+		people.get(13).addRole(apartmentTenant10);
 		people.get(14).addRole(waiter1);
+		people.get(14).addRole(apartmentTenant11);
 		people.get(15).addRole(waiter1);
+		people.get(15).addRole(apartmentTenant12);
 		people.get(16).addRole(host1);
+		people.get(16).addRole(apartmentTenant13);
 		people.get(17).addRole(host1);
+		people.get(17).addRole(apartmentTenant14);
 		
 		rest1.getTimeCard().startThread();
 		market.getTimeCard().startThread();
@@ -619,6 +629,8 @@ public class SimCityGUI extends JFrame {
 		SimEvent goHome3 = new SimEvent(home3, 1, 7, EventType.HomeOwnerEvent);
 		SimEvent goHome4 = new SimEvent(home4, 1, 7, EventType.HomeOwnerEvent);
 		
+		SimEvent goApt = new SimEvent(apt2, 1, 8, EventType.AptTenantEvent);
+		
 		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
 		SimEvent goToBank2 = new SimEvent(bank, 1, 9, EventType.CustomerEvent);
 		goToBank.directive = "deposit";
@@ -654,7 +666,7 @@ public class SimCityGUI extends JFrame {
 				people.get(i).roles.get(j).role.switchPerson(people.get(i));
 			}
 		}
-
+	
 		/**
 		people.get(0).roles.get(0).role.switchPerson(people.get(0));
 		people.get(0).roles.get(1).role.switchPerson(people.get(0));
