@@ -83,3 +83,5 @@
   + Configuration file not used, people initialized inside a class
   + Some commit messages are less than professional - these will be amended as soon as possible
   + Some tests were removed from Person due to the lack of a GUI in the tests
+  + Because CarAgent is so integrated with A* and it's GUI it was unable to be JUNIT tested
+  + For Transportation, focused more on A* and GUI than on JUNIT testing
