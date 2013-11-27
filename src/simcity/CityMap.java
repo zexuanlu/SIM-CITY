@@ -3,15 +3,18 @@ import java.util.*;
 import java.awt.Dimension;
 
 import person.Location;
+import person.PersonAgent.HomeType;
 import person.Position;
 import person.Location.LocationType;
+import person.Home;
+import person.Apartment;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 
 
 public class CityMap {
-//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
-	
+	//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
+
 	//bus information
 	int WIDTHTOTAL = 640; 
 	int HEIGHTTOTAL = 480; 
@@ -29,9 +32,9 @@ public class CityMap {
 	public CityMap(List<Location> locations){
 		map = locations; 
 	}
-	
+
 	public CityMap(){
-		
+
 	}
 	public BusRoute generateBusInformation(int finalx, int finaly, int originx, int originy){
 		BusRoute b = new BusRoute();
@@ -49,7 +52,7 @@ public class CityMap {
 
 		return b;
 	}
-	
+
 	public Position getNearestStreet(int x, int y){
 		if (x < WIDTHTOTAL/2){
 			return(new Position(x,Street1));
@@ -130,7 +133,24 @@ public class CityMap {
 	public int getNumBusStops(){
 		return busstops.size();
 	}
-
+	public Location getHome(int homeNumber, HomeType type){
+		Location ll = null;
+		if(type == HomeType.Home){
+			for(Location l : map){
+				if(((Home) l).getNumber() == homeNumber){
+					ll = l;
+				}
+			}
+		}
+		else if(type == HomeType.Apartment){
+			for(Location l : map){
+				if(((Apartment) l).getNumber() == homeNumber){
+					ll = l;
+				}
+			}
+		}
+		return ll;
+	}
 	public Location getByType(LocationType lt){
 
 		Location destination = new Location();

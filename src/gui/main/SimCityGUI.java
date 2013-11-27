@@ -159,13 +159,13 @@ public class SimCityGUI extends JFrame {
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
 				new Position(220, 160), LocationType.Market);
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
-				new Position(340, 160), LocationType.Home);
+				new Position(340, 160), 1, LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
-				new Position(340, 80), LocationType.Home);
+				new Position(340, 80), 2, LocationType.Home);
 		Home home3 = new Home("Home 3", homeOwnerRole3, 
-				new Position(450, 160), LocationType.Home);
+				new Position(450, 160), 3, LocationType.Home);
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
-				new Position(540, 160), LocationType.Home);
+				new Position(540, 160), 4, LocationType.Home);
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
 		
 		locations.add(bank);

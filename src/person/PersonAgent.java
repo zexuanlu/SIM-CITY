@@ -728,18 +728,21 @@ public class PersonAgent extends Agent implements Person{
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
 				wallet.addTransaction("Deposit", 200);
-				return true;
-			}
-		}
-		return false;
-		/*if(hunger >= 3){ //go eat
-			Location restaurantChoice = cityMap.chooseRandom(LocationType.Restaurant);
-			SimEvent needFood = new SimEvent("Go eat", (Restaurant)restaurantChoice, 4, EventType.CustomerEvent);
-			if(!containsEvent("Go eat")){
-				toDo.add(needFood);
 				addedAnEvent = true;
 			}
-		}*/
+		}
+		if(!addedAnEvent){
+			SimEvent goHome = null;
+			if(homeType == HomeType.Apartment){
+				 goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber, homeType), 2, EventType.AptTenantEvent);
+			}
+			else if(homeType == HomeType.Home){
+				
+				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber, homeType), 2, EventType.HomeOwnerEvent);
+			}
+			toDo.offer(goHome);
+		}
+		return addedAnEvent;
 		//buy a car
 		//rob the bank
 		//etc
