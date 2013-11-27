@@ -13,6 +13,7 @@ public class MockBusStop extends Mock implements BusStop {
 		super(name);
 	}
 	
+	public boolean busstop; 
 	public EventLog log = new EventLog(); 
 	public Passenger passenger; 
 	public Bus bus; 
@@ -26,7 +27,7 @@ public class MockBusStop extends Mock implements BusStop {
 	}
 	
 	public boolean isBusAtStop(Bus b){
-		return true; //temporary hack
+		return busstop; //temporary hack
 	}
 
 	public void msgBusLeaving(Bus b){
