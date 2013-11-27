@@ -142,6 +142,7 @@ public class SimCityGUI extends JFrame {
 	public BusStopGui bs6gui = new BusStopGui(busstop6, 340,140);
 	public BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
 	public BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
+	public MarketTruckAgent truck;
 
 
 	public SimCityGUI() {
@@ -230,6 +231,7 @@ public class SimCityGUI extends JFrame {
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
 		}
+	
 
 		bgui = new BusGui(bus,0,220);	
 		bgui2 = new BusGui(bus2,280,00);
@@ -293,6 +295,12 @@ public class SimCityGUI extends JFrame {
 		 * that pointer is given to people. Below the waiter1 role's gui is set and added to the right animation panel
 		 * in cityAnimationPanel.
 		 */
+		
+		truck = new MarketTruckAgent(aStarTraversal);
+		MarketTruckGui truckGui = new MarketTruckGui(truck);
+		truck.setGui(truckGui);
+		truck.startThread();
+		cityAnimPanel.addGui(truckGui);
 		
 		wg.isPresent = false;
 		waiter1.setGui(wg);
@@ -529,7 +537,8 @@ public class SimCityGUI extends JFrame {
 		people.get(16).toDo.offer(hostGoToRestaurant);
 		people.get(17).toDo.offer(hostGoToRestaurant2);
 		
-		
+		truck.setCashier(marketcashierrole);
+		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
 		
