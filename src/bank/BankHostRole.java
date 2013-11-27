@@ -106,12 +106,14 @@ public class BankHostRole extends Role implements BankHost {
 					return true;
 				}
 			}
+			//Used to track people arriving and tell them
 			if(waitCount > 0){
 				waitHere();
 				waitCount--;
 				return false;
 			}
 		}
+		//If it's the end of the day and you're another day older
 		if(waitingCustomers.isEmpty() && endOfDay){
 			workDayOver();
 			return true;
@@ -136,6 +138,9 @@ public class BankHostRole extends Role implements BankHost {
 			waitHere();
 	}
 	
+	/**
+	 * Sends messages to all the tellers telling them to leave
+	 */
 	private void workDayOver(){
 		for(MyTeller mt : tellers){
 			mt.bt.msgWorkDayOver();
@@ -144,6 +149,9 @@ public class BankHostRole extends Role implements BankHost {
 		getPerson().msgGoOffWork(this, 500.00);
 	}
 	
+	/**
+	 * Sends a message to the customers telling them where to go.
+	 */
 	private void waitHere(){
 		for(int i = 0; i < waitingCustomers.size(); i++){
 			waitingCustomers.get(i).msgNewLocation("waitArea"+i);

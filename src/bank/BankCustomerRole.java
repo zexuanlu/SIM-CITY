@@ -137,7 +137,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 	
 	/**
-	 * Received from the teller once a loan has failed
+	 * Received from the teller once a task has failed
+	 * 
+	 * @param type the type of task that failed
 	 */
 	public void msgRequestFailed(String type){
 		log.add(new LoggedEvent("Received msgRequestFailed from BankTeller"));
@@ -145,6 +147,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the host when the customer needs to go to a new location
+	 * 
+	 * @param location the new location to go to
+	 */
 	public void msgNewLocation(String location){
 		destination = location;
 		stateChanged();
@@ -184,6 +191,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			leaveBank();
 			return true;
 		}
+		//If you have a destination to go to
 		if(destination != null){
 			goToLocation(destination);
 			destination = null;

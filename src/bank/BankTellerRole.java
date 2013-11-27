@@ -229,6 +229,9 @@ public class BankTellerRole extends Role implements BankTeller {
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the bank host at the end of the day when you're another day older
+	 */
 	public void msgWorkDayOver(){
 		log.add(new LoggedEvent("Received msgWorkDayOver from Bank Teller"));
 		endOfDay = true;
@@ -276,6 +279,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				}
 			}
 		}
+		//If the teller has no customer, it's the end of the day, and he's another day older
 		if(bc == null && endOfDay == true){
 			goOffWork();
 			return true;
@@ -412,6 +416,9 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
+	/**
+	 * Sends a message to the person to go off work
+	 */
 	private void goOffWork(){
 		endOfDay = false;
 		getPerson().msgGoOffWork(this, 500.00);
