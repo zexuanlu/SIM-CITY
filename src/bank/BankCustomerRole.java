@@ -256,7 +256,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @param location the location to go to
 	 */
 	private void goToLocation(String location){
-		if(gui != null){
+		if(gui != null && location != null){
 			gui.DoGoToLocation(location);
 			Do("Moving to " + location);
 			try{

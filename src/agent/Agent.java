@@ -1,6 +1,7 @@
 package agent;
 
 import java.util.concurrent.*;
+import gui.subpanels.TracePanel;
 
 // This is a test to see if my git branch works correctly
 
@@ -12,6 +13,7 @@ public abstract class Agent {
     Semaphore pause = new Semaphore(0, true);
     boolean paused = false;
     private AgentThread agentThread;
+    protected static TracePanel tracePanel;
 
     protected Agent() {
     }
@@ -42,6 +44,13 @@ public abstract class Agent {
         return StringUtil.shortName(this);
     }
 
+    /**
+     * Set Trace Panel
+     */
+    public static void setTracePanel(TracePanel tp){
+    	Agent.tracePanel = tp;
+    }
+    
     /**
      * The simulated action code
      */
