@@ -2,6 +2,8 @@ package bank.gui;
 
 import javax.swing.*;
 
+import agent.Gui;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,10 +29,12 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
     static final int HOSTDESKX = 300;
     static final int HOSTDESKY = 100;
 
-    private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+    public List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 
     public BankAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
+    	Dimension d = new Dimension(WINDOWX, WINDOWY);
+    	setPreferredSize(d);
     	setVisible(true);
 		this.setBorder(BorderFactory.createTitledBorder("Bank"));
 		
@@ -58,10 +62,6 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.RED);
         g2.fillRect(HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT);
-        
-        for(Gui gui : guis) {
-                gui.updatePosition();
-        }
 
         synchronized(guis){
 	        for(Gui gui : guis) {

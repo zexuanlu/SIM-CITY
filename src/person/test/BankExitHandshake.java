@@ -45,7 +45,7 @@ public class BankExitHandshake extends TestCase{
 		goToBank = new SimEvent(bank, 1, 9, EventType.TellerEvent);
 		locs.add(bank);
 		CityMap cm = new CityMap(locs);
-		person = new PersonAgent("Grant", cm);
+		person = new PersonAgent("Grant", cm, 0);
 		PersonGui pgui = new PersonGui(person);
 		person.gui = pgui;
 		person.testMode = true;

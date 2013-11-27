@@ -2,6 +2,7 @@ package resident.gui;
 
 import javax.swing.*;  
 
+import agent.Gui;
 import person.interfaces.Person;
 
 import java.awt.*;
@@ -28,7 +29,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     
     public int aptNum;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public ApartmentAnimationPanel(int an) {
     	aptNum = an;
@@ -82,12 +83,6 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         // Drawing the bed
         g2.setColor(Color.PINK);
         g2.fillRect(300, 200, 50, 100);
-  
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

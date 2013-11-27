@@ -7,13 +7,14 @@ import java.util.concurrent.Semaphore;
 
 import person.interfaces.*;
 import restaurant.Restaurant1CookRole;
+import restaurant.interfaces.Cook;
 import market.gui.MarketEmployeeGui;
 import market.interfaces.*;
 
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	MarketCashier cashier;
-	MarketEmployeeGui employeeGui;
+	public MarketEmployeeGui employeeGui;
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
 	public Map<Integer, RestDes> CityMap = new HashMap<Integer, RestDes>();
@@ -22,6 +23,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public MarketEmployeeRole(Person person, String name){
 		super(person);
+		roleName = "Market Employee";
 		CityMap.put(1, new RestDes(100, 120));
 		
 	}
@@ -48,12 +50,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public class Myrest{
-		Restaurant1CookRole cook;
+		Cook cook;
 		MarketTruck truck;
 		List<Food> order;
 		public state1 s1 = state1.collecting;
 		int restNum;
-		Myrest(Restaurant1CookRole cook, List<Food> order, MarketTruck truck, int number){
+		Myrest(Cook cook, List<Food> order, MarketTruck truck, int number){
 			this.cook = cook;
 			this.order = order;
 			this.truck = truck;
@@ -86,7 +88,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		stateChanged();
 	}
 
-	public void msgCollectTheDilivery(Restaurant1CookRole cook, List<Food> food, MarketTruck truck, int number){
+	public void msgCollectTheDilivery(Cook cook, List<Food> food, MarketTruck truck, int number){
 		myrest.add(new Myrest(cook, food, truck, number));
 		stateChanged();
 	}
@@ -167,4 +169,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPerson().msgGoOffWork(this, 500.00);
 	}
 
+	public String getRoleName(){
+		return roleName;
+	}
 }

@@ -2,6 +2,8 @@ package market.gui;
 
 import javax.swing.*;
 
+import agent.Gui;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public MarketAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -64,12 +66,6 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
 
         g2.setColor(Color.green);
         g2.fillRect(500, 100, 40, 40);
-        
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

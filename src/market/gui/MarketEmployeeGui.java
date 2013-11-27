@@ -3,6 +3,7 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import agent.Gui;
 import market.MarketEmployeeRole;
 
 public class MarketEmployeeGui implements Gui{
@@ -20,6 +21,7 @@ public class MarketEmployeeGui implements Gui{
     private int xSalad = 400, ySalad = 240;
     private boolean takeFood = false;
     private boolean sendFood = false;
+	public boolean isPresent;
     
      public MarketEmployeeGui(MarketEmployeeRole agent){
     	this.agent = agent;
@@ -95,7 +97,7 @@ public class MarketEmployeeGui implements Gui{
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
-		return true;
+		return isPresent;
 	}
 
 	

@@ -1,4 +1,4 @@
-package bank.gui;
+package agent;
 
 import java.awt.*;
 

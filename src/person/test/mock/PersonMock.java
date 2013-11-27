@@ -11,6 +11,7 @@ import person.SimEvent;
 import person.Location;
 import person.Position;
 import person.interfaces.Person;
+import simcity.CityMap;
 
 public class PersonMock extends Mock implements Person {
 	
@@ -132,6 +133,16 @@ public class PersonMock extends Mock implements Person {
 	}
 	@Override
 	public int getTime() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public CityMap getMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public double msgCheckWallet() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

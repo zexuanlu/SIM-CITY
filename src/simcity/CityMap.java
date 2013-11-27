@@ -3,15 +3,18 @@ import java.util.*;
 import java.awt.Dimension;
 
 import person.Location;
+import person.PersonAgent.HomeType;
 import person.Position;
 import person.Location.LocationType;
+import person.Home;
+import person.Apartment;
 import simcity.interfaces.BusStop; 
 import simcity.interfaces.Bus; 
 
 
 public class CityMap {
-//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
-	
+	//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
+
 	//bus information
 	int WIDTHTOTAL = 640; 
 	int HEIGHTTOTAL = 480; 
@@ -29,9 +32,9 @@ public class CityMap {
 	public CityMap(List<Location> locations){
 		map = locations; 
 	}
-	
+
 	public CityMap(){
-		
+
 	}
 	public BusRoute generateBusInformation(int finalx, int finaly, int originx, int originy){
 		BusRoute b = new BusRoute();
@@ -40,16 +43,16 @@ public class CityMap {
 		b.destinationX = dimensions.get(destStop).width;
 		b.destinationY = dimensions.get(destStop).height; 
 		b.bus = busses.get(destStop);
-
-		b.busstop = getClosestStopinRoute(originx, originy,b.bus);
-		b.busStopX = getDimension(b.busstop).width; 
+		
+		b.busstop = getClosestStopinRoute(originx, originy, b.bus);
+		b.busStopX = getDimension(b.busstop).width;
 		b.busStopY = getDimension(b.busstop).height;
 
 		System.out.println("busstop start is" + b.busstop.getName() +"busstop end is "+ destStop.getName() );
 
 		return b;
 	}
-	
+
 	public Position getNearestStreet(int x, int y){
 		if (x < WIDTHTOTAL/2){
 			return(new Position(x,Street1));
@@ -85,13 +88,14 @@ public class CityMap {
 		return closest; 
 	}
 
-	private BusStop getClosestStopinRoute(int startx, int starty,Bus b){
+	private BusStop getClosestStopinRoute(int startx, int starty, Bus b){
 		ArrayList<BusStop> broute = routes.get(b);
 		BusStop closest = null; 
 		int tempdiff = 0; 
 		int numdiff = 10000; 
 		for (BusStop br: broute){
 			Dimension d = dimensions.get(br);
+			tempdiff = 0;
 			tempdiff = tempdiff + Math.abs(d.width - startx);
 			tempdiff = tempdiff + Math.abs(d.height - starty);
 			if (tempdiff < numdiff){
@@ -130,7 +134,24 @@ public class CityMap {
 	public int getNumBusStops(){
 		return busstops.size();
 	}
-
+	public Location getHome(int homeNumber){
+		Location ll = null;
+		if(homeNumber < 5){
+			for(Location l : map){
+				if(l.type == LocationType.Home && ((Home) l).getNumber() == homeNumber){
+					ll = l;
+				}
+			}
+		}
+		else {
+			for(Location l : map){
+				if(l.type == LocationType.Apartment && ((Apartment) l).getNumber() == homeNumber){
+					ll = l;
+				}
+			}
+		}
+		return ll;
+	}
 	public Location getByType(LocationType lt){
 
 		Location destination = new Location();

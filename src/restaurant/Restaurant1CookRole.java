@@ -1,7 +1,7 @@
 package restaurant;
 
 import agent.Role;
-import person.PersonAgent;
+import person.interfaces.Person;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -13,7 +13,6 @@ import restaurant.interfaces.Waiter;
 import restaurant.interfaces.Cashier;
 import market.interfaces.MarketCashier;
 import restaurant.shareddata.*;
-
 import market.interfaces.MarketTruck;
 import market.Food;
 
@@ -35,8 +34,9 @@ public  class Restaurant1CookRole extends Role implements Cook {
 	private Semaphore AR = new Semaphore(0,true);
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
 
-	public Restaurant1CookRole(String name, PersonAgent pa) {
+	public Restaurant1CookRole(String name, Person pa) {
 		super(pa);
+		roleName = "Rest1 Cook";
 		this.name = name; 
 		food.put("Steak", new MyFood("Steak", 4000, 6, 2, 4));
 		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4));
@@ -75,6 +75,10 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		this.marketCashier = c;
 	}
 	
+	public Restaurant1RevolvingStand getRevStand(){
+		return this.revStand;
+	}
+	
 	Timer timer = new Timer();
 
 	public void msghereisorder(Waiter w, String choice, int table){
@@ -82,6 +86,10 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		stateChanged();
 	}
 
+	public void msgAddedOrderToRevolvingStand(){
+		stateChanged();
+	}
+	
 	public void msgordercooked(Order order){
 		order.s = Order.state.cooked;
 		stateChanged();
@@ -208,7 +216,9 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		order.w.msgorderiscooked(order.table);
 	}
 
-
+	public String getRoleName(){
+		return roleName;
+	}
 
 }
 

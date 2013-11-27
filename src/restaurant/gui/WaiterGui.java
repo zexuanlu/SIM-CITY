@@ -3,15 +3,19 @@ package restaurant.gui;
 
 import restaurant.Restaurant1HostRole;
 import restaurant.Restaurant1WaiterRole;
+import restaurant.Restaurant1SDWaiterRole;
 import restaurant.interfaces.Customer;
+import restaurant.interfaces.Waiter;
 import simcity.gui.*;
 
 import java.awt.*;
 
+import agent.Gui;
+
 public class WaiterGui implements Gui {
 	
 
-    private Restaurant1WaiterRole agent = null;
+    private Waiter agent = null;
     private Restaurant1HostRole host;
     public boolean isPresent = false;
     private int countNumber = 0;
@@ -34,6 +38,11 @@ public class WaiterGui implements Gui {
     public static final int y1Table = 150;
     
     public WaiterGui(Restaurant1WaiterRole agent, Restaurant1HostRole host) {
+        this.agent = agent;
+        this.host = host;
+    }
+    
+    public WaiterGui(Restaurant1SDWaiterRole agent, Restaurant1HostRole host) {
         this.agent = agent;
         this.host = host;
     }

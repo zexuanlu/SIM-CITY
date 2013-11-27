@@ -12,6 +12,7 @@ import java.util.concurrent.Semaphore;
 
 import market.Food;
 import person.*;
+import person.Location.LocationType;
 import person.interfaces.Person;
 import resident.gui.HomeOwnerGui;
 import resident.interfaces.HomeOwner;
@@ -32,10 +33,14 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	// Constructor
 	public HomeOwnerRole(Person p, String n, int hn) {
 		super(p);
+		roleName = "Home Owner";
 		name = n;
 		houseNumber = hn;
 		this.person = p;
 		state = MyState.Awake;
+		
+		myFridge.add(new Food("Chicken", 2));
+		myFridge.add(new Food("Salad", 1));
 	}
 	
 	// States for the home owner 
@@ -318,7 +323,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		// Gui goes to bed and timer begins to start sleeping
 		print("Going to bed. It's sleepytime!");
 		
-		homeGui.DoGoToBed();
+		DoGoToBed();
 		
 		sleepingTimer.schedule(new TimerTask() 
         {
@@ -334,16 +339,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void checkFridge(MyPriority p) {
 		toDoList.remove(p);
 		
-		// GUI goes to the fridge
-		homeGui.DoGoToFridge();
-
-		// Semaphore to see if the GUI gets to the fridge
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DoGoToFridge();
 
 		if (myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
@@ -361,13 +357,13 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void decideMarketOrGoOut(MyPriority p) {
 		toDoList.remove(p);
 
-		if (myMoney < minRestaurantMoney) { 
+		if (person.msgCheckWallet() < minRestaurantMoney) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			
-			log.add(new LoggedEvent("I'm going to go to the market. I have enough time to go and come home."));
+			log.add(new LoggedEvent("I'm going to go to the market. I have enough money to go and come home."));
 			
-			print("I'm going to go to the market. I have enough time to go and come home.");
+			print("I'm going to go to the market. I have enough money to go and come home.");
 		}
 		else { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
@@ -382,85 +378,43 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void goToRestaurant(MyPriority p) {
 		toDoList.remove(p);
 		
-		Location location = new Location("Restaurant", Location.LocationType.Restaurant, new Position(50,50));
+		DoGoToFrontDoor();
 		
-		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-		person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
-		
-		// GUI goes to market 
-		homeGui.DoGoToFrontDoor();
-		
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (person.getMap() != null) {
+			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
+
+			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
+			person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
 		}
 		
-		try {
-			waitForReturn.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		person.msgFinishedEvent(this);
 	}
 	
 	private void goToMarket(MyPriority p) {
 		toDoList.remove(p);
 		
-		// GUI goes to market 
-		homeGui.DoGoToFrontDoor();
-		 
-		atFrontDoor.drainPermits();
+		DoGoToFrontDoor();
 		
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (person.getMap() != null) {
+			Market location = (Market)person.getMap().chooseByType(LocationType.Market);
+			
+			// Lets person agent know that no longer going to be a resident role
+			person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
 		}
 		
-		Location location = new Location("Market", Location.LocationType.Market, new Position(220,160));
-		
-		// Lets person agent know that no longer going to be a resident role
-		person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
-		
 		person.msgFinishedEvent(this);
-	
-//		try {
-//			waitForReturn.acquire();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	private void restockFridge(MyPriority p) {
 		toDoList.remove(p);
 
-		// GUI goes to the fridge
-		homeGui.DoGoToFridge();
-
-		// Semaphore to see if the GUI gets to the fridge
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DoGoToFridge();
 	}
 
 	private void cookFood(MyPriority p) {
 		toDoList.remove(p);
 		
-		homeGui.DoGoToFridge();
-		
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		DoGoToFridge();
 
 		int max = -1;
 		String maxChoice = null;
@@ -490,75 +444,14 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			print("My fridge has no more " + maxChoice + ".");
 		}
 		
-		homeGui.setState(HomeOwnerGui.HomeCookingState.GettingIngredients, maxChoice);
-
-		// GUI animation to go to the stove and start cooking
-		homeGui.DoGoToStove(); 
-		
-		atStove.drainPermits();
-
-		// Semaphore to determine if the GUI has gotten to the stove location
-		try {
-			atStove.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.state = HomeOwnerGui.HomeCookingState.Cooking;
-
-		print("Cooking food..");
-		
-        // Timer to cook the food
-        cookingTimer.schedule(new TimerTask() 
-        {
-            public void run() 
-            {
-            	msgFoodDone();
-            }
-        }, 5000);
-        
-        homeGui.DoGoToHome();
-        
-        
+		DoCookFood(maxChoice);
 	}
+	
 
 	private void eatFood(MyPriority p) {
 		toDoList.remove(p);
 
-		// GUI animation to go to the stove and start cooking
-		homeGui.DoGoToStove(); 
-
-		// Semaphore to determine if the GUI has gotten to the stove location
-		try {
-			atStove.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.state = HomeOwnerGui.HomeCookingState.GettingCookedFood;
-
-		homeGui.DoGoToTable(); // GUI animation to go to the dining table
-
-		// Semaphore to determine if the GUI has gotten to the table location
-		try {
-			atTable.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		print("Eating my food..");
-
-		// Timer to eat the food
-        eatingTimer.schedule(new TimerTask() 
-        {
-            public void run() 
-            {
-            	msgDoneEating();
-            }
-        }, 8000);
+		DoGetCookedFood();
         
 		// person.hungerLevel = 0;
 	}
@@ -567,21 +460,10 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		toDoList.remove(p);
 
 		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
+		final HomeOwnerRole temp = new HomeOwnerRole(this.person, this.name, this.houseNumber);
 		toDoList.add(prior);
 
-		homeGui.DoGoToSink(); // GUI animation to go to the sink
-		
-		atSink.drainPermits();
-
-		// Semaphore to determine if the GUI has arrived at sink location
-		try {
-			atSink.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.setState(HomeOwnerGui.HomeCookingState.Nothing, null);
+		DoWashDishes();
 
 		// Timer to wash dishes
         washingDishesTimer.schedule(new TimerTask() 
@@ -590,6 +472,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
             {
             	msgDoneWashing(prior);
             	homeGui.DoGoToHome();
+            	person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}
@@ -597,90 +480,211 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void maintainHome(MyPriority p) {
 		toDoList.remove(p);
 		
-		homeGui.DoGoToBed();
-		try {
-			atBed.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.DoGoToFridge();
-		try {
-			atFridge.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.DoGoToSink();
-		try {
-			atSink.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.DoGoToStove();
-		try {
-			atStove.acquire(); 
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		homeGui.DoGoToTable();
-		try {
-			atTable.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DoMaintainHome();
 		
 		print("Done maintaining home!");
 		log.add(new LoggedEvent("Done maintaining home!"));
 	}
 	
-	/*private void callHousekeeper(MyPriority p) {
-		toDoList.remove(p);
-		housekeeper.msgPleaseComeMaintain(this, houseNumber);
+	
+	/**
+	 * GUI ACTIONS
+	 */
+	private void DoGoToBed() {
+		if (homeGui != null) {
+			homeGui.DoGoToBed();
+		}
 	}
 	
-	private void letHousekeeperIn(MyPriority p) {
-		toDoList.remove(p);
-		
-		homeGui.DoGoToFrontDoor();
-		
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private void DoGoToFridge() {
+		if (homeGui != null) {
+			// GUI goes to the fridge
+			homeGui.DoGoToFridge();
+	
+			atFridge.drainPermits();
+			
+			// Semaphore to see if the GUI gets to the fridge
+			try {
+				atFridge.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		housekeeper.msgPleaseComeIn(this, houseNumber);
 	}
+	
+	private void DoGoToFrontDoor() {
+		if (homeGui != null) {
+			// GUI goes to market 
+			homeGui.DoGoToFrontDoor();
+			
+			atFrontDoor.drainPermits();
+			
+			try {
+				atFrontDoor.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.isPresent = false;
+		}
+	}
+	
+	private void DoCookFood(String s) {
+		if (homeGui != null) {
+			homeGui.setState(HomeOwnerGui.HomeCookingState.GettingIngredients, s);
 
-	private void payHousekeeper(MyPriority p) {
-		toDoList.remove(p);
-		
-		homeGui.DoGoToFrontDoor();
-		
-		try {
-			atFrontDoor.acquire();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if (myMoney >= (debt+maintenanceCost)) {
-			housekeeper.msgHereIsThePayment(this, debt+maintenanceCost);
-			myMoney -= debt+maintenanceCost;
+			// GUI animation to go to the stove and start cooking
+			homeGui.DoGoToStove(); 
+			
+			atStove.drainPermits();
 
+			// Semaphore to determine if the GUI has gotten to the stove location
+			try {
+				atStove.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.state = HomeOwnerGui.HomeCookingState.Cooking;
+
+			print("Cooking food..");
+			
+	        // Timer to cook the food
+	        cookingTimer.schedule(new TimerTask() 
+	        {
+	            public void run() 
+	            {
+	            	msgFoodDone();
+	            }
+	        }, 5000);
+	        
+	        homeGui.DoGoToHome();
 		}
-		else {
-			housekeeper.msgHereIsThePayment(this, myMoney);
-			myMoney = 0;
+	}
+	
+	private void DoGetCookedFood() {
+		if (homeGui != null) {
+			// GUI animation to go to the stove and start cooking
+			homeGui.DoGoToStove(); 
+
+			atStove.drainPermits();
+			
+			// Semaphore to determine if the GUI has gotten to the stove location
+			try {
+				atStove.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.state = HomeOwnerGui.HomeCookingState.GettingCookedFood;
+
+			homeGui.DoGoToTable(); // GUI animation to go to the dining table
+
+			atTable.drainPermits();
+			
+			// Semaphore to determine if the GUI has gotten to the table location
+			try {
+				atTable.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			print("Eating my food..");
+
+			// Timer to eat the food
+	        eatingTimer.schedule(new TimerTask() 
+	        {
+	            public void run() 
+	            {
+	            	msgDoneEating();
+	            }
+	        }, 8000);
 		}
-	}*/
+	}
+	
+	private void DoWashDishes() {
+		if (homeGui != null) {
+			homeGui.DoGoToSink(); // GUI animation to go to the sink
+			
+			atSink.drainPermits();
+
+			// Semaphore to determine if the GUI has arrived at sink location
+			try {
+				atSink.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.setState(HomeOwnerGui.HomeCookingState.Nothing, null);
+		}
+	}
+	
+	private void DoMaintainHome() {
+		if (homeGui != null) {
+			homeGui.DoGoToBed();
+			
+			atBed.drainPermits();
+			
+			try {
+				atBed.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.DoGoToFridge();
+			
+			atFridge.drainPermits();
+			
+			try {
+				atFridge.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.DoGoToSink();
+			
+			atSink.drainPermits();
+			
+			try {
+				atSink.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.DoGoToStove();
+			
+			atStove.drainPermits();
+			
+			try {
+				atStove.acquire(); 
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			homeGui.DoGoToTable();
+			
+			atTable.drainPermits();
+			
+			try {
+				atTable.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public String getRoleName(){
+		return roleName;
+	}
 }

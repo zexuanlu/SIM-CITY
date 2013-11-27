@@ -4,7 +4,7 @@ import restaurant.gui.WaiterGui;
 import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
-import person.PersonAgent;
+import person.interfaces.Person;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -39,10 +39,10 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	private waiterstate ws = waiterstate.working;
 	
 	
-	public Restaurant1WaiterRole(String name, PersonAgent pa){
+	public Restaurant1WaiterRole(String name, Person pa){
 		super(pa);
 		this.name = name;
-		
+		roleName = "Rest1 Waiter";
 		menue.put("Steak", 15.99);
 		menue.put("Chicken", 10.99);
 		menue.put("Salad", 5.99);
@@ -254,10 +254,6 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 				return true;
 			}
 		}
-		if(ws == waiterstate.applyingbreak){
-			DoApplyingbreak();
-			return true;
-		}
 		
 		
 		}
@@ -418,5 +414,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		// TODO Auto-generated method stub
 		
 	}		
-	
+	public String getRoleName(){
+		return roleName;
+	}
 }

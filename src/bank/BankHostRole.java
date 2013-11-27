@@ -22,6 +22,7 @@ public class BankHostRole extends Role implements BankHost {
 	String name;
 	public EventLog log;//Used for testing
 	public List<BankCustomer> waitingCustomers;//A list of customers who are waiting
+	private int waitCount = 0;
 	public List<MyTeller> tellers;//A list of all the tellers in the bank
 	public BankHostGui gui = null;//Used for animation
 	public boolean atDesk;//Used for animation
@@ -35,6 +36,7 @@ public class BankHostRole extends Role implements BankHost {
 	 */
 	public BankHostRole(Person person, String name){
 		super(person);
+		roleName = "Bank Host";
 		this.name = name;
 		waitingCustomers = new ArrayList<BankCustomer>();
 		tellers = new ArrayList<MyTeller>();
@@ -59,6 +61,7 @@ public class BankHostRole extends Role implements BankHost {
 	public void msgINeedTeller(BankCustomer bc) {
 		log.add(new LoggedEvent("Received msgINeedTeller from Bank Customer"));
 		waitingCustomers.add(bc);
+		waitCount++;
 		stateChanged();
 	}
 
@@ -103,8 +106,11 @@ public class BankHostRole extends Role implements BankHost {
 					return true;
 				}
 			}
-			waitHere();
-			return false;
+			if(waitCount > 0){
+				waitHere();
+				waitCount--;
+				return true;
+			}
 		}
 		if(waitingCustomers.isEmpty() && endOfDay){
 			workDayOver();
@@ -201,4 +207,8 @@ public class BankHostRole extends Role implements BankHost {
 		}
 	}
 	public enum state {working, offWork, withCustomer} 
+	
+	public String getRoleName(){
+		return roleName;
+	}
 }

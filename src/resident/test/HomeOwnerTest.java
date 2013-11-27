@@ -278,7 +278,7 @@ public class HomeOwnerTest extends TestCase
 		
 		// Checks that the home owner has 1 more logged event - to go to the market
 		assertEquals("Home owner has 3 logged events now.", 3, homeOwner.log.size());
-		assertTrue(homeOwner.log.containsString("I'm going to go to the market. I have enough time to go and come home."));
+		assertTrue(homeOwner.log.containsString("I'm going to go to the market. I have enough money to go and come home."));
 		
 		// Ensures home owner has going to market and cooking in to do list
 		assertEquals("Home owner has two tasks.", 2, homeOwner.toDoList.size());
@@ -290,7 +290,7 @@ public class HomeOwnerTest extends TestCase
 		
 		// Check that mock person has received message
 		assertEquals("Mock person has one entry.", 1, person.log.size());
-		assertTrue(person.log.getLastLoggedEvent().toString().contains("An event has been added to the personagent's queue"));
+		assertTrue(person.log.getLastLoggedEvent().toString().contains("You've finished your role and have returned to your PersonAgent"));
 				
 		// Initializes list of groceries
 		List<Food> groceries = new ArrayList<Food>();
@@ -543,7 +543,7 @@ public class HomeOwnerTest extends TestCase
 		
 		// Check that mock person has received message
 		assertEquals("Mock person has one entry.", 1, person.log.size());
-		assertTrue(person.log.getLastLoggedEvent().toString().contains("An event has been added to the personagent's queue"));
+		assertTrue(person.log.getLastLoggedEvent().toString().contains("You've finished your role and have returned to your PersonAgent"));
 		
 		// STEP 2: Message from the person agent when it's done going to the restaurant
 		homeOwner.msgDoneEatingOut();
@@ -702,7 +702,7 @@ public class HomeOwnerTest extends TestCase
 		homeOwner.msgDoneEating();
 		
 		// Checks home owner's log for one indicating ready to wash dishes
-		assertEquals("Home owner has 10 logged events now.", 10, homeOwner.log.size());
+		assertEquals("Home owner has 8 logged events now.", 8, homeOwner.log.size());
 		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("Done eating. I'm going to wash dishes now."));
 		
 		// Checks that to do list now has the task to wash dishes
@@ -720,7 +720,7 @@ public class HomeOwnerTest extends TestCase
 		homeOwner.msgDoneWashing(homeOwner.toDoList.get(0));
 		
 		// Checks home owner's log for one indicating done washing dishes
-		assertEquals("Home owner has 11 logged events now.", 11, homeOwner.log.size());
+		assertEquals("Home owner has 9 logged events now.", 9, homeOwner.log.size());
 		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("Done washing dishes!"));
 		
 		// Invokes scheduler. Should return false because no task.
@@ -794,7 +794,7 @@ public class HomeOwnerTest extends TestCase
 		
 		// Checks that the home owner has 1 more logged event - to go to the market
 		assertEquals("Home owner has 4 logged events now.", 4, homeOwner.log.size());
-		assertTrue(homeOwner.log.containsString("I'm going to go to the market. I have enough time to go and come home."));
+		assertTrue(homeOwner.log.containsString("I'm going to go to the market. I have enough money to go and come home."));
 		
 		// Ensures home owner has going to market and cooking in to do list
 		assertEquals("Home owner has three tasks.", 3, homeOwner.toDoList.size());
@@ -846,11 +846,15 @@ public class HomeOwnerTest extends TestCase
 		assertEquals("Home owner has nothing to do besides cook food.", 1, homeOwner.toDoList.size());
 		assertEquals(MyPriority.Task.Cooking, homeOwner.toDoList.get(0).task);
 		
+		// Checks that home owner has one more logged event noting maintained home
+		assertEquals("Home owner has 6 logged events.", 6, homeOwner.log.size());
+		assertTrue(homeOwner.log.containsString("Done maintaining home!"));
+		
 		// Invokes scheduler and makes sure that it returns true
 		assertTrue(homeOwner.pickAndExecuteAnAction());
 		
 		// Checks that the home owner has two more logged events - one indicating what food it's going to cook, and the other saying no more of that item
-		assertEquals("Home owner has 7 logged events now.", 7, homeOwner.log.size());
+		assertEquals("Home owner has 8 logged events now.", 8, homeOwner.log.size());
 		assertTrue(homeOwner.log.containsString("I'm going to cook Chicken. My inventory of it is now 0."));
 		assertTrue(homeOwner.log.containsString("My fridge has no more Chicken."));
 		
@@ -860,7 +864,6 @@ public class HomeOwnerTest extends TestCase
 		// STEP 4: Messages the home owner saying that the food is ready to be eaten
 		homeOwner.msgFoodDone();
 		
-		
 		// Checks home owner's log for one indicating ready to eat
 		assertEquals("Home owner has 9 logged events now.", 9, homeOwner.log.size());
 		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("My food is ready! I can eat now.")); 
@@ -869,11 +872,10 @@ public class HomeOwnerTest extends TestCase
 		assertTrue(homeOwner.pickAndExecuteAnAction());
 		
 		// Checks that home owner has no tasks to complete
-		assertEquals("Home owner should have eating task left.", 1, homeOwner.toDoList.size());
-		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.Eating);
+		assertEquals("Home owner should have no tasks left.", 0, homeOwner.toDoList.size());
 		
 		// Invokes the home owner's scheduler and makes sure that it returns true
-		assertTrue(homeOwner.pickAndExecuteAnAction());
+		assertFalse(homeOwner.pickAndExecuteAnAction());
 		
 		// STEP 5: Messages home owner when done eating
 		homeOwner.msgDoneEating();
@@ -891,20 +893,19 @@ public class HomeOwnerTest extends TestCase
 		
 		// Checks that home owner has 1 tasks of eating the cooked food still
 		assertEquals("Home owner should have 1 task of eating left.", 1, homeOwner.toDoList.size());
-		assertEquals("Home owner should have task of eating.", MyPriority.Task.WashDishes, homeOwner.toDoList.get(0).task);
+		assertEquals("Home owner should have task of eating.", MyPriority.Task.Washing, homeOwner.toDoList.get(0).task);
 		
 		// Invokes scheduler and makes sure that it returns true
-		assertTrue(homeOwner.pickAndExecuteAnAction());
+		assertFalse(homeOwner.pickAndExecuteAnAction());
 		
 		// Checks that home owner has task of washing (to prevent scheduler from running same action multiple times)
 		assertEquals("Home owner has one task now.", 1, homeOwner.toDoList.size());
-		assertEquals(homeOwner.toDoList.get(0).task, MyPriority.Task.Washing);
 		
 		// STEP 7: Messages home owner when done washing dishes
 		homeOwner.msgDoneWashing(homeOwner.toDoList.get(0));
 		
 		// Checks home owner's log for one indicating done washing dishes
-		assertEquals("Home owner has 13 logged events now.", 13, homeOwner.log.size());
+		assertEquals("Home owner has 11 logged events now.", 11, homeOwner.log.size());
 		assertTrue(homeOwner.log.getLastLoggedEvent().toString().contains("Done washing dishes!"));
 		
 		// Invokes scheduler. Should return false because no task.
