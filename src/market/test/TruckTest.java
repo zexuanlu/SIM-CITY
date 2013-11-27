@@ -5,9 +5,9 @@ import market.Food;
 import market.MarketTruckAgent;
 import market.MarketTruckAgent.CarState;
 import restaurant.*;
+import restaurant.test.mock.MockRestaurantCook;
 import market.test.mock.EventLog;
 import market.test.mock.MockCashier;
-
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class TruckTest extends TestCase{
 	
 	EventLog log = new EventLog();
 	MarketTruckAgent truck;
-	Restaurant1CookRole cook;
+	MockRestaurantCook cook;
 	MockCashier cashier;
 	AStarTraversal aStar;
 	
@@ -25,7 +25,7 @@ public class TruckTest extends TestCase{
 		super.setUp();
 		aStar = new AStarTraversal(null);
 		truck = new MarketTruckAgent(aStar);
-		cook = new Restaurant1CookRole("cook");
+		cook = new MockRestaurantCook("cook");
 		cashier = new MockCashier("C");
 		
 	}
