@@ -17,7 +17,7 @@
   1. A complex bus system involving A* and multiple bus stops (Yellow)
   2. Cars, which also function via A* (Red)
   3. Buildings which display name upon mouseover and are clickable to display interior
-  4. 
+  4. Ability to add roles to people via the interaction panel (note: due to person AI, it may take some time before the requested role occurs)
 ####Interactions and Behavior
   1. Various people are instantiated at various locations.
   2. Some of those people will be rich people - they have cars and don't work.
