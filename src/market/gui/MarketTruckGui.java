@@ -13,45 +13,31 @@ import agent.Gui;
 	
 public class MarketTruckGui implements Gui {
         
-        int scale = 20;
-        int deadpositionX = 600;
-        int deadpositionY = 400;
         public boolean isPresent;
         
-        List<Dimension> moves = new ArrayList<Dimension>();
-        boolean NorthSouth;
-        boolean EastWest;
-        boolean deadpos;
-        public int xPos, yPos, xDestination, yDestination;
+        private int distance = 20;
+        public int xPos = 200, yPos = 140, xDestination = 200, yDestination = 140;
         public int overallX, overallY;
+        public boolean atstop = false;
         
         private MarketTruckAgent myTruck;
+        
+        private int xrest = 200;
+        private int yrest = 80;
+        private int ymar = 140;
         
         public enum GuiState {gotoStop, atStop,canStop};
         GuiState guistate;
         
         public MarketTruckGui(MarketTruckAgent c){
             myTruck = c;
-            xPos = deadpositionX;
-            yPos = deadpositionY;
-            xDestination = deadpositionX;
-            yDestination = deadpositionY;
-            EastWest = true;
-            deadpos = true;
         }
         
         
         public void draw(Graphics2D g) {
-                
-                if (!deadpos){
-                        g.setColor(Color.GREEN);
-                        if (EastWest){
-                                g.fillRect(xPos, yPos, 20, 20);
-                        }
-                        else if (NorthSouth){
-                                g.fillRect(xPos, yPos, 20, 20);
-                        }
-                }
+    		g.setColor(Color.red);
+            g.fillRect(xPos, yPos, distance, distance);
+               
     }
         
         public boolean isPresent() {
@@ -60,22 +46,7 @@ public class MarketTruckGui implements Gui {
     
         
     public void updatePosition() {
-            //check orientation of the bus
-               if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
-                    guistate = GuiState.canStop;
-                    myTruck.msgatSlot();
-                    return;
-            }
-            
-            if (xPos == xDestination && yPos != yDestination){
-                    NorthSouth = false;
-                    EastWest = true; //y oriented
-            }
-            else if (yPos == yDestination && xPos != xDestination){
-                    EastWest = false;
-                    NorthSouth = true;
-            }
-            
+           
             
         if (xPos < xDestination)
             xPos++;
@@ -86,35 +57,29 @@ public class MarketTruckGui implements Gui {
             yPos++;
         else if (yPos > yDestination)
             yPos--;
-        
-   // if (xPos == xDestination && yPos == yDestination && guistate == GuiState.canStop){
-        if (xPos == overallX && yPos == overallY && guistate == GuiState.canStop){
-                guistate = GuiState.atStop;
-                System.out.println("At Place where I'm supposed to be at/ dead position");
-                myTruck.deadPos(deadpositionX, deadpositionY);
-                xDestination = deadpositionX;
-                yDestination = deadpositionY;
-                atPosition(deadpositionX, deadpositionY);
-                myTruck.msgatDestination();
+        if (xPos == xDestination &&atstop&& yPos == yDestination
+        		& (xDestination == xrest) & (yDestination == yrest )) {
+        	atstop = false;
+           myTruck.msgrelease();
         }
-    }
-    
-    public void atPosition(int x, int y){
-            if (deadpos){
-                    deadpos = false;
-            }
-            else {
-                    deadpos = true;
-            }
-            xPos = x;
-            yPos = y;
-    }
-    
-        public void moveto(int x, int y){
-            guistate = GuiState.gotoStop;
-                xDestination = x*scale;
-                yDestination = y*scale;
+
+        if (xPos == xDestination &&atstop&& yPos == yDestination
+        		& (xDestination == xrest) & (yDestination == ymar )) {
+        	atstop = false;
+           myTruck.msgrelease();
+        }
         }
     
+    public void GotoCook(){
+    	xDestination = 200;
+    	yDestination = 80;
+    	atstop = true;
+    }
+  
+    public void GoBack(){
+    	xDestination = 200;
+    	yDestination = 140;
+    	atstop = true;
+    }
     
 }
