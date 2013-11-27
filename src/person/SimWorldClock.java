@@ -8,10 +8,10 @@ import java.util.TimerTask;
 import person.interfaces.Person;
  //msgEndOfDay()
 public class SimWorldClock {
-	Timer clock = new Timer();
-	List<PersonAgent> people;
-	int currentHour;
-	int endOfDay;
+	private Timer clock = new Timer();
+	public List<PersonAgent> people;
+	private int currentHour;
+	public int endOfDay;
 
 	public SimWorldClock(int currentHour, List<PersonAgent> people){
 		this.currentHour = currentHour;
@@ -38,5 +38,8 @@ public class SimWorldClock {
 	}
 	public void addPerson(PersonAgent p){
 		people.add(p);
+	}
+	public int getCurrentTime() {
+		return currentHour;
 	}
 }
