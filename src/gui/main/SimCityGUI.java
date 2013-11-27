@@ -764,7 +764,6 @@ public class SimCityGUI extends JFrame {
 		landlord.tenants.add(new MyTenant(apartmentTenant17, apartmentTenant17.getAptNum()));
 		landlord.tenants.add(new MyTenant(apartmentTenant18, apartmentTenant18.getAptNum()));
 		
-		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
 		 * Host, cook, cashier, waiter and teller events
