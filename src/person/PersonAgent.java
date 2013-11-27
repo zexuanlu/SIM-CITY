@@ -609,6 +609,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 					else {
 						market.getTimeCard().msgBackToWork(this,(MarketEmployeeRole)getRoleOfType(mer).role);
+						((MarketEmployeeRole)getRoleOfType(mer).role).employeeGui.isPresent = true;
 						getRoleOfType(mer).isActive(true);
 					}
 					if(!testMode){
