@@ -19,6 +19,7 @@ public class MockPerson extends Mock implements Person {
 	public EventLog log = new EventLog();
 	public int hunger;
 	public int currentTime;
+	public int balance; 
 	public Wallet wallet;
 	public List<String> groceryList = new ArrayList<String>();
 	public PriorityQueue<Event> toDo = new PriorityQueue<Event>();
@@ -43,13 +44,12 @@ public class MockPerson extends Mock implements Person {
 	public void setTime(int curr){
 		currentTime = curr;
 	}
-	@Override
+	
 	public void msgNewHour(int hour) { //usually from sim world clock
 		
 		log.add(new LoggedEvent("the hour has updated"));
 	}
-
-	@Override
+	
 	public void msgAtDest(Position destination) { //from gui
 		
 		log.add(new LoggedEvent("you have arrived at your gui destination"));
@@ -70,13 +70,14 @@ public class MockPerson extends Mock implements Person {
 			groceryList.add(s);
 		}
 	}
+	
 	public class Wallet {
 		
 		private int onHand;
 		private int inBank;
 		private int balance; 
 
-		Wallet(int oh, int ib){
+		public Wallet(int oh, int ib){
 			this.onHand = oh;
 			this.inBank = ib;
 			this.balance = oh + ib;
@@ -143,8 +144,15 @@ public class MockPerson extends Mock implements Person {
 	}
 
 	public double msgCheckWallet() {
-		// TODO Auto-generated method stub
-		return 0;
+		return balance;
+	}
+
+	public void setHungerLevel(int i) {
+		
+	}
+
+	public person.PersonAgent.Wallet getWallet() {
+		return null;
 	}
 
 }

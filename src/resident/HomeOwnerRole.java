@@ -453,7 +453,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 
 		DoGetCookedFood();
         
-		// person.hungerLevel = 0;
+		person.setHungerLevel(0);
 	}
 
 	private void washDishes(MyPriority p) {
