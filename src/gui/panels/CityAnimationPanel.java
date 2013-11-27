@@ -33,6 +33,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -51,7 +52,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
 	private List<JPanel> panels = new ArrayList<JPanel>();
-    private List<Gui> guis = new ArrayList<Gui>();
+    private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
     private Image bufferImage;
@@ -282,15 +283,18 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(JPanel p : apartments){
         	p.repaint();
         }
-
-        for(Gui gui : guis) {
-                gui.updatePosition();
+        synchronized(guis){
+	        for(Gui gui : guis) {
+	                gui.updatePosition();
+	        }
         }
 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
+        synchronized(guis){
+	        for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.draw(g2);
+	            }
+	        }
         }
     }
 

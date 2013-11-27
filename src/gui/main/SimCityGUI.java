@@ -241,7 +241,7 @@ public class SimCityGUI extends JFrame {
 		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant4, 
 				new Position(340, 280), 20, LocationType.Apartment);
 		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(340, 280), 22, LocationType.Apartment);
+				new Position(340, 280), 21, LocationType.Apartment);
 		
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
 		
@@ -540,9 +540,11 @@ public class SimCityGUI extends JFrame {
 //		for (int i=1; i<6; i++){
 		for (int i=0; i<21; i++){
 			aStarTraversal = new AStarTraversal(grid);
-			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 2000);
+			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 600.00);
 			PersonGui pgui = new PersonGui(p);
 			p.gui = pgui;
+			System.out.println(""+i);
+			p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
 			p.homeNumber = i;
 			people.add(p);
 			peoplegui.add(pgui);
@@ -593,11 +595,6 @@ public class SimCityGUI extends JFrame {
 		bank.getTimeCard().startThread();
 		bankdatabase.startThread();
 		
-		// Starts the thread of all the people
-		for (PersonAgent p: people){
-			p.startThread();
-		}
-		
 		 //people.get(0).startThread();
 		//people.get(0).setAnimationPanel(cityAnimPanel);
 		/* 
@@ -624,18 +621,7 @@ public class SimCityGUI extends JFrame {
 		SimEvent employeeGoToMarket2 = new SimEvent(market, 1, 14, EventType.EmployeeEvent);
 		SimEvent cashierGoToMarket = new SimEvent(market, 1, 8, EventType.CashierEvent);
 		SimEvent cashierGoToMarket2 = new SimEvent(market, 1, 14, EventType.CashierEvent);
-		
-		SimEvent goHome1 = new SimEvent(home1, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent goHome2 = new SimEvent(home2, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent goHome3 = new SimEvent(home3, 1, 7, EventType.HomeOwnerEvent);
-		SimEvent goHome4 = new SimEvent(home4, 1, 7, EventType.HomeOwnerEvent);
-		
-		SimEvent goApt = new SimEvent(apt2, 1, 8, EventType.AptTenantEvent);
-		
-		SimEvent goToBank = new SimEvent(bank, 1, 7, EventType.CustomerEvent);
-		SimEvent goToBank2 = new SimEvent(bank, 1, 9, EventType.CustomerEvent);
-		goToBank.directive = "deposit";
-		goToBank2.directive = "deposit";
+
 //		SimEvent gotoMarket = new SimEvent(market, 1,7, EventType.CustomerEvent);
 //		SimEvent gotoRestaurant = new SimEvent(rest1, 1,7, EventType.CustomerEvent);
 //		SimEvent goToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
@@ -730,6 +716,10 @@ public class SimCityGUI extends JFrame {
 		people.get(15).toDo.offer(waiterGoToRestaurant2);
 		people.get(16).toDo.offer(hostGoToRestaurant);
 		people.get(17).toDo.offer(hostGoToRestaurant2);
+		
+		for (PersonAgent p: people){
+			p.startThread();
+		}
 		
 		truck.setCashier(marketcashierrole);
 		marketcashierrole.addTruck(truck);

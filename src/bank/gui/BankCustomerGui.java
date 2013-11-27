@@ -50,6 +50,11 @@ public class BankCustomerGui implements Gui{
 		locations.put("waitArea7", new Dimension(500 ,160));
 		locations.put("waitArea8", new Dimension(500 ,200));
 		locations.put("waitArea9", new Dimension(500 ,240));
+		locations.put("waitArea10", new Dimension(540, 80));
+		locations.put("waitArea11", new Dimension(540 ,120));
+		locations.put("waitArea12", new Dimension(540 ,160));
+		locations.put("waitArea13", new Dimension(540 ,200));
+		locations.put("waitArea14", new Dimension(540 ,240));
 		locations.put("Outside", new Dimension(280, -20));
 		//gui.addGui(this);
 	}
@@ -86,6 +91,7 @@ public class BankCustomerGui implements Gui{
 	
 	public void DoGoToLocation(String location){
 		atDestination = false;
+		System.err.println(location);
 		Dimension d = locations.get(location);
 		xDestination = d.width;
 		yDestination = d.height;

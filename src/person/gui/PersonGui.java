@@ -69,5 +69,8 @@ public class PersonGui implements Gui{
 	
 	public int getX(){return xPos;}
 	public int getY(){return yPos;}
-
+	public void setStart(int x, int y){
+		xPos = x;
+		yPos = y;
+	}
 }
