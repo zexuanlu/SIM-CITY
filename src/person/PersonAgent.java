@@ -722,9 +722,10 @@ public class PersonAgent extends Agent implements Person{
 		 * find locations on the fly via look up 
 		 */
 		boolean addedAnEvent = false;
+		Bank b = (Bank)cityMap.getByType(LocationType.Bank);
 		if(wallet.getOnHand() <= 100){ //get cash
-			SimEvent needMoney = new SimEvent("Need Money", new Bank("Banco Popular", new TimeCard(), new MockBankHost("Gil"), 
-					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
+			SimEvent needMoney = new SimEvent("Need Money", b, 
+					4, EventType.CustomerEvent);
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
 				wallet.addTransaction("Withdrawal", 100);
@@ -732,8 +733,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
-			SimEvent needDeposit = new SimEvent("Need Deposit", new Bank("Banco Popular", new TimeCard(), new MockBankHost("Gil"), 
-					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
+			SimEvent needDeposit = new SimEvent("Need Deposit", b, 4, EventType.CustomerEvent);
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
 				wallet.addTransaction("Deposit", 200);
