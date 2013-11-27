@@ -36,6 +36,8 @@ import restaurant.gui.CustomerGui;
 import restaurant.gui.WaiterGui;
 import market.test.mock.MockCashier;
 import person.Location;
+import resident.ApartmentLandlordRole;
+import resident.ApartmentLandlordRole.MyTenant;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.ApartmentTenantGui;
@@ -77,6 +79,8 @@ public class SimCityGUI extends JFrame {
 	public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO2", 2);
 	public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
 	public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
+	
+	public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT01", 5, initPerson);
 	
 	public ApartmentTenantRole apartmentTenant1 = new ApartmentTenantRole("APT01", 5, initPerson);
 	public ApartmentTenantRole apartmentTenant2 = new ApartmentTenantRole("APT02", 6, initPerson);
@@ -574,6 +578,8 @@ public class SimCityGUI extends JFrame {
 		people.get(4).roles.get(0).role.switchPerson(people.get(4));
 		people.get(4).addRole(apartmentTenant1);
 		people.get(4).roles.get(1).role.switchPerson(people.get(4));
+		people.get(4).addRole(landlord);
+		people.get(4).roles.get(2).role.switchPerson(people.get(4));
 		people.get(5).addRole(banktellerrole2);
 		people.get(5).addRole(apartmentTenant2);
 		people.get(5).roles.get(1).role.switchPerson(people.get(5));
@@ -739,6 +745,24 @@ public class SimCityGUI extends JFrame {
 		waiter1.setCashier(cashier1);
 		cook1.setMarketCashier(marketcashierrole);
 		cook1.setCashier(cashier1);
+		
+		landlord.tenants.add(new MyTenant(apartmentTenant2, apartmentTenant2.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant3, apartmentTenant3.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant4, apartmentTenant4.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant5, apartmentTenant5.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant6, apartmentTenant6.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant7, apartmentTenant7.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant8, apartmentTenant8.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant9, apartmentTenant9.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant10, apartmentTenant10.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant11, apartmentTenant11.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant12, apartmentTenant12.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant13, apartmentTenant13.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant14, apartmentTenant14.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant15, apartmentTenant15.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant16, apartmentTenant16.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant17, apartmentTenant17.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant18, apartmentTenant18.getAptNum()));
 		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity

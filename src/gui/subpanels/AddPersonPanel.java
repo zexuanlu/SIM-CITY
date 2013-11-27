@@ -37,7 +37,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	private static final int WIDTH = 275;
 	private static final int HEIGHT = 310;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
-	private int residentNum = 0;
+	private int residentNum = 22;
 	private Random generator = new Random();
 	
 	List<String> strRoles = new ArrayList<String>();	
@@ -76,11 +76,6 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		roles.add(new JCheckBox("Market Cashier"));
 		roles.add(new JCheckBox("Market Employee"));
 		roles.add(new JCheckBox("Apartment Landlord"));
-		roles.add(new JCheckBox("Role 6"));
-		roles.add(new JCheckBox("Role 7"));
-		roles.add(new JCheckBox("Role 8"));
-		roles.add(new JCheckBox("Role 9"));
-		roles.add(new JCheckBox("Role 10"));
 		
 		// ADD COMPONENTS
 		// Name info
@@ -116,15 +111,8 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	public void addRandomPerson() {
 		AStarTraversal aStarTraversal = new AStarTraversal(simcitygui.grid);
 		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal, 2000);
-		if (residentNum < 4) {
-			pa.homeNumber = ++residentNum;
-			pa.homeType = HomeType.Home;
-		}
-		else {
-			residentNum = 0;
-			pa.homeNumber = ++residentNum;
-			pa.homeType = HomeType.Apartment;
-		}
+		pa.homeNumber = ++residentNum;
+		pa.homeType = HomeType.Apartment;
 		simcitygui.addPerson(pa);
 		
 		int role = generator.nextInt(4);
@@ -156,15 +144,8 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		AStarTraversal aStarTraversal = new AStarTraversal(simcitygui.grid);
 		System.out.println("Custom button clicked");
 		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal, 2000);
-		if (residentNum < 4) {
-			pa.homeNumber = ++residentNum;
-			pa.homeType = HomeType.Home;
-		}
-		else {
-			residentNum = 0;
-			pa.homeNumber = ++residentNum;
-			pa.homeType = HomeType.Apartment;
-		}
+		pa.homeNumber = ++residentNum;
+		pa.homeType = HomeType.Apartment;
 		simcitygui.addPerson(pa);
 		pa.startThread();
 		
@@ -195,15 +176,6 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 					// selectedRoles.add(Role 7)
 					System.out.println("Role of Apartment Landlord added to " + pa.getName());
 					pa.addRole(new ApartmentLandlordRole(pa.getName(), pa.homeNumber, pa));
-				}
-				if(role.getText().equals("Role 8")){
-					// selectedRoles.add(Role 8)
-				}
-				if(role.getText().equals("Role 9")){
-					// selectedRoles.add(Role 9)
-				}
-				if(role.getText().equals("Role 10")){
-					// selectedRoles.add(Role 10)
 				}
 			}
 		}

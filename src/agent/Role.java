@@ -22,7 +22,7 @@ public abstract class Role {
         }
         
         private boolean isActive;
-        protected Person person;
+        public Person person;
         
         public void msgEndOfDay(){
         	
