@@ -29,6 +29,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	public MarketCashierRole(Person person, String name){
 		super(person);
+		roleName = "Market Cashier";
 		this.person = person;
 		inventory.put("Steak", 90);
 		inventory.put("Car", 90);
@@ -298,4 +299,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		getPerson().msgGoOffWork(this, 500.00);
 	}
 	
+	public String getRoleName(){
+		return roleName;
+	}
 }
