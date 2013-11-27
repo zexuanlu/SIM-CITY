@@ -3,7 +3,7 @@ package restaurant;
 import restaurant.interfaces.Customer;
 import agent.Agent;
 import agent.Role;
-import person.PersonAgent;
+import person.interfaces.Person;
 
 public abstract class Restaurant1AbstractWaiter extends Role {
 
@@ -11,7 +11,7 @@ public abstract class Restaurant1AbstractWaiter extends Role {
 	{available, waiting, seated, readytoorder, askedtoorder, attable, ordered, gotocook, orderready,outoffood, eating,atcook, checkingbill, bringbill, bringattable, starteating, done};
 	
 	
-	public Restaurant1AbstractWaiter(PersonAgent pa) {
+	public Restaurant1AbstractWaiter(Person pa) {
 		super(pa);
 	}
 	

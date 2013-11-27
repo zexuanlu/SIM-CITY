@@ -376,10 +376,14 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		
 		DoGoToFrontDoor();
 		
-		Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
+		if (person.getMap() != null) {
+			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
+
+			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
+			person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
+		}
 		
-		// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-		person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
+		person.msgFinishedEvent(this);
 	}
 	
 	private void goToMarket(MyPriority p) {
@@ -387,10 +391,12 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		
 		DoGoToFrontDoor();
 		
-		Market location = (Market)person.getMap().chooseByType(LocationType.Market);
-		
-		// Lets person agent know that no longer going to be a resident role
-		person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
+		if (person.getMap() != null) {
+			Market location = (Market)person.getMap().chooseByType(LocationType.Market);
+			
+			// Lets person agent know that no longer going to be a resident role
+			person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
+		}
 		
 		person.msgFinishedEvent(this);
 	}
@@ -450,6 +456,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		toDoList.remove(p);
 
 		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
+		final HomeOwnerRole temp = new HomeOwnerRole(this.person, this.name, this.houseNumber);
 		toDoList.add(prior);
 
 		DoWashDishes();
@@ -461,6 +468,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
             {
             	msgDoneWashing(prior);
             	homeGui.DoGoToHome();
+            	person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}

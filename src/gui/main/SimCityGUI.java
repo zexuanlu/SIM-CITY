@@ -78,8 +78,7 @@ public class SimCityGUI extends JFrame {
 	public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
 	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
 	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
-	public Restaurant1WaiterRole waiter1 = new Restaurant1WaiterRole("Waiter 1", initPerson);
-	
+	public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
 	/*
 	 * Role gui's must be initialized in SimCityGui with the role as happens below
 	 */
@@ -503,6 +502,7 @@ public class SimCityGUI extends JFrame {
 		
 		waiter1.setcook(cook1);
 		waiter1.sethost(host1);
+		waiter1.setRevolvingStand(cook1.getRevStand());
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
 		

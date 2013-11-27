@@ -37,7 +37,7 @@ public class EventComparatorTest extends TestCase{
 	Position p3 = new Position(30, 30);
 	
 	Bank bank = new Bank("B1", h1, p1, LocationType.Bank);
-	//Restaurant work = new Restaurant("B2", p2, LocationType.Restaurant);
+	Restaurant work = new Restaurant("B2", null, p2, LocationType.Restaurant);
 	Market market = new Market("B3", p3, LocationType.Market);
 	
 	//Events to be entered into pq
@@ -51,7 +51,7 @@ public class EventComparatorTest extends TestCase{
 		super.setUp();	
 		goToBank = new SimEvent("BANK", bank, 2, EventType.CustomerEvent);
 		
-		//goToWork = new SimEvent(work, 1, 10, EventType.HostEvent);
+		goToWork = new SimEvent(work, 1, 10, EventType.HostEvent);
 		goToMarket = new SimEvent("MARKET", market, 3, EventType.CustomerEvent);
 		
 		goHome = new SimEvent(market, 1, 18, EventType.HomeEvent);
