@@ -390,11 +390,12 @@ public class SimCityGUI extends JFrame {
 		 * in cityAnimationPanel.
 		 */
 		
-//		//truck = new MarketTruckAgent(aStarTraversal);
-//		MarketTruckGui truckGui = new MarketTruckGui(truck);
-//		truck.setGui(truckGui);
-//		truck.startThread();
-//		cityAnimPanel.addGui(truckGui);
+
+		truck = new MarketTruckAgent();
+		MarketTruckGui truckGui = new MarketTruckGui(truck);
+		truck.setGui(truckGui);
+		truck.startThread();
+		cityAnimPanel.addGui(truckGui);
 		
 		meg.isPresent = false;
 		marketemployeerole.setGui(meg);
@@ -736,9 +737,6 @@ public class SimCityGUI extends JFrame {
 		marketemployeerole.setCashier(marketcashierrole);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
-//		customer.setCashier(cashier1);
-//		customer.setHost(host1);
-//		marketcustomerrole.setCashier(marketcashierrole);
 		cook1.setMarketCashier(marketcashierrole);
 		cook1.setCashier(cashier1);
 		
@@ -770,8 +768,8 @@ public class SimCityGUI extends JFrame {
 			p.startThread();
 		}
 		
-//		truck.setCashier(marketcashierrole);
-//		marketcashierrole.addTruck(truck);
+		truck.setCashier(marketcashierrole);
+		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
 		simclock.bankTimeCard = bank.getTimeCard();
