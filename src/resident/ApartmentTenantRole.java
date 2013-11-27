@@ -12,6 +12,7 @@ import java.util.concurrent.Semaphore;
 
 import market.Food;
 import person.Market;
+import person.PersonAgent;
 import person.Restaurant;
 import person.SimEvent;
 import person.Location.LocationType;
