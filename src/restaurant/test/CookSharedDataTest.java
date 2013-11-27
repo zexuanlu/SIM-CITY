@@ -1,6 +1,13 @@
 package restaurant.test;
 
 import person.PersonAgent;
+
+/***
+ * This is to test if the cook correctly receives an order using the shared data
+ * model. All other components of the restaurant were tested for v2.2, and therefore
+ * have not been included.
+ */
+
 import restaurant.Restaurant1CookRole;
 import restaurant.test.mock.MockSDWaiter;
 import restaurant.shareddata.*;
