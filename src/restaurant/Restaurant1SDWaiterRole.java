@@ -6,7 +6,7 @@ import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import restaurant.shareddata.*;
-import person.PersonAgent;
+import person.interfaces.Person;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -35,7 +35,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		waiterstate ws = waiterstate.working;
 		
 		
-		public Restaurant1SDWaiterRole(String name, PersonAgent pa){
+		public Restaurant1SDWaiterRole(String name, Person pa){
 			super(pa);
 			this.name = name;
 			

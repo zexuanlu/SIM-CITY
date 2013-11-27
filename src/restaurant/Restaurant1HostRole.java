@@ -4,7 +4,7 @@ import agent.Role;
 
 import restaurant.interfaces.Waiter;
 
-import person.PersonAgent;
+import person.interfaces.Person;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -33,7 +33,7 @@ public class Restaurant1HostRole extends Role {
 	private String name;;
 	private int counter = 0;
 
-	public Restaurant1HostRole(String name, PersonAgent pa) {
+	public Restaurant1HostRole(String name, Person pa) {
 		super(pa);
 
 		this.name = name;
