@@ -95,6 +95,7 @@ public class SimCityGUI extends JFrame {
 	public ApartmentTenantRole apartmentTenant15 = new ApartmentTenantRole("APT04", 19, initPerson);
 	public ApartmentTenantRole apartmentTenant16 = new ApartmentTenantRole("APT04", 20, initPerson);
 	public ApartmentTenantRole apartmentTenant17 = new ApartmentTenantRole("APT04", 21, initPerson);
+	public ApartmentTenantRole apartmentTenant18 = new ApartmentTenantRole("APT04", 22, initPerson);
 	
 	public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
 	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
@@ -389,11 +390,11 @@ public class SimCityGUI extends JFrame {
 		 * in cityAnimationPanel.
 		 */
 		
-		truck = new MarketTruckAgent(aStarTraversal);
-		MarketTruckGui truckGui = new MarketTruckGui(truck);
-		truck.setGui(truckGui);
-		truck.startThread();
-		cityAnimPanel.addGui(truckGui);
+//		//truck = new MarketTruckAgent(aStarTraversal);
+//		MarketTruckGui truckGui = new MarketTruckGui(truck);
+//		truck.setGui(truckGui);
+//		truck.startThread();
+//		cityAnimPanel.addGui(truckGui);
 		
 		meg.isPresent = false;
 		marketemployeerole.setGui(meg);
@@ -555,41 +556,77 @@ public class SimCityGUI extends JFrame {
 		}
 		
 		people.get(0).addRole(bankhostrole);
+		people.get(0).roles.get(0).role.switchPerson(people.get(0));
 		people.get(0).addRole(homeOwnerRole1);
+		people.get(0).roles.get(1).role.switchPerson(people.get(0));
 		people.get(1).addRole(bankhostrole);
 		people.get(1).addRole(homeOwnerRole2);
+		people.get(1).roles.get(1).role.switchPerson(people.get(1));
 		people.get(2).addRole(banktellerrole1);
+		people.get(2).roles.get(0).role.switchPerson(people.get(2));
 		people.get(2).addRole(homeOwnerRole3);
+		people.get(2).roles.get(1).role.switchPerson(people.get(2));
 		people.get(3).addRole(banktellerrole1);
 		people.get(3).addRole(homeOwnerRole4);
+		people.get(3).roles.get(1).role.switchPerson(people.get(3));
 		people.get(4).addRole(banktellerrole2);
+		people.get(4).roles.get(0).role.switchPerson(people.get(4));
 		people.get(4).addRole(apartmentTenant1);
+		people.get(4).roles.get(1).role.switchPerson(people.get(4));
 		people.get(5).addRole(banktellerrole2);
 		people.get(5).addRole(apartmentTenant2);
+		people.get(5).roles.get(1).role.switchPerson(people.get(5));
 		people.get(6).addRole(marketemployeerole);
+		people.get(6).roles.get(0).role.switchPerson(people.get(6));
 		people.get(6).addRole(apartmentTenant3);
+		people.get(6).roles.get(1).role.switchPerson(people.get(6));
 		people.get(7).addRole(marketemployeerole);
 		people.get(7).addRole(apartmentTenant4);
+		people.get(7).roles.get(1).role.switchPerson(people.get(7));
 		people.get(8).addRole(marketcashierrole);
+		people.get(8).roles.get(0).role.switchPerson(people.get(8));
 		people.get(8).addRole(apartmentTenant5);
+		people.get(8).roles.get(1).role.switchPerson(people.get(8));
 		people.get(9).addRole(marketcashierrole);
 		people.get(9).addRole(apartmentTenant6);
+		people.get(9).roles.get(1).role.switchPerson(people.get(9));
 		people.get(10).addRole(cashier1);
+		people.get(10).roles.get(0).role.switchPerson(people.get(10));
 		people.get(10).addRole(apartmentTenant7);
+		people.get(10).roles.get(1).role.switchPerson(people.get(10));
 		people.get(11).addRole(cashier1);
 		people.get(11).addRole(apartmentTenant8);
+		people.get(11).roles.get(1).role.switchPerson(people.get(11));
 		people.get(12).addRole(cook1);
+		people.get(12).roles.get(0).role.switchPerson(people.get(12));
 		people.get(12).addRole(apartmentTenant9);
+		people.get(12).roles.get(1).role.switchPerson(people.get(12));
 		people.get(13).addRole(cook1);
 		people.get(13).addRole(apartmentTenant10);
+		people.get(13).roles.get(1).role.switchPerson(people.get(13));
 		people.get(14).addRole(waiter1);
+		people.get(14).roles.get(0).role.switchPerson(people.get(14));
 		people.get(14).addRole(apartmentTenant11);
+		people.get(14).roles.get(1).role.switchPerson(people.get(14));
 		people.get(15).addRole(waiter1);
 		people.get(15).addRole(apartmentTenant12);
+		people.get(15).roles.get(1).role.switchPerson(people.get(15));
 		people.get(16).addRole(host1);
+		people.get(16).roles.get(0).role.switchPerson(people.get(16));
 		people.get(16).addRole(apartmentTenant13);
+		people.get(16).roles.get(1).role.switchPerson(people.get(16));
 		people.get(17).addRole(host1);
 		people.get(17).addRole(apartmentTenant14);
+		people.get(17).roles.get(1).role.switchPerson(people.get(17));
+		people.get(18).addRole(apartmentTenant15);
+		people.get(18).roles.get(0).role.switchPerson(people.get(18));
+		people.get(19).addRole(apartmentTenant16);
+		people.get(19).roles.get(0).role.switchPerson(people.get(19));
+		people.get(20).addRole(apartmentTenant17);
+		people.get(20).roles.get(0).role.switchPerson(people.get(20));
+		people.get(21).addRole(apartmentTenant18);
+		people.get(21).roles.get(0).role.switchPerson(people.get(21));
+
 		for(int i = 18; i < 22; i++){
 			people.get(i).wallet.setOnHand(1000.00);
 		}
@@ -733,8 +770,8 @@ public class SimCityGUI extends JFrame {
 			p.startThread();
 		}
 		
-		truck.setCashier(marketcashierrole);
-		marketcashierrole.addTruck(truck);
+//		truck.setCashier(marketcashierrole);
+//		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
 		simclock.bankTimeCard = bank.getTimeCard();
