@@ -18,6 +18,8 @@
   2. Cars, which also function via A* (Red)
   3. Buildings which display name upon mouseover and are clickable to display interior
   4. Ability to add roles to people via the interaction panel (note: due to person AI, it may take some time before the requested role occurs)
+  5. To use the interaction panel, input a person's name ("Person #" - with # being 1-22 at startup), then select an action
+  6. Creation panel for creating new people and assigning them roles and behaviors
 ####Interactions and Behavior
   1. Various people are instantiated at various locations.
   2. Some of those people will be rich people - they have cars and don't work.
@@ -29,7 +31,7 @@
   8. People go to the market when they have no food at home and are poor
   9. People who have nothing to do go to their home or apartment
   10. People leave work when their replacements arrive or at the end of the day
-
+  11. Restaurants order from the market and receive food by truck
 ###Team Members Contributions
   1. Jennie Zhou - 
 	+ Houses and Apartments
@@ -69,4 +71,15 @@
 	+ Person Interaction Panel
 	+ Trace Panel
 	+ Overall gui layout
-	+ Integration 
+	+ Integration
+
+###Issues and Known Bugs
+  + People sometimes do not disappear into buildings
+  + People sometimes do not take bus when they should
+  + Only 1 upgraded restaurant included, however, A* was implemented
+  + Clicking too fast on buildings makes them not show up
+  + Homes are maintained 1 time per day and rent is paid 1 time per day
+  + People do not have A*, and inside of buildings does not have A*
+  + Configuration file not used, people initialized inside a class
+  + Some commit messages are less than professional - these will be amended as soon as possible
+  + Some tests were removed from Person due to the lack of a GUI in the tests
