@@ -101,8 +101,5 @@ public class CustomerTest extends TestCase {
 		
 		assertTrue("employee should contain a customer with state == collected. It doesn't.",
 				customer.s == state.collected);
-		
-		
 	}
-	
 }
