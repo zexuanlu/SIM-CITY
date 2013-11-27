@@ -4,6 +4,7 @@ import java.util.List;
 
 import restaurant.Restaurant1CookRole;
 import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 import market.MarketCashierRole;
 import market.Food;
 import market.interfaces.MarketCashier;
@@ -53,15 +54,15 @@ public class MockCashier extends Mock implements MarketCashier{
 		
 	}
 
+
 	@Override
-	public void MsgIwantFood(Restaurant1CookRole cook, Cashier ca,
-			List<Food> food, int number) {
+	public void msgBillFromTheAir(Cashier ca, double money) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgBillFromTheAir(Cashier ca, double money) {
+	public void MsgIwantFood(Cook cook, Cashier ca, List<Food> food, int number) {
 		// TODO Auto-generated method stub
 		
 	}

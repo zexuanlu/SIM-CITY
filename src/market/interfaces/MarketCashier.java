@@ -5,6 +5,7 @@ import java.util.List;
 import market.*;
 import restaurant.Restaurant1CookRole;
 import restaurant.interfaces.Cashier;
+import restaurant.interfaces.Cook;
 
 public interface MarketCashier {
 
@@ -17,7 +18,7 @@ public interface MarketCashier {
 	public abstract void msgGoToTable(MarketCustomer customer);
 	// end of in market scenario
 
-	public abstract void MsgIwantFood(Restaurant1CookRole cook, Cashier ca, List<Food> food, int number);
+	public abstract void MsgIwantFood(Cook cook, Cashier ca, List<Food> food, int number);
 
 	public abstract void msgBillFromTheAir(Cashier ca, double money);
 	
