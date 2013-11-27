@@ -11,6 +11,8 @@ import person.interfaces.*;
 */
 public abstract class Role {
         
+		protected String roleName = "No Active Role";
+	
         public void switchPerson(Person p){
                 this.person = p;
         }
@@ -63,7 +65,7 @@ public abstract class Role {
 * Return agent name for messages. Default is to return java instance
 * name.
 */
-    protected String getName() {
+    public String getName() {
         return StringUtil.shortName(this);
     }
 
@@ -95,4 +97,6 @@ public abstract class Role {
         }
         System.out.print(sb.toString());
     }
+    
+    public abstract String getRoleName();
 }

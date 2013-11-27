@@ -28,6 +28,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	
 	public PassengerRole(String name,Person p){
 		super(p);
+		roleName = "Passenger";
 		this.name = name; 
 		state= State.none; 
 		Cash = 100; 
@@ -173,4 +174,7 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 		return name; 
 	}
 	
+	public String getRoleName(){
+		return roleName;
+	}
 }

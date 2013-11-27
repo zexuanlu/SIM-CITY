@@ -40,6 +40,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public BankTellerRole(Person person, String name){
 		super(person);
+		roleName = "Bank Teller";
 		this.name = name;
 		log = new EventLog();
 		tasks = new ArrayList<Task>();
@@ -474,4 +475,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	}
 	//The various states of tasks
 	public enum taskState {requested, waiting, completed, failed}
+	
+	public String getRoleName(){
+		return roleName;
+	}
 }

@@ -39,4 +39,5 @@ public interface Person {
         public abstract void setStateChanged();
 
 		public abstract int getTime();
+		
 }

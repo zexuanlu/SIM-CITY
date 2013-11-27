@@ -42,7 +42,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	public Restaurant1WaiterRole(String name, Person pa){
 		super(pa);
 		this.name = name;
-		
+		roleName = "Rest1 Waiter";
 		menue.put("Steak", 15.99);
 		menue.put("Chicken", 10.99);
 		menue.put("Salad", 5.99);
@@ -414,5 +414,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		// TODO Auto-generated method stub
 		
 	}		
-	
+	public String getRoleName(){
+		return roleName;
+	}
 }

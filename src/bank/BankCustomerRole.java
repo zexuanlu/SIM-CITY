@@ -37,6 +37,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public BankCustomerRole(Person person, String name){
 		super(person);
+		roleName = "Bank Customer";
 		this.name = name;
 		s = state.none;
 		tasks = new ArrayList<Task>();
@@ -297,4 +298,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	
 	//The various states of the customer
 	public enum state {needTeller, waiting, haveTeller, atTeller, none}
+	
+	public String getRoleName(){
+		return roleName;
+	}
 }
