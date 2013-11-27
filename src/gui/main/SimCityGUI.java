@@ -615,7 +615,7 @@ public class SimCityGUI extends JFrame {
 		SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 1, 14, EventType.CookEvent);
 		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 8, EventType.CashierEvent);
 		SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 1, 14, EventType.CashierEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 8, EventType.WaiterEvent);
+		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 8, EventType.SDWaiterEvent);
 		SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 1, 14, EventType.WaiterEvent);
 		SimEvent tellerGoToBank = new SimEvent(bank, 1, 8, EventType.TellerEvent);
 		SimEvent tellerGoToBank2 = new SimEvent(bank, 1, 14, EventType.TellerEvent);
@@ -692,11 +692,18 @@ public class SimCityGUI extends JFrame {
 		banktellerrole1.bd = bankdatabase;
 		banktellerrole2.bd = bankdatabase;
 		
+		marketcashierrole.addEmployee(marketemployeerole);
 		waiter1.setcook(cook1);
 		waiter1.sethost(host1);
 		waiter1.setRevolvingStand(cook1.getRevStand());
+		marketemployeerole.setCashier(marketcashierrole);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
+		customer.setCashier(cashier1);
+		customer.setHost(host1);
+		marketcustomerrole.setCashier(marketcashierrole);
+		cook1.setMarketCashier(marketcashierrole);
+		cook1.setCashier(cashier1);
 		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
