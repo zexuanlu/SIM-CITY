@@ -146,5 +146,15 @@ public class PersonMock extends Mock implements Person {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	@Override
+	public void setHungerLevel(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public person.PersonAgent.Wallet getWallet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
