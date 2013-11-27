@@ -284,6 +284,7 @@ public class PersonAgent extends Agent implements Person{
 	public void msgGoOffWork(Role r , double pay){ 
 		print("Received the message go off work");
 		wallet.setOnHand(pay);
+		gui.isPresent = true;
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.isActive(false);
@@ -361,6 +362,7 @@ public class PersonAgent extends Agent implements Person{
 			Location l = e.location;
 			DoGoTo(l); 
 			if(!testMode){
+				going.drainPermits();
 				try {
 					print("Going acquire");
 					going.acquire();
