@@ -58,25 +58,6 @@ public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
 	
-	 public MyRole getActiveRole(){
-         for(MyRole role : roles){
-             if(role.isActive){
-            	 return role;
-             }
-         }
-         return null;
-	 }
- 
-	 public String getActiveRoleName(){
-		 String none = "No Active Role";
-         for(MyRole role : roles){
-             if(role.isActive){
-                 return role.role.getRoleName();
-             }
-         }
-         return none;
-	 }
-
 	private String name;
 	public int hunger; // tracks hunger level
 	public enum HomeType {Apartment, Home}
@@ -888,7 +869,9 @@ public class PersonAgent extends Agent implements Person{
 
 		private double onHand;
 		private double inBank;
-		private double balance; 
+		private double balance;
+		private double debt;
+		
 		private List<BankTicket> transactions 
 		= new ArrayList<BankTicket>();
 		public Wallet(double oh, double ib){
@@ -916,6 +899,12 @@ public class PersonAgent extends Agent implements Person{
 		}
 		public double getBalance(){
 			return balance;
+		}
+		public double getDebt() {
+			return debt;
+		}
+		public void setDebt(double i) {
+			debt += i;
 		}
 		public void setOnHand(double money){
 			onHand += money;
@@ -948,4 +937,32 @@ public class PersonAgent extends Agent implements Person{
 			car = simcitygui.createCar(this);
 		}
 	}
+	
+	public Wallet getWallet() {
+		return wallet;
+	}
+	
+	 public MyRole getActiveRole(){
+         for(MyRole role : roles){
+             if(role.isActive){
+            	 return role;
+             }
+         }
+         return null;
+	 }
+ 
+	 public String getActiveRoleName(){
+		 String none = "No Active Role";
+         for(MyRole role : roles){
+             if(role.isActive){
+                 return role.role.getRoleName();
+             }
+         }
+         return none;
+	 }
+
+	public void setHungerLevel(int i) {
+		hunger = i;		
+	}
+
 }
