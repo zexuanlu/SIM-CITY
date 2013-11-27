@@ -109,7 +109,7 @@ public class BankHostRole extends Role implements BankHost {
 			if(waitCount > 0){
 				waitHere();
 				waitCount--;
-				return true;
+				return false;
 			}
 		}
 		if(waitingCustomers.isEmpty() && endOfDay){
@@ -132,6 +132,8 @@ public class BankHostRole extends Role implements BankHost {
 		bc.msgHereIsTeller(mt.bt, mt.location);
 		mt.s = state.withCustomer;
 		waitingCustomers.remove(bc);
+		if(waitingCustomers.size() != 0)
+			waitHere();
 	}
 	
 	private void workDayOver(){
