@@ -170,7 +170,7 @@ public class CarAgent extends Agent {
  
  public void deadPos(int x, int y){
       currentPosition.release(aStar.getGrid());
-             currentPosition = new Position(x/scale, y/scale);
+      currentPosition = new Position(x/scale, y/scale);
      currentPosition.moveInto(aStar.getGrid());
      originalPosition = currentPosition;
  }
