@@ -24,8 +24,8 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	MarketTruckGui myGui;
 	private Semaphore atDes = new Semaphore(0,true);
 	
-	enum state {collecting, sending, readytoback, back};
-	state s;
+	public enum state {collecting, sending, readytoback, back};
+	public state s;
 
 
 	
@@ -74,6 +74,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
     
     public void GoToCook(){
     	myGui.GotoCook();
+    	s = state.sending;
     	try {
 			atDes.acquire();
 		} catch (InterruptedException e) {
@@ -85,6 +86,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
     	
     public void Goback(){
     	myGui.GoBack();
+    	s = state.back;
       	try {
     			atDes.acquire();
     		} catch (InterruptedException e) {
