@@ -57,6 +57,25 @@ import simcity.gui.PassengerGui;
 public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
+	
+	 public MyRole getActiveRole(){
+         for(MyRole role : roles){
+             if(role.isActive){
+            	 return role;
+             }
+         }
+         return null;
+	 }
+ 
+	 public String getActiveRoleName(){
+		 String none = "No Active Role";
+         for(MyRole role : roles){
+             if(role.isActive){
+                 return role.role.getRoleName();
+             }
+         }
+         return none;
+	 }
 
 	private String name;
 	public int hunger; // tracks hunger level
