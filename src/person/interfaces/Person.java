@@ -3,6 +3,7 @@ package person.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
+import person.PersonAgent.Wallet;
 import person.Restaurant;
 import person.SimEvent;
 import person.Position;
@@ -41,5 +42,9 @@ public interface Person {
         public abstract void setStateChanged();
 
 		public abstract int getTime();
+
+		public abstract void setHungerLevel(int i);
+
+		public abstract Wallet getWallet();
 		
 }
