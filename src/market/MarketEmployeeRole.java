@@ -23,6 +23,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	public MarketEmployeeRole(Person person, String name){
 		super(person);
+		roleName = "Market Employee";
 		CityMap.put(1, new RestDes(100, 120));
 		
 	}
@@ -168,4 +169,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		getPerson().msgGoOffWork(this, 500.00);
 	}
 
+	public String getRoleName(){
+		return roleName;
+	}
 }

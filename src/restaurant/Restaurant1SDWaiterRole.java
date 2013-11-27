@@ -38,7 +38,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public Restaurant1SDWaiterRole(String name, Person pa){
 			super(pa);
 			this.name = name;
-			
+			roleName = "Rest1 SharedData Waiter";
 			menue.put("Steak", 15.99);
 			menue.put("Chicken", 10.99);
 			menue.put("Salad", 5.99);
@@ -415,4 +415,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			
 		}		
 
+		public String getRoleName(){
+			return roleName;
+		}
 }

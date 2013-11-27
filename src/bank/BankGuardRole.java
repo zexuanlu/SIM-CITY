@@ -2,7 +2,9 @@ package bank;
 
 import agent.*;
 import person.interfaces.*;
+
 import java.util.*;
+
 import bank.interfaces.*;
 
 public class BankGuardRole extends Role implements BankGuard {
@@ -13,6 +15,7 @@ public class BankGuardRole extends Role implements BankGuard {
 	
 	BankGuardRole(Person person, String name){
 		super(person);
+		roleName = "Bank Guard";
 	}
 	
 	
@@ -44,4 +47,8 @@ public class BankGuardRole extends Role implements BankGuard {
 		}
 	}
 	enum state {requested, scaredOff, finished}
+	
+	public String getRoleName(){
+		return roleName;
+	}
 }

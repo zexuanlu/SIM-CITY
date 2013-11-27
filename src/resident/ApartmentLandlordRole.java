@@ -26,6 +26,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	// Constructor
 	public ApartmentLandlordRole(String n, int an, Person p) {
 		super(p);
+		roleName = "Apartment Landlord";
 		name = n;
 		apartmentNumber = an;
 		person = p;
@@ -112,5 +113,9 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 		t.amountOwed = rentCost - t.amountPaying;
 		t.aptRes.msgReceivedRent(t.amountOwed);
 		person.msgFinishedEvent(this);
+	}
+	
+	public String getRoleName(){
+		return roleName;
 	}
 }
