@@ -91,7 +91,6 @@ public class BankCustomerGui implements Gui{
 	
 	public void DoGoToLocation(String location){
 		atDestination = false;
-		System.err.println(location);
 		Dimension d = locations.get(location);
 		xDestination = d.width;
 		yDestination = d.height;
