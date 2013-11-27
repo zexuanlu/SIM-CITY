@@ -23,6 +23,7 @@ import bank.interfaces.*;
 import bank.test.mock.MockBankHost;
 import bank.*;
 import market.*;
+import market.gui.MarketCustomerGui;
 import market.interfaces.*;
 import agent.*;
 import person.gui.PersonGui;
@@ -583,15 +584,17 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.CustomerEvent){
 					activeRole = true;
 					MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
-
 					if(!containsRole(mcr)){
 						MyRole newRole = new MyRole(mcr);
 						newRole.isActive(true);
 						roles.add(newRole);
-						//((MarketCustomerRole)newRole.role).msgHello();
+						MarketCustomerGui mcg = new MarketCustomerGui((MarketCustomerRole)newRole.role);
+						((MarketCustomerRole)newRole.role).setGui(mcg);
+						cap.marketPanel.addGui(mcg);
+						((MarketCustomerRole)newRole.role).msgHello(wallet.getOnHand(), shoppingBag);
 					}
 					else{ 
-						//((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
+						((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(wallet.getOnHand(), shoppingBag);
 						getRoleOfType(mcr).isActive(true);
 					}
 					gui.setPresent(false);
@@ -740,7 +743,7 @@ public class PersonAgent extends Agent implements Person{
 		if(!addedAnEvent){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
-				 goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);
+				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);
 			}
 			else{
 				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber), 2, EventType.HomeOwnerEvent);
@@ -755,7 +758,7 @@ public class PersonAgent extends Agent implements Person{
 
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
-		
+
 		gui.walkto(originx, originy);
 		//currentLocation.setX(originx);
 		//currentLocation.setY(originy);
@@ -801,11 +804,11 @@ public class PersonAgent extends Agent implements Person{
 		else if(gui.xPos > 280 && gui.yPos > 220) {
 			Quadrant = 4;
 		}
-		
+
 		if(Quadrant == loc.Quadrant){
 			return true;
 		}
-		
+
 		return false;
 	}
 	public class MyRole{
