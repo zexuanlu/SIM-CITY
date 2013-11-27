@@ -333,7 +333,7 @@ public class PersonAgent extends Agent implements Person{
 		else{
 			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
 			if((nextEvent != null && nextEvent.start == currentTime) 
-					|| nextEvent != null && nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
+					|| (nextEvent != null && nextEvent.inProgress)){ //if we have an event and its time to start or were in the process ofgetting there
 				print("Executing an event as a Person");
 				goToAndDoEvent(nextEvent); 
 				nextEvent.setProgress(true);
@@ -769,6 +769,7 @@ public class PersonAgent extends Agent implements Person{
 				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber), 2, EventType.HomeOwnerEvent);
 			}
 			toDo.offer(goHome);
+			addedAnEvent = true;
 		}
 		return addedAnEvent;
 		//buy a car
@@ -852,7 +853,7 @@ public class PersonAgent extends Agent implements Person{
 			int time = Math.abs(e.start - currentTime); //how far into the future is this event
 			int priority = e.priority; //how urgent is this?
 			int score = time + priority;
-			System.out.println("Score of: "+score);
+			//System.out.println("Score of: "+score);
 			return score;
 		}
 

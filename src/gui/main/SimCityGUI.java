@@ -241,7 +241,7 @@ public class SimCityGUI extends JFrame {
 		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant4, 
 				new Position(540, 260), 20, LocationType.Apartment);
 		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant4, 
-				new Position(540, 260), 22, LocationType.Apartment);
+				new Position(540, 260), 21, LocationType.Apartment);
 		
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
 		
@@ -543,6 +543,8 @@ public class SimCityGUI extends JFrame {
 			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 2000);
 			PersonGui pgui = new PersonGui(p);
 			p.gui = pgui;
+			System.out.println(""+i);
+			p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
 			p.homeNumber = i;
 			people.add(p);
 			peoplegui.add(pgui);
