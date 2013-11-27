@@ -102,7 +102,7 @@ public class PersonAgent extends Agent implements Person{
 		super();
 		this.name = name;
 		this.cityMap = cm;
-		this.wallet = new Wallet(money, 5000);//hacked in
+		this.wallet = new Wallet(money, 0);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
 		arrived = false;
@@ -112,7 +112,7 @@ public class PersonAgent extends Agent implements Person{
 		this.name = name;
 		this.cityMap = cm;
 		astar = astar2; 
-		this.wallet = new Wallet(money, 5000);//hacked in
+		this.wallet = new Wallet(money, 0);//hacked in
 
 		this.hunger = 4;
 		currentTime = 7;
@@ -126,7 +126,7 @@ public class PersonAgent extends Agent implements Person{
 		super();
 		this.name = name;
 		activeRole = false;
-		this.wallet = new Wallet(5000, 5000);//hacked in
+		this.wallet = new Wallet(600.00, 0);//hacked in
 		this.hunger = 4;
 	}
 
@@ -305,8 +305,10 @@ public class PersonAgent extends Agent implements Person{
 			for(MyRole r : roles){
 				if(r.isActive){
 					print("Executing rule in role "+ r.role);
-					return r.role.pickAndExecuteAnAction();
-					//return b;
+					boolean b;
+					b =  r.role.pickAndExecuteAnAction();
+					Do("" + b + " "+ r.role);
+					return b;
 				}
 			}
 		}
@@ -319,8 +321,20 @@ public class PersonAgent extends Agent implements Person{
 				nextEvent.setProgress(true);
 				return true;
 			}
+			else if(nextEvent != null && nextEvent.type == EventType.CustomerEvent){
+				goToAndDoEvent(nextEvent);
+				nextEvent.setProgress(true);
+				return true;
+			}
+			else if(nextEvent != null && nextEvent.type == EventType.AptTenantEvent){
+				goToAndDoEvent(nextEvent);
+				nextEvent.setProgress(true);
+				return true;
+			}
 			else{ //check vitals and find something to do on the fly
-				return checkVitals();
+				boolean check;
+				check = checkVitals();
+				return check;
 			}
 		}
 		return false;
@@ -507,10 +521,10 @@ public class PersonAgent extends Agent implements Person{
 							((BankCustomerRole)newRole.role).setGui(bcg);
 							cap.bankPanel.addGui(bcg);
 						}
-						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10); //message it with what we want to do
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 200.00); //message it with what we want to do
 					}
 					else { //we already have one use it
-						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
+						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 200.00);
 						getRoleOfType(bcr).isActive(true);
 					}
 					gui.setPresent(false);
@@ -724,7 +738,7 @@ public class PersonAgent extends Agent implements Person{
 		boolean addedAnEvent = false;
 		Bank b = (Bank)cityMap.getByType(LocationType.Bank);
 		if(wallet.getOnHand() <= 100){ //get cash
-			SimEvent needMoney = new SimEvent("Need Money", b, 
+			SimEvent needMoney = new SimEvent("withdraw", b, 
 					4, EventType.CustomerEvent);
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
@@ -733,9 +747,10 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
-			SimEvent needDeposit = new SimEvent("Need Deposit", b, 4, EventType.CustomerEvent);
+			SimEvent needDeposit = new SimEvent("deposit", b, 20, EventType.CustomerEvent);
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
+				print(" Money = " + wallet.onHand);
 				wallet.addTransaction("Deposit", 200);
 				addedAnEvent = true;
 			}
@@ -749,6 +764,10 @@ public class PersonAgent extends Agent implements Person{
 				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber), 2, EventType.HomeOwnerEvent);
 			}
 			toDo.offer(goHome);
+			addedAnEvent = true;
+		}
+		if(addedAnEvent){
+			print("Picked a Special Event");
 		}
 		return addedAnEvent;
 		//buy a car
@@ -887,6 +906,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		public void setOnHand(double money){
 			onHand += money;
+			Do("" + onHand);
 		}
 		public void setInBank(double newAmount){
 			inBank += newAmount;
