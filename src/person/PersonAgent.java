@@ -56,7 +56,7 @@ import simcity.gui.PassengerGui;
 public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
-	
+
 	private String name;
 	public int hunger; // tracks hunger level
 	public enum HomeType {Apartment, Home}
@@ -86,9 +86,9 @@ public class PersonAgent extends Agent implements Person{
 	public Map<String, Integer> shoppingList = new HashMap<String, Integer>();// for home role shopping ish
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
-	
+
 	public SimCityGUI simcitygui;
-	
+
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
@@ -118,7 +118,6 @@ public class PersonAgent extends Agent implements Person{
 		this.astar = astar;
 		arrived = false;
 	}
-
 	public PersonAgent () {
 		super();
 	}
@@ -170,7 +169,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setTime(int time){ currentTime = time; }
 
 	public void setMap(List<Location> locations){ cityMap = new CityMap(locations); }
-	
+
 	public CityMap getMap() {
 		return cityMap;
 	}
@@ -237,14 +236,14 @@ public class PersonAgent extends Agent implements Person{
 
 		stateChanged();
 	}
-	
+
 	public void msgAtDest(Position destination,CarAgent c){ // From the gui. now we can send the correct entrance message to the location manager
 		print("Received the message AtDest from car");
 		gui.setPresent(true);
 		currentLocation = destination;
 		dowalkto(destination.getX(),destination.getY());
 	}
-	
+
 	public void msgFinishedEvent(Role r, List<Food> foodList, double change){
 		print("Received this message");
 		for(MyRole role : roles){
@@ -497,9 +496,11 @@ public class PersonAgent extends Agent implements Person{
 						MyRole newRole = new MyRole(bcr); //make a new MyRole
 						newRole.isActive(true); //set it active
 						roles.add(newRole); 
-						BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
-						((BankCustomerRole)newRole.role).setGui(bcg);
-						cap.bankPanel.addGui(bcg);
+						if(!testMode){
+							BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
+							((BankCustomerRole)newRole.role).setGui(bcg);
+							cap.bankPanel.addGui(bcg);
+						}
 						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10); //message it with what we want to do
 					}
 					else { //we already have one use it
@@ -517,10 +518,12 @@ public class PersonAgent extends Agent implements Person{
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)newRole.role);
 						newRole.isActive(true);
 						roles.add(newRole);
-						//add a gui
-						BankTellerGui btg = new BankTellerGui((BankTellerRole)newRole.role);
-						((BankTellerRole)newRole.role).setGui(btg);
-						cap.bankPanel.addGui(btg);
+						if(!testMode){
+							//add a gui
+							BankTellerGui btg = new BankTellerGui((BankTellerRole)newRole.role);
+							((BankTellerRole)newRole.role).setGui(btg);
+							cap.bankPanel.addGui(btg);
+						}
 					}
 					else { 
 						bank.getTimeCard().msgBackToWork(this, (BankTellerRole)getRoleOfType(btr).role); 
@@ -746,7 +749,7 @@ public class PersonAgent extends Agent implements Person{
 		//currentLocation.setX(originx);
 		//currentLocation.setY(originy);
 	}
-	
+
 	private void DoGoTo(Location loc){
 		//if(car != null){
 		//Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
@@ -882,10 +885,10 @@ public class PersonAgent extends Agent implements Person{
 			public double getAmount(){ return this.amount; }
 		}
 	}
-	
+
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
-		
+
 		if (this.wallet.getOnHand() >= 10000000){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
