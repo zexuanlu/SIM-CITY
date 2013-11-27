@@ -227,12 +227,10 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
-		print("Received the message AtDest");
-		gui.setPresent(true);
+		//print("Received the message AtDest");
+		//gui.setPresent(true);
 		currentLocation = destination;
 		going.release();
-
-		//gui.setPresent(true);
 
 		stateChanged();
 	}
@@ -280,7 +278,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		stateChanged();
 	}
-	public void msgGoOffWork(Role r , double pay){ 
+	public void msgGoOffWork(Role r, double pay){ 
 		print("Received the message go off work");
 		wallet.setOnHand(pay);
 		for(MyRole role : roles){
@@ -333,7 +331,7 @@ public class PersonAgent extends Agent implements Person{
 				MyRole newRole = new MyRole(pRole);
 				newRole.isActive(true);
 				roles.add(newRole);
-				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.getX(), gui.getY());
+				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
 				((PassengerRole)newRole.role).setGui(pg);
 				cap.addGui(pg);
 				((PassengerRole)newRole.role).setCityMap(cityMap);
@@ -360,6 +358,7 @@ public class PersonAgent extends Agent implements Person{
 			Location l = e.location;
 			DoGoTo(l); 
 			if(!testMode){
+				going.drainPermits();
 				try {
 					print("Going acquire");
 					going.acquire();
@@ -777,17 +776,24 @@ public class PersonAgent extends Agent implements Person{
 			return true;
 		}
 		int Quadrant = 0;
-		if(currentLocation.getX() < 280 && currentLocation.getY() < 220)
+
+		if (gui.xPos < 280 && gui.yPos < 220) {
 			Quadrant = 1;
-		else if(currentLocation.getX() > 280 && currentLocation.getY() < 220)
+		}
+		else if(gui.xPos > 280 && gui.yPos < 220) {
 			Quadrant = 2;
-		else if(currentLocation.getX() < 280 && currentLocation.getY() > 220)
+		}
+		else if(gui.xPos < 280 && gui.yPos > 220){
 			Quadrant = 3;
-		else if(currentLocation.getX() > 280 && currentLocation.getY() > 220)
+		}
+		else if(gui.xPos > 280 && gui.yPos > 220) {
 			Quadrant = 4;
+		}
+		
 		if(Quadrant == loc.Quadrant){
 			return true;
 		}
+		
 		return false;
 	}
 	public class MyRole{

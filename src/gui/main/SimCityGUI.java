@@ -385,6 +385,7 @@ public class SimCityGUI extends JFrame {
 		//people.get(3).addRole(homeOwnerRole4);
 		people.get(4).addRole(banktellerrole2);
 		people.get(5).addRole(banktellerrole2);
+		people.get(6).addRole(homeOwnerRole1);
 		//people.get(6).addRole(waiter1);
 		//people.get(7).addRole(marketcashierrole);
 		//people.get(8).addRole(marketemployeerole);
@@ -450,6 +451,7 @@ public class SimCityGUI extends JFrame {
 		people.get(0).roles.get(0).role.switchPerson(people.get(0));
 		people.get(2).roles.get(0).role.switchPerson(people.get(2));
 		people.get(4).roles.get(0).role.switchPerson(people.get(4));
+		people.get(6).roles.get(0).role.switchPerson(people.get(6));
 
 
 		/**
@@ -531,7 +533,8 @@ public class SimCityGUI extends JFrame {
 		people.get(3).toDo.offer(tellerGoToBank2);
 		people.get(4).toDo.offer(tellerGoToBank);
 		people.get(5).toDo.offer(tellerGoToBank2);
-		people.get(6).toDo.offer(goToBank);
+		people.get(6).toDo.offer(goHome1);
+		//people.get(6).toDo.offer(goToBank);
 		people.get(7).toDo.offer(goToBank2);
 		
 		

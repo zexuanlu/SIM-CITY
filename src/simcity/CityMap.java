@@ -40,9 +40,9 @@ public class CityMap {
 		b.destinationX = dimensions.get(destStop).width;
 		b.destinationY = dimensions.get(destStop).height; 
 		b.bus = busses.get(destStop);
-
-		b.busstop = getClosestStopinRoute(originx, originy,b.bus);
-		b.busStopX = getDimension(b.busstop).width; 
+		
+		b.busstop = getClosestStopinRoute(originx, originy, b.bus);
+		b.busStopX = getDimension(b.busstop).width;
 		b.busStopY = getDimension(b.busstop).height;
 
 		System.out.println("busstop start is" + b.busstop.getName() +"busstop end is "+ destStop.getName() );
@@ -85,13 +85,14 @@ public class CityMap {
 		return closest; 
 	}
 
-	private BusStop getClosestStopinRoute(int startx, int starty,Bus b){
+	private BusStop getClosestStopinRoute(int startx, int starty, Bus b){
 		ArrayList<BusStop> broute = routes.get(b);
 		BusStop closest = null; 
 		int tempdiff = 0; 
 		int numdiff = 10000; 
 		for (BusStop br: broute){
 			Dimension d = dimensions.get(br);
+			tempdiff = 0;
 			tempdiff = tempdiff + Math.abs(d.width - startx);
 			tempdiff = tempdiff + Math.abs(d.height - starty);
 			if (tempdiff < numdiff){
