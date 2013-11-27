@@ -736,6 +736,8 @@ public class SimCityGUI extends JFrame {
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
 		
+		// Sets the sim world clock to the interaction panel's so events can be created with correct start time
+		cityCtrlPanel.interactPanel.setClock(simclock);
 
 		/*for(int i = 0; i < people.size(); i++){
 			people.get(i).setAnimationPanel(cityAnimPanel);
