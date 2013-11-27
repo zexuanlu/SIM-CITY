@@ -101,10 +101,5 @@ public class CustomerTest extends TestCase {
 		
 		assertTrue("employee should contain a customer with state == collected. It doesn't.",
 				customer.s == state.collected);
-		
-		assertTrue("person should return a string with word Youve finished your role and have returned to your PersonAgent, but the last event return "
-				+ p.log.getLastLoggedEvent().toString(), p.log.containsString("Youve finished your role and have returned to your PersonAgent"));
-		
 	}
-	
 }

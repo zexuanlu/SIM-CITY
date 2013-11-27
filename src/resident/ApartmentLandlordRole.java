@@ -48,7 +48,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 		public double amountOwed;
 		public double amountPaying;
 
-		MyTenant(ApartmentTenant at, int apt) {
+		public MyTenant(ApartmentTenant at, int apt) {
 			aptRes = at;
 			apartmentNumber = apt;
 			amountOwed = 0;

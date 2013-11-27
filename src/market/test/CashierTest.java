@@ -42,8 +42,11 @@ public class CashierTest extends TestCase{
 	
 	public void testCashierCustomerEmployeeCase(){
 		List<Food> food = new ArrayList<Food>();
+		
 		food.add(new Food("Steak", 4));
+		
 		cashier.addEmployee(employee);
+		
 		assertEquals("cashier should have 1 employee in the list", cashier.employee.size(), 1);
 		
 		assertEquals("cashier should have 0 in the list", cashier.mycustomer.size(), 0);
@@ -102,8 +105,11 @@ public class CashierTest extends TestCase{
 	
 	public void testDeliveryCase(){
 		List<Food> food = new ArrayList<Food>();
+		
 		food.add(new Food("Steak", 1));
+		
 		cashier.addEmployee(employee);
+		
 		cashier.addTruck(truck);
 		
 		assertEquals("cashier should have 1 employee in the list", cashier.employee.size(), 1);
@@ -123,9 +129,13 @@ public class CashierTest extends TestCase{
 	public void testRestaurantCustomerCashierInterleavingCase(){
 		
 		List<Food> food = new ArrayList<Food>();
+		
 		food.add(new Food("Steak", 1));
+		
 		cashier.addEmployee(employee);
+		
 		cashier.addTruck(truck);
+		
 		assertEquals("cashier should have 1 employee in the list", cashier.employee.size(), 1);
 		
 		assertEquals("cashier should have 0 in the list", cashier.mycustomer.size(), 0);

@@ -7,6 +7,11 @@ import java.util.*;
 
 import bank.interfaces.*;
 
+/**
+ * This is an incomplete class that will be used when robberies are implemented in v2
+ * @author Joseph
+ *
+ */
 public class BankGuardRole extends Role implements BankGuard {
 	
 	//Data

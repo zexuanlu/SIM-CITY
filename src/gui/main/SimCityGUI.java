@@ -36,6 +36,8 @@ import restaurant.gui.CustomerGui;
 import restaurant.gui.WaiterGui;
 import market.test.mock.MockCashier;
 import person.Location;
+import resident.ApartmentLandlordRole;
+import resident.ApartmentLandlordRole.MyTenant;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
 import resident.gui.ApartmentTenantGui;
@@ -78,23 +80,26 @@ public class SimCityGUI extends JFrame {
 	public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
 	public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
 	
+	public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT01", 5, initPerson);
+	
 	public ApartmentTenantRole apartmentTenant1 = new ApartmentTenantRole("APT01", 5, initPerson);
 	public ApartmentTenantRole apartmentTenant2 = new ApartmentTenantRole("APT02", 6, initPerson);
 	public ApartmentTenantRole apartmentTenant3 = new ApartmentTenantRole("APT03", 7, initPerson);
 	public ApartmentTenantRole apartmentTenant4 = new ApartmentTenantRole("APT04", 8, initPerson);
-	public ApartmentTenantRole apartmentTenant5 = new ApartmentTenantRole("APT05", 9, initPerson);
-	public ApartmentTenantRole apartmentTenant6 = new ApartmentTenantRole("APT06", 10, initPerson);
-	public ApartmentTenantRole apartmentTenant7 = new ApartmentTenantRole("APT07", 11, initPerson);
-	public ApartmentTenantRole apartmentTenant8 = new ApartmentTenantRole("APT08", 12, initPerson);
-	public ApartmentTenantRole apartmentTenant9 = new ApartmentTenantRole("APT09", 13, initPerson);
-	public ApartmentTenantRole apartmentTenant10 = new ApartmentTenantRole("APT10", 14, initPerson);
-	public ApartmentTenantRole apartmentTenant11 = new ApartmentTenantRole("APT11", 15, initPerson);
-	public ApartmentTenantRole apartmentTenant12 = new ApartmentTenantRole("APT12", 16, initPerson);
-	public ApartmentTenantRole apartmentTenant13 = new ApartmentTenantRole("APT13", 17, initPerson);
-	public ApartmentTenantRole apartmentTenant14 = new ApartmentTenantRole("APT14", 18, initPerson);
-	public ApartmentTenantRole apartmentTenant15 = new ApartmentTenantRole("APT15", 19, initPerson);
-	public ApartmentTenantRole apartmentTenant16 = new ApartmentTenantRole("APT16", 20, initPerson);
-	public ApartmentTenantRole apartmentTenant17 = new ApartmentTenantRole("APT17", 21, initPerson);
+	public ApartmentTenantRole apartmentTenant5 = new ApartmentTenantRole("APT04", 9, initPerson);
+	public ApartmentTenantRole apartmentTenant6 = new ApartmentTenantRole("APT04", 10, initPerson);
+	public ApartmentTenantRole apartmentTenant7 = new ApartmentTenantRole("APT04", 11, initPerson);
+	public ApartmentTenantRole apartmentTenant8 = new ApartmentTenantRole("APT04", 12, initPerson);
+	public ApartmentTenantRole apartmentTenant9 = new ApartmentTenantRole("APT04", 13, initPerson);
+	public ApartmentTenantRole apartmentTenant10 = new ApartmentTenantRole("APT04", 14, initPerson);
+	public ApartmentTenantRole apartmentTenant11 = new ApartmentTenantRole("APT04", 15, initPerson);
+	public ApartmentTenantRole apartmentTenant12 = new ApartmentTenantRole("APT04", 16, initPerson);
+	public ApartmentTenantRole apartmentTenant13 = new ApartmentTenantRole("APT04", 17, initPerson);
+	public ApartmentTenantRole apartmentTenant14 = new ApartmentTenantRole("APT04", 18, initPerson);
+	public ApartmentTenantRole apartmentTenant15 = new ApartmentTenantRole("APT04", 19, initPerson);
+	public ApartmentTenantRole apartmentTenant16 = new ApartmentTenantRole("APT04", 20, initPerson);
+	public ApartmentTenantRole apartmentTenant17 = new ApartmentTenantRole("APT04", 21, initPerson);
+	public ApartmentTenantRole apartmentTenant18 = new ApartmentTenantRole("APT04", 22, initPerson);
 	
 	public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
 	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
@@ -389,7 +394,8 @@ public class SimCityGUI extends JFrame {
 		 * in cityAnimationPanel.
 		 */
 		
-		truck = new MarketTruckAgent(aStarTraversal);
+
+		truck = new MarketTruckAgent();
 		MarketTruckGui truckGui = new MarketTruckGui(truck);
 		truck.setGui(truckGui);
 		truck.startThread();
@@ -538,57 +544,99 @@ public class SimCityGUI extends JFrame {
 		 */
 
 //		for (int i=1; i<6; i++){
-		for (int i=0; i<21; i++){
+		for (int i=0; i<22; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 600.00);
 			PersonGui pgui = new PersonGui(p);
 			p.gui = pgui;
 			System.out.println(""+i);
-			p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
+			if(i < 21)
+				p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
 			p.homeNumber = i;
 			people.add(p);
 			peoplegui.add(pgui);
 			cityAnimPanel.addGui(pgui);
 			p.setAnimationPanel(cityAnimPanel);
-			p.setcitygui(this);
+			//p.setcitygui(this);
 		}
 		
 		people.get(0).addRole(bankhostrole);
+		people.get(0).roles.get(0).role.switchPerson(people.get(0));
 		people.get(0).addRole(homeOwnerRole1);
+		people.get(0).roles.get(1).role.switchPerson(people.get(0));
 		people.get(1).addRole(bankhostrole);
 		people.get(1).addRole(homeOwnerRole2);
+		people.get(1).roles.get(1).role.switchPerson(people.get(1));
 		people.get(2).addRole(banktellerrole1);
+		people.get(2).roles.get(0).role.switchPerson(people.get(2));
 		people.get(2).addRole(homeOwnerRole3);
+		people.get(2).roles.get(1).role.switchPerson(people.get(2));
 		people.get(3).addRole(banktellerrole1);
 		people.get(3).addRole(homeOwnerRole4);
+		people.get(3).roles.get(1).role.switchPerson(people.get(3));
 		people.get(4).addRole(banktellerrole2);
+		people.get(4).roles.get(0).role.switchPerson(people.get(4));
 		people.get(4).addRole(apartmentTenant1);
+		people.get(4).roles.get(1).role.switchPerson(people.get(4));
+		people.get(4).addRole(landlord);
+		people.get(4).roles.get(2).role.switchPerson(people.get(4));
 		people.get(5).addRole(banktellerrole2);
 		people.get(5).addRole(apartmentTenant2);
+		people.get(5).roles.get(1).role.switchPerson(people.get(5));
 		people.get(6).addRole(marketemployeerole);
+		people.get(6).roles.get(0).role.switchPerson(people.get(6));
 		people.get(6).addRole(apartmentTenant3);
+		people.get(6).roles.get(1).role.switchPerson(people.get(6));
 		people.get(7).addRole(marketemployeerole);
 		people.get(7).addRole(apartmentTenant4);
+		people.get(7).roles.get(1).role.switchPerson(people.get(7));
 		people.get(8).addRole(marketcashierrole);
+		people.get(8).roles.get(0).role.switchPerson(people.get(8));
 		people.get(8).addRole(apartmentTenant5);
+		people.get(8).roles.get(1).role.switchPerson(people.get(8));
 		people.get(9).addRole(marketcashierrole);
 		people.get(9).addRole(apartmentTenant6);
+		people.get(9).roles.get(1).role.switchPerson(people.get(9));
 		people.get(10).addRole(cashier1);
+		people.get(10).roles.get(0).role.switchPerson(people.get(10));
 		people.get(10).addRole(apartmentTenant7);
+		people.get(10).roles.get(1).role.switchPerson(people.get(10));
 		people.get(11).addRole(cashier1);
 		people.get(11).addRole(apartmentTenant8);
+		people.get(11).roles.get(1).role.switchPerson(people.get(11));
 		people.get(12).addRole(cook1);
+		people.get(12).roles.get(0).role.switchPerson(people.get(12));
 		people.get(12).addRole(apartmentTenant9);
+		people.get(12).roles.get(1).role.switchPerson(people.get(12));
 		people.get(13).addRole(cook1);
 		people.get(13).addRole(apartmentTenant10);
+		people.get(13).roles.get(1).role.switchPerson(people.get(13));
 		people.get(14).addRole(waiter1);
+		people.get(14).roles.get(0).role.switchPerson(people.get(14));
 		people.get(14).addRole(apartmentTenant11);
+		people.get(14).roles.get(1).role.switchPerson(people.get(14));
 		people.get(15).addRole(waiter1);
 		people.get(15).addRole(apartmentTenant12);
+		people.get(15).roles.get(1).role.switchPerson(people.get(15));
 		people.get(16).addRole(host1);
+		people.get(16).roles.get(0).role.switchPerson(people.get(16));
 		people.get(16).addRole(apartmentTenant13);
+		people.get(16).roles.get(1).role.switchPerson(people.get(16));
 		people.get(17).addRole(host1);
 		people.get(17).addRole(apartmentTenant14);
+		people.get(17).roles.get(1).role.switchPerson(people.get(17));
+		people.get(18).addRole(apartmentTenant15);
+		people.get(18).roles.get(0).role.switchPerson(people.get(18));
+		people.get(19).addRole(apartmentTenant16);
+		people.get(19).roles.get(0).role.switchPerson(people.get(19));
+		people.get(20).addRole(apartmentTenant17);
+		people.get(20).roles.get(0).role.switchPerson(people.get(20));
+		people.get(21).addRole(apartmentTenant18);
+		people.get(21).roles.get(0).role.switchPerson(people.get(21));
+
+		for(int i = 18; i < 22; i++){
+			people.get(i).wallet.setOnHand(1000.00);
+		}
 		
 		rest1.getTimeCard().startThread();
 		market.getTimeCard().startThread();
@@ -611,7 +659,7 @@ public class SimCityGUI extends JFrame {
 		SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 1, 14, EventType.CookEvent);
 		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 8, EventType.CashierEvent);
 		SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 1, 14, EventType.CashierEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 8, EventType.WaiterEvent);
+		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 8, EventType.SDWaiterEvent);
 		SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 1, 14, EventType.WaiterEvent);
 		SimEvent tellerGoToBank = new SimEvent(bank, 1, 8, EventType.TellerEvent);
 		SimEvent tellerGoToBank2 = new SimEvent(bank, 1, 14, EventType.TellerEvent);
@@ -688,11 +736,33 @@ public class SimCityGUI extends JFrame {
 		banktellerrole1.bd = bankdatabase;
 		banktellerrole2.bd = bankdatabase;
 		
+		marketcashierrole.addEmployee(marketemployeerole);
 		waiter1.setcook(cook1);
 		waiter1.sethost(host1);
 		waiter1.setRevolvingStand(cook1.getRevStand());
+		marketemployeerole.setCashier(marketcashierrole);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
+		cook1.setMarketCashier(marketcashierrole);
+		cook1.setCashier(cashier1);
+		
+		landlord.tenants.add(new MyTenant(apartmentTenant2, apartmentTenant2.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant3, apartmentTenant3.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant4, apartmentTenant4.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant5, apartmentTenant5.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant6, apartmentTenant6.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant7, apartmentTenant7.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant8, apartmentTenant8.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant9, apartmentTenant9.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant10, apartmentTenant10.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant11, apartmentTenant11.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant12, apartmentTenant12.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant13, apartmentTenant13.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant14, apartmentTenant14.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant15, apartmentTenant15.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant16, apartmentTenant16.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant17, apartmentTenant17.getAptNum()));
+		landlord.tenants.add(new MyTenant(apartmentTenant18, apartmentTenant18.getAptNum()));
 		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
@@ -718,6 +788,7 @@ public class SimCityGUI extends JFrame {
 		people.get(17).toDo.offer(hostGoToRestaurant2);
 		
 		for (PersonAgent p: people){
+			p.setcitygui(this);
 			p.startThread();
 		}
 		
@@ -725,6 +796,9 @@ public class SimCityGUI extends JFrame {
 		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
+		simclock.bankTimeCard = bank.getTimeCard();
+		simclock.timeCards.add(market.getTimeCard());
+		simclock.timeCards.add(rest1.getTimeCard());
 		
 		// Sets the sim world clock to the interaction panel's so events can be created with correct start time
 		cityCtrlPanel.interactPanel.setClock(simclock);

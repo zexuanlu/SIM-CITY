@@ -325,19 +325,21 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	private void payLandlord(MyPriority p) {
 		toDoList.remove(p);
 		
-		// If the amount of money the maintenance person has is more than rent cost, pay rent cost.
-		if (myMoney >= rentCost) {
-			log.add(new LoggedEvent("Paying the landlord $" + rentCost + "."));
-			print("Paying the landlord $" + (debt + rentCost) + ".");
-			landlord.msgHereIsTheRent(this, debt + rentCost);
-			myMoney -= rentCost;
-		}
-		// Otherwise, pay as much as you can 
-		else {
-			log.add(new LoggedEvent("Paying the landlord $" + myMoney + ", because I don't have enough."));
-			print("Paying the landlord $" + myMoney + ", because I don't have enough.");
-			landlord.msgHereIsTheRent(this, myMoney);
-			myMoney = 0;
+		if (person.getWallet() != null ) {
+			// If the amount of money the maintenance person has is more than rent cost, pay rent cost.
+			if (person.getWallet().getBalance() >= rentCost) {
+				log.add(new LoggedEvent("Paying the landlord $" + rentCost + "."));
+				print("Paying the landlord $" + (person.getWallet().getDebt() + rentCost) + ".");
+				landlord.msgHereIsTheRent(this, person.getWallet().getDebt() + rentCost);
+				person.msgAddMoney(-rentCost);
+			}
+			// Otherwise, pay as much as you can 
+			else {
+				log.add(new LoggedEvent("Paying the landlord $" + person.getWallet().getBalance() + ", because I don't have enough."));
+				print("Paying the landlord $" + person.getWallet().getBalance() + ", because I don't have enough.");
+				landlord.msgHereIsTheRent(this, person.getWallet().getBalance());
+				person.msgAddMoney(0);
+			}
 		}
 	}
 	
@@ -477,7 +479,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 
 		DoGetCookedFood();
         
-		// person.hungerLevel = 0;
+		person.setHungerLevel(0);
 	}
 
 	private void washDishes(MyPriority p) {

@@ -9,6 +9,7 @@ import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
 
+//CAR AGENT HAS NO TEST SINCE NO WAY TO TEST IT WITHOUT GUI
 
 
 //to use: create CarAgent with aStarTraversal as parameter as well as Person Agent
@@ -169,7 +170,7 @@ public class CarAgent extends Agent {
  
  public void deadPos(int x, int y){
       currentPosition.release(aStar.getGrid());
-             currentPosition = new Position(x/scale, y/scale);
+      currentPosition = new Position(x/scale, y/scale);
      currentPosition.moveInto(aStar.getGrid());
      originalPosition = currentPosition;
  }
