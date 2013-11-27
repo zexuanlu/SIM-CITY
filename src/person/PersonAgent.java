@@ -253,7 +253,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
 		//print("Received the message AtDest");
-		//gui.setPresent(true);
+		gui.setPresent(false);
 		currentLocation = destination;
 		going.release();
 
@@ -943,7 +943,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 100000){
+		if (this.wallet.getOnHand() >= 1000.00){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
