@@ -302,6 +302,10 @@ public class SimCityGUI extends JFrame {
 		truck.startThread();
 		cityAnimPanel.addGui(truckGui);
 		
+		meg.isPresent = false;
+		marketemployeerole.setGui(meg);
+		cityAnimPanel.marketPanel.addGui(meg);
+		
 		wg.isPresent = false;
 		waiter1.setGui(wg);
 		cityAnimPanel.rest1Panel.addGui(wg);

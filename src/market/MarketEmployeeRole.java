@@ -14,7 +14,7 @@ import market.interfaces.*;
 public class MarketEmployeeRole extends Role implements MarketEmployee{
 
 	MarketCashier cashier;
-	MarketEmployeeGui employeeGui;
+	public MarketEmployeeGui employeeGui;
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
 	public Map<Integer, RestDes> CityMap = new HashMap<Integer, RestDes>();
