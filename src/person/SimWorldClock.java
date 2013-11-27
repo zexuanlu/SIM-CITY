@@ -16,12 +16,15 @@ public class SimWorldClock {
 	public SimWorldClock(int currentHour, List<PersonAgent> people){
 		this.currentHour = currentHour;
 		this.people = people;
+		for(PersonAgent person : people){
+			person.msgNewHour(currentHour);
+		}
 		clock.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				updateWorldClock();
 			}
-		}, 0, 3000); // one minute per hour 
+		}, 0, 60000); // one minute per hour 
 	}
 	private void updateWorldClock(){
 		System.out.println("Time is now " + currentHour );

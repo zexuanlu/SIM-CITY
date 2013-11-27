@@ -102,7 +102,7 @@ public class PersonAgent extends Agent implements Person{
 		super();
 		this.name = name;
 		this.cityMap = cm;
-		this.wallet = new Wallet(money, 5000);//hacked in
+		this.wallet = new Wallet(money, 0);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
 		arrived = false;
@@ -112,7 +112,7 @@ public class PersonAgent extends Agent implements Person{
 		this.name = name;
 		this.cityMap = cm;
 		astar = astar2; 
-		this.wallet = new Wallet(money, 5000);//hacked in
+		this.wallet = new Wallet(money, 0);//hacked in
 
 		this.hunger = 4;
 		currentTime = 7;
@@ -126,7 +126,7 @@ public class PersonAgent extends Agent implements Person{
 		super();
 		this.name = name;
 		activeRole = false;
-		this.wallet = new Wallet(5000, 5000);//hacked in
+		this.wallet = new Wallet(600.00, 0);//hacked in
 		this.hunger = 4;
 	}
 
@@ -157,26 +157,6 @@ public class PersonAgent extends Agent implements Person{
 		}
 		return null;
 	}
-	
-	public MyRole getActiveRole(){
-		for(MyRole role : roles){
-			if(role.isActive){
-				return role;
-			}
-		}
-		return null;
-	}
-	
-	public String getActiveRoleName(){
-		String none = "No Active Role";
-		for(MyRole role : roles){
-			if(role.isActive){
-				return role.role.getRoleName();
-			}
-		}
-		return none;
-	}
-	
 	public boolean containsEvent(String directive){
 		for(SimEvent e : toDo){
 			if(e.directive == directive){
@@ -321,29 +301,40 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		if(activeRole) { //run role code
 			for(MyRole r : roles){
 				if(r.isActive){
 					print("Executing rule in role "+ r.role);
-					return r.role.pickAndExecuteAnAction();
-					//return b;
+					boolean b;
+					b =  r.role.pickAndExecuteAnAction();
+					Do("" + b + " "+ r.role);
+					return b;
 				}
 			}
-		}
-		else{
-			SimEvent nextEvent = toDo.peek(); //get the highest priority element (w/o deleting)
-			if((nextEvent != null && nextEvent.start == currentTime) 
-					|| (nextEvent != null && nextEvent.inProgress)){ //if we have an event and its time to start or were in the process ofgetting there
-				print("Executing an event as a Person");
-				goToAndDoEvent(nextEvent); 
-				nextEvent.setProgress(true);
-				return true;
+			for(SimEvent nextEvent : toDo){
+				if((nextEvent.start == currentTime) || nextEvent.inProgress){ //if we have an event and its time to start or were in the process ofgetting there
+					print("Executing an event as a Person");
+					goToAndDoEvent(nextEvent); 
+					nextEvent.setProgress(true);
+					return true;
+				}
 			}
-			else{ //check vitals and find something to do on the fly
-				return checkVitals();
+			for(SimEvent nextEvent : toDo){
+				if(nextEvent.type == EventType.CustomerEvent){
+					goToAndDoEvent(nextEvent);
+					nextEvent.setProgress(true);
+					return true;
+				}
 			}
-		}
-		return false;
+			for(SimEvent nextEvent : toDo){
+				if(nextEvent.type == EventType.AptTenantEvent){
+					goToAndDoEvent(nextEvent);
+					nextEvent.setProgress(true);
+					return true;
+				}
+			}
+				boolean check;
+				check = checkVitals();
+				return check;
 	}
 
 	/* Actions */
@@ -527,10 +518,10 @@ public class PersonAgent extends Agent implements Person{
 							((BankCustomerRole)newRole.role).setGui(bcg);
 							cap.bankPanel.addGui(bcg);
 						}
-						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10); //message it with what we want to do
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 200.00); //message it with what we want to do
 					}
 					else { //we already have one use it
-						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 10);
+						((BankCustomerRole)getRoleOfType(bcr).role).msgGoToBank(e.directive, 200.00);
 						getRoleOfType(bcr).isActive(true);
 					}
 					gui.setPresent(false);
@@ -744,23 +735,24 @@ public class PersonAgent extends Agent implements Person{
 		boolean addedAnEvent = false;
 		Bank b = (Bank)cityMap.getByType(LocationType.Bank);
 		if(wallet.getOnHand() <= 100){ //get cash
-			SimEvent needMoney = new SimEvent("Need Money", b, 
+			SimEvent needMoney = new SimEvent("withdraw", b, 
 					4, EventType.CustomerEvent);
-			if(!containsEvent("Need Money")){ 
+			if(!containsEvent("withdraw")){ 
 				toDo.offer(needMoney);
 				wallet.addTransaction("Withdrawal", 100);
 				addedAnEvent = true;
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
-			SimEvent needDeposit = new SimEvent("Need Deposit", b, 4, EventType.CustomerEvent);
-			if(!containsEvent("Need Deposit")){
+			SimEvent needDeposit = new SimEvent("deposit", b, 4, EventType.CustomerEvent);
+			if(!containsEvent("deposit")){
 				toDo.offer(needDeposit);
+				print(" Money = " + wallet.onHand);
 				wallet.addTransaction("Deposit", 200);
 				addedAnEvent = true;
 			}
 		}
-		if(!addedAnEvent){
+		if(!addedAnEvent && containsEvent("Go home")){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);
@@ -841,7 +833,6 @@ public class PersonAgent extends Agent implements Person{
 			isActive = false;
 		}
 		void isActive(boolean tf){ isActive = tf; }
-		public Role getRole(){return role;}
 	}
 	class EventComparator implements Comparator{
 
@@ -909,6 +900,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		public void setOnHand(double money){
 			onHand += money;
+			Do("" + onHand);
 		}
 		public void setInBank(double newAmount){
 			inBank += newAmount;

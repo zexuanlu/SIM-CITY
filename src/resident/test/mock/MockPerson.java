@@ -142,4 +142,9 @@ public class MockPerson extends Mock implements Person {
 		return null;
 	}
 
+	public double msgCheckWallet() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
