@@ -8,7 +8,7 @@ package person;
 public class Location {
 
         protected String name; 
-        public enum LocationType {Restaurant, Bank, Market, Home, BusStop};
+        public enum LocationType {Restaurant, Bank, Market, Home, Apartment, BusStop};
         public LocationType type;
         protected int Quadrant;
         public Position position; 

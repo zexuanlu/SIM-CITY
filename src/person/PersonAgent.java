@@ -204,6 +204,11 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgNewHour(int hour){ //from the world timer or gui 
 		currentTime = hour;
+		for(MyRole r : roles){
+			if(r.role instanceof HomeOwnerRole || r.role instanceof ApartmentTenantRole){
+				r.isActive(false);
+			}
+		}
 		stateChanged();
 	}
 	public void msgAtDest(int x, int y){
@@ -669,7 +674,9 @@ public class PersonAgent extends Agent implements Person{
 					gui.setPresent(false);
 					toDo.remove(e);
 				}
-				else if(e.type == EventType.AptTenantEvent){
+			}
+			else if(e.location.type == LocationType.Apartment){
+				if(e.type == EventType.AptTenantEvent){
 					//Apartment apt = (Apartment)e.location;
 					activeRole = true;
 					ApartmentTenantRole tr = new ApartmentTenantRole(this.name, homeNumber, this);
@@ -733,12 +740,11 @@ public class PersonAgent extends Agent implements Person{
 		}
 		if(!addedAnEvent){
 			SimEvent goHome = null;
-			if(homeType == HomeType.Apartment){
-				 goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber, homeType), 2, EventType.AptTenantEvent);
+			if(homeNumber > 4){
+				 goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);
 			}
-			else if(homeType == HomeType.Home){
-				
-				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber, homeType), 2, EventType.HomeOwnerEvent);
+			else{
+				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber), 2, EventType.HomeOwnerEvent);
 			}
 			toDo.offer(goHome);
 		}
@@ -750,6 +756,7 @@ public class PersonAgent extends Agent implements Person{
 
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
+		
 		gui.walkto(originx, originy);
 		//currentLocation.setX(originx);
 		//currentLocation.setY(originy);

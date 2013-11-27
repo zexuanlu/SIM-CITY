@@ -133,18 +133,18 @@ public class CityMap {
 	public int getNumBusStops(){
 		return busstops.size();
 	}
-	public Location getHome(int homeNumber, HomeType type){
+	public Location getHome(int homeNumber){
 		Location ll = null;
-		if(type == HomeType.Home){
+		if(homeNumber < 4){
 			for(Location l : map){
-				if(((Home) l).getNumber() == homeNumber){
+				if(l.type == LocationType.Home && ((Home) l).getNumber() == homeNumber){
 					ll = l;
 				}
 			}
 		}
-		else if(type == HomeType.Apartment){
+		else {
 			for(Location l : map){
-				if(((Apartment) l).getNumber() == homeNumber){
+				if(l.type == LocationType.Apartment && ((Apartment) l).getNumber() == homeNumber){
 					ll = l;
 				}
 			}
