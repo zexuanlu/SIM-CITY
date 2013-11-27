@@ -13,6 +13,7 @@ import market.gui.MarketEmployeeGui;
 import market.test.mock.EventLog;
 import market.test.mock.MockCashier;
 import restaurant.*;
+import restaurant.test.mock.MockRestaurantCook;
 import market.test.mock.MockCustomer;
 import market.test.mock.MockTruck;
 import junit.framework.TestCase;
@@ -24,7 +25,7 @@ public class EmployeeTest extends TestCase{
 	MockCashier cashier;
 	MockCustomer customer;
 	PersonMock p;
-	Restaurant1CookRole cook;
+	MockRestaurantCook cook;
 	MockTruck truck;
 	MarketEmployeeGui employeeGui;
 	
@@ -34,9 +35,9 @@ public class EmployeeTest extends TestCase{
 		employee = new MarketEmployeeRole(p, "employee");
 		cashier = new MockCashier("casheir");
 		customer = new MockCustomer("customer");
-		cook = new Restaurant1CookRole("cook");
+		cook = new MockRestaurantCook("cook");
 		truck = new MockTruck("truck");
-		employeeGui = new MarketEmployeeGui();
+		employeeGui = new MarketEmployeeGui(employee);
 	}
 	
 	public void testNormalEmployeeCashierCase(){
@@ -57,8 +58,7 @@ public class EmployeeTest extends TestCase{
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", employee.pickAndExecuteAnAction());
 		
-		assertTrue("employee should contain a customer with state == collected. It doesn't.",
-				employee.mycustomer.get(0).s == state.collected);
+		assertEquals("employee should have 0 customer in it. It doesn't.", employee.mycustomer.size(), 0);
 		
 		assertTrue("cashier should return a string with word Got it, but the last event return "
 		+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Got it"));
@@ -82,8 +82,7 @@ public class EmployeeTest extends TestCase{
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", employee.pickAndExecuteAnAction());
 		
-		assertTrue("employee should contain an order with state == sending. It doesn't.",
-				employee.myrest.get(0).s1 == state1.sending);
+		assertEquals("employee should have 0 order in it. It doesn't.", employee.myrest.size(), 0);
 		
 		assertTrue("truck should return a string with word Got it, but the last event return "
 		+ truck.log.getLastLoggedEvent().toString(), truck.log.containsString("Got it"));

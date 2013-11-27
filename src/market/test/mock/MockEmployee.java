@@ -3,6 +3,7 @@ package market.test.mock;
 import java.util.List;
 
 import restaurant.Restaurant1CookRole;
+import restaurant.interfaces.Cook;
 import market.Food;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;
@@ -26,7 +27,7 @@ public class MockEmployee extends Mock implements MarketEmployee{
 	}
 
 	@Override
-	public void msgCollectTheDilivery(Restaurant1CookRole cook,
+	public void msgCollectTheDilivery(Cook cook,
 			List<Food> food, MarketTruck truck, int number) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got Your Order"));

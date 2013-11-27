@@ -12,6 +12,7 @@ import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
 import restaurant.Restaurant1CookRole;
+import restaurant.interfaces.Cook;
 
 //to use: create CarAgent with aStarTraversal as parameter as well as Person Agent
 //Create gui with original starting position
@@ -37,7 +38,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	int destinationX; 
 	int destinationY; 
-	Restaurant1CookRole cook;
+	Cook cook;
 	List<Food> foodlist;
 	private int TravelTimes = 0;
 	
@@ -90,7 +91,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
         myGui.atPosition(numx, numy);
 	}
 	
-	public void gotoPosition(Restaurant1CookRole c, List<Food> food, int dx, int dy){
+	public void gotoPosition(Cook c, List<Food> food, int dx, int dy){
 		
 		int x = 540; 
 		int y = 60;
@@ -236,7 +237,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
         originalPosition = currentPosition;
     }
     
-    protected boolean pickAndExecuteAnAction(){
+    public boolean pickAndExecuteAnAction(){
         if (carstate == CarState.goTo){
                 dogoto();
                 return true;

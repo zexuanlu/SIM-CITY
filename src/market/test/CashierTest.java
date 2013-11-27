@@ -16,6 +16,8 @@ import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
 import restaurant.interfaces.Cook;
+import restaurant.test.mock.MockRestaurantCashier;
+import restaurant.test.mock.MockRestaurantCook;
 
 public class CashierTest extends TestCase{
 
@@ -23,8 +25,8 @@ public class CashierTest extends TestCase{
 	PersonMock p;
 	MockCustomer customer;
 	MockEmployee employee;
-	Restaurant1CookRole cook;
-	Restaurant1CashierRole cash;
+	MockRestaurantCook cook;
+	MockRestaurantCashier cash;
 	MockTruck truck;
 	
 	public void setUp() throws Exception{
@@ -33,8 +35,8 @@ public class CashierTest extends TestCase{
 		cashier = new MarketCashierRole(p, "cashier");
 		customer = new MockCustomer("customer");
 		employee = new MockEmployee("employee");
-		cook = new Restaurant1CookRole("cook", p);
-		cash = new Restaurant1CashierRole("ca");
+		cook = new MockRestaurantCook("cook");
+		cash = new MockRestaurantCashier("ca");
 		truck = new MockTruck("truck");
 	}
 	
@@ -91,8 +93,7 @@ public class CashierTest extends TestCase{
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		
-		assertTrue("employee should contain a customer with payed == taken. It doesn't.",
-				cashier.mycustomer.get(0).s == state.taken);
+		assertEquals("cashier should have 0 customer in it. It doesn't.", cashier.mycustomer.size(), 0);
 		
 		assertTrue("employee should return a string with word Comming to the table, but the last event return "
 				+ customer.log.getLastLoggedEvent().toString(), customer.log.containsString("Receive order"));
@@ -113,8 +114,7 @@ public class CashierTest extends TestCase{
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		
-		assertTrue("cashier should contain a customer with payed == taken. It doesn't.",
-				cashier.myrest.get(0).s1 == state1.ordered);
+		assertEquals("cashier should have 0 restaruant in it. It doesn't.", cashier.myrest.size(), 0);
 		
 		assertTrue("employee should return a string with word Got Your Order, but the last event return "
 				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("Got Your Order"));
@@ -140,8 +140,7 @@ public class CashierTest extends TestCase{
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		
-		assertTrue("cashier should contain a customer with payed == taken. It doesn't.",
-				cashier.myrest.get(0).s1 == state1.ordered);
+		assertEquals("cashier should have 0 restaruant in it. It doesn't.", cashier.myrest.size(), 0);
 		
 		assertTrue("employee should return a string with word Got Your Order, but the last event return "
 				+ employee.log.getLastLoggedEvent().toString(), employee.log.containsString("Got Your Order"));
@@ -187,8 +186,7 @@ public class CashierTest extends TestCase{
 		
 		assertTrue("Cashier's scheduler should have returned true, but didn't.", cashier.pickAndExecuteAnAction());
 		
-		assertTrue("employee should contain a customer with payed == taken. It doesn't.",
-				cashier.mycustomer.get(0).s == state.taken);
+		assertEquals("cashier should have 0 customer in it. It doesn't.", cashier.mycustomer.size(), 0);
 		
 		assertTrue("employee should return a string with word Comming to the table, but the last event return "
 				+ customer.log.getLastLoggedEvent().toString(), customer.log.containsString("Receive order"));
