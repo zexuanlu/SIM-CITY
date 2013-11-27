@@ -14,6 +14,8 @@ public interface Person {
            
         int homeNumber = 0;
         
+        public abstract double msgCheckWallet();
+        
 		public abstract CityMap getMap();
        
 		public abstract void msgNewHour(int hour);//from the world timer

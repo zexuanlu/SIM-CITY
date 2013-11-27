@@ -33,6 +33,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -42,16 +43,16 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
-	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(1);
-	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(2);
-	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(3);
-	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(4);
+	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(5);
+	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(6);
+	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(7);
+	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(8);
 	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
 	private List<JPanel> panels = new ArrayList<JPanel>();
-    private List<Gui> guis = new ArrayList<Gui>();
+    private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
     private Image bufferImage;
@@ -282,15 +283,18 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(JPanel p : apartments){
         	p.repaint();
         }
-
-        for(Gui gui : guis) {
-                gui.updatePosition();
+        synchronized(guis){
+	        for(Gui gui : guis) {
+	                gui.updatePosition();
+	        }
         }
 
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.draw(g2);
-            }
+        synchronized(guis){
+	        for(Gui gui : guis) {
+	            if (gui.isPresent()) {
+	                gui.draw(g2);
+	            }
+	        }
         }
     }
 

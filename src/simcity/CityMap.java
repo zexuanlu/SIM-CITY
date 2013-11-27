@@ -136,7 +136,7 @@ public class CityMap {
 	}
 	public Location getHome(int homeNumber){
 		Location ll = null;
-		if(homeNumber < 4){
+		if(homeNumber < 5){
 			for(Location l : map){
 				if(l.type == LocationType.Home && ((Home) l).getNumber() == homeNumber){
 					ll = l;
