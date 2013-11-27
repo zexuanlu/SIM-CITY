@@ -907,7 +907,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 10000000){
+		if (this.wallet.getOnHand() >= 100000){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}

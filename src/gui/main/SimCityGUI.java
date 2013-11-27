@@ -492,15 +492,15 @@ public class SimCityGUI extends JFrame {
 		
 		btg1.isPresent = false;
 		banktellerrole1.setGui(btg1);
-		//cityAnimPanel.bankPanel.addGui(btg1);
+		cityAnimPanel.bankPanel.addGui(btg1);
 		
 		btg2.isPresent = false;
 		banktellerrole2.setGui(btg2);
-		//cityAnimPanel.bankPanel.addGui(btg2);
+		cityAnimPanel.bankPanel.addGui(btg2);
 		
 		bhg.isPresent = false;
 		bankhostrole.setGui(bhg);
-		//cityAnimPanel.bankPanel.addGui(bhg);
+		cityAnimPanel.bankPanel.addGui(bhg);
 		
 		
 		
