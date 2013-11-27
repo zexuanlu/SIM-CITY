@@ -28,7 +28,6 @@ public class PersonGui implements Gui{
 		else if (xPos > xDestination){ 
 			xPos--; 
 		}
-
 		if (yPos < yDestination){ 
 			yPos++; 
 		}

@@ -497,6 +497,8 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			// GUI goes to the fridge
 			homeGui.DoGoToFridge();
 	
+			atFridge.drainPermits();
+			
 			// Semaphore to see if the GUI gets to the fridge
 			try {
 				atFridge.acquire();
@@ -512,12 +514,16 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			// GUI goes to market 
 			homeGui.DoGoToFrontDoor();
 			
+			atFrontDoor.drainPermits();
+			
 			try {
 				atFrontDoor.acquire();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			homeGui.isPresent = false;
 		}
 	}
 	
@@ -560,6 +566,8 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			// GUI animation to go to the stove and start cooking
 			homeGui.DoGoToStove(); 
 
+			atStove.drainPermits();
+			
 			// Semaphore to determine if the GUI has gotten to the stove location
 			try {
 				atStove.acquire();
@@ -572,6 +580,8 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 
 			homeGui.DoGoToTable(); // GUI animation to go to the dining table
 
+			atTable.drainPermits();
+			
 			// Semaphore to determine if the GUI has gotten to the table location
 			try {
 				atTable.acquire();
@@ -614,6 +624,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void DoMaintainHome() {
 		if (homeGui != null) {
 			homeGui.DoGoToBed();
+			
+			atBed.drainPermits();
+			
 			try {
 				atBed.acquire();
 			} catch (InterruptedException e) {
@@ -622,6 +635,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			}
 			
 			homeGui.DoGoToFridge();
+			
+			atFridge.drainPermits();
+			
 			try {
 				atFridge.acquire();
 			} catch (InterruptedException e) {
@@ -630,6 +646,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			}
 			
 			homeGui.DoGoToSink();
+			
+			atSink.drainPermits();
+			
 			try {
 				atSink.acquire();
 			} catch (InterruptedException e) {
@@ -638,6 +657,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			}
 			
 			homeGui.DoGoToStove();
+			
+			atStove.drainPermits();
+			
 			try {
 				atStove.acquire(); 
 			} catch (InterruptedException e) {
@@ -646,6 +668,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			}
 			
 			homeGui.DoGoToTable();
+			
+			atTable.drainPermits();
+			
 			try {
 				atTable.acquire();
 			} catch (InterruptedException e) {

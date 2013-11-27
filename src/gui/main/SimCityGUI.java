@@ -182,6 +182,7 @@ public class SimCityGUI extends JFrame {
 	public BusStopGui bs6gui = new BusStopGui(busstop6, 340,140);
 	public BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
 	public BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
+	public MarketTruckAgent truck;
 
 
 	public SimCityGUI() {
@@ -322,6 +323,7 @@ public class SimCityGUI extends JFrame {
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
 		}
+	
 
 		bgui = new BusGui(bus,0,220);	
 		bgui2 = new BusGui(bus2,280,00);
@@ -385,6 +387,12 @@ public class SimCityGUI extends JFrame {
 		 * that pointer is given to people. Below the waiter1 role's gui is set and added to the right animation panel
 		 * in cityAnimationPanel.
 		 */
+		
+		truck = new MarketTruckAgent(aStarTraversal);
+		MarketTruckGui truckGui = new MarketTruckGui(truck);
+		truck.setGui(truckGui);
+		truck.startThread();
+		cityAnimPanel.addGui(truckGui);
 		
 		wg.isPresent = false;
 		waiter1.setGui(wg);
@@ -626,6 +634,17 @@ public class SimCityGUI extends JFrame {
 		 * The above = get the first (and only at the moment) role from person 5's role list and call switch person
 		 * replacing the initPerson with person 5 (the first person to play the role of waiter1)
 		 */
+
+//		for(PersonAgent p : people){
+//			for(MyRole r : p.roles){
+//				r.role.switchPerson(p);
+//			}
+//		}
+//		people.get(0).roles.get(0).role.switchPerson(people.get(0));
+//		people.get(2).roles.get(0).role.switchPerson(people.get(2));
+//		people.get(4).roles.get(0).role.switchPerson(people.get(4));
+//		people.get(6).roles.get(0).role.switchPerson(people.get(6));
+
 		for(int i = 0; i < people.size(); i = (i+2)){
 			for(int j = 0; j < people.get(i).roles.size(); j++){
 				people.get(i).roles.get(j).role.switchPerson(people.get(i));
@@ -695,7 +714,8 @@ public class SimCityGUI extends JFrame {
 		people.get(16).toDo.offer(hostGoToRestaurant);
 		people.get(17).toDo.offer(hostGoToRestaurant2);
 		
-		
+		truck.setCashier(marketcashierrole);
+		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
 		
