@@ -699,9 +699,9 @@ public class SimCityGUI extends JFrame {
 		marketemployeerole.setCashier(marketcashierrole);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
-		customer.setCashier(cashier1);
-		customer.setHost(host1);
-		marketcustomerrole.setCashier(marketcashierrole);
+		//customer.setCashier(cashier1);
+		//customer.setHost(host1);
+		//marketcustomerrole.setCashier(marketcashierrole);
 		cook1.setMarketCashier(marketcashierrole);
 		cook1.setCashier(cashier1);
 		
