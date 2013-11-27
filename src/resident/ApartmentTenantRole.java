@@ -39,12 +39,14 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		apartmentNumber = an;
 		this.person = p;
 		state = MyState.Awake;
+		
+		myFridge.add(new Food("Chicken", 2));
+		myFridge.add(new Food("Salad", 1));
 	}
 	
 	// States for the Apartment Tenant
 	public enum MyState {Sleeping, Awake};
 	private MyState state;
-	private String roleName;
 	
 	public String getName() {
 		return name;

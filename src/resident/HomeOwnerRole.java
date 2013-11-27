@@ -38,6 +38,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		houseNumber = hn;
 		this.person = p;
 		state = MyState.Awake;
+		
+		myFridge.add(new Food("Chicken", 2));
+		myFridge.add(new Food("Salad", 1));
 	}
 	
 	// States for the home owner 
