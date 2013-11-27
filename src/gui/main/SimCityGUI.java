@@ -472,6 +472,17 @@ public class SimCityGUI extends JFrame {
 		 * The above = get the first (and only at the moment) role from person 5's role list and call switch person
 		 * replacing the initPerson with person 5 (the first person to play the role of waiter1)
 		 */
+
+//		for(PersonAgent p : people){
+//			for(MyRole r : p.roles){
+//				r.role.switchPerson(p);
+//			}
+//		}
+//		people.get(0).roles.get(0).role.switchPerson(people.get(0));
+//		people.get(2).roles.get(0).role.switchPerson(people.get(2));
+//		people.get(4).roles.get(0).role.switchPerson(people.get(4));
+//		people.get(6).roles.get(0).role.switchPerson(people.get(6));
+
 		for(int i = 0; i < people.size(); i = (i+2)){
 			for(int j = 0; j < people.get(i).roles.size(); j++){
 				people.get(i).roles.get(j).role.switchPerson(people.get(i));

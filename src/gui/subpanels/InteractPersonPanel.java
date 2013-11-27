@@ -1,5 +1,6 @@
 package gui.subpanels;
 import person.Location;
+import person.Location.LocationType;
 import person.PersonAgent;
 import person.Position;
 import person.SimEvent;
@@ -71,9 +72,9 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 
 		// COMPONENT INITIALIZATIONS
 		// Labels
-		name = new JLabel("Person: Name");
-		//name.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		currentRole = new JLabel("Role");
+//		name = new JLabel("Person: Name");
+//		//name.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+//		currentRole = new JLabel("Role");
 		
 		// ComboBoxes
 		event = new JComboBox<String>();
@@ -96,8 +97,8 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 		this.add(personName);
 		this.add(nameText);
 		this.add(search);
-		this.add(name);
-		this.add(currentRole);
+//		this.add(name);
+//		this.add(currentRole);
 		this.add(new JLabel("Choose event: "));
 		this.add(event);
 		//this.add(new JLabel("Choose start time: "));
@@ -117,13 +118,16 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 			JComboBox comboBox = (JComboBox)e.getSource();
             Object selected = comboBox.getSelectedItem();
             if (selected.toString().equals("Go to Bank")) {
-            	selectedPerson.msgAddEvent(new SimEvent(new Location("Bank", Location.LocationType.Bank, new Position(140, 160)), 1, 7, SimEvent.EventType.CustomerEvent));
+            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Bank", Location.LocationType.Bank, new Position(140, 160)), 1, 7, SimEvent.EventType.CustomerEvent));
+            	selectedPerson.msgAddEvent(new SimEvent("Go get a loan", selectedPerson.getMap().chooseByType(LocationType.Bank), 2, EventType.CustomerEvent));
             }
             else if (selected.toString().equals("Go Buy From Market")) {
-            	selectedPerson.msgAddEvent(new SimEvent(new Location("Market", Location.LocationType.Market, new Position(500, 60)), 1, 7, SimEvent.EventType.CustomerEvent));
+            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Market", Location.LocationType.Market, new Position(500, 60)), 1, 7, SimEvent.EventType.CustomerEvent));
+            	selectedPerson.msgAddEvent(new SimEvent("Go buy food", selectedPerson.getMap().chooseByType(LocationType.Market), 2, EventType.CustomerEvent));
             }
             else {
-            	selectedPerson.msgAddEvent(new SimEvent(new Location("Restaurant", Location.LocationType.Restaurant, new Position(220, 80)), 1, 7, SimEvent.EventType.CustomerEvent));
+            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Restaurant", Location.LocationType.Restaurant, new Position(220, 80)), 1, 7, SimEvent.EventType.CustomerEvent));
+            	selectedPerson.msgAddEvent(new SimEvent("Go eat food", selectedPerson.getMap().chooseByType(LocationType.Restaurant), 2, EventType.CustomerEvent));
             }
         }
 	}
