@@ -38,6 +38,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		houseNumber = hn;
 		this.person = p;
 		state = MyState.Awake;
+		
+		myFridge.add(new Food("Chicken", 2));
+		myFridge.add(new Food("Salad", 1));
 	}
 	
 	// States for the home owner 
@@ -354,13 +357,13 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private void decideMarketOrGoOut(MyPriority p) {
 		toDoList.remove(p);
 
-		if (myMoney < minRestaurantMoney) { 
+		if (person.msgCheckWallet() < minRestaurantMoney) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
 			
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough money to go and come home."));
 			
-			print("I'm going to go to the market. I have enough time to go and come home.");
+			print("I'm going to go to the market. I have enough money to go and come home.");
 		}
 		else { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
