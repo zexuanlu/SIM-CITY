@@ -77,7 +77,7 @@ public class SimCityGUI extends JFrame {
 	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
 	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
 	public Restaurant1CustomerRole customer1 = new Restaurant1CustomerRole("Customer 1", initPerson);
-	public Restaurant1WaiterRole waiter1 = new Restaurant1WaiterRole("Waiter 1", initPerson);
+	public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
 	/*
 	 * Role gui's must be initialized in SimCityGui with the role as happens below
 	 */
@@ -411,7 +411,7 @@ public class SimCityGUI extends JFrame {
 		SimEvent hostGoToRestaurant = new SimEvent(rest1, 5, 7, EventType.HostEvent);
 		SimEvent cookGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.CookEvent);
 		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.CashierEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.WaiterEvent);
+		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.SDWaiterEvent);
 		SimEvent custGoToRestaurant = new SimEvent(rest1, 1, 7, EventType.CustomerEvent);
 		SimEvent tellerGoToBank = new SimEvent(bank, 1, 7, EventType.TellerEvent);
 		SimEvent hostGoToBank = new SimEvent(bank, 1, 7, EventType.HostEvent);
@@ -490,6 +490,7 @@ public class SimCityGUI extends JFrame {
 		customer1.setCashier(cashier1);
 		waiter1.setcook(cook1);
 		waiter1.sethost(host1);
+		waiter1.setRevolvingStand(cook1.getRevStand());
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
 		

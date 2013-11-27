@@ -26,7 +26,7 @@ public class Restaurant1HostRole extends Role {
 	public List<mycustomer> waitingCustomers = Collections.synchronizedList(new ArrayList<mycustomer>());
 	public Collection<Table> tables;
 	public List<mywaiter> waiter = Collections.synchronizedList(new ArrayList<mywaiter>());
-	public Restaurant1WaiterRole wa;
+	public Waiter wa;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 	public int tablenum;
@@ -46,9 +46,9 @@ public class Restaurant1HostRole extends Role {
 	enum state {working, applyingforwork, onbreak};
 
 	public class mywaiter{
-		Restaurant1WaiterRole waiter;
+		Waiter waiter;
 		state s = state.working;
-		mywaiter(Restaurant1WaiterRole waiter){
+		mywaiter(Waiter waiter){
 			this.waiter = waiter;
 		}
 	}
@@ -65,7 +65,7 @@ public class Restaurant1HostRole extends Role {
 
 	enum Cstate {waiting, deciding, staying, leaving, eating};
 
-	public mywaiter findwaiter(Restaurant1WaiterRole w){
+	public mywaiter findwaiter(Waiter w){
 		mywaiter a = null;
 		for(mywaiter m: waiter){
 			if(w == m.waiter){
@@ -97,7 +97,7 @@ public class Restaurant1HostRole extends Role {
 
 
 
-	public void msgaddwaiter(Restaurant1WaiterRole w){
+	public void msgaddwaiter(Waiter w){
 		waiter.add(new mywaiter(w));
 	}
 
@@ -133,7 +133,7 @@ public class Restaurant1HostRole extends Role {
 		stateChanged();
 	}
 
-	public void msgApplyingforbreak(Restaurant1WaiterRole w){
+	public void msgApplyingforbreak(Waiter w){
 		mywaiter mw = findwaiter(w);
 		mw.s = state.applyingforwork;
 		stateChanged();

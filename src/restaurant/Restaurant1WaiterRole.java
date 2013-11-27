@@ -254,10 +254,6 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 				return true;
 			}
 		}
-		if(ws == waiterstate.applyingbreak){
-			DoApplyingbreak();
-			return true;
-		}
 		
 		
 		}
