@@ -699,9 +699,12 @@ public class SimCityGUI extends JFrame {
 		marketemployeerole.setCashier(marketcashierrole);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
+
+
 		//customer.setCashier(cashier1);
 		//customer.setHost(host1);
 		//marketcustomerrole.setCashier(marketcashierrole);
+
 		cook1.setMarketCashier(marketcashierrole);
 		cook1.setCashier(cashier1);
 		
@@ -737,6 +740,9 @@ public class SimCityGUI extends JFrame {
 		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
+		simclock.bankTimeCard = bank.getTimeCard();
+		simclock.timeCards.add(market.getTimeCard());
+		simclock.timeCards.add(rest1.getTimeCard());
 		
 		// Sets the sim world clock to the interaction panel's so events can be created with correct start time
 		cityCtrlPanel.interactPanel.setClock(simclock);
