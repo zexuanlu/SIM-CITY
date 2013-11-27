@@ -22,6 +22,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	
 	public MarketCustomerRole(Person person, String name){
 		super(person);
+		roleName = "Market Customer";
 		this.p = person;
 	}
 	
@@ -151,5 +152,9 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		p.msgFinishedEvent(this, Receivedfood, money );
 	}
 
-
+	public String getRoleName(){
+		return roleName;
+	}
+	
+	
 }

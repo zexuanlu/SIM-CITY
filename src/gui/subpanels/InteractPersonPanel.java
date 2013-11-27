@@ -11,6 +11,7 @@ import gui.main.SimCityGUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.Timer;
 import java.util.*;
 import java.util.List;
 
@@ -36,10 +37,18 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 	private String title = " Interact Person Panel ";
 	private static final int WIDTH = 275;
 	private static final int HEIGHT = 310;
+	private final int f_width = WIDTH;
+	private final int f_height = 40;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
+	private Timer refresh;
 	
 	// Main control panel reference
 	CityControlPanel cntrlPanel;
+	
+	// Formatting panels
+	JPanel searchPanel = new JPanel();
+	JPanel displayInfoPanel = new JPanel();
+	JPanel chooseEventPanel = new JPanel();
 	
 	// COMPONENT DECLARATIONS
 	// Labels
@@ -53,13 +62,14 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 	
 	
 	// TextField for name
-	JLabel personName = new JLabel("Name: ");
-	JTextField nameText = new JTextField(10);
+	JLabel personName;
+	JTextField nameText;
 	JButton search = new JButton("Search");
 	
 	
 	public InteractPersonPanel(CityControlPanel cp) {
 		cntrlPanel = cp;
+		refresh = new Timer(2000, this);
 		
 		// PANEL SETUP
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -71,10 +81,35 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 		this.setMaximumSize(size);
 
 		// COMPONENT INITIALIZATIONS
+		// Formatting Panels setup
+		Dimension fpSize = new Dimension(f_width, f_height);
+		
+		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
+		searchPanel.setBackground(Color.GRAY);
+		searchPanel.setPreferredSize(fpSize);
+		searchPanel.setMaximumSize(fpSize);
+		
+		displayInfoPanel.setLayout(new GridLayout(1, 2));
+		displayInfoPanel.setBackground(Color.GRAY);
+		displayInfoPanel.setPreferredSize(fpSize);
+		displayInfoPanel.setMaximumSize(fpSize);
+		
+		chooseEventPanel.setLayout(new GridLayout(1, 2));
+		chooseEventPanel.setBackground(Color.GRAY);
+		chooseEventPanel.setPreferredSize(fpSize);
+		chooseEventPanel.setMaximumSize(fpSize);
+		
 		// Labels
-//		name = new JLabel("Person: Name");
-//		//name.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-//		currentRole = new JLabel("Role");
+		personName  = new JLabel("  Name: ");
+		name = new JLabel("  Person: ");
+		//name.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		currentRole = new JLabel("Role");
+		
+		// TextFields
+		Dimension fieldSize = new Dimension(150, 32);
+		nameText = new JTextField(10);
+		nameText.setPreferredSize(fieldSize);
+		nameText.setMaximumSize(fieldSize);
 		
 		// ComboBoxes
 		event = new JComboBox<String>();
@@ -93,16 +128,28 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 		startTime.setEnabled(false);*/
 		search.addActionListener(this); 
 		
-		// ADD COMPONENTS
-		this.add(personName);
-		this.add(nameText);
-		this.add(search);
-//		this.add(name);
-//		this.add(currentRole);
-		this.add(new JLabel("Choose event: "));
-		this.add(event);
+		// ADD COMPONENTS TO FORMATTING PANELS
+		// Search Panel
+		searchPanel.add(personName);
+		searchPanel.add(nameText);
+		searchPanel.add(search);
+		
+		// Display Info Panel
+		displayInfoPanel.add(name);
+		displayInfoPanel.add(currentRole);
+		
+		// Choose Event Panel
+		chooseEventPanel.add(new JLabel("  Choose event: "));
+		chooseEventPanel.add(event);
+		
+		// ADD COMPONENTS TO THIS
+		this.add(searchPanel);
+		this.add(displayInfoPanel);
+		this.add(chooseEventPanel);
 		//this.add(new JLabel("Choose start time: "));
 		//this.add(startTime);
+		
+		refresh.start();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -110,9 +157,18 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 			for (PersonAgent p : simcitygui.people) {
 				if (p.getName().equals(nameText.getText().trim())) {
 					selectedPerson = p;
+					name.setText("  Person: " + selectedPerson.getName());
+					currentRole.setText(selectedPerson.getActiveRoleName());
 					event.setEnabled(true);
 				}
 			}
+		}
+		else if(e.getSource() == refresh){
+			if(selectedPerson != null){
+				name.setText("  Person: " + selectedPerson.getName());
+				currentRole.setText(selectedPerson.getActiveRoleName());
+			}
+			
 		}
 		else {
 			JComboBox comboBox = (JComboBox)e.getSource();

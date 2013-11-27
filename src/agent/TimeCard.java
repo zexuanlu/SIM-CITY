@@ -60,7 +60,7 @@ public class TimeCard extends Agent {
 	}
 	
 	private void goOffWork(MyRole role){
-		double pay = 500.00;
+		double pay = 1000.00;
 		role.role.getPerson().msgGoOffWork(role.role, pay);
 		role.role.switchPerson(role.person);
 		role.person.msgReadyToWork(role.role);

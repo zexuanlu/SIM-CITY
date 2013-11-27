@@ -35,6 +35,7 @@ public class BankHostRole extends Role implements BankHost {
 	 */
 	public BankHostRole(Person person, String name){
 		super(person);
+		roleName = "Bank Host";
 		this.name = name;
 		waitingCustomers = new ArrayList<BankCustomer>();
 		tellers = new ArrayList<MyTeller>();
@@ -201,4 +202,8 @@ public class BankHostRole extends Role implements BankHost {
 		}
 	}
 	public enum state {working, offWork, withCustomer} 
+	
+	public String getRoleName(){
+		return roleName;
+	}
 }

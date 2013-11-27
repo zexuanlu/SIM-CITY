@@ -13,7 +13,6 @@ import restaurant.interfaces.Waiter;
 import restaurant.interfaces.Cashier;
 import market.interfaces.MarketCashier;
 import restaurant.shareddata.*;
-
 import market.interfaces.MarketTruck;
 import market.Food;
 
@@ -37,6 +36,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 
 	public Restaurant1CookRole(String name, Person pa) {
 		super(pa);
+		roleName = "Rest1 Cook";
 		this.name = name; 
 		food.put("Steak", new MyFood("Steak", 4000, 6, 2, 4));
 		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4));
@@ -216,7 +216,9 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		order.w.msgorderiscooked(order.table);
 	}
 
-
+	public String getRoleName(){
+		return roleName;
+	}
 
 }
 

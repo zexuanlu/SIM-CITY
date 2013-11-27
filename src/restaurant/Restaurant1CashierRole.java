@@ -7,7 +7,6 @@ import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import agent.Role;
 import person.interfaces.Person;
-
 import market.interfaces.MarketCashier;
 
 public class Restaurant1CashierRole extends Role implements Cashier{
@@ -22,6 +21,7 @@ public class Restaurant1CashierRole extends Role implements Cashier{
 	
 	public Restaurant1CashierRole(String name, Person pa){
 		super(pa);
+		roleName = "Rest1 Cashier";
 		this.name = name;
 		Price.put("Steak", 15.99);
 		Price.put("Chicken", 10.99);
@@ -152,5 +152,7 @@ public class Restaurant1CashierRole extends Role implements Cashier{
 		C.c.msgHereisYourChange(a);
 	}
 
-	
+	public String getRoleName(){
+		return roleName;
+	}
 }

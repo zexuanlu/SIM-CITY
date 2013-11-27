@@ -34,6 +34,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	// Constructor
 	public ApartmentTenantRole(String n, int an, Person p) {
 		super(p);
+		roleName = "Apartment Tenant";
 		name = n;
 		apartmentNumber = an;
 		this.person = p;
@@ -43,6 +44,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	// States for the Apartment Tenant
 	public enum MyState {Sleeping, Awake};
 	private MyState state;
+	private String roleName;
 	
 	public String getName() {
 		return name;
@@ -496,7 +498,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
         }, 2000);
 	}
 	
-	
 	/**
 	 * GUI ACTIONS
 	 */
@@ -633,5 +634,9 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			
 			aptGui.setState(ApartmentTenantGui.AptCookingState.Nothing, null);
 		}
+	}
+
+	public String getRoleName(){
+		return roleName;
 	}
 }

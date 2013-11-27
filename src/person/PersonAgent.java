@@ -23,6 +23,7 @@ import bank.interfaces.*;
 import bank.test.mock.MockBankHost;
 import bank.*;
 import market.*;
+import market.gui.MarketCustomerGui;
 import market.interfaces.*;
 import agent.*;
 import person.gui.PersonGui;
@@ -156,6 +157,26 @@ public class PersonAgent extends Agent implements Person{
 		}
 		return null;
 	}
+	
+	public MyRole getActiveRole(){
+		for(MyRole role : roles){
+			if(role.isActive){
+				return role;
+			}
+		}
+		return null;
+	}
+	
+	public String getActiveRoleName(){
+		String none = "No Active Role";
+		for(MyRole role : roles){
+			if(role.isActive){
+				return role.role.getRoleName();
+			}
+		}
+		return none;
+	}
+	
 	public boolean containsEvent(String directive){
 		for(SimEvent e : toDo){
 			if(e.directive == directive){
@@ -583,15 +604,17 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.CustomerEvent){
 					activeRole = true;
 					MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
-
 					if(!containsRole(mcr)){
 						MyRole newRole = new MyRole(mcr);
 						newRole.isActive(true);
 						roles.add(newRole);
-						//((MarketCustomerRole)newRole.role).msgHello();
+						MarketCustomerGui mcg = new MarketCustomerGui((MarketCustomerRole)newRole.role);
+						((MarketCustomerRole)newRole.role).setGui(mcg);
+						cap.marketPanel.addGui(mcg);
+						((MarketCustomerRole)newRole.role).msgHello(wallet.getOnHand(), shoppingBag);
 					}
 					else{ 
-						//((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(); 
+						((MarketCustomerRole)getRoleOfType(mcr).role).msgHello(wallet.getOnHand(), shoppingBag);
 						getRoleOfType(mcr).isActive(true);
 					}
 					gui.setPresent(false);
@@ -719,9 +742,10 @@ public class PersonAgent extends Agent implements Person{
 		 * find locations on the fly via look up 
 		 */
 		boolean addedAnEvent = false;
+		Bank b = (Bank)cityMap.getByType(LocationType.Bank);
 		if(wallet.getOnHand() <= 100){ //get cash
-			SimEvent needMoney = new SimEvent("Need Money", new Bank("Banco Popular", new TimeCard(), new MockBankHost("Gil"), 
-					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
+			SimEvent needMoney = new SimEvent("Need Money", b, 
+					4, EventType.CustomerEvent);
 			if(!containsEvent("Need Money")){ 
 				toDo.offer(needMoney);
 				wallet.addTransaction("Withdrawal", 100);
@@ -729,8 +753,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(wallet.getOnHand() >= 500){ //deposit cash
-			SimEvent needDeposit = new SimEvent("Need Deposit", new Bank("Banco Popular", new TimeCard(), new MockBankHost("Gil"), 
-					new Position(100, 50), LocationType.Bank), 4, EventType.CustomerEvent);
+			SimEvent needDeposit = new SimEvent("Need Deposit", b, 4, EventType.CustomerEvent);
 			if(!containsEvent("Need Deposit")){
 				toDo.offer(needDeposit);
 				wallet.addTransaction("Deposit", 200);
@@ -740,7 +763,7 @@ public class PersonAgent extends Agent implements Person{
 		if(!addedAnEvent){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
-				 goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);
+				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), 2, EventType.AptTenantEvent);
 			}
 			else{
 				goHome = new SimEvent("Go home", (Home)cityMap.getHome(homeNumber), 2, EventType.HomeOwnerEvent);
@@ -755,7 +778,7 @@ public class PersonAgent extends Agent implements Person{
 
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
-		
+
 		gui.walkto(originx, originy);
 		//currentLocation.setX(originx);
 		//currentLocation.setY(originy);
@@ -801,11 +824,11 @@ public class PersonAgent extends Agent implements Person{
 		else if(gui.xPos > 280 && gui.yPos > 220) {
 			Quadrant = 4;
 		}
-		
+
 		if(Quadrant == loc.Quadrant){
 			return true;
 		}
-		
+
 		return false;
 	}
 	public class MyRole{
@@ -817,6 +840,7 @@ public class PersonAgent extends Agent implements Person{
 			isActive = false;
 		}
 		void isActive(boolean tf){ isActive = tf; }
+		public Role getRole(){return role;}
 	}
 	class EventComparator implements Comparator{
 
@@ -907,7 +931,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 10000000){
+		if (this.wallet.getOnHand() >= 100000){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
