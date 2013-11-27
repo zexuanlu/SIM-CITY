@@ -389,7 +389,7 @@ public class SimCityGUI extends JFrame {
 		 * in cityAnimationPanel.
 		 */
 		
-		truck = new MarketTruckAgent(aStarTraversal);
+		truck = new MarketTruckAgent();
 		MarketTruckGui truckGui = new MarketTruckGui(truck);
 		truck.setGui(truckGui);
 		truck.startThread();
@@ -699,9 +699,6 @@ public class SimCityGUI extends JFrame {
 		marketemployeerole.setCashier(marketcashierrole);
 		host1.msgaddwaiter(waiter1);
 		waiter1.setCashier(cashier1);
-		customer.setCashier(cashier1);
-		customer.setHost(host1);
-		marketcustomerrole.setCashier(marketcashierrole);
 		cook1.setMarketCashier(marketcashierrole);
 		cook1.setCashier(cashier1);
 		
