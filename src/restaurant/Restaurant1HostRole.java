@@ -1,9 +1,7 @@
 package restaurant;
 
 import agent.Role;
-
 import restaurant.interfaces.Waiter;
-
 import person.interfaces.Person;
 
 import java.util.*;
@@ -35,7 +33,7 @@ public class Restaurant1HostRole extends Role {
 
 	public Restaurant1HostRole(String name, Person pa) {
 		super(pa);
-
+		roleName = "Rest1 Host";
 		this.name = name;
 		// make some tables
 		tables = new ArrayList<Table>(NTABLES);
@@ -275,8 +273,10 @@ public class Restaurant1HostRole extends Role {
 			return "table " + tableNumber;
 		}
 
-
-
+	}
+	
+	public String getRoleName(){
+		return roleName;
 	}
 }
 

@@ -33,6 +33,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	// Constructor
 	public HomeOwnerRole(Person p, String n, int hn) {
 		super(p);
+		roleName = "Home Owner";
 		name = n;
 		houseNumber = hn;
 		this.person = p;
@@ -678,5 +679,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public String getRoleName(){
+		return roleName;
 	}
 }

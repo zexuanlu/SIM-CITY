@@ -5,7 +5,6 @@ import restaurant.interfaces.Cashier;
 import restaurant.interfaces.Customer;
 import restaurant.interfaces.Waiter;
 import agent.Role;
-
 import person.interfaces.Person;
 
 import java.util.ConcurrentModificationException;
@@ -54,6 +53,7 @@ public class Restaurant1CustomerRole extends Role implements Customer {
 	 */
 	public Restaurant1CustomerRole(String name, Person pa){
 		super(pa);
+		roleName = "Rest1 Customer";
 		this.name = name;
 	}
 
@@ -352,5 +352,9 @@ public class Restaurant1CustomerRole extends Role implements Customer {
 
 	public CustomerGui getGui() {
 		return customerGui;
+	}
+	
+	public String getRoleName(){
+		return roleName;
 	}
 }

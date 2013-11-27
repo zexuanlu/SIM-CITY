@@ -35,6 +35,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	// Constructor
 	public ApartmentTenantRole(String n, int an, Person p) {
 		super(p);
+		roleName = "Apartment Tenant";
 		name = n;
 		apartmentNumber = an;
 		person = p;
@@ -622,5 +623,9 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
             	aptGui.DoGoToHome();
             }
         }, 2000);
+	}
+	
+	public String getRoleName(){
+		return roleName;
 	}
 }

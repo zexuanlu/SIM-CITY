@@ -157,6 +157,26 @@ public class PersonAgent extends Agent implements Person{
 		}
 		return null;
 	}
+	
+	public MyRole getActiveRole(){
+		for(MyRole role : roles){
+			if(role.isActive){
+				return role;
+			}
+		}
+		return null;
+	}
+	
+	public String getActiveRoleName(){
+		String none = "No Active Role";
+		for(MyRole role : roles){
+			if(role.isActive){
+				return role.role.getRoleName();
+			}
+		}
+		return none;
+	}
+	
 	public boolean containsEvent(String directive){
 		for(SimEvent e : toDo){
 			if(e.directive == directive){
@@ -839,6 +859,7 @@ public class PersonAgent extends Agent implements Person{
 			isActive = false;
 		}
 		void isActive(boolean tf){ isActive = tf; }
+		public Role getRole(){return role;}
 	}
 	class EventComparator implements Comparator{
 
