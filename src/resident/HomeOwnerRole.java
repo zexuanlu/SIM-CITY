@@ -249,67 +249,66 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 *
 	 */
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		if (person.getTime() >= 22 && state == MyState.Awake) {
-			sleep();
-			return true;
-		}
-		if (!toDoList.isEmpty() && state == MyState.Awake) {
-			for (MyPriority p : toDoList) { // Eating is the most important
-				if (p.task == MyPriority.Task.NeedToEat) {
-					checkFridge(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) { // If fridge is empty
-				if (p.task == MyPriority.Task.NoFood) {
-					decideMarketOrGoOut(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.GoToRestaurant) {
-					goToRestaurant(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.GoToMarket) {
-					goToMarket(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every day
-				if (p.task == MyPriority.Task.MaintainHome) {
-					maintainHome(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.RestockFridge) {
-					restockFridge(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.Cooking) {
-					cookFood(p);
-					return true;
-				}
-			}			
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.Eating) {
-					eatFood(p);
-					return true;
-				}
-			}
-			for (MyPriority p : toDoList) {
-				if (p.task == MyPriority.Task.WashDishes) {
-					washDishes(p);
-					return true;
-				}
-			}
-		}
+//		if (person.getTime() >= 22 && state == MyState.Awake) {
+//			sleep();
+//			return true;
+//		}
+//		if (!toDoList.isEmpty() && state == MyState.Awake) {
+//			for (MyPriority p : toDoList) { // Eating is the most important
+//				if (p.task == MyPriority.Task.NeedToEat) {
+//					checkFridge(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) { // If fridge is empty
+//				if (p.task == MyPriority.Task.NoFood) {
+//					decideMarketOrGoOut(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) {
+//				if (p.task == MyPriority.Task.GoToRestaurant) {
+//					goToRestaurant(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) {
+//				if (p.task == MyPriority.Task.GoToMarket) {
+//					goToMarket(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) { // Assuming house needs to be maintained every day
+//				if (p.task == MyPriority.Task.MaintainHome) {
+//					maintainHome(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) {
+//				if (p.task == MyPriority.Task.RestockFridge) {
+//					restockFridge(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) {
+//				if (p.task == MyPriority.Task.Cooking) {
+//					cookFood(p);
+//					return true;
+//				}
+//			}			
+//			for (MyPriority p : toDoList) {
+//				if (p.task == MyPriority.Task.Eating) {
+//					eatFood(p);
+//					return true;
+//				}
+//			}
+//			for (MyPriority p : toDoList) {
+//				if (p.task == MyPriority.Task.WashDishes) {
+//					washDishes(p);
+//					return true;
+//				}
+//			}
+//		}
 		return false;
 	}
 		
@@ -384,7 +383,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
 
 			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-			person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
+			person.msgAddEvent(new SimEvent("Go to restaurant", location, SimEvent.EventType.CustomerEvent));
 		}
 		
 		person.msgFinishedEvent(this);
@@ -399,7 +398,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			Market location = (Market)person.getMap().chooseByType(LocationType.Market);
 			
 			// Lets person agent know that no longer going to be a resident role
-			person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
+			person.msgAddEvent(new SimEvent("Go To Market", location, SimEvent.EventType.CustomerEvent));
 		}
 		
 		person.msgFinishedEvent(this);

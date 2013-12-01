@@ -15,8 +15,14 @@ public class Market extends Location{
 	public Market(String n, MarketCashier cashier, TimeCard t, Position p, LocationType type){
 		super(n, type, p);
 		this.timeCard = t;
-		this.cashier = cashier;
+		this.setCashier(cashier);
 	}
 
 	public TimeCard getTimeCard(){ return timeCard; }
+	public MarketCashierRole getCashier() {
+		return (MarketCashierRole)cashier;
+	}
+	public void setCashier(MarketCashier cashier) {
+		this.cashier = cashier;
+	}
 }

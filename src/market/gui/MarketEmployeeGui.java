@@ -136,6 +136,10 @@ public class MarketEmployeeGui implements Gui{
 		yDestination = 180;
 		sendFood = true;
 	}
+
+	public void setPresent(boolean b) {
+		isPresent = b;
+	}
 	
 	
 	

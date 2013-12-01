@@ -90,15 +90,14 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	 * 
 	 */
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
-		if (!tenants.isEmpty()) {
-			for (MyTenant t : tenants) {
-				if (t.state == MyTenant.TenantState.PayingRent) {
-					collectPayment(t);
-					return true;
-				}
-			}
-		}
+//		if (!tenants.isEmpty()) {
+//			for (MyTenant t : tenants) {
+//				if (t.state == MyTenant.TenantState.PayingRent) {
+//					collectPayment(t);
+//					return true;
+//				}
+//			}
+//		}
 
 		return false;
 	}

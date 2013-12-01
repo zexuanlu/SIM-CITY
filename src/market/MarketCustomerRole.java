@@ -12,7 +12,7 @@ import market.interfaces.*;
 public class MarketCustomerRole extends Role implements MarketCustomer{
 
 	MarketCashier cashier;
-	MarketCustomerGui customerGui;
+	public MarketCustomerGui customerGui;
 	public List<Food> food = new ArrayList<Food>();
 	public List<Food> Receivedfood = new ArrayList<Food>();
 	double bill = 0;

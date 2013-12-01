@@ -181,25 +181,25 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 			}
 			
 		}
-		else {
-			JComboBox comboBox = (JComboBox)e.getSource();
-            Object selected = comboBox.getSelectedItem();
-            if (selected.toString().equals("Go to Bank")) {
-            	System.err.println("going to bank");
-            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Bank", Location.LocationType.Bank, new Position(140, 160)), 1, 7, SimEvent.EventType.CustomerEvent));
-            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Bank), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
-            }
-            else if (selected.toString().equals("Go Buy From Market")) {
-            	System.err.println("going to market");
-            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Market", Location.LocationType.Market, new Position(500, 60)), 1, 7, SimEvent.EventType.CustomerEvent));
-            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Market), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
-            }
-            else {
-            	System.err.println("going to restaurant");
-            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Restaurant", Location.LocationType.Restaurant, new Position(220, 80)), 1, 7, SimEvent.EventType.CustomerEvent));
-            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Restaurant), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
-            }
-        }
+//		else {
+//			JComboBox comboBox = (JComboBox)e.getSource();
+//            Object selected = comboBox.getSelectedItem();
+//            if (selected.toString().equals("Go to Bank")) {
+//            	System.err.println("going to bank");
+//            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Bank", Location.LocationType.Bank, new Position(140, 160)), 1, 7, SimEvent.EventType.CustomerEvent));
+//            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Bank), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
+//            }
+//            else if (selected.toString().equals("Go Buy From Market")) {
+//            	System.err.println("going to market");
+//            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Market", Location.LocationType.Market, new Position(500, 60)), 1, 7, SimEvent.EventType.CustomerEvent));
+//            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Market), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
+//            }
+//            else {
+//            	System.err.println("going to restaurant");
+//            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Restaurant", Location.LocationType.Restaurant, new Position(220, 80)), 1, 7, SimEvent.EventType.CustomerEvent));
+//            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Restaurant), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
+//            }
+//        }
 	}
 	
 	public void displayInfo(PersonAgent p) {

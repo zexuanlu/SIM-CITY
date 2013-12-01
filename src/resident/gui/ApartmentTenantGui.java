@@ -150,5 +150,9 @@ public class ApartmentTenantGui implements Gui {
 		xDestination = bedX;
 		yDestination = bedY;
 	}
+
+	public void setPresent(boolean b) {
+		isPresent = b;
+	}
   
 }

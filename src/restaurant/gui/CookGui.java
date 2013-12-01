@@ -114,4 +114,8 @@ public class CookGui implements Gui{
 		return isPresent;
 		// TODO Auto-generated method stub
 	}
+
+	public void setPresent(boolean b) {
+		isPresent = b;
+	}
 }

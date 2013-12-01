@@ -8,34 +8,31 @@ package person;
 public class SimEvent {
 	public String directive;
     public Location location;
+    public enum EventImportance {RecurringEvent, OneTimeEvent, EmergencyEvent}
     public enum EventType {HostEvent, CustomerEvent, WaiterEvent, SDWaiterEvent, CookEvent, CashierEvent, 
     						EmployeeEvent, TellerEvent, GuardEvent, PassengerEvent, HomeEvent, 
     						BusEvent, AptTenantEvent, HomeOwnerEvent, LandlordEvent, 
     						MaintenenaceEvent} 
     public EventType type;
-    int priority; // for ordering in queue
-    int start; 
-    boolean inProgress; 
+    public EventImportance importance;
+    int startTime;  
     
-    public SimEvent(Location location, int priority, int start, EventType type ) {
-    	
+    public SimEvent(Location location, int startTime, EventType type ) {
+    	this.importance = EventImportance.RecurringEvent;
     	this.location = location;
-    	this.priority = priority;
-    	this.start = start;
-    	this.inProgress = false;
+    	this.startTime = startTime;
     	this.type = type;	
     }
     /*
      * create a time ambiguous event that will be ordered on the fly 
      * with regards to existing mandatory events
      */
-    public SimEvent(String directive, Location l, int p, EventType t){ 
+    public SimEvent(String directive, Location l, EventType t){ 
     	this.directive = directive;
     	this.location = l;
-    	this.start = 0;
-    	this.priority = p;
+    	this.importance = EventImportance.OneTimeEvent;
+    	this.startTime = -1;
     	this.type = t;
-    	this.inProgress = false;
     }
     public String getDirective(){
     	return this.directive;
@@ -52,20 +49,12 @@ public class SimEvent {
     	return location;    	
     }
     
-    public void setStart(int s) {    	
-    	this.start = s;
+    public void setstartTime(int s) {    	
+    	this.startTime = s;
     }
    
-    int getStart() {   	
-    	return this.start;    	
-    }
-    
-    void setProgress(boolean inProgress) {    	
-    	this.inProgress = inProgress;
-    }
-    
-    boolean getProgress() {   	
-    	return inProgress;
+    int getstartTime() {   	
+    	return this.startTime;    	
     }
     
 }

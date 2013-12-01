@@ -13,4 +13,6 @@ public interface BankHost {
 	public void msgBackToWork(BankTeller bt);
 	
 	public void msgAtDestination();
+	
+	public void addTeller(BankTeller bt);
 }
