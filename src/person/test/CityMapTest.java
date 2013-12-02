@@ -14,6 +14,8 @@ import person.Market;
 import person.PersonAgent;
 import person.Position;
 import person.Restaurant;
+import restaurant.Restaurant1HostRole;
+import simcity.CityMap;
 import bank.*;
 
 /*
@@ -27,7 +29,7 @@ import bank.*;
  */
 public class CityMapTest extends TestCase{
 
-	/*PersonAgent person;
+	PersonAgent person;
 	List<Location> locs; 
 	Bank bank;
 	Restaurant cr;
@@ -40,18 +42,18 @@ public class CityMapTest extends TestCase{
 		super.setUp();	
 		locs = new ArrayList<Location>();
 		bank = new Bank("Bank", new BankHostRole(person, "Host"), new Position(10, 10), LocationType.Bank);
-		//cr = new Restaurant("Chinese", new MockHostRole("ChineseHost"), new Position(20, 20), LocationType.Restaurant);
-		//market = new Market("MarketA", new MockHostRole("MarketHost"), new Position(30, 30), LocationType.Market);
-		//ir = new Restaurant("Italian", new MockHostRole("ItalianHost"), new Position(40, 40), LocationType.Restaurant);
-		//fr = new Restaurant("Fancy", new MockHostRole("FancyHost"), new Position(40, 55), LocationType.Restaurant);
+		cr = new Restaurant("Chinese", new Restaurant1HostRole("ChineseHost", person), new Position(20, 20), LocationType.Restaurant);
+		market = new Market("MarketA", new Position(30, 30), LocationType.Market);
+		ir = new Restaurant("Italian", new Restaurant1HostRole("ItalianHost", person), new Position(40, 40), LocationType.Restaurant);
+		fr = new Restaurant("Fancy", new Restaurant1HostRole("FancyHost", person), new Position(40, 55), LocationType.Restaurant);
 
 		locs.add(bank);
 		locs.add(cr);
 		locs.add(market);
 		locs.add(ir);
 		locs.add(fr);
-
-		person = new PersonAgent("Grant", locs);
+		CityMap cm = new CityMap(locs);
+		person = new PersonAgent("Grant", cm, 0);
 	}
 	@Test
 	public void testCityMapMethods() {
@@ -74,6 +76,6 @@ public class CityMapTest extends TestCase{
 				person.cityMap.chooseByType(LocationType.Restaurant).getType() == LocationType.Restaurant);
 		assertTrue("Calling chooseByType for a market should return marketA, it does not", 
 				person.cityMap.chooseByType(LocationType.Market).getName() == "MarketA");
-	}*/
+	}
 
 }
