@@ -287,13 +287,19 @@ public class PersonAgent extends Agent implements Person{
 //					return true;
 //				}
 //			}
+			//If the person is at home, this event will break him out for events such as work
 			if(atHome){
 				for(SimEvent nextEvent : toDo){
 					if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
 						print("Activating a recurring event");
 						for(MyRole mr : roles){
-							if(mr.type.equals("Home Owner") || mr.type.equals("Apt Tenant") || mr.type.equals("Apt Landlord")){
+							if(mr.type.equals("Home Owner")){
 								mr.setActive(false);
+								((HomeOwnerRole)mr.role).DoGoToFrontDoor();
+							}
+							else if(mr.type.equals("Apt Tenant")){
+								mr.setActive(false);
+								((ApartmentTenantRole)mr.role).DoGoToFrontDoor();
 							}
 						}
 						gui.setPresent(true);
@@ -755,7 +761,8 @@ public class PersonAgent extends Agent implements Person{
 					for(MyRole mr : roles){
 						if(mr.type.equals("Apt Tenant")){
 							mr.setActive(true);
-							((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
+							if(((ApartmentTenantRole)mr.role).aptGui != null)
+								((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
 							((ApartmentTenantRole)mr.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
 							gui.setPresent(false);
 							toDo.remove(e);

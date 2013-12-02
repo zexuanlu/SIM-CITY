@@ -3,6 +3,7 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import person.PersonAgent;
 import agent.Gui;
 import market.MarketEmployeeRole;
 
@@ -92,6 +93,7 @@ public class MarketEmployeeGui implements Gui{
 		// TODO Auto-generated method stub
 		g.setColor(Color.red);
         g.fillRect(xPos, yPos, distance, distance);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 
 	@Override

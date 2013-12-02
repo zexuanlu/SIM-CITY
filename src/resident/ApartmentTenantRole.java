@@ -254,66 +254,66 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 * 
 	 */
 	public boolean pickAndExecuteAnAction() {
-//		if (person.getTime() >= 22 && state == MyState.Awake) {
-//			sleep();
-//			return true;
-//		}
-//		if (!toDoList.isEmpty() && state == MyState.Awake) {
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.PayRent) {
-//					payLandlord(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) { // Eating is the most important
-//				if (p.task == MyPriority.Task.NeedToEat) {
-//					checkFridge(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) { // If fridge is empty
-//				if (p.task == MyPriority.Task.NoFood) {
-//					decideMarketOrGoOut(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.GoToRestaurant) {
-//					goToRestaurant(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.GoToMarket) {
-//					goToMarket(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.RestockFridge) {
-//					restockFridge(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.Cooking) {
-//					cookFood(p);
-//					return true;
-//				}
-//			}			
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.Eating) {
-//					eatFood(p);
-//					return true;
-//				}
-//			}
-//			for (MyPriority p : toDoList) {
-//				if (p.task == MyPriority.Task.WashDishes) {
-//					washDishes(p);
-//					return true;
-//				}
-//			}
-//		}
+		if (person.getTime() >= 22 && state == MyState.Awake) {
+			sleep();
+			return true;
+		}
+		if (!toDoList.isEmpty() && state == MyState.Awake) {
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.PayRent) {
+					payLandlord(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) { // Eating is the most important
+				if (p.task == MyPriority.Task.NeedToEat) {
+					checkFridge(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) { // If fridge is empty
+				if (p.task == MyPriority.Task.NoFood) {
+					decideMarketOrGoOut(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.GoToRestaurant) {
+					goToRestaurant(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.GoToMarket) {
+					goToMarket(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.RestockFridge) {
+					restockFridge(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.Cooking) {
+					cookFood(p);
+					return true;
+				}
+			}			
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.Eating) {
+					eatFood(p);
+					return true;
+				}
+			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.WashDishes) {
+					washDishes(p);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	
@@ -497,7 +497,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
             {
             	msgDoneWashing(prior);
             	aptGui.DoGoToHome();
-            	person.msgFinishedEvent(temp);
+//            	person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}
@@ -528,7 +528,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		}
 	}
 	
-	private void DoGoToFrontDoor() {
+	public void DoGoToFrontDoor() {
 		if (aptGui != null) {
 			// GUI goes to market 
 			aptGui.DoGoToFrontDoor();

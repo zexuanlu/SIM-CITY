@@ -4,6 +4,7 @@ import resident.ApartmentTenantRole;
 
 import java.awt.*;
 
+import person.PersonAgent;
 import agent.Gui;
 
 public class ApartmentTenantGui implements Gui {
@@ -81,6 +82,7 @@ public class ApartmentTenantGui implements Gui {
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
         g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)aptTenant.getPerson()).getName(), xPos-14, yPos+30);
         
         String foodChoice = null;
         

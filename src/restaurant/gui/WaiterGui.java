@@ -10,6 +10,7 @@ import simcity.gui.*;
 
 import java.awt.*;
 
+import person.PersonAgent;
 import agent.Gui;
 
 public class WaiterGui implements Gui {
@@ -121,6 +122,12 @@ public class WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, distance, distance);
+        if(agent instanceof Restaurant1WaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant1WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
+        else if(agent instanceof Restaurant1SDWaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant1SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
         g.drawString(order, xPos, yPos);
         g.drawString(food, xfood, yfood);
     }

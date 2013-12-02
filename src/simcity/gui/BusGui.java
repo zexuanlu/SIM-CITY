@@ -38,6 +38,7 @@ public class BusGui implements Gui {
     
 	public void draw(Graphics2D g) {
 		g.setColor(Color.ORANGE);
+		g.drawString(myBus.toString(), xPos-14, yPos+30);
 		if (EastWest){
 			g.fillRect(xPos, yPos, 20, 20);
 		}

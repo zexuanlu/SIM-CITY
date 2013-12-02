@@ -471,7 +471,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
             {
             	msgDoneWashing(prior);
             	homeGui.DoGoToHome();
-            	person.msgFinishedEvent(temp);
+//            	person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}
@@ -512,7 +512,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		}
 	}
 	
-	private void DoGoToFrontDoor() {
+	public void DoGoToFrontDoor() {
 		if (homeGui != null) {
 			// GUI goes to market 
 			homeGui.DoGoToFrontDoor();

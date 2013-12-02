@@ -6,8 +6,10 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import person.PersonAgent;
 import agent.Gui;
 import restaurant.Restaurant1CookRole;
+import restaurant.Restaurant1WaiterRole;
 
 public class CookGui implements Gui{
 
@@ -70,6 +72,7 @@ public class CookGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.black);
 		g.fillRect(xPos, yPos, distance, distance);
+    	g.drawString(((PersonAgent)((Restaurant1CookRole)cook).getPerson()).getName(), xPos-14, yPos+30);
         g.drawString(food, xfood, yfood);
         g.drawString(carryFood, xPos, yPos);
 		// TODO Auto-generated method stub
