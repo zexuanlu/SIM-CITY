@@ -67,7 +67,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	 * Messages for Apartment Landlord
 	 */
 	
-	public void msgNewTenant(ApartmentTenantRole apartmentTenantAgent, int atNum) {
+	public void msgNewTenant(ApartmentTenant apartmentTenantAgent, int atNum) {
 		tenants.add(new MyTenant(apartmentTenantAgent, atNum));
 		stateChanged();
 	}
