@@ -728,7 +728,7 @@ public class PersonAgent extends Agent implements Person{
 					for(MyRole mr : roles){
 						if(mr.type.equals("Home Owner")){
 							mr.setActive(true);
-//							((HomeOwnerRole)mr.role).homeGui.isPresent = true;
+							((HomeOwnerRole)mr.role).homeGui.isPresent = true;
 							((HomeOwnerRole)mr.role).updateVitals(hunger, currentTime);
 							gui.setPresent(false);
 							toDo.remove(e);
@@ -739,10 +739,10 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(hr, "Home Owner");
 					newRole.setActive(true);
 					roles.add(newRole);
-//					HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
-//					hog.setPresent(true);
-//					((HomeOwnerRole)newRole.role).setGui(hog);
-//					cap.getHouseGui(homeNumber).addGui(hog);
+					HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
+					hog.setPresent(true);
+					((HomeOwnerRole)newRole.role).setGui(hog);
+					cap.getHouseGui(homeNumber).addGui(hog);
 					((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime);
 					gui.setPresent(false);
 					toDo.remove(e);
@@ -750,11 +750,12 @@ public class PersonAgent extends Agent implements Person{
 				}
 			}
 			else if(e.location.type == LocationType.Apartment){
+				atHome = true;
 				if(e.type == EventType.AptTenantEvent){
 					for(MyRole mr : roles){
 						if(mr.type.equals("Apt Tenant")){
 							mr.setActive(true);
-							//((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
+							((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
 							((ApartmentTenantRole)mr.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
 							gui.setPresent(false);
 							toDo.remove(e);
@@ -765,7 +766,7 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(tr, "Apt Tenant");
 					newRole.setActive(true);
 					roles.add(newRole);
-					//Should we create a gui here? Or not?
+					// FIX - Should we create a gui here? Or not?
 					((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					gui.setPresent(false);
 					toDo.remove(e);
