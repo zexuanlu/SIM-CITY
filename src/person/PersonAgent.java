@@ -342,10 +342,8 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* Actions */
-
 	private void goToAndDoEvent(SimEvent e){		
 ////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
-
 			if(e.location.type == LocationType.Restaurant){
 				Restaurant rest = (Restaurant)e.location;
 				if(e.type == EventType.CustomerEvent){
