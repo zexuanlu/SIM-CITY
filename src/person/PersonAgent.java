@@ -841,7 +841,7 @@ public class PersonAgent extends Agent implements Person{
 	
 	private void goToLocation(Location loc){
 		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
-			//make a PassengerRole and start it
+//			//make a PassengerRole and start it
 			PassengerRole pRole = new PassengerRole(this.name, this);
 //			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
 				MyRole newRole = new MyRole(pRole, "Passenger");
@@ -910,19 +910,19 @@ public class PersonAgent extends Agent implements Person{
 		//else{ 
 		if(testMode){ return; }
 		gui.DoGoTo(loc.getPosition()); //}
-		if(car != null){
-			car.myGui.isPresent = true;
-			gui.isPresent = false;
-			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
-			//car.setatPosition(p.getX(), p.getY());
-
-			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
-			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
-			// car.gotoPosition(500,250);
-		}
-		else{ gui.DoGoTo(loc.getPosition()); }
+//		if(car != null){
+//			car.myGui.isPresent = true;
+//			gui.isPresent = false;
+//			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+//			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
+//			//car.setatPosition(p.getX(), p.getY());
+//
+//			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
+//			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
+//			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
+//			// car.gotoPosition(500,250);
+//		}
+//		else{ gui.DoGoTo(loc.getPosition()); }
 	}
 	private boolean isInWalkingDistance(Location loc){
 		if(testMode){
