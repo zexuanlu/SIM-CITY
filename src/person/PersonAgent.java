@@ -840,27 +840,31 @@ public class PersonAgent extends Agent implements Person{
 	}
 	
 	private void goToLocation(Location loc){
-//		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
-//			//make a PassengerRole and start it
-//			PassengerRole pRole = new PassengerRole(this.name, this);
+		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
+			//make a PassengerRole and start it
+			PassengerRole pRole = new PassengerRole(this.name, this);
 //			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
-//				MyRole newRole = new MyRole(pRole, "Passenger");
-//				newRole.setActive(true);
-//				roles.add(newRole);
-//				if(!testMode){
-//				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
-//				((PassengerRole)newRole.role).setGui(pg);
-//				cap.addGui(pg);
-//				}
-//				((PassengerRole)newRole.role).setCityMap(cityMap);
-//				((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
-//				//lizhi added this testing:
-//				gui.xDestination = loc.position.getX();
-//				gui.yDestination = loc.position.getY();
-//
-//				((PassengerRole)newRole.role).gotoBus();
-//				gui.setPresent(false);
-//			}
+				MyRole newRole = new MyRole(pRole, "Passenger");
+				newRole.setActive(true);
+				roles.add(newRole);
+				if(!testMode){
+					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
+					((PassengerRole)newRole.role).setGui(pg);
+					cap.addGui(pg);
+				}
+				((PassengerRole)newRole.role).setCityMap(cityMap);
+				((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
+				//lizhi added this testing:
+				gui.xDestination = loc.position.getX();
+				gui.yDestination = loc.position.getY();
+
+				((PassengerRole)newRole.role).gotoBus();
+				gui.setPresent(false);
+				
+				while(newRole.isActive){
+					newRole.role.pickAndExecuteAnAction();
+				}
+			}
 //			else{ //if we already have a PassengerRole, use it
 //				((PassengerRole)getRoleOfType(pRole).role).setDestination(loc.name);
 //				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
@@ -900,19 +904,19 @@ public class PersonAgent extends Agent implements Person{
 		//else{ 
 		if(testMode){ return; }
 		gui.DoGoTo(loc.getPosition()); //}
-//		if(car != null){
-//			car.myGui.isPresent = true;
-//			gui.isPresent = false;
-//			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-//			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
-//			//car.setatPosition(p.getX(), p.getY());
-//
-//			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-//			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
-//			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
-//			// car.gotoPosition(500,250);
-//		}
-//		else{ gui.DoGoTo(loc.getPosition()); }
+		if(car != null){
+			car.myGui.isPresent = true;
+			gui.isPresent = false;
+			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
+			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
+			//car.setatPosition(p.getX(), p.getY());
+
+			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
+			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
+			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
+			// car.gotoPosition(500,250);
+		}
+		else{ gui.DoGoTo(loc.getPosition()); }
 	}
 	private boolean isInWalkingDistance(Location loc){
 		if(testMode){
