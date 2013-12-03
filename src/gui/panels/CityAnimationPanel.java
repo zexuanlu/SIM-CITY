@@ -32,6 +32,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Ellipse2D.Double;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +55,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
 	private List<JPanel> panels = new ArrayList<JPanel>();
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+    private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
     private Image bufferImage;
@@ -283,6 +286,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(JPanel p : apartments){
         	p.repaint();
         }
+        
         synchronized(guis){
 	        for(Gui gui : guis) {
 	                gui.updatePosition();
@@ -295,6 +299,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	                gui.draw(g2);
 	            }
 	        }
+        }
+        synchronized(buttons){
+        	for(radialButton button : buttons){
+        		if(button.type.equals("Button"))
+        			g2.setColor(Color.WHITE);
+        		else
+        			g2.setColor(Color.BLACK);
+        		g2.fill(button.button);
+        		g2.setColor(Color.BLACK);
+        		g2.drawString("Close", (int)button.button.getMinX()+5, (int)button.button.getCenterY()+5);
+        	}
         }
     }
 
@@ -357,13 +372,33 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-
+	public void mousePressed(MouseEvent me) {
+		   if (me.getButton() == 3 && bank.contains(me.getX(), me.getY())){
+			   radialButton temp = new radialButton(new Ellipse2D.Double(120, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(125, 145, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   buttons.add(temp);
+		   }
+		   else if (me.getButton() == 3 && market.contains(me.getX(), me.getY())){
+			   radialButton temp = new radialButton(new Ellipse2D.Double(200, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(205, 145, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   buttons.add(temp);
+		   }
+		   else if (me.getButton() == 3 && restaurant1.contains(me.getX(), me.getY())){
+			   radialButton temp = new radialButton(new Ellipse2D.Double(200, 60, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(205, 65, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   buttons.add(temp);
+		   }
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseReleased(MouseEvent me) {
+		if(me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
+			System.out.print("WORKING");
+			buttons.clear();
+		}
 		
 	}
 
@@ -413,6 +448,20 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		BuildPanel = buildPanel;
 	}
     
+	class radialButton{
+		Ellipse2D button;
+		String label;
+		String type;
+		//Location location?
+		radialButton(Ellipse2D button, String type){
+			this.button = button;
+			this.type = type;
+			if(type.equals("Button"))
+				label = "Close";
+			else
+				label = "";
+		}
+	}
 	
 }
 
