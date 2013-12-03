@@ -4,16 +4,18 @@ import java.util.*;
 import person.interfaces.*;
 
 public class TimeCard extends Agent {
-	List<MyRole> myRoles = new ArrayList<MyRole>();
-	List<Role> roles = new ArrayList<Role>();
+	List<MyRole> myRoles = Collections.synchronizedList(new ArrayList<MyRole>());
+	List<Role> roles = Collections.synchronizedList(new ArrayList<Role>());
 	boolean endOfDay = false;
 	
 	public void msgBackToWork(Person person, Role role) {
-		for(Role r : roles){
-			if(r == role){
-				myRoles.add(new MyRole(person, role, roleState.replacement));
-				stateChanged();
-				return;
+		synchronized(roles){
+			for(Role r : roles){
+				if(r == role){
+					myRoles.add(new MyRole(person, role, roleState.replacement));
+					stateChanged();
+					return;
+				}
 			}
 		}
 		myRoles.add(new MyRole(person, role, roleState.newWorker));
@@ -31,16 +33,20 @@ public class TimeCard extends Agent {
 			endOfDay();
 			return true;
 		}
-		for(MyRole r : myRoles){
-			if(r.rs == roleState.newWorker){
-				goBackToWork(r);
-				return true;
+		synchronized(myRoles){
+			for(MyRole r : myRoles){
+				if(r.rs == roleState.newWorker){
+					goBackToWork(r);
+					return true;
+				}
 			}
 		}
-		for(MyRole r : myRoles){
-			if(r.rs == roleState.replacement){
-				goOffWork(r);
-				return true;
+		synchronized(myRoles){
+			for(MyRole r : myRoles){
+				if(r.rs == roleState.replacement){
+					goOffWork(r);
+					return true;
+				}
 			}
 		}
 		return false;
