@@ -55,6 +55,7 @@
 	+ Fixes with Person and Person scheduler
 	+ Individual Location GUIs
 	+ Fixes of other code and integration
+  + Some of PersonAgent
   4. Grant Collins -
 	+ Person Agent
 	+ Person Initialization in Main Class
