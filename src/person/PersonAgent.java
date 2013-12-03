@@ -44,6 +44,7 @@ import simcity.gui.PassengerGui;
  * The PersonAgent, once a decision has been made, will switch to the appropriate role to carry out the task given in the event
  * 
  * @author Grant Collins
+ * @author Joseph Boman
  */
 public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
