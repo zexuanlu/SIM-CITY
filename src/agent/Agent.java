@@ -9,7 +9,7 @@ import gui.subpanels.TracePanel;
  * Base class for simple agents
  */
 public abstract class Agent {
-    Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
+    public Semaphore stateChange = new Semaphore(1, true);//binary semaphore, fair
     Semaphore pause = new Semaphore(0, true);
     boolean paused = false;
     private AgentThread agentThread;

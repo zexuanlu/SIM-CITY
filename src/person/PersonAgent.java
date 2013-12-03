@@ -862,16 +862,22 @@ public class PersonAgent extends Agent implements Person{
 				gui.setPresent(false);
 				
 				while(newRole.isActive){
-					newRole.role.pickAndExecuteAnAction();
+					while(newRole.role.pickAndExecuteAnAction()){}
+					try{
+						stateChange.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
 				}
-			}
+//			}
 //			else{ //if we already have a PassengerRole, use it
 //				((PassengerRole)getRoleOfType(pRole).role).setDestination(loc.name);
 //				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
 //				getRoleOfType(pRole).setActive(true);
 //				gui.setPresent(false);
 //			}
-//		}
+		}
 //		else{
 			print("Going to location");
 			DoGoTo(loc); 
