@@ -350,7 +350,7 @@ public class PersonAgent extends Agent implements Person{
 			//make a PassengerRole and start it
 			activeRole = true;
 			PassengerRole pRole = new PassengerRole(this.name, this);
-			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
+		//	if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
 				MyRole newRole = new MyRole(pRole);
 				newRole.isActive(true);
 				roles.add(newRole);
@@ -368,14 +368,16 @@ public class PersonAgent extends Agent implements Person{
 				((PassengerRole)newRole.role).gotoBus();
 				gui.setPresent(false);
 				arrived = false;
-			}
-			else{ //if we already have a PassengerRole, use it
+			//}
+/**			else{ //if we already have a PassengerRole, use it
 				((PassengerRole)getRoleOfType(pRole).role).setDestination(e.location.name);
+				((PassengerRole)newRole.role).setPassDestination(e.location.position.getX(), e.location.position.getY());
+
 				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
 				getRoleOfType(pRole).isActive(true);
 				gui.setPresent(false);
 				arrived = false;
-			}
+			}*/
 		}
 		else{
 			print("Going to location");
