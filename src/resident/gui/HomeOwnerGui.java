@@ -4,6 +4,7 @@ import resident.HomeOwnerRole;
 
 import java.awt.*;
 
+import person.PersonAgent;
 import agent.Gui;
 
 public class HomeOwnerGui implements Gui {
@@ -84,6 +85,7 @@ public class HomeOwnerGui implements Gui {
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
         g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)homeOwner.getPerson()).getName(), xPos-14, yPos+30);
         
         String foodChoice = null;
         
@@ -152,6 +154,10 @@ public class HomeOwnerGui implements Gui {
 	public void DoGoToBed() {
 		xDestination = bedX;
 		yDestination = bedY;
+	}
+
+	public void setPresent(boolean b) {
+		isPresent = b;
 	}
   
 }

@@ -254,7 +254,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 * 
 	 */
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
 		if (person.getTime() >= 22 && state == MyState.Awake) {
 			sleep();
 			return true;
@@ -329,8 +328,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			// If the amount of money the maintenance person has is more than rent cost, pay rent cost.
 			if (person.getWallet().getBalance() >= rentCost) {
 				log.add(new LoggedEvent("Paying the landlord $" + rentCost + "."));
-				print("Paying the landlord $" + (person.getWallet().getDebt() + rentCost) + ".");
-				landlord.msgHereIsTheRent(this, person.getWallet().getDebt() + rentCost);
+//				print("Paying the landlord $" + (person.getWallet().getDebt() + rentCost) + ".");
+//				landlord.msgHereIsTheRent(this, person.getWallet().getDebt() + rentCost);
 				person.msgAddMoney(-rentCost);
 			}
 			// Otherwise, pay as much as you can 
@@ -410,7 +409,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
 
 			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-			person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
+			person.msgAddEvent(new SimEvent("Go to restaurant", location, SimEvent.EventType.CustomerEvent));
 		}
 		
 		person.msgFinishedEvent(this);
@@ -425,7 +424,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			Market location = (Market)person.getMap().chooseByType(LocationType.Market);
 			
 			// Lets person agent know that no longer going to be a resident role
-			person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
+			person.msgAddEvent(new SimEvent("Go To Market", location, SimEvent.EventType.CustomerEvent));
 		}
 		
 		person.msgFinishedEvent(this);
@@ -498,7 +497,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
             {
             	msgDoneWashing(prior);
             	aptGui.DoGoToHome();
-            	person.msgFinishedEvent(temp);
+//            	person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}
@@ -529,7 +528,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		}
 	}
 	
-	private void DoGoToFrontDoor() {
+	public void DoGoToFrontDoor() {
 		if (aptGui != null) {
 			// GUI goes to market 
 			aptGui.DoGoToFrontDoor();

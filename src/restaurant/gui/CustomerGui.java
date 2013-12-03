@@ -1,11 +1,13 @@
 package restaurant.gui;
 
 import restaurant.Restaurant1CustomerRole;
+import restaurant.Restaurant1WaiterRole;
 
 import java.awt.*;
 
 import javax.swing.ImageIcon;
 
+import person.PersonAgent;
 import agent.Gui;
 
 public class CustomerGui implements Gui{
@@ -85,7 +87,8 @@ public class CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.green);
-		g.drawString(order, xPos, yPos + distance + distance);	
+		g.drawString(order, xPos, yPos + distance + distance);
+    	g.drawString(((PersonAgent)((Restaurant1CustomerRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		g.fillRect(xPos, yPos, distance, distance);
 	}
 	

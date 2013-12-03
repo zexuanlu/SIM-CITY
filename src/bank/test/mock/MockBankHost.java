@@ -22,4 +22,10 @@ public class MockBankHost extends Mock implements BankHost {
 		log.add(new LoggedEvent("Received msgAtDestination from BankHostGui"));
 	}
 
+	@Override
+	public void addTeller(BankTeller bt) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

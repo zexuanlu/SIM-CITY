@@ -43,6 +43,7 @@ public class PersonGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(agent.getName(), xPos-14, yPos-5);
 	}
 
 	public boolean isPresent() {

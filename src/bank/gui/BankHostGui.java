@@ -1,10 +1,13 @@
 package bank.gui;
 
 import agent.Gui;
+import bank.BankHostRole;
 import bank.interfaces.*;
 
 import java.awt.*;
 import java.util.*;
+
+import person.PersonAgent;
 
 /**
  * This class represents the 
@@ -12,7 +15,7 @@ import java.util.*;
  */
 public class BankHostGui implements Gui{
 
-	private BankHost bh = null;
+	private BankHostRole bh = null;
 	public boolean isPresent = true;
 	private boolean atDestination = true;
 	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
@@ -22,7 +25,7 @@ public class BankHostGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public BankHostGui(BankHost t){//, BankAnimationPanel gui){ //HostAgent m) {
+	public BankHostGui(BankHostRole t){//, BankAnimationPanel gui){ //HostAgent m) {
 		bh = t;
 		xPos = 200;
 		yPos = -20;
@@ -53,6 +56,7 @@ public class BankHostGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)bh.getPerson()).getName(), xPos-14, yPos+30);
 	}
 
 	public boolean isPresent() {

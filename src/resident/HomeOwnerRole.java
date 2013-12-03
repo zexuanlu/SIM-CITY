@@ -249,7 +249,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 *
 	 */
 	public boolean pickAndExecuteAnAction() {
-		// TODO Auto-generated method stub
 		if (person.getTime() >= 22 && state == MyState.Awake) {
 			sleep();
 			return true;
@@ -384,7 +383,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
 
 			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
-			person.msgAddEvent(new SimEvent("Go to restaurant", location, 2, SimEvent.EventType.CustomerEvent));
+			person.msgAddEvent(new SimEvent("Go to restaurant", location, SimEvent.EventType.CustomerEvent));
 		}
 		
 		person.msgFinishedEvent(this);
@@ -399,7 +398,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			Market location = (Market)person.getMap().chooseByType(LocationType.Market);
 			
 			// Lets person agent know that no longer going to be a resident role
-			person.msgAddEvent(new SimEvent(location, 2, person.getTime(), SimEvent.EventType.CustomerEvent));
+			person.msgAddEvent(new SimEvent("Go To Market", location, SimEvent.EventType.CustomerEvent));
 		}
 		
 		person.msgFinishedEvent(this);
@@ -472,7 +471,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
             {
             	msgDoneWashing(prior);
             	homeGui.DoGoToHome();
-            	person.msgFinishedEvent(temp);
+//            	person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}
@@ -513,7 +512,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		}
 	}
 	
-	private void DoGoToFrontDoor() {
+	public void DoGoToFrontDoor() {
 		if (homeGui != null) {
 			// GUI goes to market 
 			homeGui.DoGoToFrontDoor();

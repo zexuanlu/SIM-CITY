@@ -14,9 +14,11 @@ public class MarketCustomerGui implements Gui {
 	private int distance = 20;
 	private int xTable =140, yTable = 240;
 	private boolean atTable = false;
+	private boolean isPresent;
 	
 	public MarketCustomerGui(MarketCustomerRole agent){
 		this.agent = agent;
+		isPresent = false;
 	}
 	
 	@Override
@@ -51,7 +53,7 @@ public class MarketCustomerGui implements Gui {
 	@Override
 	public boolean isPresent() {
 		// TODO Auto-generated method stub
-		return true;
+		return isPresent;
 	}
 
 	
@@ -104,6 +106,10 @@ public class MarketCustomerGui implements Gui {
 	public void DoLeave(){
 		xDestination = -20;
 		yDestination = 240;
+	}
+	
+	public void setPresent(boolean b){
+		isPresent = b;
 	}
 	
 }
