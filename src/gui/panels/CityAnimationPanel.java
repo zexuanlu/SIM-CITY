@@ -17,13 +17,14 @@ import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
 import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
-import restaurant.gui.Restaurant1AnimationPanel;
+import restaurant1.gui.Restaurant1AnimationPanel;
 import simcity.CarAgent;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
 import simcity.gui.PassengerGui;
-import person.gui.PersonGui; 
+import person.gui.PersonGui;
+import person.Location;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,7 +37,9 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
@@ -58,6 +61,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
     private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
+    private Map<String, Location> locations = new HashMap<String, Location>();
     private Image bufferImage;
     private Dimension bufferSize;
 	private String title = " City Animation ";
@@ -302,13 +306,16 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         synchronized(buttons){
         	for(radialButton button : buttons){
-        		if(button.type.equals("Button"))
+        		if(!button.type.equals("Border"))
         			g2.setColor(Color.WHITE);
         		else
-        			g2.setColor(Color.BLACK);
+        			g2.setColor(Color.RED);
         		g2.fill(button.button);
         		g2.setColor(Color.BLACK);
-        		g2.drawString("Close", (int)button.button.getMinX()+5, (int)button.button.getCenterY()+5);
+        		if(button.type.equals("Close") || button.type.equals("Open"))
+        			g2.drawString(button.type, (int)button.button.getMinX()+5, (int)button.button.getCenterY()+5);
+        		else if(button.type.equals("Empty Stock"))
+        			g2.drawString(button.type, (int)button.button.getMinX()-15, (int)button.button.getCenterY()+5);
         	}
         }
     }
@@ -375,32 +382,51 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public void mousePressed(MouseEvent me) {
 		//FIX - Need to check open/closed status of the particular location use it
 		   if (me.getButton() == 3 && bank.contains(me.getX(), me.getY())){
-			   radialButton temp = new radialButton(new Ellipse2D.Double(120, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   radialButton temp = new radialButton(new Ellipse2D.Double(110, 130, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border", locations.get("Banco Popular"));
 			   buttons.add(temp);
-			   temp = new radialButton(new Ellipse2D.Double(125, 145, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   temp = new radialButton(new Ellipse2D.Double(115, 135, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Close", locations.get("Banco Popular"));
 			   buttons.add(temp);
 		   }
 		   else if (me.getButton() == 3 && market.contains(me.getX(), me.getY())){
-			   radialButton temp = new radialButton(new Ellipse2D.Double(200, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   radialButton temp = new radialButton(new Ellipse2D.Double(190, 130, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border", locations.get("Pokemart"));
 			   buttons.add(temp);
-			   temp = new radialButton(new Ellipse2D.Double(205, 145, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   temp = new radialButton(new Ellipse2D.Double(195, 135, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Close", locations.get("Pokemart"));
 			   buttons.add(temp);
 		   }
 		   else if (me.getButton() == 3 && restaurant1.contains(me.getX(), me.getY())){
-			   radialButton temp = new radialButton(new Ellipse2D.Double(200, 60, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   radialButton temp = new radialButton(new Ellipse2D.Double(190, 50, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border", locations.get("Rest 1"));
 			   buttons.add(temp);
-			   temp = new radialButton(new Ellipse2D.Double(205, 65, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   temp = new radialButton(new Ellipse2D.Double(195, 55, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Close", locations.get("Rest 1"));
 			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(255, 50, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border", locations.get("Rest 1"));
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(260, 55, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Empty Stock", locations.get("Rest 1"));
+			   buttons.add(temp);
+
 		   }
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		if(me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
-			System.out.print("WORKING");
+		if(buttons.size() == 0){
+			
+		}
+		else if(me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
+			System.out.println(buttons.get(1).location.getName());
+			/*
+			if(location.isClosed())
+				buttons.get(1).location.setClosed(false);
+			else
+				buttons.get(1).location.setClosed(true);
+			 */
+		}
+		else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
+			System.out.println("Emptying stock of Restaurant");
+			/*
+			buttons.get(3).location.getCook().msgOutOfFood();
+			 */
 		}
 		buttons.clear();
-		
 	}
 
 	@Override
@@ -444,6 +470,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BuildingAnimationPanel getBuildPanel() {
 		return BuildPanel;
 	}
+	
+	public void addLocation(Location location){
+		locations.put(location.getName(), location);
+	}
 
 	public void setBuildPanel(BuildingAnimationPanel buildPanel) {
 		BuildPanel = buildPanel;
@@ -451,16 +481,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     
 	class radialButton{
 		Ellipse2D button;
-		String label;
 		String type;
-		//Location location?
-		radialButton(Ellipse2D button, String type){
+		Location location;
+		radialButton(Ellipse2D button, String type, Location location){
 			this.button = button;
 			this.type = type;
-			if(type.equals("Button"))
-				label = "Close";
-			else
-				label = "";
+			this.location = location;
 		}
 	}
 	

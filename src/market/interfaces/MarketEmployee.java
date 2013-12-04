@@ -3,8 +3,8 @@ package market.interfaces;
 import java.util.List;
 
 import market.Food;
-import restaurant.Restaurant1CookRole;
-import restaurant.interfaces.Cook;
+import restaurant1.Restaurant1CookRole;
+import restaurant1.interfaces.Cook;
 
 public interface MarketEmployee {
 

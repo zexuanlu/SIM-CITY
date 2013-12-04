@@ -14,7 +14,7 @@ import person.Market;
 import person.PersonAgent;
 import person.Position;
 import person.Restaurant;
-import restaurant.Restaurant1HostRole;
+import restaurant1.Restaurant1HostRole;
 import simcity.CityMap;
 import bank.*;
 

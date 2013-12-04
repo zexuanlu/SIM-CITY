@@ -3,9 +3,9 @@ package person;
 import market.interfaces.MarketCashier;
 import person.Location.LocationType;
 import agent.TimeCard;
-import restaurant.Restaurant1CashierRole;
-import restaurant.Restaurant1CookRole;
-import restaurant.Restaurant1HostRole;
+import restaurant1.Restaurant1CashierRole;
+import restaurant1.Restaurant1CookRole;
+import restaurant1.Restaurant1HostRole;
 
 public class Restaurant extends Location{
 	

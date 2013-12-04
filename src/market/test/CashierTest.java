@@ -7,7 +7,6 @@ import person.test.mock.PersonMock;
 
 import java.util.List;
 
-import restaurant.*;
 import market.MarketCashierRole;
 import market.MarketCashierRole.state;
 import market.MarketCashierRole.state1;
@@ -15,9 +14,10 @@ import market.interfaces.MarketCustomer;
 import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
-import restaurant.interfaces.Cook;
-import restaurant.test.mock.MockRestaurantCashier;
-import restaurant.test.mock.MockRestaurantCook;
+import restaurant1.*;
+import restaurant1.interfaces.Cook;
+import restaurant1.test.mock.MockRestaurantCashier;
+import restaurant1.test.mock.MockRestaurantCook;
 
 public class CashierTest extends TestCase{
 

@@ -30,10 +30,10 @@ import bank.gui.BankHostGui;
 import bank.gui.BankTellerGui;
 import bank.test.mock.MockBankHost;
 import market.*;
-import restaurant.*;
-import restaurant.gui.CookGui;
-import restaurant.gui.CustomerGui;
-import restaurant.gui.WaiterGui;
+import restaurant1.*;
+import restaurant1.gui.CookGui;
+import restaurant1.gui.CustomerGui;
+import restaurant1.gui.WaiterGui;
 import market.test.mock.MockCashier;
 import person.Location;
 import resident.ApartmentLandlordRole;
@@ -276,6 +276,9 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt16);
 		locations.add(apt17);
 		locations.add(rest1);
+		for(Location location : locations){
+			cityAnimPanel.addLocation(location);
+		}
 		citymap = new CityMap(locations);
 
 		// SETUP

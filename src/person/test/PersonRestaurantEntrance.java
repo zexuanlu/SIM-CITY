@@ -12,8 +12,8 @@ import person.PersonAgent;
 import person.SimEvent.EventType;
 import person.Location.LocationType;
 import person.Restaurant;
-import restaurant.Restaurant1CustomerRole;
-import restaurant.Restaurant1HostRole;
+import restaurant1.Restaurant1CustomerRole;
+import restaurant1.Restaurant1HostRole;
 import person.interfaces.*;
 import person.test.mock.MockHostRole;
 

@@ -11,8 +11,8 @@ import simcity.astar.AStarTraversal;
 import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
-import restaurant.Restaurant1CookRole;
-import restaurant.interfaces.Cook;
+import restaurant1.Restaurant1CookRole;
+import restaurant1.interfaces.Cook;
 
 
 public class MarketTruckAgent extends Agent implements MarketTruck{
