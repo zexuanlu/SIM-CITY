@@ -373,6 +373,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 
 	@Override
 	public void mousePressed(MouseEvent me) {
+		//FIX - Need to check open/closed status of the particular location use it
 		   if (me.getButton() == 3 && bank.contains(me.getX(), me.getY())){
 			   radialButton temp = new radialButton(new Ellipse2D.Double(120, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
 			   buttons.add(temp);
