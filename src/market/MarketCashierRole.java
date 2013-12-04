@@ -19,6 +19,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public List<Myrest> myrest = new ArrayList<Myrest>();
 	public Map<String, Double> price = new HashMap<String, Double>();
 	public Map<String, Integer> inventory = new HashMap<String, Integer>();
+	public List<PendingOrder> pendingOrder = new ArrayList<PendingOrder>();
 	int employeeCount = 0;
 	int truckCount = 0;
 	int seatCount = 1;
@@ -31,11 +32,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		super(person);
 		roleName = "Market Cashier";
 		this.person = person;
-		inventory.put("Steak", 90);
-		inventory.put("Car", 90);
-		inventory.put("Pizza", 90);
-		inventory.put("Chicken", 90);
-		inventory.put("Salad", 90);
+		inventory.put("Steak", 999);
+		inventory.put("Car", 999);
+		inventory.put("Pizza", 999);
+		inventory.put("Chicken", 999);
+		inventory.put("Salad", 999);
 		price.put("Steak", (double) 2);
 		price.put("Car", (double) 2);
 		price.put("Pizza", (double) 2);
@@ -80,6 +81,16 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		}
 	}
 	public enum state1{ordering, ordered};
+	
+	public class PendingOrder{
+		Cook ck;
+		List<Food> order;
+		
+		public PendingOrder(Cook ck, List<Food> order){
+			this.ck = ck;
+			this.order = order;
+		}
+	}
 
 	public Mycustomer find(MarketCustomer mc){
 		Mycustomer a = null;
@@ -146,10 +157,16 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		truck.add(t);
 		stateChanged();
 	}
+	
+	public void msgDevliveryFail(MarketTruck t, Cook cook, List<Food> food){
+		truck.add(t);
+		pendingOrder.add(new PendingOrder(cook, food));
+		stateChanged();
+	}
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-		Do("Schedule");
+		
 		
 		if(!truck.isEmpty()){
 			for(Myrest rest: myrest){
