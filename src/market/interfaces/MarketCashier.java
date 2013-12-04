@@ -24,4 +24,6 @@ public interface MarketCashier {
 	
 	public void msgTruckBack(MarketTruck t);
 	
+	public void msgDevliveryFail(MarketTruck t, Cook cook, List<Food> food);
+	
 }
