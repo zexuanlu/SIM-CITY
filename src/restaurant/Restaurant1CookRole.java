@@ -187,6 +187,15 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		time);
 
 	}
+	
+	public void EmptyStock(){
+		for (String key : food.keySet()){
+			MyFood f = food.get(key);
+			 f.amount = 0;
+			 foodlist.add(new Food(f.type, f.amount));
+		}
+		Orderfoodislow();
+	}
 
 	public void Orderfoodislow(){
 		opening = false;
