@@ -3,9 +3,9 @@ package market;
 import agent.*;
 import person.PersonAgent;
 import person.interfaces.*;
-import restaurant.Restaurant1CookRole;
-import restaurant.interfaces.Cashier;
-import restaurant.interfaces.Cook;
+import restaurant1.Restaurant1CookRole;
+import restaurant1.interfaces.Cashier;
+import restaurant1.interfaces.Cook;
 
 import java.util.*;
 

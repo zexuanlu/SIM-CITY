@@ -17,7 +17,7 @@ import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
 import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
-import restaurant.gui.Restaurant1AnimationPanel;
+import restaurant1.gui.Restaurant1AnimationPanel;
 import simcity.CarAgent;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
@@ -405,7 +405,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		if(me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
-			System.out.print("Closing Restaurant");
+			System.out.print("Closing");
 		}
 		else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
 			System.out.println("Emptying stock of Restaurant");
