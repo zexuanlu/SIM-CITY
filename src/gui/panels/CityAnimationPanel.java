@@ -398,8 +398,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public void mouseReleased(MouseEvent me) {
 		if(me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
 			System.out.print("WORKING");
-			buttons.clear();
 		}
+		buttons.clear();
 		
 	}
 
