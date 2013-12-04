@@ -370,7 +370,7 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		if (!tempOrder.items.isEmpty()) {
 			markets.get(0).msgOrderFood(tempOrder.items);
 			// Tell the cashier what you ordered so they can verify
-			//cashier.msgOrderedFood(tempOrder.items);
+			cashier.msgOrderedFood(tempOrder.items);
 			orderPlaced = true;
 		}
 	}
@@ -403,6 +403,9 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		}
 	}
 	
+	/*
+	 * Checks the stand for any new orders. Will wait until order appears
+	 */
 	private void checkStand() {
 		print("Checking stand..");
 		log.add(new LoggedEvent("Checking stand.."));

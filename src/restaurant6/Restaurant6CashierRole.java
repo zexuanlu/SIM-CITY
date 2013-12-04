@@ -111,12 +111,30 @@ public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier 
 	public void msgNoMoney() {
 		restaurantMoney = 0;
 	}
+	
+	// List of orders that the cook sent to the market
+	private List<Restaurant6Restock> marketOrders = Collections.synchronizedList(new ArrayList<Restaurant6Restock>());
 
 	// Messages
 	// Message from cook with list of orders
 	public void msgOrderedFood(List<Restaurant6Restock> list) {
-		
+		// Copy all of the orders into market orders so there is a reference when market sends invoice
+		for (Restaurant6Restock r : list) {
+			marketOrders.add(new Restaurant6Restock(r.getOrderChoice(), r.getAmount()));
+		}
+		stateChanged(); // probably not necessary
 	}
+	
+	// Here there will be a message from the market detailing list of items that the cook ordered
+	public void msgInvoice(Restaurant6Market m, Restaurant6Invoice in) {
+		// Checks the list of orders from the market against the reference list created earlier
+		
+		// If it matches, then pay the market
+		
+		markets.add(new MyMarket(m, in));
+		stateChanged();
+	}
+
 	
 	// Message from the waiter asking the cashier to compute the check
 	public void pleaseComputeCheck(String choice, Restaurant6Waiter w, Restaurant6Customer c) {
@@ -135,12 +153,6 @@ public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier 
 				break;
 			}
 		}
-		stateChanged();
-	}
-	
-	// Message from the market detailing list of items that the cook ordered
-	public void msgInvoice(Restaurant6Market m, Restaurant6Invoice in) {
-		markets.add(new MyMarket(m, in));
 		stateChanged();
 	}
 
