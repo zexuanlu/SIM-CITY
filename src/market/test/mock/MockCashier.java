@@ -67,4 +67,10 @@ public class MockCashier extends Mock implements MarketCashier{
 		
 	}
 
+	@Override
+	public void msgDevliveryFail(MarketTruck t, Cook cook, List<Food> food) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
