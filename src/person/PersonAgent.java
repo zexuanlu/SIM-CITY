@@ -244,7 +244,7 @@ public class PersonAgent extends Agent implements Person{
 		atHome = false;
 		print("Received msgFinishedEvent");
 		for(MyRole role : roles){
-			if(role.role == r ){
+			if(role.role == r){
 				role.setActive(false);
 			}
 		}

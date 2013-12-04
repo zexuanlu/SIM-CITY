@@ -25,6 +25,7 @@ import simcity.gui.CarGui;
 import simcity.gui.PassengerGui;
 import person.gui.PersonGui;
 import person.Location;
+import person.Restaurant;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -421,7 +422,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			 */
 		}
 		else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
-			System.out.println("Emptying stock of Restaurant");
+				System.out.println("Emptying stock of Restaurant");
+				((Restaurant)buttons.get(3).location).getCook().msgEmptyStock();
 			/*
 			buttons.get(3).location.getCook().msgOutOfFood();
 			 */
