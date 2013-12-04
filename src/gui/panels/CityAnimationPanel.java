@@ -302,13 +302,16 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         synchronized(buttons){
         	for(radialButton button : buttons){
-        		if(button.type.equals("Button"))
+        		if(!button.type.equals("Border"))
         			g2.setColor(Color.WHITE);
         		else
-        			g2.setColor(Color.BLACK);
+        			g2.setColor(Color.RED);
         		g2.fill(button.button);
         		g2.setColor(Color.BLACK);
-        		g2.drawString("Close", (int)button.button.getMinX()+5, (int)button.button.getCenterY()+5);
+        		if(button.type.equals("Close") || button.type.equals("Open"))
+        			g2.drawString(button.type, (int)button.button.getMinX()+5, (int)button.button.getCenterY()+5);
+        		else if(button.type.equals("Empty Stock"))
+        			g2.drawString(button.type, (int)button.button.getMinX()-15, (int)button.button.getCenterY()+5);
         	}
         }
     }
@@ -375,32 +378,39 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public void mousePressed(MouseEvent me) {
 		//FIX - Need to check open/closed status of the particular location use it
 		   if (me.getButton() == 3 && bank.contains(me.getX(), me.getY())){
-			   radialButton temp = new radialButton(new Ellipse2D.Double(120, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   radialButton temp = new radialButton(new Ellipse2D.Double(110, 130, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
 			   buttons.add(temp);
-			   temp = new radialButton(new Ellipse2D.Double(125, 145, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   temp = new radialButton(new Ellipse2D.Double(115, 135, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Close");
 			   buttons.add(temp);
 		   }
 		   else if (me.getButton() == 3 && market.contains(me.getX(), me.getY())){
-			   radialButton temp = new radialButton(new Ellipse2D.Double(200, 140, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   radialButton temp = new radialButton(new Ellipse2D.Double(190, 130, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
 			   buttons.add(temp);
-			   temp = new radialButton(new Ellipse2D.Double(205, 145, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   temp = new radialButton(new Ellipse2D.Double(195, 135, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Close");
 			   buttons.add(temp);
 		   }
 		   else if (me.getButton() == 3 && restaurant1.contains(me.getX(), me.getY())){
-			   radialButton temp = new radialButton(new Ellipse2D.Double(200, 60, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   radialButton temp = new radialButton(new Ellipse2D.Double(190, 50, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
 			   buttons.add(temp);
-			   temp = new radialButton(new Ellipse2D.Double(205, 65, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Button");
+			   temp = new radialButton(new Ellipse2D.Double(195, 55, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Close");
 			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(255, 50, BUILDINGSIZE/2+20, BUILDINGSIZE/2+20), "Border");
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double(260, 55, BUILDINGSIZE/2+10, BUILDINGSIZE/2+10), "Empty Stock");
+			   buttons.add(temp);
+
 		   }
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		if(me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
-			System.out.print("WORKING");
+			System.out.print("Closing Restaurant");
+		}
+		else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
+			System.out.println("Emptying stock of Restaurant");
 		}
 		buttons.clear();
-		
 	}
 
 	@Override
@@ -451,16 +461,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     
 	class radialButton{
 		Ellipse2D button;
-		String label;
 		String type;
 		//Location location?
 		radialButton(Ellipse2D button, String type){
 			this.button = button;
 			this.type = type;
-			if(type.equals("Button"))
-				label = "Close";
-			else
-				label = "";
 		}
 	}
 	
