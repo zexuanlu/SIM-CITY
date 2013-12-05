@@ -1,17 +1,19 @@
 package restaurant4;
 
-import agent.Agent;
+import agent.Role;
 import restaurant4.interfaces.*;
 
 import java.util.*;
+
+import person.interfaces.Person;
 
 /**
  * Restaurant Cashier Agent
  * 
  * Receives check requests from a waiter, and payment requests from customers and fills them
  */
-public class Restaurant4CashierRole extends Agent implements Restaurant4Cashier{
-	
+public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
+	//FIX Billing with Markets
 	//A list of the various Checks, either requested or being paid
 	public List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 //	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
@@ -20,8 +22,8 @@ public class Restaurant4CashierRole extends Agent implements Restaurant4Cashier{
 	//Lets the Cashier check the prices of items
 	private Map<String, Double> foodPrices = Collections.synchronizedMap(new HashMap<String, Double>());
 
-	public Restaurant4CashierRole(String name) {
-		super();
+	public Restaurant4CashierRole(String name, Person pa) {
+		super(pa);
 		this.name = name;
 		foodPrices.put("Steak", 15.99);
 		foodPrices.put("Chicken", 10.99);
@@ -180,4 +182,8 @@ public class Restaurant4CashierRole extends Agent implements Restaurant4Cashier{
 		}
 	}
 	public enum state {requested, owed, paid, done}
+	@Override
+	public String getRoleName() {
+		return "Restaurant 4 Cashier";
+	}
 }

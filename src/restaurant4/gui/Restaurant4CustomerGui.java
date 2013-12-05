@@ -1,9 +1,12 @@
 package restaurant4.gui;
 
 import restaurant4.Restaurant4CustomerRole;
+import simcity.astar.Position;
 import agent.Gui;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents the 
@@ -18,10 +21,10 @@ public class Restaurant4CustomerGui implements Gui{
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
-	private enum Command {noCommand, GoToSeat, LeaveRestaurant, GoToCashier};
-	private Command command=Command.noCommand;
 	private GUIstate s = GUIstate.None;
 	public enum GUIstate {EatingFood, OrderedFood, None}
+    private boolean atDestination = true;
+	private Map<String, Position> locations = new HashMap<String, Position>();
 	private String choice;
 	
     public void setState(GUIstate st, String ch) {
@@ -34,6 +37,16 @@ public class Restaurant4CustomerGui implements Gui{
 
 	public Restaurant4CustomerGui(Restaurant4CustomerRole c, Restaurant4AnimationPanel gui){ //HostAgent m) {
 		agent = c;
+        locations.put("Cashier", new Position(100, -20));
+        locations.put("Host", new Position(-20, -20));
+        locations.put("Table 1", new Position(70, 200));
+        locations.put("Table 2", new Position(170, 200));
+        locations.put("Table 3", new Position(270, 200));
+        locations.put("Customer 1", new Position(60, 36));
+        locations.put("Customer 2", new Position(81, 36));
+        locations.put("Customer 3", new Position(102, 36));
+        locations.put("Customer 4", new Position(123, 36));
+        locations.put("Customer 5", new Position(144, 36));
 		xPos = -20;
 		yPos = -20;
 		xDestination = -20;
@@ -52,16 +65,9 @@ public class Restaurant4CustomerGui implements Gui{
 		else if (yPos > yDestination)
 			yPos--;
 
-		if (xPos == xDestination && yPos == yDestination) {
-			if (command==Command.GoToSeat) agent.msgAnimationFinishedGoToSeat();
-			else if (command==Command.LeaveRestaurant) {
-				agent.msgAnimationFinishedLeaveRestaurant();
-				System.out.println("about to call gui.setCustomerEnabled(agent);");
-			}
-			else if (command ==Command.GoToCashier) {
-				agent.msgAtCashier();
-			}
-			command=Command.noCommand;
+		if (xPos == xDestination && yPos == yDestination && !atDestination) {
+			agent.msgAtDestination();
+			atDestination = true;
 		}
 	}
 
@@ -95,26 +101,16 @@ public class Restaurant4CustomerGui implements Gui{
 	public void setPresent(boolean p) {
 		isPresent = p;
 	}
-
-	public void DoGoToSeat(int seatnumber) {//later you will map seatnumber to table coordinates.
-		xDestination = xTable + (100 * (seatnumber - 1));
-		yDestination = yTable;
-		command = Command.GoToSeat;
-	}
-
-	public void DoGoToCashier(){
-		xDestination = 100;
-		yDestination = -20;
-		command = Command.GoToCashier;
-	}
 	
 	public void DoGoToPos(int x, int y){
 		xDestination = x;
 		yDestination = y;
 	}
-	public void DoExitRestaurant() {
-		xDestination = -40;
-		yDestination = -40;
-		command = Command.LeaveRestaurant;
+	
+	public void DoGoToLocation(String location){
+		Position p = locations.get(location);
+		xDestination = p.getX();
+		yDestination = p.getY();
+		atDestination = false;
 	}
 }

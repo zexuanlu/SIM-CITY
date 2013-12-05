@@ -1,9 +1,10 @@
 package restaurant4;
 
-import agent.Agent;
+import agent.Role;
 
 import java.util.*;
 
+import person.interfaces.Person;
 import restaurant4.interfaces.*;
 
 /**
@@ -11,7 +12,7 @@ import restaurant4.interfaces.*;
  * 
  * Receives Customers, assigns them to Waiters, and keeps track of tables
  */
-public class Restaurant4HostRole extends Agent implements Restaurant4Host{
+public class Restaurant4HostRole extends Role implements Restaurant4Host{
 	static final int NTABLES = 3;//The number of tables
 	//Used later to select the waiter
 	private int waiterSelect = 0; 
@@ -26,8 +27,8 @@ public class Restaurant4HostRole extends Agent implements Restaurant4Host{
 	//Used to tell the customers if the restaurant is full
 	private boolean informed = true;
 
-	public Restaurant4HostRole(String name) {
-		super();
+	public Restaurant4HostRole(String name, Person pa) {
+		super(pa);
 
 		this.name = name;
 		// Creates the tables
@@ -134,7 +135,7 @@ public class Restaurant4HostRole extends Agent implements Restaurant4Host{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		synchronized(waitingCustomers){
 			for(MyCustomer customer : waitingCustomers){
 				if(customer.s == custState.arrived){
@@ -303,5 +304,9 @@ public class Restaurant4HostRole extends Agent implements Restaurant4Host{
 		}
 	}
 	enum custState {arrived, positioned, assigned}
+	@Override
+	public String getRoleName() {
+		return "Restaurant 4 Host";
+	}
 }
 

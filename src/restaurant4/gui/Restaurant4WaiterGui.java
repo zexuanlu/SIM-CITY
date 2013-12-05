@@ -39,6 +39,11 @@ public class Restaurant4WaiterGui implements Gui {
         locations.put("Grill 1", new Position(335, 22));
         locations.put("Grill 2", new Position(335, 42));
         locations.put("Grill 3", new Position(335, 62));
+        locations.put("Customer 1", new Position(60, 36));
+        locations.put("Customer 2", new Position(81, 36));
+        locations.put("Customer 3", new Position(102, 36));
+        locations.put("Customer 4", new Position(123, 36));
+        locations.put("Customer 5", new Position(144, 36));
         xDestination = x;
         yDestination = y;
     }
