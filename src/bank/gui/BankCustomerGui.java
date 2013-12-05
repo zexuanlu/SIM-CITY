@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.*;
 
 import person.PersonAgent;
+import simcity.astar.Position;
 
 /**
  * This class represents the 
@@ -17,7 +18,7 @@ public class BankCustomerGui implements Gui{
 	private BankCustomerRole bc = null;
 	private boolean isPresent = true;
 	private boolean atDestination = true;
-	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
+	private Map<String, Position> locations = new HashMap<String, Position>();
 
 	BankAnimationPanel gui;
 
@@ -31,33 +32,33 @@ public class BankCustomerGui implements Gui{
 		xDestination = 200;
 		yDestination = -20;
 		//this.gui = gui;
-		locations.put("Host", new Dimension(320,80));
-		locations.put("Teller1", new Dimension(40, 340));
-		locations.put("Teller2", new Dimension(100, 340));
-		locations.put("Teller3", new Dimension(160, 340));
-		locations.put("Teller4", new Dimension(220, 340));
-		locations.put("Teller5", new Dimension(280, 340));
-		locations.put("Teller6", new Dimension(340, 340));
-		locations.put("Teller7", new Dimension(400, 340));
-		locations.put("Teller8", new Dimension(460, 340));
-		locations.put("Teller9", new Dimension(520, 340));
-		locations.put("Teller10", new Dimension(580, 340));
-		locations.put("waitArea0", new Dimension(460 ,80));
-		locations.put("waitArea1", new Dimension(460 ,120));
-		locations.put("waitArea2", new Dimension(460 ,160));
-		locations.put("waitArea3", new Dimension(460 ,200));
-		locations.put("waitArea4", new Dimension(460 ,240));
-		locations.put("waitArea5", new Dimension(500 ,80));
-		locations.put("waitArea6", new Dimension(500 ,120));
-		locations.put("waitArea7", new Dimension(500 ,160));
-		locations.put("waitArea8", new Dimension(500 ,200));
-		locations.put("waitArea9", new Dimension(500 ,240));
-		locations.put("waitArea10", new Dimension(540, 80));
-		locations.put("waitArea11", new Dimension(540 ,120));
-		locations.put("waitArea12", new Dimension(540 ,160));
-		locations.put("waitArea13", new Dimension(540 ,200));
-		locations.put("waitArea14", new Dimension(540 ,240));
-		locations.put("Outside", new Dimension(280, -20));
+		locations.put("Host", new Position(320,80));
+		locations.put("Teller1", new Position(40, 340));
+		locations.put("Teller2", new Position(100, 340));
+		locations.put("Teller3", new Position(160, 340));
+		locations.put("Teller4", new Position(220, 340));
+		locations.put("Teller5", new Position(280, 340));
+		locations.put("Teller6", new Position(340, 340));
+		locations.put("Teller7", new Position(400, 340));
+		locations.put("Teller8", new Position(460, 340));
+		locations.put("Teller9", new Position(520, 340));
+		locations.put("Teller10", new Position(580, 340));
+		locations.put("waitArea0", new Position(460 ,80));
+		locations.put("waitArea1", new Position(460 ,120));
+		locations.put("waitArea2", new Position(460 ,160));
+		locations.put("waitArea3", new Position(460 ,200));
+		locations.put("waitArea4", new Position(460 ,240));
+		locations.put("waitArea5", new Position(500 ,80));
+		locations.put("waitArea6", new Position(500 ,120));
+		locations.put("waitArea7", new Position(500 ,160));
+		locations.put("waitArea8", new Position(500 ,200));
+		locations.put("waitArea9", new Position(500 ,240));
+		locations.put("waitArea10", new Position(540, 80));
+		locations.put("waitArea11", new Position(540 ,120));
+		locations.put("waitArea12", new Position(540 ,160));
+		locations.put("waitArea13", new Position(540 ,200));
+		locations.put("waitArea14", new Position(540 ,240));
+		locations.put("Outside", new Position(280, -20));
 		//gui.addGui(this);
 	}
 
@@ -94,9 +95,9 @@ public class BankCustomerGui implements Gui{
 	
 	public void DoGoToLocation(String location){
 		atDestination = false;
-		Dimension d = locations.get(location);
-		xDestination = d.width;
-		yDestination = d.height;
+		Position d = locations.get(location);
+		xDestination = d.getX();
+		yDestination = d.getY();
 	}
 	public void DoGoToPos(int x, int y){
 		xDestination = x;

@@ -1,12 +1,12 @@
 package restaurant4.gui;
 
-
-import resident.gui.HomeOwnerGui.HomeCookingState;
-import restaurant4.Restaurant4CustomerRole;
 import restaurant4.Restaurant4WaiterRole;
+import simcity.astar.Position;
 import agent.Gui;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents the waiters
@@ -19,31 +19,26 @@ public class Restaurant4WaiterGui implements Gui {
     private boolean tired = false;
     private GUIstate s = GUIstate.None;
     public enum GUIstate {None, CarryingFood}
+    private boolean atDestination = true;
+	private Map<String, Position> locations = new HashMap<String, Position>();
     private String choice;
 
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
-    public int xHome;
-    public int yHome;
-    public int xCust, yCust;
-    public int xGrill, yGrill;
-    public static final int xTable = 50;
-    public static final int yTable = 200;
-    public static final int xCook = 340;
-    public static final int yCook = 150;
-    public static final int xCashier = 100;
-    public static final int yCashier = -20;
-    public static final int xHost = -20;
-    public static final int yHost = -20;
-    
-    private int tableNum;
-
     public Restaurant4WaiterGui(Restaurant4WaiterRole agent, Restaurant4AnimationPanel gui, int x, int y) {
         this.agent = agent;
         this.gui = gui;
-        xHome = x;
-        yHome = y;
+        locations.put("Home", new Position(x, y));
+        locations.put("Cashier", new Position(100, -20));
+        locations.put("Host", new Position(-20, -20));
+        locations.put("Cook", new Position(335, 150));
+        locations.put("Table 1", new Position(70, 200));
+        locations.put("Table 2", new Position(170, 200));
+        locations.put("Table 3", new Position(270, 200));
+        locations.put("Grill 1", new Position(335, 22));
+        locations.put("Grill 2", new Position(335, 42));
+        locations.put("Grill 3", new Position(335, 62));
         xDestination = x;
         yDestination = y;
     }
@@ -58,36 +53,9 @@ public class Restaurant4WaiterGui implements Gui {
             yPos++;
         else if (yPos > yDestination)
             yPos--;
-        if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xHost) & (yDestination == yHost)){
-        	agent.msgAtHost();
-        	xDestination++;
-        }
-        if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xCust) & (yDestination == yCust)){
-        	agent.msgAtCust();
-        	yDestination++;
-        }
-        if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == xTable + (100 * (tableNum - 1)) + 20) & (yDestination == yTable - 20)) {
-           agent.msgAtTable();
-           s = GUIstate.None;
-           xDestination++;
-        }
-        if(xPos == xDestination && yPos == yDestination
-        		& (xDestination == xCook) & (yDestination == yCook)) {
-        	agent.msgAtCook();
-        	xDestination--;
-        }
-        if(xPos == xDestination && yPos == yDestination
-        		& (xDestination == xCashier) & (yDestination == yCashier)) {
-        	agent.msgAtCashier();
-        	xDestination--;
-        }
-        if(xPos == xDestination && yPos == yDestination
-        		& (xDestination == xGrill) & (yDestination == yGrill)) {
-        	agent.msgAtCook();
-        	xDestination--;
+        if (xPos == xDestination && yPos == yDestination && !atDestination){
+        	atDestination = true;
+        	agent.msgAtDestination();
         }
     }
 
@@ -109,58 +77,11 @@ public class Restaurant4WaiterGui implements Gui {
         return true;
     }
 
-    public void DoGoToCust(int x, int y){
-    	xCust = x+20;
-    	yCust = y+20;
-    	xDestination = xCust;
-    	yDestination = yCust;
-    }
-    public void DoBringToTable(Restaurant4CustomerRole customer, int tableNum){
-    	this.tableNum = tableNum;
-        xDestination = xTable + (100*(tableNum-1)) + 20;
-        yDestination = yTable - 20;
-    }
-    
-    public void DoGoToTable(int tableNum){
-    	this.tableNum = tableNum;
-    	xDestination = xTable + (100*(tableNum-1)) + 20;
-    	yDestination = yTable - 20;
-    }
-
-    public void DoLeaveCustomer() {
-        xDestination = xHome;
-        yDestination = yHome;
-    }
-    
-    public void DoGoToCook() {
-    	xDestination = xCook;
-    	yDestination = yCook;
-    }
-    
-    public void DoGoToCashier() {
-    	xDestination = xCashier;
-    	yDestination = yCashier;
-    }
-    
-    public void DoBringFoodToTable(int tableNum, String item){
-    	this.tableNum = tableNum;
+    public void carryFood(String food){
     	s = GUIstate.CarryingFood;
-    	choice = item;
-    	xDestination = xTable + (100*(tableNum-1)) + 20;
-    	yDestination = yTable - 20;
-    }
-
-    public void DoGoHome(){
-    	xDestination = xHome;
-    	yDestination = yHome;
+    	choice = food;
     }
     
-    public void DoGoToGrill(int grillNum){
-    	xGrill = 340;
-    	yGrill = 22 + 20*grillNum;
-    	xDestination = xGrill;
-    	yDestination = yGrill;
-    }
     public int getXPos() {
         return xPos;
     }
@@ -189,4 +110,11 @@ public class Restaurant4WaiterGui implements Gui {
     		agent.msgWantToBreak();
     	}
     }
+
+	public void GoToLocation(String string) {
+		Position p = locations.get(string);
+		xDestination = p.getX();
+		yDestination = p.getY();
+		atDestination = false;
+	}
 }

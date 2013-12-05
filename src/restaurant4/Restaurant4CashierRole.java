@@ -10,13 +10,13 @@ import java.util.*;
  * 
  * Receives check requests from a waiter, and payment requests from customers and fills them
  */
-public class Restaurant4CashierRole extends Agent implements Cashier{
+public class Restaurant4CashierRole extends Agent implements Restaurant4Cashier{
 	
 	//A list of the various Checks, either requested or being paid
 	public List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
-	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
+//	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
 	private String name;
-	private double money = 200.00;
+//	private double money = 200.00;
 	//Lets the Cashier check the prices of items
 	private Map<String, Double> foodPrices = Collections.synchronizedMap(new HashMap<String, Double>());
 
@@ -42,7 +42,7 @@ public class Restaurant4CashierRole extends Agent implements Cashier{
 	 * @param customer the customer who ordered the food
 	 * @param waiter the waiter who submitted the check
 	 */
-	public void msgINeedCheck(String choice, Customer customer, Waiter waiter){
+	public void msgINeedCheck(String choice, Restaurant4Customer customer, Restaurant4Waiter waiter){
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -62,7 +62,7 @@ public class Restaurant4CashierRole extends Agent implements Cashier{
 	 * @param customer the customer who is paying
 	 * @param money the amount of money the customer is using
 	 */
-	public void msgPayingForFood(Customer customer, double money){
+	public void msgPayingForFood(Restaurant4Customer customer, double money){
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -75,10 +75,10 @@ public class Restaurant4CashierRole extends Agent implements Cashier{
 		}
 	}
 	
-	public void msgPleasePay(Market m, double bill){
-		bills.add(new Bill(m, bill));
-		stateChanged();
-	}
+//	public void msgPleasePay(Market m, double bill){
+//		bills.add(new Bill(m, bill));
+//		stateChanged();
+//	}
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
@@ -99,10 +99,10 @@ public class Restaurant4CashierRole extends Agent implements Cashier{
 			}
 		}
 		
-		if(bills.size() != 0){
-			payBill(bills.get(0));
-			return true;
-		}
+//		if(bills.size() != 0){
+//			payBill(bills.get(0));
+//			return true;
+//		}
 		return false;
 	}
 
@@ -131,47 +131,47 @@ public class Restaurant4CashierRole extends Agent implements Cashier{
 		c.s = state.done;
 	}
 
-	private void payBill(Bill b){
-		if(money > b.amount){
-			b.market.msgPayingBill(b.amount);
-			money -= b.amount;
-			bills.remove(b);
-		}
-		else{
-			b.market.msgPayingBill(money);
-			b.amount -= money;
-			money = 0;
-			String contract = new String("I, " + name + ", promise to work for you for " + (b.amount/10.0) + " hours to pay off the debt");
-			b.market.msgCannotPay(contract);
-			bills.remove(b);
-		}
-	}
+//	private void payBill(Bill b){
+//		if(money > b.amount){
+//			b.market.msgPayingBill(b.amount);
+//			money -= b.amount;
+//			bills.remove(b);
+//		}
+//		else{
+//			b.market.msgPayingBill(money);
+//			b.amount -= money;
+//			money = 0;
+//			String contract = new String("I, " + name + ", promise to work for you for " + (b.amount/10.0) + " hours to pay off the debt");
+//			b.market.msgCannotPay(contract);
+//			bills.remove(b);
+//		}
+//	}
 	//utilities
 	
-	public class Bill {
-		public Market market;
-		public double amount;
-		Bill(Market m, double bill){
-			amount = bill;
-			market = m;
-		}
-	}
-	
+//	public class Bill {
+//		public Market market;
+//		public double amount;
+//		Bill(Market m, double bill){
+//			amount = bill;
+//			market = m;
+//		}
+//	}
+//	
 	/**
 	 * The check class
 	 * 
 	 * Contains a waiter, a food-type, a price, a customer, an amount spent, and a state
 	 */
 	public class Check {
-		public Waiter waiter;
+		public Restaurant4Waiter waiter;
 		public String type;
 		//The price of the food
 		public double price;
-		public Customer cust;
+		public Restaurant4Customer cust;
 		public state s;
 		//The money that the customer spent (before change is given)
 		public double money;
-		Check(Waiter w, Customer c, String t){
+		Check(Restaurant4Waiter w, Restaurant4Customer c, String t){
 			waiter = w;
 			type = t;
 			cust = c;

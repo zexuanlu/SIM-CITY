@@ -4,12 +4,14 @@ import agent.Agent;
 
 import java.util.*;
 
+import restaurant4.interfaces.*;
+
 /**
  * Restaurant Host Agent
  * 
  * Receives Customers, assigns them to Waiters, and keeps track of tables
  */
-public class Restaurant4HostRole extends Agent {
+public class Restaurant4HostRole extends Agent implements Restaurant4Host{
 	static final int NTABLES = 3;//The number of tables
 	//Used later to select the waiter
 	private int waiterSelect = 0; 
@@ -63,7 +65,7 @@ public class Restaurant4HostRole extends Agent {
 	 * 
 	 * @param cust the customer who wants to eat
 	 */
-	public void msgIWantFood(Restaurant4CustomerRole cust) {
+	public void msgIWantFood(Restaurant4Customer cust) {
 		waitingCustomers.add(new MyCustomer(cust));
 		customerNum ++;
 		informed = false;
@@ -75,7 +77,7 @@ public class Restaurant4HostRole extends Agent {
 	 * 
 	 * @param cust the customer who is leaving
 	 */
-	public void msgWaitTooLong(Restaurant4CustomerRole cust) {
+	public void msgWaitTooLong(Restaurant4Customer cust) {
 		waitingCustomers.remove(cust);
 		stateChanged();
 	}
@@ -85,7 +87,7 @@ public class Restaurant4HostRole extends Agent {
 	 * 
 	 * @param waiter the waiter who wants to go on break
 	 */
-	public void msgIWantBreak(Restaurant4WaiterRole waiter){
+	public void msgIWantBreak(Restaurant4Waiter waiter){
 		synchronized(waiters){
 			for(MyWaiter w : waiters){
 				if(w.waiter == waiter){
@@ -118,7 +120,7 @@ public class Restaurant4HostRole extends Agent {
 	 * 
 	 * @param waiter the waiter who is coming off of break
 	 */
-	public void msgEndingBreak(Restaurant4WaiterRole waiter){
+	public void msgEndingBreak(Restaurant4Waiter waiter){
 		synchronized(waiters){
 			for(MyWaiter w : waiters){
 				if(w.waiter == waiter){
@@ -192,7 +194,7 @@ public class Restaurant4HostRole extends Agent {
 	// Actions
 
 	//Tells customer customer that the restaurant is full
-	private void restaurantFull(Restaurant4CustomerRole customer){
+	private void restaurantFull(Restaurant4Customer customer){
 		customer.msgRestaurantFull();
 		Do("The restaurant is full");
 		informed = true;
@@ -204,21 +206,20 @@ public class Restaurant4HostRole extends Agent {
 	 * @param table the table to seat the customer at
 	 * @param waiter the waiter assigned to the customer
 	 */
-	private void seatCustomer(MyCustomer customer, Table table, Restaurant4WaiterRole waiter) {
+	private void seatCustomer(MyCustomer customer, Table table, Restaurant4Waiter waiter) {
 		//Increments this to insure that the list of waiters is cycled through
 		waiterSelect++;
 		table.setOccupant(customer.customer);
 		waitingCustomers.remove(customer);
-		DoAssignWaiter(customer.customer, waiter);
-		waiter.msgSeatCustomer(customer.customer, table.tableNumber, this, customer.xPos, customer.yPos);
+		waiter.msgSeatCustomer(customer.customer, table.tableNumber, this, "Customer " + customerNum);
 	}
 
 	private void positionCustomer(MyCustomer customer){
 		if(customerNum > 14)
 			customerNum = 1;
-		customer.xPos = 19 + 21*customerNum;
-		customer.yPos = 16;
-		customer.customer.getGui().DoGoToPos(19 + 21*customerNum, 16);
+//		customer.xPos = 19 + 21*customerNum;
+//		customer.yPos = 16;
+//		customer.customer.getGui().DoGoToPos(19 + 21*customerNum, 16);
 		customer.s = custState.positioned;
 	}
 	
@@ -247,9 +248,6 @@ public class Restaurant4HostRole extends Agent {
 		}
 	}
 	// The animation DoXYZ() routines
-	private void DoAssignWaiter(Restaurant4CustomerRole customer, Restaurant4WaiterRole waiter) {
-		print("Assigning " + customer + " to " + waiter);
-	}
 
 	//utilities
 
@@ -262,14 +260,14 @@ public class Restaurant4HostRole extends Agent {
 	 * Holds a customer and a table number
 	 */
 	private class Table {
-		Restaurant4CustomerRole occupiedBy;
+		Restaurant4Customer occupiedBy;
 		int tableNumber;
 
 		Table(int tableNumber) {
 			this.tableNumber = tableNumber;
 		}
 
-		void setOccupant(Restaurant4CustomerRole cust) {
+		void setOccupant(Restaurant4Customer cust) {
 			occupiedBy = cust;
 		}
 
@@ -287,9 +285,9 @@ public class Restaurant4HostRole extends Agent {
 	}
 	
 	private class MyWaiter{
-		Restaurant4WaiterRole waiter;
+		Restaurant4Waiter waiter;
 		state s;
-		MyWaiter(Restaurant4WaiterRole waiter){
+		MyWaiter(Restaurant4Waiter waiter){
 			this.waiter = waiter;
 			s = state.working;
 		}
@@ -297,11 +295,9 @@ public class Restaurant4HostRole extends Agent {
 	enum state {working, onBreak, wantBreak}
 	
 	private class MyCustomer{
-		Restaurant4CustomerRole customer;
+		Restaurant4Customer customer;
 		custState s;
-		int xPos;
-		int yPos;
-		MyCustomer(Restaurant4CustomerRole customer){
+		MyCustomer(Restaurant4Customer customer){
 			this.customer = customer;
 			s = custState.arrived;
 		}

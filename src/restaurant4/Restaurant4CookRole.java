@@ -214,7 +214,7 @@ public class Restaurant4CookRole extends Agent {
 	private void plateIt(Order o){
 		DoPlating(o);
 		o.s = state.sent;
-		o.waiter.msgOrderReady(o.table, o.type, o.grillNum);
+		o.waiter.msgOrderReady(o.table, o.type, "Grill " + o.grillNum);
 	}
 	
 	/**

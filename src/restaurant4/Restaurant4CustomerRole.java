@@ -14,7 +14,7 @@ import java.util.concurrent.Semaphore;
  * 
  * Goes to the restaurant, looks at the menu, chooses and orders an item, eats the food
  */
-public class Restaurant4CustomerRole extends Agent implements Customer {
+public class Restaurant4CustomerRole extends Agent implements Restaurant4Customer {
 	private static final int eatingTime = 10000;
 	private static final int menuTime = 5000;
 	private String name;
@@ -27,9 +27,9 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 
 	Semaphore atCashier = new Semaphore(0, true);
 	// agent correspondents
-	private Restaurant4HostRole host;
-	private Restaurant4WaiterRole waiter;
-	private Restaurant4CashierRole cashier;
+	private Restaurant4Host host;
+	private Restaurant4Waiter waiter;
+	private Restaurant4Cashier cashier;
 	double money;
 
 	//The various states of the customer
@@ -94,7 +94,7 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	 * @param waiter the waiter who sent the message
 	 * @param menu the menu to order from
 	 */
-	public void msgSitAtTable(int tableNum, Restaurant4WaiterRole waiter, Restaurant4Menu menu) {
+	public void msgSitAtTable(int tableNum, Restaurant4Waiter waiter, Restaurant4Menu menu) {
 		print("Received msgSitAtTable");
 		this.tableNum = tableNum;
 		this.waiter = waiter;
@@ -164,7 +164,7 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	 * @param price the "Check" - the price to be paid
 	 * @param cashier the cashier
 	 */
-	public void msgHereIsCheck(double price, Restaurant4CashierRole cashier){
+	public void msgHereIsCheck(double price, Restaurant4Cashier cashier){
 		this.cashier = cashier;
 		if(money < price){
 			Do("Dine And DASH!");
