@@ -86,7 +86,7 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	}
 
 	/**
-	 * Scheduler for MaintenancePerson
+	 * Scheduler for ApartmentLandlord
 	 * 
 	 */
 	public boolean pickAndExecuteAnAction() {

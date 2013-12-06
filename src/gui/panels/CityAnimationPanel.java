@@ -18,6 +18,7 @@ import resident.gui.ApartmentAnimationPanel;
 import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant1.gui.Restaurant1AnimationPanel;
+import restaurant6.gui.Restaurant6AnimationPanel;
 import simcity.CarAgent;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
@@ -48,10 +49,26 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
-	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(5);
-	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(6);
-	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(7);
-	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(8);
+	public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
+	
+	// Creating the apartment panels
+//	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(5);
+//	public ApartmentAnimationPanel apt2Panel = new ApartmentAnimationPanel(6);
+//	public ApartmentAnimationPanel apt3Panel = new ApartmentAnimationPanel(7);
+//	public ApartmentAnimationPanel apt4Panel = new ApartmentAnimationPanel(8);
+//	public ApartmentAnimationPanel apt5Panel = new ApartmentAnimationPanel(9);
+//	public ApartmentAnimationPanel apt6Panel = new ApartmentAnimationPanel(10);
+//	public ApartmentAnimationPanel apt7Panel = new ApartmentAnimationPanel(11);
+//	public ApartmentAnimationPanel apt8Panel = new ApartmentAnimationPanel(12);
+//	public ApartmentAnimationPanel apt9Panel = new ApartmentAnimationPanel(13);
+//	public ApartmentAnimationPanel apt10Panel = new ApartmentAnimationPanel(14);
+//	public ApartmentAnimationPanel apt11Panel = new ApartmentAnimationPanel(15);
+//	public ApartmentAnimationPanel apt12Panel = new ApartmentAnimationPanel(16);
+//	public ApartmentAnimationPanel apt13Panel = new ApartmentAnimationPanel(17);
+//	public ApartmentAnimationPanel apt14Panel = new ApartmentAnimationPanel(18);
+//	public ApartmentAnimationPanel apt15Panel = new ApartmentAnimationPanel(19);
+//	public ApartmentAnimationPanel apt16Panel = new ApartmentAnimationPanel(20);
+	
 	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
@@ -60,7 +77,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
-    private List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
+    public List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
     private Map<String, Location> locations = new HashMap<String, Location>();
     private Image bufferImage;
     private Dimension bufferSize;
@@ -69,6 +86,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = 480;
 	public static final int BUILDINGSIZE = 60;
+	public static final int APARTMENTSIZE = 10;
 	Timer timer;
 	
 	enum state {none, bank, market, restaurant1, house1, house2, house3, house4, apartment}
@@ -80,17 +98,44 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	Rectangle2D house2 = new Rectangle2D.Double(340, 80, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house3 = new Rectangle2D.Double(450, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house4 = new Rectangle2D.Double(540, 160, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D apartment = new Rectangle2D.Double(340, 280, BUILDINGSIZE+10, BUILDINGSIZE+10);
-	Rectangle2D apartment1 = new Rectangle2D.Double(340, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
-	Rectangle2D apartment2 = new Rectangle2D.Double(340, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
-	Rectangle2D apartment3 = new Rectangle2D.Double(380, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
-	Rectangle2D apartment4 = new Rectangle2D.Double(380, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	
+	private List<Rectangle2D> apartmentComplex1Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
+	
+	// First apartment complex
+	Rectangle2D apartmentComplex1 = new Rectangle2D.Double(340, 280, BUILDINGSIZE+10, BUILDINGSIZE+10);
+//	Rectangle2D apartment1 = new Rectangle2D.Double(340, 280, APARTMENTSIZE, APARTMENTSIZE);
+//	Rectangle2D apartment2 = new Rectangle2D.Double(340, 320, APARTMENTSIZE, APARTMENTSIZE);
+//	Rectangle2D apartment3 = new Rectangle2D.Double(380, 280, APARTMENTSIZE, APARTMENTSIZE);
+//	Rectangle2D apartment4 = new Rectangle2D.Double(380, 320, APARTMENTSIZE, APARTMENTSIZE);
+	
+	// Second apartment complex
+	/*Rectangle2D apartmentComplex2 = new Rectangle2D.Double(340, 280, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartment5 = new Rectangle2D.Double(340, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment6 = new Rectangle2D.Double(340, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment7 = new Rectangle2D.Double(380, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment8 = new Rectangle2D.Double(380, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	
+	// Third apartment complex
+	Rectangle2D apartmentComplex3 = new Rectangle2D.Double(340, 280, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartment9 = new Rectangle2D.Double(340, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment10 = new Rectangle2D.Double(340, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment11 = new Rectangle2D.Double(380, 280, BUILDINGSIZE/2, BUILDINGSIZE/2);
+	Rectangle2D apartment12 = new Rectangle2D.Double(380, 320, BUILDINGSIZE/2, BUILDINGSIZE/2);*/
+	
+	
 	
 	public CityAnimationPanel() {
 		//PANEL SETUP
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setBorder(BorderFactory.createTitledBorder(title));
+		
+		// Adding apartment buildings to the animation panel
+		for (int j = 280; j < 350; j = j + 20) {
+			for (int k = 340; k < 410; k = k + 20) {
+				apartmentComplex1Components.add(new Rectangle2D.Double(k, j, APARTMENTSIZE, APARTMENTSIZE));
+			}
+		}
 		
 		//Panel size initiations
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -100,10 +145,27 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		homes.add(house3Panel);
 		homes.add(house4Panel);
 		
-		apartments.add(apt1Panel);
-		apartments.add(apt2Panel);
-		apartments.add(apt3Panel);
-		apartments.add(apt4Panel);
+//		apartments.add(apt1Panel);
+//		apartments.add(apt2Panel);
+//		apartments.add(apt3Panel);
+//		apartments.add(apt4Panel);
+//		apartments.add(apt5Panel);
+//		apartments.add(apt6Panel);
+//		apartments.add(apt7Panel);
+//		apartments.add(apt8Panel);
+//		apartments.add(apt9Panel);
+//		apartments.add(apt10Panel);
+//		apartments.add(apt11Panel);
+//		apartments.add(apt12Panel);
+//		apartments.add(apt13Panel);
+//		apartments.add(apt14Panel);
+//		apartments.add(apt15Panel);
+//		apartments.add(apt16Panel);
+		
+		// Creating the apartment animation panel
+		for (int i = 5; i < 70; ++i) {
+			apartments.add(new ApartmentAnimationPanel(i));
+		}
 		
 		panels.add(bankPanel);
 		panels.add(marketPanel);
@@ -161,7 +223,18 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   BuildPanel.repaint();
 			   BuildPanel.add(house4Panel);
 		   }
-		   else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
+		   else {
+			   for (Rectangle2D apt : apartmentComplex1Components) {
+				   if (me.getButton() == 1 && apt.contains(me.getX(), me.getY())) {
+					   if (BuildPanel.getComponentCount() > 0) {
+						   BuildPanel.remove(BuildPanel.getComponent(0));
+					   }
+					   BuildPanel.repaint();
+					   BuildPanel.add(apartments.get(apartmentComplex1Components.indexOf(apt)));
+				   }
+ 			   }
+		   }
+		  /* else if(me.getButton() == 1 && apartment1.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
@@ -184,7 +257,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
 			   BuildPanel.add(apt4Panel);
-		   }
+		   }*/
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -203,7 +276,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         //Here is the table
         g2.setColor(Color.GRAY);
         g2.fill(bank);
-        g2.fill(apartment);
+        g2.fill(apartmentComplex1);
         g2.fill(house1);
         g2.fill(house2);
         g2.fill(house3);
@@ -242,10 +315,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         else if(s == state.apartment){
         	g2.drawString("Apartments", 335, 320);
-            g2.fill(apartment1);
-            g2.fill(apartment2);
-            g2.fill(apartment3);
-            g2.fill(apartment4);
+//            g2.fill(apartment1);
+//            g2.fill(apartment2);
+//            g2.fill(apartment3);
+//            g2.fill(apartment4);
+        	for (Rectangle2D apt : apartmentComplex1Components) {
+        		g2.fill(apt);
+        	}
         }
         //Update the position of the guis in the various buildings
         for(Gui gui : marketPanel.guis){
@@ -257,17 +333,22 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(Gui gui : rest1Panel.guis){
         	gui.updatePosition();
         }
-        for(Gui gui : apt1Panel.guis){
-        	gui.updatePosition();
-        }
-        for(Gui gui : apt2Panel.guis){
-        	gui.updatePosition();
-        }
-        for(Gui gui : apt3Panel.guis){
-        	gui.updatePosition();
-        }
-        for(Gui gui : apt4Panel.guis){
-        	gui.updatePosition();
+//        for(Gui gui : apt1Panel.guis){
+//        	gui.updatePosition();
+//        }
+//        for(Gui gui : apt2Panel.guis){
+//        	gui.updatePosition();
+//        }
+//        for(Gui gui : apt3Panel.guis){
+//        	gui.updatePosition();
+//        }
+//        for(Gui gui : apt4Panel.guis){
+//        	gui.updatePosition();
+//        }
+        for (ApartmentAnimationPanel apt : apartments) {
+        	for (Gui gui : apt.guis) {
+        		gui.updatePosition();
+        	}
         }
         for(Gui gui : house1Panel.guis){
         	gui.updatePosition();
@@ -446,7 +527,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   else if(restaurant1.contains(me.getX(), me.getY())){
 			   s = state.restaurant1;
 		   }
-		   else if(apartment.contains(me.getX(), me.getY())){
+		   else if(apartmentComplex1.contains(me.getX(), me.getY())){
 			   s = state.apartment;
 		   }
 		   else if(house1.contains(me.getX(), me.getY())){

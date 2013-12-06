@@ -497,7 +497,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
             {
             	msgDoneWashing(prior);
             	aptGui.DoGoToHome();
-//            	person.msgFinishedEvent(temp);
+            	//person.msgFinishedEvent(temp);
             }
         }, 2000);
 	}
