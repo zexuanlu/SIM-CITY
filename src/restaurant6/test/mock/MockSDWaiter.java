@@ -60,7 +60,7 @@ public class MockSDWaiter extends Mock implements Restaurant6Waiter {
 	}
 
 	public void orderIsReady(Restaurant6Order o) {
-		log.add(new LoggedEvent("Received message that order is ready."));
+		log.add(new LoggedEvent("Shared Data Waiter received message that order of " + o.getOrder() + " is ready."));
 	}
 
 	public void goOnBreak(boolean allowedToGoOnBreak) {

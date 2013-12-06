@@ -100,10 +100,10 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	private final int saladTime = 1;
 	
 	// Determines how much inventory the cook has for each item
-	private final int chickenAmount = 2;
-	private final int steakAmount = 2;
-	private final int pizzaAmount = 2;
-	private final int saladAmount = 2;
+	private final int chickenAmount = 3;
+	private final int steakAmount = 3;
+	private final int pizzaAmount = 3;
+	private final int saladAmount = 3;
 
 	// CookAgent constructor
 	public Restaurant6CookRole(String name) {
@@ -202,6 +202,7 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	public void hereIsAnOrder(Restaurant6Order o) {
 		cookOrders.add(new Restaurant6Order(o.getOrder(), o.getTableNum(), o.getWaiter()));
 		print("Order " + o.getOrder() +" received");
+		log.add(new LoggedEvent("Order " + o.getOrder() + " received"));
 		stateChanged();
 	}
 	
