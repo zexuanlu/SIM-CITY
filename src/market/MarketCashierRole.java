@@ -286,7 +286,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		else{
 			employeeCount = 0;
 		}
-		employee.get(s).msgCollectTheDilivery(rest.ck, rest.collectedOrder, t, rest.restNum);
+		employee.get(s).msgCollectTheDilivery(rest.ck, rest.order, t, rest.restNum);
 		truck.remove(t);
 		myrest.remove(rest);
 	}

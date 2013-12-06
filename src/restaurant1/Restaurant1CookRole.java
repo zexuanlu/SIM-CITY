@@ -38,10 +38,10 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		super(pa);
 		roleName = "Rest1 Cook";
 		this.name = name; 
-		food.put("Steak", new MyFood("Steak", 4000, 6, 2, 4));
-		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4));
-		food.put("Pizza", new MyFood("Pizza", 4000, 6, 2, 5));
-		food.put("Salad", new MyFood("Salad", 3000, 6, 2, 8));
+		food.put("Steak", new MyFood("Steak", 4000, 6, 2, 4, 10));
+		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4, 10));
+		food.put("Pizza", new MyFood("Pizza", 4000, 6, 2, 5, 10));
+		food.put("Salad", new MyFood("Salad", 3000, 6, 2, 8, 10));
 	}
 
 	public class MyFood{
@@ -49,13 +49,15 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		long cookingtime;
 		int amount;
 		int low;
+		int capacity;
 		Double orderamount;
-		MyFood(String type, long cookingtime, int amount, int low, double a){
+		MyFood(String type, long cookingtime, int amount, int low, double a, int capacity){
 			this.type = type;
 			this.cookingtime = cookingtime;
 			this.amount = amount;
 			this.low = low;
 			this.orderamount = a;
+			this.capacity = capacity;
 		}
 	}
 	
@@ -94,13 +96,23 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		order.s = Order.state.cooked;
 		stateChanged();
 	}
+	
+	public void msgEmptyStock(){
+		for (String key : food.keySet()){
+			MyFood f = food.get(key);
+			 f.amount = 0;
+			 foodlist.add(new Food(f.type, f.capacity-f.amount));
+		}
+		opening = true;
+		stateChanged();
+	}
 
 	public void msgHereisYourFood(MarketTruck t, List<Food> fList){
 		this.truck = t;
 		for(Entry<String, MyFood> entry : food.entrySet()){
 			for(Food f : fList){
 				if(f.choice.equals(entry.getKey())){
-					entry.getValue().amount += f.amount;
+					entry.getValue().amount = f.amount;
 				}
 			}
 		}
@@ -122,6 +134,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		if(sendTruckBack == true) {
 			System.out.println(sendTruckBack);
 			truck.msgGoBack();
+			sendTruckBack = false;
 			return true;
 		}
 		if(order.size() <= 3 && !revStand.isEmpty()) {
@@ -150,7 +163,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 			Do(o.choice +" is sold out!");
 			o.w.msgOutOfFood(o.table);
 			order.remove(o);
-			foodlist.add(new Food(f.type, f.amount));
+			foodlist.add(new Food(f.type, f.capacity-f.amount));
 			Orderfoodislow();
 			return;
 		}
@@ -164,7 +177,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		cookGui.showCarryFood(o.choice);
 		f.amount --;
 		if(f.amount <= f.low){
-			foodlist.add(new Food(f.type, f.amount));
+			foodlist.add(new Food(f.type, f.capacity-f.amount));
 			Orderfoodislow();
 		}
 		cookGui.DoGotoCookingArea();
@@ -192,7 +205,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		for (String key : food.keySet()){
 			MyFood f = food.get(key);
 			 f.amount = 0;
-			 foodlist.add(new Food(f.type, f.amount));
+			 foodlist.add(new Food(f.type, f.capacity-f.amount));
 		}
 		Orderfoodislow();
 	}
@@ -202,6 +215,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		int s = count;
 		Do("We need more food!");
 		marketCashier.MsgIwantFood(this, cashier, foodlist, 1);
+		foodlist.clear();
 	}
 
 	public void TakeOrderFromStand() {

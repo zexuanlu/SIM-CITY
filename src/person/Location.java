@@ -10,6 +10,7 @@ public class Location {
         protected String name; 
         public enum LocationType {Restaurant, Bank, Market, Home, Apartment, BusStop};
         public LocationType type;
+        protected boolean isClosed;
         protected int Quadrant;
         public Position position; 
         public Location(String name, LocationType type, Position p){
@@ -29,6 +30,8 @@ public class Location {
         public String getName(){ return this.name; }
         public LocationType getType(){ return this.type; }
         public int getQuadrant(){return this.Quadrant; }
+        public boolean isClosed(){return this.isClosed;}
+        public void setClosed(boolean b){ this.isClosed = b;}
         public Position getPosition(){ return this.position; }
         public void setPosition(Position p){ this.position = p; } 
 }

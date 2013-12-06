@@ -2,12 +2,12 @@ package bank.gui;
 
 import agent.Gui;
 import bank.BankHostRole;
-import bank.interfaces.*;
 
 import java.awt.*;
 import java.util.*;
 
 import person.PersonAgent;
+import simcity.astar.Position;
 
 /**
  * This class represents the 
@@ -18,7 +18,7 @@ public class BankHostGui implements Gui{
 	private BankHostRole bh = null;
 	public boolean isPresent = true;
 	private boolean atDestination = true;
-	private Map<String, Dimension> locations = new HashMap<String, Dimension>();
+	private Map<String, Position> locations = new HashMap<String, Position>();
 
 	BankAnimationPanel gui;
 
@@ -32,7 +32,7 @@ public class BankHostGui implements Gui{
 		xDestination = 200;
 		yDestination = -20;
 		//this.gui = gui;
-		locations.put("Host", new Dimension(320,120));
+		locations.put("Host", new Position(320,120));
 		//gui.addGui(this);
 	}
 
@@ -69,9 +69,9 @@ public class BankHostGui implements Gui{
 	
 	public void DoGoToLocation(String location){
 		atDestination = false;
-		Dimension d = locations.get(location);
-		xDestination = d.width;
-		yDestination = d.height;
+		Position d = locations.get(location);
+		xDestination = d.getX();
+		yDestination = d.getY();
 	}
 	public void DoGoToPos(int x, int y){
 		xDestination = x;

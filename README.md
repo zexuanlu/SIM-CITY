@@ -37,10 +37,10 @@
 	+ Houses and Apartments
 	+ Residents, Landlords, Apartment Tenants
 	+ Person Interaction Panel
-  + Some of Add Person Panel
+	+ Some of Add Person Panel
 	+ Team Management
 	+ Fixes of other code and integration
-  + Upgrade of restaurant6
+  	+ Upgrade of restaurant6
   2. Lizhi Fan -
 	+ Transportation
 	+ Busses and Cars
@@ -48,7 +48,7 @@
 	+ City Layout
 	+ Person Initialization in Main Class
 	+ Fixes of other code and integration
-  + Upgrade of restaurant5
+  	+ Upgrade of restaurant5
   3. Joseph Boman - 
 	+ Bank
 	+ Clickable buildings in City View
@@ -58,21 +58,21 @@
 	+ Fixes with Person and Person scheduler
 	+ Individual Location GUIs
 	+ Fixes of other code and integration
-  + Some of PersonAgent
-  + Upgrade of restaurant4
-  + GUI radial button upgrade upon right click
+  	+ Some of PersonAgent
+	+ Upgrade of restaurant4
+  	+ GUI radial button upgrade upon right click
   4. Grant Collins -
 	+ Person Agent
 	+ Person Initialization in Main Class
 	+ CityMap Class
 	+ Global Clock and Locations
 	+ Integration
-  + Upgrade of restaurant3
+  	+ Upgrade of restaurant3
   5. Rocky Luo -
 	+ Market
 	+ Market Trucks
 	+ Integration
-  + Upgrade of restaurant2
+  	+ Upgrade of restaurant2
   6. Mikhail Bhuta -
 	+ Restaurant Upgrades
 	+ Since he did the restaurant and gui, he only has one interaction diagram and doc
@@ -80,7 +80,7 @@
 	+ Trace Panel
 	+ Overall gui layout
 	+ Integration
-  + Upgrade of restaurant1
+	+ Upgrade of restaurant1
 
 ###Issues and Known Bugs
   + People sometimes do not disappear into buildings

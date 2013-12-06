@@ -244,7 +244,7 @@ public class PersonAgent extends Agent implements Person{
 		atHome = false;
 		print("Received msgFinishedEvent");
 		for(MyRole role : roles){
-			if(role.role == r ){
+			if(role.role == r){
 				role.setActive(false);
 			}
 		}
@@ -815,7 +815,7 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
-		if(wallet.getOnHand() >= 100000){ //deposit cash
+		if(wallet.getOnHand() >= 1400){ //deposit cash
 			SimEvent needDeposit = new SimEvent("deposit", b, EventType.CustomerEvent);
 			if(!containsEvent("deposit")){
 				toDo.add(needDeposit);

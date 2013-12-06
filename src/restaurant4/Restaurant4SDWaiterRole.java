@@ -9,9 +9,9 @@ import person.interfaces.Person;
  * Gives it to the cook, takes the food back to the customer
  * and lets the host know when the customer leaves
  */
-public class Restaurant4WaiterRole extends Restaurant4AbstractWaiter{
+public class Restaurant4SDWaiterRole extends Restaurant4AbstractWaiter{
 
-	public Restaurant4WaiterRole(String name, Person pa) {
+	public Restaurant4SDWaiterRole(String name, Person pa) {
 		super(pa);
 		this.name = name;
 	}
@@ -29,14 +29,14 @@ public class Restaurant4WaiterRole extends Restaurant4AbstractWaiter{
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		//FIX Add item to the shared data rack
 		customer.s = state.sitting;
-		cook.msgMakeFood(customer.choice, this, customer.table);
 		gui.GoToLocation("Home");
 	}
 
 	@Override
 	public String getRoleName() {
-		return "Restaurant 4 Waiter";
+		return "Restaurant 4 SD Waiter";
 	}
 }
 

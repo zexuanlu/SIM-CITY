@@ -1,16 +1,18 @@
 package restaurant4;
 
-import agent.Agent;
+import agent.Role;
 import restaurant4.gui.Restaurant4CookGui;
 
 import java.util.*;
+
+import person.interfaces.Person;
 
 /**
  * Restaurant Cook Agent
  * 
  * Receives orders from a waiter, cooks them, and gives them to the waiter again
  */
-public class Restaurant4CookRole extends Agent {
+public class Restaurant4CookRole extends Role {
 	private static final int baseCookingTime = 1000;
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	//This contains the unfilled orders from a market so that he may reorder them
@@ -26,8 +28,8 @@ public class Restaurant4CookRole extends Agent {
 	boolean needToOrder = false;
 	Timer timer = new Timer();
 
-	public Restaurant4CookRole(String name) {
-		super();
+	public Restaurant4CookRole(String name, Person pa) {
+		super(pa);
 
 		this.name = name;
 		cookTimes.put("Steak", new Food(5*baseCookingTime, "Steak"));
@@ -148,7 +150,7 @@ public class Restaurant4CookRole extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//If the cook needs to reorder something
 		//FIX
 //		if(marketOrders.size() != 0){
@@ -214,7 +216,7 @@ public class Restaurant4CookRole extends Agent {
 	private void plateIt(Order o){
 		DoPlating(o);
 		o.s = state.sent;
-		o.waiter.msgOrderReady(o.table, o.type, o.grillNum);
+		o.waiter.msgOrderReady(o.table, o.type, "Grill " + o.grillNum);
 	}
 	
 	/**
@@ -328,5 +330,9 @@ public class Restaurant4CookRole extends Agent {
 		public void run(){
 			msgFoodDone(order);
 		}
+	}
+	@Override
+	public String getRoleName() {
+		return "Restaurant 4 Cook";
 	}
 }

@@ -52,6 +52,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgAtDestination(){
 		movement.release();
+		destination = null;
 		stateChanged();
 	}
 	

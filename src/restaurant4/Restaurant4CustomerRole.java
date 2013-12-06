@@ -3,18 +3,20 @@ package restaurant4;
 import restaurant4.gui.Restaurant4CustomerGui;
 import restaurant4.gui.Restaurant4CustomerGui.GUIstate;
 import restaurant4.interfaces.*;
-import agent.Agent;
+import agent.Role;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+
+import person.interfaces.Person;
 
 /**
  * Restaurant customer agent.
  * 
  * Goes to the restaurant, looks at the menu, chooses and orders an item, eats the food
  */
-public class Restaurant4CustomerRole extends Agent implements Customer {
+public class Restaurant4CustomerRole extends Role implements Restaurant4Customer {
 	private static final int eatingTime = 10000;
 	private static final int menuTime = 5000;
 	private String name;
@@ -25,11 +27,11 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	private Restaurant4CustomerGui customerGui;
 	private Restaurant4Menu menu;
 
-	Semaphore atCashier = new Semaphore(0, true);
+	Semaphore movement = new Semaphore(0, true);
 	// agent correspondents
-	private Restaurant4HostRole host;
-	private Restaurant4WaiterRole waiter;
-	private Restaurant4CashierRole cashier;
+	private Restaurant4Host host;
+	private Restaurant4Waiter waiter;
+	private Restaurant4Cashier cashier;
 	double money;
 
 	//The various states of the customer
@@ -50,18 +52,9 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public Restaurant4CustomerRole(String name){
-		super();
+	public Restaurant4CustomerRole(String name, Person pa){
+		super(pa);
 		this.name = name;
-		if(name.equals("Poor"))
-			money = 7.00;
-		else if(name.equals("Broke"))
-			money = 0.00;
-		else if(name.equals("Flake"))
-			money = 0.00;
-		else
-			money = 20.00;
-		Do("Got " + money);
 	}
 
 	/**
@@ -82,7 +75,6 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	 * Recieved from the gui and tells the customer that he is hungry
 	 */
 	public void gotHungry() {//from animation
-		print("I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
@@ -94,8 +86,7 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	 * @param waiter the waiter who sent the message
 	 * @param menu the menu to order from
 	 */
-	public void msgSitAtTable(int tableNum, Restaurant4WaiterRole waiter, Restaurant4Menu menu) {
-		print("Received msgSitAtTable");
+	public void msgSitAtTable(int tableNum, Restaurant4Waiter waiter, Restaurant4Menu menu) {
 		this.tableNum = tableNum;
 		this.waiter = waiter;
 		this.menu = menu;
@@ -111,7 +102,6 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 
 	//Received from the waiter when the waiter arrives to take the order
 	public void msgReadyForOrder(){
-		print("Received msgReadyForOrder");
 		event = AgentEvent.ordering;
 		stateChanged();
 	}
@@ -125,25 +115,6 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 		menu = m;
 		state = AgentState.WaitingForWaiter;
 		event = AgentEvent.ordering;
-		stateChanged();
-	}
-	/**
-	 * Received from the gui when the customer arrives at his seat
-	 */
-	public void msgAnimationFinishedGoToSeat() {
-		//from animation
-		event = AgentEvent.seated;
-		stateChanged();
-	}
-	
-	/**
-	 * Received from the gui when the customer leaves the restaurant
-	 */
-	public void msgAnimationFinishedLeaveRestaurant() {
-		//from animation
-		if(name.equals("Flake"))
-			money += 40.00;
-		event = AgentEvent.doneLeaving;
 		stateChanged();
 	}
 
@@ -164,7 +135,7 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	 * @param price the "Check" - the price to be paid
 	 * @param cashier the cashier
 	 */
-	public void msgHereIsCheck(double price, Restaurant4CashierRole cashier){
+	public void msgHereIsCheck(double price, Restaurant4Cashier cashier){
 		this.cashier = cashier;
 		if(money < price){
 			Do("Dine And DASH!");
@@ -187,16 +158,10 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 		event = AgentEvent.donePaying;
 		stateChanged();
 	}
-	
-	//Received from the gui telling the customer he is at the cashier
-	public void msgAtCashier(){
-		atCashier.release();
-		stateChanged();
-	}
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry ){
@@ -277,31 +242,27 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 
 	//Messages the host
 	private void goToRestaurant() {
-		Do("Going to restaurant");
 		host.msgIWantFood(this);//send our instance, so he can respond to us
 	}
 
 	//Tells the gui to go to the table
 	private void SitDown() {
-		Do("Being seated. Going to table");
-		customerGui.DoGoToSeat(tableNum);
+		customerGui.DoGoToLocation("Table " + tableNum);
 	}
 
 	//Tells the host that he is leaving
 	private void notWaiting() {
 		host.msgWaitTooLong(this);
-		customerGui.DoExitRestaurant();
+		customerGui.DoGoToLocation("Home");
 	}
 	//Sets a timer while he looks over the menu. When it finishes, he has chosen his dinner
 	private void CheckMenu(){
 		if(money < 5.99 && !name.equals("Flake")){
 			event = AgentEvent.done;
-			Do("Food Too Expensive");
 			return;
 		}
 		timer.schedule(new TimerTask() {
 			public void run() {
-				Do("Chose my food");
 				event = AgentEvent.signaling;
 				stateChanged();
 			}
@@ -310,7 +271,6 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	
 	//Messages the waiter telling him that he is ready to order
 	private void SignalWaiter(){
-		Do("Signaling Waiter");
 		waiter.msgReadyToOrder(this);
 	}
 	
@@ -320,7 +280,7 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 			leaveTable();
 			return;
 		}
-		else if(!menu.contains("Salad") && name.equals("Poor")){
+		else if(!menu.contains("Salad") && money < 5.99){
 			leaveTable();
 			return;
 		}
@@ -329,17 +289,14 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 			choose = (int)(Math.random() * menu.options.size());
 		choice = menu.options.get(choose).type;
 		customerGui.setState(GUIstate.OrderedFood, choice);
-		Do("Ordering " + choice);
 		waiter.msgHereIsOrder(this, choice);
 	}
 	
 	//Eats the food
 	private void EatFood() {
-		Do("Eating Food");
 		customerGui.setState(GUIstate.EatingFood, choice);
 		timer.schedule(new TimerTask() {
 			public void run() {
-				Do("Done eating");
 				event = AgentEvent.doneEating;
 				stateChanged();
 			}
@@ -349,16 +306,14 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 
 	//Requests the check from the waiter
 	public void requestCheck(){
-		Do("Requesting Check");
 		waiter.msgINeedCheck(this);
 	}
 	
 	//Goes to the cashier and pays for his food
 	public void payForFood(){
-		Do("Paying For Food");
-		customerGui.DoGoToCashier();
+		customerGui.DoGoToLocation("Cashier");
 		try{
-			atCashier.acquire();
+			movement.acquire();
 		}
 		catch(InterruptedException e){
 			e.printStackTrace();
@@ -368,10 +323,9 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 	}
 	//Messages the gui to tell him to leave the table
 	private void leaveTable() {
-		Do("Leaving.");
 		customerGui.setState(GUIstate.None, "");
 		waiter.msgLeavingTable(this);
-		customerGui.DoExitRestaurant();
+		customerGui.DoGoToLocation("Home");
 	}
 
 	// Accessors, etc.
@@ -400,6 +354,16 @@ public class Restaurant4CustomerRole extends Agent implements Customer {
 
 	public Restaurant4CustomerGui getGui() {
 		return customerGui;
+	}
+
+	public void msgAtDestination() {
+		movement.release();
+		stateChanged();
+	}
+
+	@Override
+	public String getRoleName() {
+		return "Restaurant 4 Customer";
 	}
 }
 
