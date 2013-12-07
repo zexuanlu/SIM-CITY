@@ -85,7 +85,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int APARTMENTSIZE = 10;
 	Timer timer;
 	
-	enum state {none, bank, market, restaurant1, restaurant4, house1, house2, house3, house4, apartment}
+	enum state {none, bank1, market1, bank2, market2, restaurant1, restaurant4, house1, house2, house3, house4, restaurant2, restaurant3, restaurant5, restaurant6, apartment1, apartment2, apartment3, apartment4, casino}
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(70, 130, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D market = new Rectangle2D.Double(140, 130, BUILDINGSIZE, BUILDINGSIZE);
@@ -100,6 +100,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	Rectangle2D house5 = new Rectangle2D.Double(620, 260, BUILDINGSIZE, BUILDINGSIZE);
 	
 	private List<Rectangle2D> apartmentComplex1Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
+	private List<Rectangle2D> apartmentComplex2Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
+	private List<Rectangle2D> apartmentComplex3Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
+	private List<Rectangle2D> apartmentComplex4Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
 	
 	// First apartment complex
 	Rectangle2D apartmentComplex1 = new Rectangle2D.Double(30, 260, BUILDINGSIZE+10, BUILDINGSIZE+10);
@@ -109,10 +112,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	Rectangle2D apartmentComplex5 = new Rectangle2D.Double(270, 340, BUILDINGSIZE+10, BUILDINGSIZE+10);
 
 	Rectangle2D bank2 = new Rectangle2D.Double(620, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D market2 = new Rectangle2D.Double(410, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant4 = new Rectangle2D.Double(480, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant5 = new Rectangle2D.Double(550, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant6 = new Rectangle2D.Double(410, 60, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D market2 = new Rectangle2D.Double(550, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant4 = new Rectangle2D.Double(410, 60, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant5 = new Rectangle2D.Double(410, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant6 = new Rectangle2D.Double(480, 130, BUILDINGSIZE, BUILDINGSIZE);
 	
 	public CityAnimationPanel() {
 		//PANEL SETUP
@@ -121,9 +124,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		
 		// Adding apartment buildings to the animation panel
-		for (int j = 280; j < 350; j = j + 20) {
-			for (int k = 340; k < 410; k = k + 20) {
-				apartmentComplex1Components.add(new Rectangle2D.Double(k, j, APARTMENTSIZE, APARTMENTSIZE));
+		for (int j = 0; j < 70; j = j + 20) {
+			for (int k = 0; k < 70; k = k + 20) {
+				apartmentComplex1Components.add(new Rectangle2D.Double((int)apartmentComplex1.getX()+k, (int)apartmentComplex1.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+				apartmentComplex2Components.add(new Rectangle2D.Double((int)apartmentComplex2.getX()+k, (int)apartmentComplex2.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+				apartmentComplex3Components.add(new Rectangle2D.Double((int)apartmentComplex3.getX()+k, (int)apartmentComplex3.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+				apartmentComplex4Components.add(new Rectangle2D.Double((int)apartmentComplex4.getX()+k, (int)apartmentComplex4.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
 			}
 		}
 		
@@ -258,33 +264,69 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         
         //Hover Text
     	g2.setColor(Color.BLACK);
-        if(s == state.bank){
-        	g2.drawString("Bank", 155, 195);
+        if(s == state.bank1){
+        	g2.drawString("Bank 1", (int)bank.getX()+10, (int)bank.getY()+35);
         }
-        else if(s == state.market){
-        	g2.drawString("Market", 232, 195);
+        else if(s == state.bank2){
+        	g2.drawString("Bank 2", (int)bank2.getX()+10, (int)bank2.getY()+35);
+        }
+        else if(s == state.market1){
+        	g2.drawString("Market 1", (int)market.getX()+8, (int)market.getY()+35);
+        }
+        else if(s == state.market2){
+        	g2.drawString("Market 2", (int)market2.getX()+8, (int)market2.getY()+35);
         }
         else if(s == state.restaurant1){
-        	g2.drawString("Restaurant 1", 217, 115);
+        	g2.drawString("Restaurant 1", (int)restaurant1.getX()-5, (int)restaurant1.getY()+35);
+        }
+        else if(s == state.restaurant2){
+        	g2.drawString("Restaurant 2", (int)restaurant2.getX()-5, (int)restaurant2.getY()+35);
+        }
+        else if(s == state.restaurant3){
+        	g2.drawString("Restaurant 3", (int)restaurant3.getX()-5, (int)restaurant3.getY()+35);
         }
         else if(s == state.restaurant4){
-        	g2.drawString("Restaurant 4", 20, 20);
+        	g2.drawString("Restaurant 4", (int)restaurant4.getX()-5, (int)restaurant4.getY()+35);
+        }
+        else if(s == state.restaurant5){
+        	g2.drawString("Restaurant 5", (int)restaurant5.getX()-5, (int)restaurant5.getY()+35);
+        }
+        else if(s == state.restaurant6){
+        	g2.drawString("Restaurant 6", (int)restaurant6.getX()-5, (int)restaurant6.getY()+35);
         }
         else if(s == state.house1){
-        	g2.drawString("House 1", 345, 195);
+        	g2.drawString("House 1", (int)house1.getX()+7, (int)house1.getY()+35);
         }
         else if(s == state.house2){
-        	g2.drawString("House 2", 345, 115);
+        	g2.drawString("House 2", (int)house2.getX()+7, (int)house2.getY()+35);
         }
         else if(s == state.house3){
-        	g2.drawString("House 3", 455, 195);
+        	g2.drawString("House 3", (int)house3.getX()+7, (int)house3.getY()+35);
         }
         else if(s == state.house4){
-        	g2.drawString("House 4", 545, 195);
+        	g2.drawString("House 4", (int)house4.getX()+7, (int)house4.getY()+35);
         }
-        else if(s == state.apartment){
-        	g2.drawString("Apartments", 335, 320);
+        else if(s == state.apartment1){
+        	g2.drawString("Apartment 1", (int)apartmentComplex1.getX()+3, (int)apartmentComplex1.getY()+40);
         	for (Rectangle2D apt : apartmentComplex1Components) {
+        		g2.fill(apt);
+        	}
+        }
+        else if(s == state.apartment2){
+        	g2.drawString("Apartment 2", (int)apartmentComplex2.getX()+3, (int)apartmentComplex2.getY()+40);
+        	for (Rectangle2D apt : apartmentComplex2Components) {
+        		g2.fill(apt);
+        	}
+        }
+        else if(s == state.apartment3){
+        	g2.drawString("Apartment 3", (int)apartmentComplex3.getX()+3, (int)apartmentComplex3.getY()+40);
+        	for (Rectangle2D apt : apartmentComplex3Components) {
+        		g2.fill(apt);
+        	}
+        }
+        else if(s == state.apartment4){
+        	g2.drawString("Apartment 4", (int)apartmentComplex4.getX()+3, (int)apartmentComplex4.getY()+40);
+        	for (Rectangle2D apt : apartmentComplex4Components) {
         		g2.fill(apt);
         	}
         }
@@ -465,19 +507,46 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	@Override
 	public void mouseMoved(MouseEvent me) {
 		   if (bank.contains(me.getX(), me.getY())){
-			   s = state.bank;
+			   s = state.bank1;
+		   }
+		   else if(bank2.contains(me.getX(), me.getY())){
+			   s = state.bank2;
 		   }
 		   else if (market.contains(me.getX(), me.getY())){
-			   s = state.market;
+			   s = state.market1;
+		   }
+		   else if(market2.contains(me.getX(), me.getY())){
+			   s = state.market2;
 		   }
 		   else if(restaurant1.contains(me.getX(), me.getY())){
 			   s = state.restaurant1;
 		   }
+		   else if(restaurant2.contains(me.getX(), me.getY())){
+			   s = state.restaurant2;
+		   }
+		   else if(restaurant3.contains(me.getX(), me.getY())){
+			   s = state.restaurant3;
+		   }
 		   else if(restaurant4.contains(me.getX(), me.getY())){
 			   s = state.restaurant4;
 		   }
+		   else if(restaurant5.contains(me.getX(), me.getY())){
+			   s = state.restaurant5;
+		   }
+		   else if(restaurant6.contains(me.getX(), me.getY())){
+			   s = state.restaurant6;
+		   }
 		   else if(apartmentComplex1.contains(me.getX(), me.getY())){
-			   s = state.apartment;
+			   s = state.apartment1;
+		   }
+		   else if(apartmentComplex2.contains(me.getX(), me.getY())){
+			   s = state.apartment2;
+		   }
+		   else if(apartmentComplex3.contains(me.getX(), me.getY())){
+			   s = state.apartment3;
+		   }
+		   else if(apartmentComplex4.contains(me.getX(), me.getY())){
+			   s = state.apartment4;
 		   }
 		   else if(house1.contains(me.getX(), me.getY())){
 			   s = state.house1;
@@ -490,6 +559,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if(house4.contains(me.getX(), me.getY())){
 			   s = state.house4;
+		   }
+		   else if(casino.contains(me.getX(), me.getY())){
+			   s = state.casino;
 		   }
 		   else{
 			   s = state.none;
