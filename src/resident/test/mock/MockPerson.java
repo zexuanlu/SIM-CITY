@@ -7,7 +7,6 @@ import java.util.PriorityQueue;
 
 import market.Food;
 import agent.Role;
-import person.Event;
 import person.Location;
 import person.Position;
 import person.SimEvent;
@@ -22,7 +21,7 @@ public class MockPerson extends Mock implements Person {
 	public int balance; 
 	public Wallet wallet;
 	public List<String> groceryList = new ArrayList<String>();
-	public PriorityQueue<Event> toDo = new PriorityQueue<Event>();
+	public PriorityQueue<SimEvent> toDo = new PriorityQueue<SimEvent>();
 	public List<Role> roles = new ArrayList<Role>();
 	
 	public MockPerson(String name) {

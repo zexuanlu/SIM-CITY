@@ -1,6 +1,5 @@
 package restaurant2.interfaces;
 
-import restaurant.test.mock.EventLog;
 import restaurant2.Check;
 import restaurant2.Menu;
 import restaurant2.Restaurant2CustomerRole.AgentEvent;
@@ -8,7 +7,7 @@ import restaurant2.Restaurant2CustomerRole.AgentState;
 
 
 public interface Customer {
-	EventLog log = new EventLog();
+	//EventLog log = new EventLog();
 	
 	public abstract void gotHungry();
 
