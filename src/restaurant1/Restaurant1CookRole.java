@@ -217,7 +217,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		marketCashier.MsgIwantFood(this, cashier, foodlist, 1);
 		foodlist.clear();
 	}
-
+ 
 	public void TakeOrderFromStand() {
 		Order o = revStand.removeOrder();
 		order.add(o);
