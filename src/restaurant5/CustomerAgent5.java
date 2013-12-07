@@ -62,7 +62,7 @@ public class CustomerAgent5 extends Role implements Customer5 {
 		customerState = State.nothing;
 	}
 	
-	public void msgGotHungry(){
+	public void gotHungry(){
 		customerAction = Action.gotHungry;
 		print("Customer got Hungry");
 		myWaiter = null; 

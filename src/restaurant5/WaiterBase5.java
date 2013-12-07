@@ -96,7 +96,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		stateChanged();	
 	}
 	
-	public void msgWanttoGoonBreak(){
+	public void goOnBreak(){
 		waiterState = wState.wantBreak;
 		stateChanged();
 	}
