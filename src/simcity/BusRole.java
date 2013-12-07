@@ -349,9 +349,6 @@ public class BusRole extends Agent implements Bus {
 
 		    //Did not get lock after trying n attempts. So recalculating path.            
 		    if (!gotPermit) {
-			//System.out.println("[Gaut] " + guiWaiter.getName() + " No Luck even after " + attempts + " attempts! Lets recalculate");
-		    	
-		    	/////////////ADDED
 		    	path.clear();
 		    	aStarNode=null; //added later
 			guiMoveFromCurrentPositionTo(to);

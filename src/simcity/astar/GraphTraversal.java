@@ -22,7 +22,7 @@ public abstract class GraphTraversal
 	    endingState = end;
 	    nodes.clear();
 	    nodes.add(createStartNode(startingState));
-	    //System.out.println("After createStartNode, size of nodes="+nodes.size());
+	    System.out.println("After createStartNode, size of nodes="+nodes.size());
 	    //create a loop
 	    //if nodes is empty, search failed
 	    //otherwise remove the first node,
@@ -38,6 +38,7 @@ public abstract class GraphTraversal
 		} else {
 		    //printCurrentList();
 		    //Console.pause();
+			System.out.println("actually is able to put something into the test?");
 		    Node first = nodes.poll(); 
 		    if (first.goalTest(endingState)){
 			//printMessage("Path Found.", first); 

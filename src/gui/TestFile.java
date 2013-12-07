@@ -193,10 +193,10 @@ public class TestFile extends JFrame {
 		busstop8.startThread();
 
 		bus.setBusMap(citymap);
-		bus.addtoRoute(busstop1.name);
-		bus.addtoRoute(busstop2.name);
-		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
+		bus.addtoRoute(busstop3.name);
+		bus.addtoRoute(busstop2.name);
+		bus.addtoRoute(busstop1.name);
 		bus.startThread();
 		bus.msgStartBus();
 

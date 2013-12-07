@@ -72,7 +72,7 @@ public class SimCityGUI extends JFrame {
 	public List<PersonGui> peoplegui = new ArrayList<PersonGui>();
 	public List<Location> locations = new ArrayList<Location>();
 
-	public int WINDOWX = 640; //60 across
+	public int WINDOWX = 740; //60 across
 	public int WINDOWY = 480; //60 across
 	public int scale = 20; 
 	public int gridX = WINDOWX/scale; 
@@ -133,7 +133,7 @@ public class SimCityGUI extends JFrame {
 				grid[i][j]=new Semaphore(1,true);
 		//build the animation areas
 		try {
-			for (int y=0;y<30;y++){  //Create dead position
+	/**		for (int y=0;y<30;y++){  //Create dead position
 				grid[30][20].release();
 			}
 			for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
@@ -164,11 +164,11 @@ public class SimCityGUI extends JFrame {
 				for (int x=17; x<gridX; x++){
 					grid[x][y].acquire();
 				}
-			}
+			}*/
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
 		}
-	
+
 
 		bgui = new BusGui(bus,0,220);	
 		bgui2 = new BusGui(bus2,280,00);

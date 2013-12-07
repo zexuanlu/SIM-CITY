@@ -34,7 +34,14 @@ public class Position {
 	//right now this just tests if grid is available. I
 	//suspect this is where the locking done. What's in the grid is
 	//supposed to be taken care of by the gui.
-	return grid[x][y].availablePermits()>0;
+    boolean b =grid[x][y].availablePermits()>0; 
+    if (b == false ){
+    	System.out.println("false");
+    }
+    else if (b== true){
+    	System.out.println("true");
+    }
+	return b; 
     }
     public boolean moveInto(Semaphore[][] grid){
 	//System.out.println("moveInto"+this+ " permits="+grid[x][y].availablePermits());
