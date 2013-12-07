@@ -30,20 +30,26 @@ public class Restaurant6RevolvingStand extends Object {
     
     synchronized public Restaurant6Order remove() {
     	Restaurant6Order data;
-        while(count == 0)
-            try{ 
-                System.out.println("\tEmpty, waiting");
-                wait(5000);                         // Empty, wait to consume
-            } catch (InterruptedException ex) {};
+//        while(count == 0)
+//            try{ 
+//                System.out.println("\tEmpty, waiting");
+//                wait(5000);                         // Empty, wait to consume
+//            } catch (InterruptedException ex) {};
 
-        data = remove_item();
-        count--;
-        if(count == N-1){ 
-            System.out.println("\tNot full, notify");
-            notify();                               // Not full, notify a 
-                                                    // waiting producer
+        if (!theData.isEmpty()) {
+        	data = remove_item();
+	        count--;
+	        if(count == N-1){ 
+	            System.out.println("\tNot full, notify");
+	            notify();                               // Not full, notify a 
+	                                                    // waiting producer
+	        }
+	        return data;
         }
-        return data;
+        else {
+        	data = null;
+        	return data; 
+        }
     }
     
     private void insert_item(Restaurant6Order data){

@@ -1,9 +1,11 @@
 package restaurant5;
 //for part 1 to close stuff
 import restaurant5.gui.CustomerGui5;
+
 import java.util.concurrent.Semaphore;
 
-import agent.Agent;
+import agent.Role;
+import person.PersonAgent; 
 import restaurant5.interfaces.Customer5; 
 import restaurant5.interfaces.Waiter5; 
 import restaurant5.gui.FoodGui5; 
@@ -14,9 +16,9 @@ import java.util.TimerTask;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent5 extends Agent implements Customer5 {
+public class CustomerAgent5 extends Role implements Customer5 {
 	private Semaphore atRestaurant = new Semaphore(0,true);
-
+	PersonAgent myPerson; 
 	private enum State{
 		paid, waitingforCheck, nothing, waitinginRestaurant,hungry,following, seated,ordered,eating,done
 	}
@@ -44,8 +46,9 @@ public class CustomerAgent5 extends Agent implements Customer5 {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent5(String name){
-		super();
+	public CustomerAgent5(String name, PersonAgent p){
+		super(p);
+		myPerson = p; 
 		this.name = name;
 		if (name.equals("Broke")){
 			myMoney = 6; 
@@ -139,7 +142,7 @@ public class CustomerAgent5 extends Agent implements Customer5 {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine
 		if (customerState == State.paid && customerAction == Action.gotChange){
 			LeaveRestaurant();
@@ -351,6 +354,10 @@ public class CustomerAgent5 extends Agent implements Customer5 {
 	
 	public void setCashier(CashierAgent5 c){
 		myCashier = c; 
+	}
+
+	public String getRoleName(){
+		return "Restaurant 5 Customer";
 	}
 	
 }

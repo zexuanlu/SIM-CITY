@@ -26,6 +26,7 @@ public class Restaurant2CookRole extends Role {
 
 	Timer timer = new Timer();
 	Timer clear = new Timer();
+	Timer checkStand = new Timer();
 	CookGui cookGui = null;
 	Grill grill = new Grill();
 	public enum OrderState {Uncooked, Cooking, Cooked};
@@ -38,7 +39,8 @@ public class Restaurant2CookRole extends Role {
 	private Map<String, Integer> cookTimes = new HashMap<String, Integer>();
 	private Map<MyMarket, Check> owed = new HashMap<MyMarket, Check>();
 	private Food inventory = new Food(10,10,10,10,10,10);
-
+	private Restaurant2RevolvingStand revolver = new Restaurant2RevolvingStand();
+	
 	private Semaphore atGrill = new Semaphore(0, true);
 	private Semaphore atCs = new Semaphore(0, true);
 
@@ -61,9 +63,15 @@ public class Restaurant2CookRole extends Role {
 		cookTimes.put("Ribs", 1500);
 		cookTimes.put("Salad", 750);
 		cookTimes.put("Pound Cake", 900);
+		
+		checkStand.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				takeFromStand();
+			}
+		}, 0, 6000);
 	}
-	public void setMarket(MarketAgent a, MarketAgent b, MarketAgent c)
-	{
+	public void setMarket(MarketAgent a, MarketAgent b, MarketAgent c){
 
 		mm1 = new MyMarket(a, "mm1");
 		mm2 = new MyMarket(b, "mm2");
@@ -73,8 +81,7 @@ public class Restaurant2CookRole extends Role {
 		markets.add(mm3);
 
 	}
-	public void setGui(CookGui c)
-	{
+	public void setGui(CookGui c){
 		cookGui = c;
 	}
 	// Messages
@@ -86,18 +93,14 @@ public class Restaurant2CookRole extends Role {
 		//waiters.add(waiter);
 		stateChanged();
 	}
-	public void msgMarketOrderFilled(MarketAgent m, Map<String, Integer> order, Check price)
-	{
-		for(Map.Entry<String, Integer> entry: order.entrySet())
-		{
+	public void msgMarketOrderFilled(MarketAgent m, Map<String, Integer> order, Check price){
+		for(Map.Entry<String, Integer> entry: order.entrySet()){
 			inventory.add(entry.getKey(), entry.getValue());
 			inventory.orderStatus.put(entry.getKey(), false);
 		}
 		synchronized(markets){
-			for(MyMarket mm : markets)
-			{
-				if(mm.getMarket() == m)
-				{
+			for(MyMarket mm : markets){
+				if(mm.getMarket() == m){
 					mm.state = MarketState.NeedsPayment;
 					owed.put(mm, price);
 				}
@@ -105,34 +108,28 @@ public class Restaurant2CookRole extends Role {
 		}
 		stateChanged();
 	}
-	public void msgOutOfFood(String order, MarketAgent m)
-	{
+	public void msgOutOfFood(String order, MarketAgent m){
 		print("The market couldnt fufill the order for "+order);
 		synchronized(markets){
-			for(MyMarket mm : markets)
-			{
-				if(mm.getMarket() == m)
-				{
+			for(MyMarket mm : markets){
+				if(mm.getMarket() == m){
 					mm.outOfStock.add(order);
 				}
 			}
 		}
 		stateChanged();
 	}
-	public void msgAtGrill()
-	{
+	public void msgAtGrill(){
 		print("At the grill");
 		atGrill.release();
 		stateChanged();
 	}
-	public void msgAtCS()
-	{
+	public void msgAtCS(){
 		print("at the cook station");
 		atCs.release();
 		stateChanged();
 	}
-	public void msgBackHome()
-	{
+	public void msgBackHome(){
 		print("at home");
 		stateChanged();
 	}
@@ -142,41 +139,36 @@ public class Restaurant2CookRole extends Role {
 	public boolean pickAndExecuteAnAction() {
 
 		checkInventory();//check inventory every time we iterate to make sure were stocked
-		/*if(!orders.isEmpty())
-		{*/
-		for(int i=0; i<orders.size(); i++)
-		{
-			if(orders.get(i).state == OrderState.Uncooked)
-			{
+		for(int i=0; i<orders.size(); i++){
+			if(orders.get(i).state == OrderState.Uncooked){
 				orders.get(i).state = OrderState.Cooking;
 				Restaurant2Order order = orders.get(i);
 				int num = inventory.getInventory(order.order);
-				if(num > 0)
-				{
+				if(num > 0){
 					int pos = grill.getNextFree();//add a location for -1 in the cookGui
 					goToGrill(pos, order);
 					return true;
 				}
-				else if(num == 0) 
-				{
+				else if(num == 0){
 					order.waiter.msgOutOfFood(order.order, (Customer) order.customer);
 					return true;
 				}
 			}
 		}
 		return false;
-
 	}
 
 	// Actions
 	private void clearPosition(final int position){
-		clear.schedule(new TimerTask() {
-
-			public void run() {
+		clear.schedule(new TimerTask(){
+			public void run(){
 				cookGui.changeStationLabel(position, " ");
 			}
 		},
 		5000);
+	}
+	private void takeFromStand(){
+		orders.add(revolver.remove());
 	}
 	private void cookFood(final int position, final Restaurant2Order custOrder) {
 		
@@ -190,8 +182,7 @@ public class Restaurant2CookRole extends Role {
 		cookTime);
 	}
 
-	private void plateOrder(int position, Restaurant2Order order)
-	{
+	private void plateOrder(int position, Restaurant2Order order){
 
 		DoTakeToCookStation(position, order.order);
 		try {
@@ -209,8 +200,7 @@ public class Restaurant2CookRole extends Role {
 		//stateChanged();
 	}
 
-	private void  checkInventory()
-	{
+	private void  checkInventory(){
 
 		List<String> marketOrders = new ArrayList<String>();
 		Map<String, Integer> itemsAndQuantityNeeded = new HashMap<String, Integer>();
@@ -258,24 +248,18 @@ public class Restaurant2CookRole extends Role {
 			inventory.orderedFoodItem("Chicken", true);
 		}
 		//now we will take marketOrders and order the items from the markets
-		if(!itemsAndQuantityNeeded.isEmpty())
-		{
+		if(!itemsAndQuantityNeeded.isEmpty()){
 			synchronized(markets){
-				for(MyMarket m : markets)
-				{
+				for(MyMarket m : markets){
 					Map<String, Integer> inStockAtThisMarket = m.whatsInStock(itemsAndQuantityNeeded);
-					if(!inStockAtThisMarket.isEmpty())
-					{
+					if(!inStockAtThisMarket.isEmpty()){
 						m.getMarket().msgRestockMe(inStockAtThisMarket);
-						for(Map.Entry<String, Integer> entry: inStockAtThisMarket.entrySet())
-						{
-							if(itemsAndQuantityNeeded.containsKey(entry))
-							{
+						for(Map.Entry<String, Integer> entry: inStockAtThisMarket.entrySet()){
+							if(itemsAndQuantityNeeded.containsKey(entry)){
 								itemsAndQuantityNeeded.remove(entry);
 							}
 						}
-						if(itemsAndQuantityNeeded.isEmpty())
-						{
+						if(itemsAndQuantityNeeded.isEmpty()){
 							break;
 						}
 					}

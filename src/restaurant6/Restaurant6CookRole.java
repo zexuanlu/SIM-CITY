@@ -5,6 +5,7 @@ import agent.Agent;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import market.Food;
 import restaurant6.Restaurant6Order.OrderState;
 import restaurant6.gui.Restaurant6CookGui;
 import restaurant6.gui.Restaurant6CookGui.GuiState;
@@ -21,11 +22,14 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	// Timer to cook food
 	Timer cookTimer = new Timer(); 
 	
+	// Timer to check stand
+	Timer standTimer = new Timer();
+	
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
 	
 	// Map of all strings to food objects
-	private Map<String, Food> foods = new HashMap<String, Food>();
+	private Map<String, Restaurant6Food> foods = new HashMap<String, Restaurant6Food>();
 	
 	// Reference to the revolving stand
 	private Restaurant6RevolvingStand revolvingStand;
@@ -66,7 +70,8 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	
 	// Creates private inner class of orders to market
 	private static class MarketOrder {
-		public List<Restaurant6Restock> items = Collections.synchronizedList(new ArrayList<Restaurant6Restock>());
+//		public List<Restaurant6Restock> items = Collections.synchronizedList(new ArrayList<Restaurant6Restock>());
+		public List<Food> items = Collections.synchronizedList(new ArrayList<Food>());
 		
 		public enum MarketOrderState {None, Partial, Fulfilled}
 		private MarketOrderState state;
@@ -100,10 +105,10 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	private final int saladTime = 1;
 	
 	// Determines how much inventory the cook has for each item
-	private final int chickenAmount = 2;
-	private final int steakAmount = 2;
-	private final int pizzaAmount = 2;
-	private final int saladAmount = 2;
+	private final int chickenAmount = 3;
+	private final int steakAmount = 3;
+	private final int pizzaAmount = 3;
+	private final int saladAmount = 3;
 
 	// CookAgent constructor
 	public Restaurant6CookRole(String name) {
@@ -123,10 +128,17 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		msgCheckInventory();
 		
 		// Creates map of food choices to food objects
-		foods.put("Chicken", new Food("Chicken", chickenTime, chickenAmount));
-		foods.put("Steak", new Food("Steak", steakTime, steakAmount));
-		foods.put("Salad", new Food("Salad", saladTime, saladAmount));
-		foods.put("Pizza", new Food("Pizza", pizzaTime, pizzaAmount));
+		foods.put("Chicken", new Restaurant6Food("Chicken", chickenTime, chickenAmount));
+		foods.put("Steak", new Restaurant6Food("Steak", steakTime, steakAmount));
+		foods.put("Salad", new Restaurant6Food("Salad", saladTime, saladAmount));
+		foods.put("Pizza", new Restaurant6Food("Pizza", pizzaTime, pizzaAmount));
+		
+		// Initializes check stand timer
+		standTimer.schedule(new TimerTask() {
+			public void run() {
+				msgCheckStand();
+			}
+		}, 1000); 
 	}
 	
 	// Sets the gui for the cook
@@ -161,13 +173,13 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		numNeeded = 3;
 		
 		// Sets all inventory to threshold
-		Food chicken = foods.get("Chicken");
+		Restaurant6Food chicken = foods.get("Chicken");
 		chicken.setAmount(1);
-		Food steak = foods.get("Steak");
+		Restaurant6Food steak = foods.get("Steak");
 		steak.setAmount(1);
-		Food salad = foods.get("Salad");
+		Restaurant6Food salad = foods.get("Salad");
 		salad.setAmount(1);
-		Food pizza = foods.get("Pizza");
+		Restaurant6Food pizza = foods.get("Pizza");
 		pizza.setAmount(1);
 	
 		stateChanged();
@@ -180,13 +192,13 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		numNeeded = 8;
 		
 		// Sets all inventory to threshold
-		Food chicken = foods.get("Chicken");
+		Restaurant6Food chicken = foods.get("Chicken");
 		chicken.setAmount(1);
-		Food steak = foods.get("Steak");
+		Restaurant6Food steak = foods.get("Steak");
 		steak.setAmount(1);
-		Food salad = foods.get("Salad");
+		Restaurant6Food salad = foods.get("Salad");
 		salad.setAmount(1);
-		Food pizza = foods.get("Pizza");
+		Restaurant6Food pizza = foods.get("Pizza");
 		pizza.setAmount(1);
 	
 		stateChanged();
@@ -202,42 +214,43 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	public void hereIsAnOrder(Restaurant6Order o) {
 		cookOrders.add(new Restaurant6Order(o.getOrder(), o.getTableNum(), o.getWaiter()));
 		print("Order " + o.getOrder() +" received");
+		log.add(new LoggedEvent("Order " + o.getOrder() + " received"));
 		stateChanged();
 	}
 	
 	// Message from market saying order fulfillment incomplete
-	public void msgCannotFulfill(List<Restaurant6Restock> orders) {	
-		orderPlaced = false; 
-		
-		MarketOrder tempOrder = new MarketOrder(MarketOrder.MarketOrderState.Partial);
-		
-		// Copy all orders from orders list that market sent to own cook list
-		for (int i = 0; i < orders.size(); i++) {
-			tempOrder.items.add(new Restaurant6Restock(orders.get(i).getOrderChoice(), orders.get(i).getAmount()));
-		}
-		
-		ordersToMarket.add(tempOrder);
-		
-		// Increment value of market index so can order from backup markets
-		++marketIndex;
-		
-		if (marketIndex >= 3) {
-			ordersToMarket.remove(tempOrder);
-			print("No more markets to order from.");
-			orderPlaced = false;
-		}
-		
-		stateChanged();
-	}
+//	public void msgCannotFulfill(List<Restaurant6Restock> orders) {	
+//		orderPlaced = false; 
+//		
+//		MarketOrder tempOrder = new MarketOrder(MarketOrder.MarketOrderState.Partial);
+//		
+//		// Copy all orders from orders list that market sent to own cook list
+//		for (int i = 0; i < orders.size(); i++) {
+//			tempOrder.items.add(new Food(orders.get(i).getOrderChoice(), orders.get(i).getAmount()));
+//		}
+//		
+//		ordersToMarket.add(tempOrder);
+//		
+//		// Increment value of market index so can order from backup markets
+//		++marketIndex;
+//		
+//		if (marketIndex >= 3) {
+//			ordersToMarket.remove(tempOrder);
+//			print("No more markets to order from.");
+//			orderPlaced = false;
+//		}
+//		
+//		stateChanged();
+//	}
 	
 	// Message from market with order fulfillment
-	public void orderFulfilled(List<Restaurant6Restock> order) {
+	public void msgHereisYourFood(List<Food> order) {
 		orderPlaced = false;
 		
 		MarketOrder tempOrder = new MarketOrder(MarketOrder.MarketOrderState.Fulfilled);
 		
-		for (Restaurant6Restock r : order) {
-			tempOrder.items.add(new Restaurant6Restock(r.getOrderChoice(), r.getAmount()));
+		for (Food f : order) {
+			tempOrder.items.add(new Food(f.choice, f.amount));
 		}
 		
 		ordersToMarket.add(tempOrder);
@@ -280,14 +293,14 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		
 		if (state == CookState.Working) {
 			if (!ordersToMarket.isEmpty()) {
+//				for (MarketOrder r : ordersToMarket) {
+//					if (r.state == MarketOrder.MarketOrderState.Partial && marketIndex < 3 && !orderPlaced) {
+//						placeOrderWithNewMarket(r);
+//						return true;
+//					}
+//				}
 				for (MarketOrder r : ordersToMarket) {
-					if (r.state == MarketOrder.MarketOrderState.Partial && marketIndex < 3 && !orderPlaced) {
-						placeOrderWithNewMarket(r);
-						return true;
-					}
-				}
-				for (MarketOrder r : ordersToMarket) {
-					if (r.state == MarketOrder.MarketOrderState.Fulfilled && !orderPlaced) {
+					if (r.state == MarketOrder.MarketOrderState.Fulfilled) { // && !orderPlaced) {
 						changeInventory(r);
 						return true;
 					}
@@ -335,40 +348,40 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		MarketOrder tempOrder = new MarketOrder();
 		
 		// Check inventory for chicken. If below threshold, add to list of things you need to order
-		Food chicken = foods.get("Chicken");
+		Restaurant6Food chicken = foods.get("Chicken");
 		if (chicken.getAmount() <= threshold) {
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Restaurant6Restock("Chicken", numNeeded));
+			tempOrder.items.add(new Food("Chicken", numNeeded));
 			print("Placed an order for chicken");
 		}
 		
 		// Check inventory for steak. If below threshold, add to list of things you need to order
-		Food steak = foods.get("Steak");
+		Restaurant6Food steak = foods.get("Steak");
 		if (steak.getAmount() <= threshold) {
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Restaurant6Restock("Steak", numNeeded));
+			tempOrder.items.add(new Food("Steak", numNeeded));
 			print("Placed an order for steak");
 		}
 		
 		// Check inventory for salad. If below threshold, add to list of things you need to order
-		Food salad = foods.get("Salad");
+		Restaurant6Food salad = foods.get("Salad");
 		if (salad.getAmount() <= threshold) {
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Restaurant6Restock("Salad", numNeeded));
+			tempOrder.items.add(new Food("Salad", numNeeded));
 			print("Placed an order for salad");
 		}
 		
 		// Check inventory for pizza. If below threshold, add to list of things you need to order
-		Food pizza = foods.get("Pizza");
+		Restaurant6Food pizza = foods.get("Pizza");
 		if (pizza.getAmount() <= threshold) {
 			pizza.setAmountMissing(numNeeded);
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Restaurant6Restock("Pizza", numNeeded));
+			tempOrder.items.add(new Food("Pizza", numNeeded));
 			print("Placed an order for pizza");
 		}
 		
 		if (!tempOrder.items.isEmpty()) {
-			markets.get(0).msgOrderFood(tempOrder.items);
+//			markets.get(0).msgOrderFood(tempOrder.items);
 			// Tell the cashier what you ordered so they can verify
 			cashier.msgOrderedFood(tempOrder.items);
 			orderPlaced = true;
@@ -381,9 +394,9 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		print("Receiving order shipment");
 		
 		// Loop through list inside MarketOrder object and change inventory by the amount of the order
-		for (Restaurant6Restock r : order.items) {
-			Food food = foods.get(r.getOrderChoice());
-			int temp = r.getAmount() + food.getAmount();
+		for (Food f : order.items) {
+			Restaurant6Food food = foods.get(f.choice);
+			int temp = f.amount + food.getAmount();
 			food.setAmount(temp);
 			print ("My cook inventory of " + food.getChoice() + " is now " + food.getAmount());
 		}
@@ -392,16 +405,16 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	}
 	
 	// Places order with new market
-	private void placeOrderWithNewMarket(MarketOrder order) {
-		orderPlaced = true;
-		
-		print("Placing order with new market");
-		
-		if (marketIndex <= 3) {
-			markets.get(marketIndex).msgOrderFood(order.items);
-			ordersToMarket.remove(order);
-		}
-	}
+//	private void placeOrderWithNewMarket(MarketOrder order) {
+//		orderPlaced = true;
+//		
+//		print("Placing order with new market");
+//		
+//		if (marketIndex <= 3) {
+//			markets.get(marketIndex).msgOrderFood(order.items);
+//			ordersToMarket.remove(order);
+//		}
+//	}
 	
 	/*
 	 * Checks the stand for any new orders. Will wait until order appears
@@ -412,10 +425,24 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		
 		Restaurant6Order tempOrder = revolvingStand.remove();
 		
-		print("Picked up order of " + tempOrder.getOrder());
-		log.add(new LoggedEvent("Picked up order of " + tempOrder.getOrder()));
+		if (tempOrder != null) {
+			print("Picked up order of " + tempOrder.getOrder());
+			log.add(new LoggedEvent("Picked up order of " + tempOrder.getOrder()));
+			
+			cookOrders.add(tempOrder);
+		}
 		
-		cookOrders.add(tempOrder);
+		else {
+			if (cookGui != null) {
+				cookGui.DoGoToHome();
+			}
+		}
+		
+		standTimer.schedule(new TimerTask() {
+			public void run() {
+				msgCheckStand();
+			}
+		}, 1000); 
 		
 		checkingStand = false;
 	}
@@ -429,7 +456,7 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 			checkInventory();
 		}
 		
-		Food food = foods.get(o.getOrder());
+		Restaurant6Food food = foods.get(o.getOrder());
 		
 		if (food.getAmount() == 0) { // If there is no more food, let waiter know
 			print("Out of food");

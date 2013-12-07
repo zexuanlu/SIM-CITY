@@ -1,7 +1,7 @@
 package restaurant2;
 
 import person.interfaces.Person;
-import restaurant.interfaces.Customer;
+import restaurant2.interfaces.Customer;
 
 public class Restaurant2WaiterRole extends Restaurant2AbstractWaiterRole{
 

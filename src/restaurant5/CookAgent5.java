@@ -1,8 +1,9 @@
 package restaurant5;
 
-import agent.Agent;
+import agent.Role;
 import restaurant5.gui.CookGui5;
 import restaurant5.interfaces.Waiter5; 
+import person.PersonAgent; 
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -14,8 +15,8 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CookAgent5 extends Agent {
-	
+public class CookAgent5 extends Role {
+	PersonAgent myPerson; 
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
 	public RevolvingStand5 revolvingstand; 
@@ -90,8 +91,9 @@ public class CookAgent5 extends Agent {
 	private Map<String,Food> foods = new HashMap<String,Food>();
 
 	
-    public CookAgent5(String name) {
-		super();		
+    public CookAgent5(String name, PersonAgent p) {
+		super(p);
+		myPerson = p; 
 		this.name = name; 
 		//type, cookingtimes, low, capacity, amount
 		Food f = new Food("Steak", 8, 2, 50, 50); 
@@ -188,7 +190,7 @@ public class CookAgent5 extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 	
 		if (opened){ 
@@ -424,6 +426,10 @@ public class CookAgent5 extends Agent {
 	
 	public void setRevolvingStand(RevolvingStand5 rvs){
 		revolvingstand = rvs; 
+	}
+
+	public String getRoleName(){
+		return "Restaurant 5 Cook";
 	}
 	
 }

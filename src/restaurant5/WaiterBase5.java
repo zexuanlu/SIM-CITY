@@ -7,16 +7,16 @@ import java.util.concurrent.Semaphore;
 import restaurant5.gui.RestaurantGui;
 import restaurant5.gui.WaiterGui5;
 import restaurant5.interfaces.Waiter5;
-import agent.Agent; 
+import agent.Role; 
+import person.PersonAgent; 
 
-public abstract class WaiterBase5 extends Agent implements Waiter5{
+public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	protected String name;
-	
+	public PersonAgent myPerson; 
 	protected HostAgent5 myHost; 
 	public CashierAgent5 myCashier; 
 	protected CookAgent5 myCook; 	
-
 	
 	public RestaurantGui resGui = null;
 	public WaiterGui5 waiterGui = null; 
@@ -46,7 +46,12 @@ public abstract class WaiterBase5 extends Agent implements Waiter5{
 			tablenum = table;
 			s = _s;
 			}
-	     }	
+	     }
+	
+	public WaiterBase5(String name, PersonAgent p) {
+		super(p);
+		myPerson = p; 
+	}
 	
 	public void msgDoneEating(CustomerAgent5 c){
 		for (myCustomer mc:customers){
@@ -197,7 +202,7 @@ public abstract class WaiterBase5 extends Agent implements Waiter5{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 		try{		
 			for (myCustomer mc:customers){
@@ -502,6 +507,12 @@ public abstract class WaiterBase5 extends Agent implements Waiter5{
 	public void setCook(CookAgent5 cook){
 		myCook = cook;
 	}
+	
+	public String toString(){
+		return name; 
+	}
+
+	public abstract String getRoleName();
 	
 	public void setHost(HostAgent5 host){
 		myHost = host; 

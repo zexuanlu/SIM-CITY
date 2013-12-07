@@ -1,12 +1,12 @@
 package restaurant6;
 
-public class Food {
+public class Restaurant6Food {
 	private String choice;
 	private int cookTime;
 	private int amount;
 	private int amountMissing;
 	
-	Food(String f, int ct, int a) {
+	Restaurant6Food(String f, int ct, int a) {
 		choice = f;
 		cookTime = ct;
 		amount = a;

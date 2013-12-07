@@ -2,6 +2,7 @@ package restaurant6.interfaces;
 
 import java.util.List;
 
+import market.Food;
 import restaurant6.Restaurant6Check;
 import restaurant6.Restaurant6Invoice;
 import restaurant6.Restaurant6Restock;
@@ -26,6 +27,6 @@ public interface Restaurant6Cashier {
 	 * Sent by cook after ordered inventory
 	 * @param items
 	 */
-	public abstract void msgOrderedFood(List<Restaurant6Restock> items);
+	public abstract void msgOrderedFood(List<Food> items);
 
 }

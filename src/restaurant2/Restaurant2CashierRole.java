@@ -54,8 +54,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	}
 
 	// Messages
-	public void msgComputeCheck(String orderString, Waiter waiter, Customer customer) 
-	{
+	public void msgComputeCheck(String orderString, Waiter waiter, Customer customer){
 		Check check = new Check(orderString);
 		print("This check equates to "+check.getCheck());
 		MyWaiter mw = new MyWaiter(waiter, check, customer);
@@ -66,8 +65,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		bills.add(bill);
 		stateChanged();
 	}
-	public void msgCheckFromMarket(Market m, Check check)
-	{
+	public void msgCheckFromMarket(Market m, Check check){
 		MyMarket mm = new MyMarket(m, check);
 		markets.add(mm);
 		Bill bill = new Bill(m, check);
@@ -75,21 +73,16 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 
 		stateChanged();
 	}
-	public void msgPayment(Customer c, int check)
-	{
-		for(MyCustomer mc : customers)
-		{
-			if(mc.getCustomer() == c)
-			{
+	public void msgPayment(Customer c, int check){
+		for(MyCustomer mc : customers){
+			if(mc.getCustomer() == c){
 				print(c+" has paid for his/her meal");
 				mc.setPayed(true);
 				wallet += check;
 			}
 		}	
-		for(Bill b : bills)
-		{
-			if(b.getCustomer() == c)
-			{
+		for(Bill b : bills){
+			if(b.getCustomer() == c){
 				b.setState(BillState.Paid);
 			}
 		}
@@ -101,25 +94,20 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	public boolean pickAndExecuteAnAction() {
 
 		synchronized(bills){
-			for(Bill b : bills)
-			{
-				if(b.state == BillState.Ready)
-				{
+			for(Bill b : bills){
+				if(b.state == BillState.Ready){
 					payMarket(b);
 					return true;
 				}
-				else if(b.state == BillState.Pending)
-				{
+				else if(b.state == BillState.Pending){
 					passCheckToWaiter(b);
 					return true;
 				}
-				else if(b.state == BillState.Paid)
-				{
+				else if(b.state == BillState.Paid){
 					thankCustomer(b);
 					return true;
 				}
-				else if(b.state == BillState.IOU)
-				{
+				else if(b.state == BillState.IOU){
 					Repay(b);
 					return true;
 				}
@@ -140,17 +128,16 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 			b.setState(BillState.Complete);
 		}
 	}
-	private void payMarket(Bill b)
-	{
+	private void payMarket(Bill b){
 		if(wallet >= b.getCheck().getCheck()){
-			b.getMarket().msgHeresPayment(this, b.getCheck().getCheck());
-			b.setState(BillState.Complete);
-			wallet -= b.getCheck().getCheck();
+			if(b.checkBill()){
+				b.getMarket().msgHeresPayment(this, b.getCheck().getCheck());
+				b.setState(BillState.Complete);
+				wallet -= b.getCheck().getCheck();
+			}
 		}
 		else{
-
 			int remaining = b.getCheck().getCheck() - wallet;
-
 			b.getMarket().msgHeresPayment(this, -remaining);
 			b.setremaining(remaining);
 			print("Remaining: "+b.getCheck().getCheck());
@@ -159,29 +146,24 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		}
 
 	}
-	private void passCheckToWaiter(Bill b)
-	{
+	private void passCheckToWaiter(Bill b){
 		b.getWaiter().msgHeresTheCheck(b.getCustomer(), b.getCheck());
 		b.setState(BillState.Waiting);
 	}
-	private void Repay(Bill b)
-	{
+	private void Repay(Bill b){
 		int repay = b.remaining;
 		if(wallet >= 0){
-			if(wallet < repay)
-			{
+			if(wallet < repay){
 				b.getMarket().msgHeresLatePayment(this, wallet);
 				b.remaining -= wallet;
 				wallet = 0;
 			}
-			else if(wallet > repay)
-			{
+			else if(wallet > repay){
 				b.getMarket().msgHeresLatePayment(this, repay);
 				wallet -= b.remaining;
 				b.remaining = 0;
 			}
-			else if(wallet == repay)
-			{
+			else if(wallet == repay){
 				b.getMarket().msgHeresLatePayment(this, wallet);
 				wallet = 0;
 				b.remaining = 0;
@@ -189,20 +171,17 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 
 			print("r: "+b.remaining+ "and wallet: "+wallet);
 		}
-		if(b.remaining == 0)
-		{
+		if(b.remaining == 0){
 			b.setState(BillState.Complete);
 		}
 	}
 
-	private void passCheckToWaiter(MyWaiter w)
-	{
+	private void passCheckToWaiter(MyWaiter w){
 		print("The check for "+w.getCustomer()+" is for the amount "+w.getCheck());
 		w.getWaiter().msgHeresTheCheck(w.getCustomer(), w.getCheck());
 		w.setHasCheck(true);
 	}
-	private void thankCustomer(MyCustomer c)
-	{
+	private void thankCustomer(MyCustomer c){
 		//print("Thanks for dining with us today "+c.getCustomer().getName()+"!");
 		c.getCustomer().msgThanksForDining();
 		synchronized(waiters){
@@ -216,8 +195,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		}
 		customers.remove(c);
 	}
-	private void payMarket(MyMarket mm)
-	{
+	private void payMarket(MyMarket mm){
 		int payment = mm.check.getCheck();
 		mm.getMarket().msgHeresPayment(this, payment);
 		wallet -= payment;
@@ -230,39 +208,36 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		public Check check;
 		public BillState state;
 		public int remaining;
-		Bill(Customer c, Waiter w, Check chk)
-		{
+		Bill(Customer c, Waiter w, Check chk){
 			customer = c;
 			waiter = w;
 			check = chk;
 
 			state = BillState.Pending;
 		}
-		Bill(Market m, Check chk)
-		{
+		Bill(Market m, Check chk){
 			market = m;
 			check = chk;
 
 			state = BillState.Ready;
 		}
-		void setState(BillState bs)
-		{
+		void setState(BillState bs){
 			state = bs;
 		}
-		Waiter getWaiter()
-		{
+		Waiter getWaiter(){
 			return waiter;
 		}
-		public Customer getCustomer()
-		{
+		public boolean checkBill(){
+			//ggg
+			return true;
+		}
+		public Customer getCustomer(){
 			return customer;
 		}
-		public Market getMarket()
-		{
+		public Market getMarket(){
 			return market;
 		}
-		public Check getCheck()
-		{
+		public Check getCheck(){
 			return check;
 		}
 		public void setremaining(int r){
@@ -323,26 +298,21 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		private Check checkToPay;
 		private boolean hasPayed;
 
-		MyCustomer (Customer customer, Check ctp)
-		{
+		MyCustomer (Customer customer, Check ctp){
 			this.customer = customer;
 			this.checkToPay = ctp;
 			hasPayed = false;
 		}
-		public Customer getCustomer()
-		{
+		public Customer getCustomer(){
 			return customer;
 		}
-		public Check getCheck()
-		{
+		public Check getCheck(){
 			return checkToPay;
 		}
-		public boolean hasPayed()
-		{
+		public boolean hasPayed(){
 			return hasPayed;
 		}
-		public void setPayed(boolean tf)
-		{
+		public void setPayed(boolean tf){
 			hasPayed = tf;
 		}
 	}

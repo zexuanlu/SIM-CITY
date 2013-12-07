@@ -115,6 +115,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		pa.homeType = HomeType.Apartment;
 		simcitygui.addPerson(pa);
 		
+		// Gives working role to person
 		int role = generator.nextInt(4);
 		if (role == 0) {
 			System.out.println("Role of Bank Host added to " + pa.getName());
@@ -136,6 +137,7 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 			System.out.println("Role of Apartment Landlord added to " + pa.getName());
 			pa.addRole(new ApartmentLandlordRole(pa.getName(), pa.homeNumber, pa), "Apt Landlord");
 		}
+		
 		pa.startThread();
 	}
 	

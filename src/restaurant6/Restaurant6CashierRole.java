@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import market.Food;
 import restaurant6.Restaurant6Check.CheckState;
 import restaurant6.Restaurant6CustomerRole.AgentEvent;
 import restaurant6.Restaurant6Order.OrderState;
@@ -113,14 +114,14 @@ public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier 
 	}
 	
 	// List of orders that the cook sent to the market
-	private List<Restaurant6Restock> marketOrders = Collections.synchronizedList(new ArrayList<Restaurant6Restock>());
+	private List<Food> marketOrders = Collections.synchronizedList(new ArrayList<Food>());
 
-	// Messages
-	// Message from cook with list of orders
-	public void msgOrderedFood(List<Restaurant6Restock> list) {
+	// Messages	
+	// Message from the cook detailing what was ordered from the market
+	public void msgOrderedFood(List<Food> list) {
 		// Copy all of the orders into market orders so there is a reference when market sends invoice
-		for (Restaurant6Restock r : list) {
-			marketOrders.add(new Restaurant6Restock(r.getOrderChoice(), r.getAmount()));
+		for (Food f : list) {
+			marketOrders.add(new Food(f.choice, f.amount));
 		}
 		stateChanged(); // probably not necessary
 	}
@@ -282,5 +283,6 @@ public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier 
 		}
 		markets.remove(m);		
 	}
+
 }
 
