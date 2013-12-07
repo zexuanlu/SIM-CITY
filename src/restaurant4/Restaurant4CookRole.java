@@ -1,10 +1,15 @@
 package restaurant4;
 
 import agent.Role;
+import restaurant.RestaurantCashier;
 import restaurant4.gui.Restaurant4CookGui;
 
 import java.util.*;
 
+import market.Food;
+import restaurant4.interfaces.*;
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketTruck;
 import person.interfaces.Person;
 
 /**
@@ -12,30 +17,29 @@ import person.interfaces.Person;
  * 
  * Receives orders from a waiter, cooks them, and gives them to the waiter again
  */
-public class Restaurant4CookRole extends Role {
+public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	private static final int baseCookingTime = 1000;
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
 	//This contains the unfilled orders from a market so that he may reorder them
-	private List<HashMap<String,Integer>> marketOrders = Collections.synchronizedList(new ArrayList<HashMap<String,Integer>>());
+	private List<List<Food>> marketOrders = Collections.synchronizedList(new ArrayList<List<Food>>());
+	private List<Double> checkOrders = Collections.synchronizedList(new ArrayList<Double>());
+	public MarketCashier mc;
+	public Restaurant4Cashier rc;
 	private String name;
 	private Restaurant4CookGui gui;
 	private int GrillNum = 0;
-	private Map<String, Food> cookTimes = Collections.synchronizedMap(new HashMap<String, Food>());
-	//Used to cycle through the markets
-	int currentMarket = 0;
-	//Used to find out if all markets are out of something
-	int orderCount = 0;
+	private Map<String, MyFood> cookTimes = Collections.synchronizedMap(new HashMap<String, MyFood>());
+	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	boolean needToOrder = false;
 	Timer timer = new Timer();
 
 	public Restaurant4CookRole(String name, Person pa) {
 		super(pa);
-
 		this.name = name;
-		cookTimes.put("Steak", new Food(5*baseCookingTime, "Steak"));
-		cookTimes.put("Chicken", new Food(4*baseCookingTime, "Chicken"));
-		cookTimes.put("Salad", new Food(baseCookingTime, "Salad"));
-		cookTimes.put("Pizza", new Food(2*baseCookingTime, "Pizza"));
+		cookTimes.put("Shrimp", new MyFood(2*baseCookingTime, "Shrimp", 10, 4));
+		cookTimes.put("Scallops", new MyFood(3*baseCookingTime, "Scallops", 10, 4));
+		cookTimes.put("Lobster", new MyFood(5*baseCookingTime, "Lobster", 5, 2));
+		cookTimes.put("Crab", new MyFood(4*baseCookingTime, "Crab", 5, 2));
 	}
 
 	public String getName() {
@@ -54,7 +58,6 @@ public class Restaurant4CookRole extends Role {
 	public void msgMakeFood(String food, Restaurant4WaiterRole w, int table) {
 		GrillNum++;
 		orders.add(new Order(food, w, table, GrillNum));
-		print("Cook received order");
 		stateChanged();
 	}
 
@@ -81,88 +84,35 @@ public class Restaurant4CookRole extends Role {
 	
 	/**
 	 * A hack for emptying the stock of any item
-	 * 
-	 * @param name a variable used for the hack
 	 */
-	public void msgEmptyFood(String name){
-		switch(name){
-			case "outOfSteak": cookTimes.get("Steak").amount = 0; break;
-			case "outOfChicken": cookTimes.get("Chicken").amount = 0; break;
-			case "outOfPizza": cookTimes.get("Pizza").amount = 0; break;
-			case "outOfSalad": cookTimes.get("Salad").amount = 0; break;
-			case "outOfAll": 
-				synchronized(cookTimes.entrySet()){
-					for(Map.Entry<String, Food> entry : cookTimes.entrySet()){
-						Food f = entry.getValue();
-						f.amount = 0;
-					}
-				}
-				break;
-			default : break;
+	public void msgEmptyStock(){
+		foodlist = new ArrayList<Food>();
+		for (String key : cookTimes.keySet()){
+			MyFood f = cookTimes.get(key);
+			 f.amount = 0;
+			 foodlist.add(new Food(f.type, f.capacity-f.amount));
 		}
 		needToOrder = true;
 		stateChanged();
 	}
 	
-	/**
-	 * Received from a market when they cannot fufill an order
-	 * 
-	 * @param reOrder the part of the order that is unfufilled
-	 * @param m the market that couldn't fufill the order
-	 */
-	//FIX!
-//	public void msgOutOfFood(Map<String,Integer> reOrder, MarketAgent m){
-//		currentMarket++;
-//		orderCount++;
-//		if(currentMarket == markets.size()){
-//			currentMarket = 0;
-//		}
-//		if(orderCount == markets.size()){
-//			Do("All markets out of some items");
-//			return;
-//		}
-//		HashMap<String, Integer> ReOrder = new HashMap<String, Integer>(reOrder);
-//		marketOrders.add(ReOrder);
-//		stateChanged();
-//		System.out.println("Notified by Market that they are out of some items");
-//	}
-	
-	/**
-	 * A message from the market delivering the food
-	 * 
-	 * @param delivery the map containing the delivery
-	 */
-	public void msgFoodDelivered(Map<String,Integer> delivery){
-		synchronized(cookTimes.entrySet()){
-			for(Map.Entry<String, Food> entry : cookTimes.entrySet()){
-				Food f = entry.getValue();
-				if(delivery.containsKey(f.type)){
-					
-					f.amount += delivery.get(f.type);
-					f.s = orderState.none;
-					Do("Now we have " + f.amount + " " + f.type);
-					orderCount = 0;
-					stateChanged();
-				}
-			}
-		}
+	public void msgHereisYourFood(MarketTruck truck, List<Food> food){
+		
+	}
+
+	public void msgCheckBill(double price){
+		checkOrders.add(price);
+		stateChanged();
 	}
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		//If the cook needs to reorder something
-		//FIX
-//		if(marketOrders.size() != 0){
-//			reOrderFoodThatIsLow(marketOrders.get(0));
-//			marketOrders.remove(0);
-//			return true;
-//		}
-		//If the cook needs to order (used for the hack)
-//		if(needToOrder){
-//			orderFoodThatIsLow();
-//			return true;
-//		}
+		//If the cook needs to order
+		if(needToOrder){
+			orderFoodThatIsLow();
+			return true;
+		}
 		//Checks for any orders that are finished cooking
 		for(Order o : orders){
 			if(o.s == state.done){
@@ -184,6 +134,10 @@ public class Restaurant4CookRole extends Role {
 				return true;
 			}
 		}
+		if(!checkOrders.isEmpty()){
+			checkBill();
+			return true;
+		}
 		return false;
 	}
 
@@ -199,11 +153,16 @@ public class Restaurant4CookRole extends Role {
 			orders.remove(o);
 			return;
 		}
-		if(GrillNum > 10)
+		if(GrillNum > 3)
 			GrillNum = 1;
 		DoCooking(o);
-		cookTimes.get(o.type).amount--;
-//		orderFoodThatIsLow();
+		MyFood f = cookTimes.get(o.type);
+		f.amount --;
+		if(f.s == orderState.notOrdered && f.amount <= f.low){
+			foodlist.add(new Food(f.type, f.capacity-f.amount));
+			f.s = orderState.ordered;
+			orderFoodThatIsLow();
+		}
 		o.s = state.cooking;
 		timer.schedule(new doneCooking(o), cookTimes.get(o.type).time);
 	}
@@ -222,36 +181,29 @@ public class Restaurant4CookRole extends Role {
 	/**
 	 * Cycles through the inventory, and orders any items that haven't been ordered that are low
 	 */
-	//FIX
-//	private void orderFoodThatIsLow(){
-//		needToOrder = false;
-//		Map<String, Integer> marketOrder = new HashMap<String, Integer>();
-//		synchronized(cookTimes.entrySet()){
-//			for(Map.Entry<String, Food> entry : cookTimes.entrySet()){
-//				Food f = entry.getValue();
-//				if(f.amount < f.low && f.s != orderState.ordered){
-//					f.s = orderState.ordered;
-//					marketOrder.put(f.type, (f.capacity-f.amount));
-//				}
-//			}
-//		}
-		//FIX
-//		if(marketOrder.size() != 0){
-//			Do("Sending Order to " + markets.get(currentMarket));
-//			markets.get(currentMarket).msgINeedFood(marketOrder, this);
-//		}
-//	}
+	private void orderFoodThatIsLow(){
+		needToOrder = false;
+		marketOrders.add(foodlist);
+		mc.MsgIwantFood(this, rc, foodlist, 4);	
+	}
 	
-	/**
-	 * Uses the map from the market to order from a different market
-	 * 
-	 * @param marketOrder the map used to reorder
-	 */
-	//FIX
-//	private void reOrderFoodThatIsLow(Map<String, Integer> marketOrder){
-//		Do("Sending Order to " + markets.get(currentMarket));
-//		markets.get(currentMarket).msgINeedFood(marketOrder, this);		
-//	}
+	private void checkBill(){
+		double price = checkOrders.get(0);
+		double compare = 0;
+		List<Food> marketList = marketOrders.get(0);
+		for(int i = 0; i < marketList.size(); i++){
+			switch(marketList.get(i).choice){
+				case "Shrimp": compare+=8.99; break;
+				case "Scallops": compare+=7.99; break;
+				case "Lobster": compare+=14.99; break;
+				case "Crab": compare+=13.99; break;
+			}
+		}
+		if(compare == price)
+			rc.msgBillChecked(price);
+		else
+			rc.msgBillChecked(price);
+	}
 	
 	// The animation DoXYZ() routines
 	
@@ -266,12 +218,6 @@ public class Restaurant4CookRole extends Role {
 	}
 	
 	//utilities
-
-	//FIX
-//	public void addMarket(MarketAgent m){
-//		markets.add(m);
-//		orderFoodThatIsLow();
-//	}
 	
 	public void setGui(Restaurant4CookGui cg){
 		gui = cg;
@@ -303,20 +249,20 @@ public class Restaurant4CookRole extends Role {
 	 * 
 	 * Contains a time of cooking and will later contain inventory
 	 */
-	private class Food {
+	private class MyFood {
 		int time;
 		String type;
 		int amount;
 		int capacity;
 		int low;
 		orderState s;
-		Food(int time, String type){
+		MyFood(int time, String type, int capacity, int low){
 			this.time = time;
 			this.type = type;
-			amount = 4;
-			capacity = 5;
-			low = 2;
-			s = orderState.none;
+			this.amount = capacity;
+			this.capacity = capacity;
+			this.low = low;
+			s = orderState.notOrdered;
 		}
 	}
 	enum orderState {ordered, notOrdered, none}

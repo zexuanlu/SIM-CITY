@@ -5,6 +5,7 @@ import restaurant4.interfaces.*;
 
 import java.util.*;
 
+import market.interfaces.MarketCashier;
 import person.interfaces.Person;
 
 /**
@@ -13,12 +14,10 @@ import person.interfaces.Person;
  * Receives check requests from a waiter, and payment requests from customers and fills them
  */
 public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
-	//FIX Billing with Markets
 	//A list of the various Checks, either requested or being paid
 	public List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
-//	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
+	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
 	private String name;
-//	private double money = 200.00;
 	//Lets the Cashier check the prices of items
 	private Map<String, Double> foodPrices = Collections.synchronizedMap(new HashMap<String, Double>());
 
@@ -77,10 +76,20 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		}
 	}
 	
-//	public void msgPleasePay(Market m, double bill){
-//		bills.add(new Bill(m, bill));
-//		stateChanged();
-//	}
+	public void msgPleasepaytheBill(MarketCashier mc, double price){
+		bills.add(new Bill(mc, price));
+		stateChanged();
+	}
+	
+	public void msgBillChecked(double price){
+		for(Bill b : bills){
+			if(b.amount == price){
+				b.bs = billState.checked;
+				stateChanged();
+				return;
+			}
+		}
+	}
 	
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
@@ -100,11 +109,18 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 				return true;
 			}
 		}
-		
-//		if(bills.size() != 0){
-//			payBill(bills.get(0));
-//			return true;
-//		}
+		for(Bill bill : bills){
+			if(bill.bs == billState.checked){
+				payBill(bill);
+				return true;
+			}
+		}
+		for(Bill bill : bills){
+			if(bill.bs == billState.received){
+				checkBill(bill);
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -132,33 +148,29 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		c.money = 0;
 		c.s = state.done;
 	}
+	
+	private void checkBill(Bill b){
+		b.bs = billState.checked;
+	}
 
-//	private void payBill(Bill b){
-//		if(money > b.amount){
-//			b.market.msgPayingBill(b.amount);
-//			money -= b.amount;
-//			bills.remove(b);
-//		}
-//		else{
-//			b.market.msgPayingBill(money);
-//			b.amount -= money;
-//			money = 0;
-//			String contract = new String("I, " + name + ", promise to work for you for " + (b.amount/10.0) + " hours to pay off the debt");
-//			b.market.msgCannotPay(contract);
-//			bills.remove(b);
-//		}
-//	}
+	private void payBill(Bill b){
+		b.mc.msgBillFromTheAir(b.amount);
+	}
 	//utilities
 	
-//	public class Bill {
-//		public Market market;
-//		public double amount;
-//		Bill(Market m, double bill){
-//			amount = bill;
-//			market = m;
-//		}
-//	}
-//	
+	public class Bill {
+		public MarketCashier mc;
+		public double amount;
+		billState bs;
+		Bill(MarketCashier m, double bill){
+			amount = bill;
+			mc = m;
+			bs = billState.received;
+		}
+	}
+	
+	enum billState {received, checked, none}
+	
 	/**
 	 * The check class
 	 * 
