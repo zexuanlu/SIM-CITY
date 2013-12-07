@@ -1,10 +1,9 @@
 package market;
 
 import agent.*;
-import person.PersonAgent;
 import person.interfaces.*;
+import restaurant.RestaurantCashier;
 import restaurant.RestaurantCook;
-import restaurant1.Restaurant1CookRole;
 import restaurant1.interfaces.Restaurant1Cashier;
 
 import java.util.*;
@@ -64,7 +63,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	public class Myrest{
 		RestaurantCook ck;
-		Restaurant1Cashier ca;
+		RestaurantCashier ca;
 		List<Food> order;
 		public List<Food> collectedOrder = new ArrayList<Food>();
 		public int bill;
@@ -73,7 +72,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		public int restNum;
 		public state1 s1 = state1.ordering;
 
-		Myrest(RestaurantCook ck, Restaurant1Cashier ca, List<Food> order, int restNum){
+		Myrest(RestaurantCook ck, RestaurantCashier ca, List<Food> order, int restNum){
 			this.ck = ck;
 			this.ca = ca;
 			this.order = order;
@@ -119,8 +118,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
 		mycustomer.add(new Mycustomer(customer, food));
 		stateChanged();
-		Do(""+mycustomer.size());
-		Do("Yoooooooooooo");
 	}
 
 	public void msgPayment(MarketCustomer customer, double m){
@@ -143,12 +140,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}				
 	// end of in market scenario
 
-	public void MsgIwantFood(RestaurantCook cook, Restaurant1Cashier ca, List<Food> food, int number){
+	public void MsgIwantFood(RestaurantCook cook, RestaurantCashier ca, List<Food> food, int number){
 		myrest.add(new Myrest(cook, ca, food, number));
 		stateChanged();
 	}
 
-	public void msgBillFromTheAir(Restaurant1Cashier ca, double money){
+	public void msgBillFromTheAir(double money){
 		income += money;
 		stateChanged();
 	}
