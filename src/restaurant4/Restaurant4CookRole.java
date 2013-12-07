@@ -1,7 +1,6 @@
 package restaurant4;
 
 import agent.Role;
-import restaurant.RestaurantCashier;
 import restaurant4.gui.Restaurant4CookGui;
 
 import java.util.*;

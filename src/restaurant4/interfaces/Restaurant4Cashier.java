@@ -8,6 +8,8 @@ import restaurant.RestaurantCashier;
  *
  */
 public interface Restaurant4Cashier extends RestaurantCashier{
+	
+	public abstract void msgBillChecked(double price);
 	/**
 	 * @param food The food that the customer ordered
 	 * @param c The customer who needs to pay
