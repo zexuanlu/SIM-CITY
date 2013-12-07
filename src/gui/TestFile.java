@@ -1,59 +1,22 @@
-package gui.main;
+package gui;
 
 import gui.panels.*;
 
 import javax.swing.*;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
-import market.gui.MarketEmployeeGui;
-import market.gui.MarketTruckGui; 
-import person.Apartment;
-import person.Bank;
-import person.Home;
-import person.Market;
-import person.PersonAgent.MyRole;
-import person.Position;
-import person.PersonAgent;
-import person.Restaurant;
-import person.SimEvent;
-import person.Location.LocationType;
-import person.SimEvent.EventType;
-import person.gui.PersonGui;
-import person.SimWorldClock;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
-import agent.Role;
-import bank.*;
-import bank.gui.BankHostGui;
-import bank.gui.BankTellerGui;
-import bank.test.mock.MockBankHost;
-import market.*;
-import restaurant1.*;
-import restaurant1.gui.CookGui;
-import restaurant1.gui.CustomerGui;
-import restaurant1.gui.WaiterGui;
-import market.test.mock.MockCashier;
 import person.Location;
-import resident.ApartmentLandlordRole;
-import resident.ApartmentLandlordRole.MyTenant;
-import resident.ApartmentTenantRole;
-import resident.HomeOwnerRole;
-import resident.gui.ApartmentAnimationPanel;
-import resident.gui.ApartmentTenantGui;
-import resident.gui.HomeOwnerGui;
+
 import simcity.BusRole;
 import simcity.BusStopAgent;
-import simcity.PassengerRole;
-import simcity.CarAgent;
+
 import simcity.CityMap;
 import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
-import simcity.gui.CarGui;
-import utilities.TimeCard;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +27,9 @@ import java.util.concurrent.*;
 * This is where the 'main' function should be
 */
 
-public class SimCityGUI extends JFrame {
+public class TestFile extends JFrame {
 	
 	public CityMap citymap; 
-
-	public List<PersonAgent> people = new ArrayList<PersonAgent>();
-	public List<PersonGui> peoplegui = new ArrayList<PersonGui>();
 	public List<Location> locations = new ArrayList<Location>();
 
 	public int WINDOWX = 640; //60 across
@@ -83,8 +43,6 @@ public class SimCityGUI extends JFrame {
 	public static final int SCG_HEIGHT = CityAnimationPanel.HEIGHT + CityControlPanel.HEIGHT;
 
 	public CityAnimationPanel cityAnimPanel = new CityAnimationPanel();
-	public BuildingAnimationPanel bldngAnimPanel = new BuildingAnimationPanel();
-	public CityControlPanel cityCtrlPanel = new CityControlPanel(this);
 
 	///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
 
@@ -112,7 +70,7 @@ public class SimCityGUI extends JFrame {
 	public BusStopGui bs7gui = new BusStopGui(busstop7, 340, 420);
 	public BusStopGui bs8gui = new BusStopGui(busstop8,260,340);	
 
-	public SimCityGUI() {
+	public TestFile() {
 		citymap = new CityMap(locations);
 
 		// SETUP
@@ -123,10 +81,7 @@ public class SimCityGUI extends JFrame {
 
 		// ADD COMPONENTS
 		this.add(cityAnimPanel, BorderLayout.WEST);
-		this.add(bldngAnimPanel, BorderLayout.EAST);
-		this.add(cityCtrlPanel, BorderLayout.SOUTH);
 
-		cityAnimPanel.setBuildPanel(bldngAnimPanel);
 
 		for (int i=0; i<gridX ; i++)
 			for (int j = 0; j<gridY; j++)
@@ -254,28 +209,8 @@ public class SimCityGUI extends JFrame {
 		bus2.msgStartBus();
 	}
 
-	public CarAgent createCar(PersonAgent p){
-		AStarTraversal aStarTraversal = new AStarTraversal(grid);
-        CarAgent caragent = new CarAgent(aStarTraversal, p);
-        CarGui cgui = new CarGui(caragent,600,400);
-        caragent.setGui(cgui);
-        cityAnimPanel.addGui(cgui);
-        caragent.startThread();
-        return caragent; 
-	}
-	
-	public void addPerson(PersonAgent p) {
-		PersonGui pgui = new PersonGui(p);
-		p.gui = pgui;
-		p.setAnimationPanel(cityAnimPanel);
-		//people.add(p);
-		//peoplegui.add(pgui);
-		cityAnimPanel.addGui(pgui);
-	}
-
-
 	public static void main(String[] args){
-		SimCityGUI scg = new SimCityGUI();
+		TestFile scg = new TestFile();
 		scg.setVisible(true);
 		scg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
