@@ -2,7 +2,6 @@ package restaurant1.shareddata;
 
 import java.util.Vector;
 
-import restaurant2.Restaurant2Order;
 
 public class Restaurant1RevolvingStand extends Object{
 
