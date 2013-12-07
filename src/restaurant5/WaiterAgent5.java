@@ -1,4 +1,5 @@
 package restaurant5;
+import person.PersonAgent; 
 import restaurant5.WaiterBase5; 
 
 /**
@@ -6,8 +7,8 @@ import restaurant5.WaiterBase5;
  */
 public class WaiterAgent5 extends WaiterBase5 {
 	
-	public WaiterAgent5(String _name) {
-		super();	
+	public WaiterAgent5(String _name, PersonAgent p) {
+		super(_name, p);	
 		name = _name; 
 		waiterState = wState.ready; 
 	}
@@ -32,6 +33,14 @@ public class WaiterAgent5 extends WaiterBase5 {
 	
 	public void msgatStand(){
 		
+	}
+	
+	public String toString(){
+		return name; 
+	}
+
+	public String getRoleName(){
+		return "Restaurant 5 Waiter";
 	}
 	
 }

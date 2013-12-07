@@ -1,7 +1,8 @@
 package restaurant5;
 
-import agent.Agent;
+import person.PersonAgent; 
 import restaurant5.interfaces.Market5; 
+import agent.Role; 
 
 import java.util.*;
 
@@ -12,10 +13,11 @@ import java.util.*;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class MarketAgent5 extends Agent implements Market5{
+public class MarketAgent5 extends Role implements Market5{
 	int Cash; 
 	Menu5 myMenu = new Menu5();
 	Timer timer = new Timer();
+	PersonAgent myPerson; 
 	class Food {
 		int amount;
 		String choice; 
@@ -57,8 +59,9 @@ public class MarketAgent5 extends Agent implements Market5{
 	private String name;
 
 	
-    public MarketAgent5(String _name) {
-		super();		
+    public MarketAgent5(String _name, PersonAgent p) {
+		super(p);		
+    	myPerson = p; 
 		name = _name; 
 		Cash = 100; 
 	
@@ -85,7 +88,7 @@ public class MarketAgent5 extends Agent implements Market5{
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		synchronized(orders){
 			for (Order o:orders){
 				if (o.s == State.ordered){
@@ -205,5 +208,13 @@ public class MarketAgent5 extends Agent implements Market5{
 	
 	public void setCashier(CashierAgent5 c){
 		myCashier = c; 
+	}
+	
+	public String toString(){
+		return name; 
+	}
+
+	public String getRoleName(){
+		return "Restaurant 5 Market";
 	}
 }

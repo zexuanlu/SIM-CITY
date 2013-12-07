@@ -1,6 +1,7 @@
 package restaurant5;
 
-import agent.Agent;
+import agent.Role; 
+import person.PersonAgent; 
 import restaurant5.gui.HostGui5;
 import restaurant5.gui.Table5;
 import restaurant5.interfaces.Waiter5; 
@@ -14,7 +15,7 @@ import java.util.*;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent5 extends Agent {
+public class HostAgent5 extends Role {
     LinkedList<myWaiter> waiterQ = new LinkedList<myWaiter>();
     public class myWaiter {
     	myWaiter(Waiter5 _w, WaiterState _s){
@@ -25,6 +26,7 @@ public class HostAgent5 extends Agent {
     	public Waiter5 w;
     	public WaiterState s; 
     }
+    PersonAgent myPerson; 
     private enum WaiterState {ready,onBreak, denied,asked};
 	private int NTABLES = 3; //hard coded table shit
 	private List<myCustomer> customers;
@@ -43,8 +45,9 @@ public class HostAgent5 extends Agent {
 	private enum CustomerState {waiting, restaurantfull, gettingseated, eating, done, toserve};
 	
 	
-	public HostAgent5(String name) {
-		super();
+	public HostAgent5(String name, PersonAgent p) {
+		super(p);
+		myPerson = p; 
 		customers = Collections.synchronizedList(new ArrayList<myCustomer>());
 		this.name = name; 
 		// make some tables
@@ -123,7 +126,7 @@ public class HostAgent5 extends Agent {
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		System.out.println("host scheduler called");
 		/* Think of this next rule as:
             Does there exist a table and customer,
@@ -245,8 +248,17 @@ public class HostAgent5 extends Agent {
 	
 	public String getName() {
 		return name;
-		
 	}
+
+	public String getRoleName(){
+		return "Restaurant 5 Host";
+	}
+	
+	public String toString(){
+		return name; 
+	}
+	
+	
 }
 
 

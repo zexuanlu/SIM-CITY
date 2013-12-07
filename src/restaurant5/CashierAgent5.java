@@ -1,17 +1,19 @@
 package restaurant5;
 import java.util.*;
-
+import person.PersonAgent; 
 import restaurant5.interfaces.Cashier5; 
 import restaurant5.interfaces.Customer5; 
 import restaurant5.interfaces.Waiter5; 
 import restaurant5.interfaces.Market5; 
-import agent.Agent;
+import agent.Role;
 
-public class CashierAgent5 extends Agent implements Cashier5{
+public class CashierAgent5 extends Role implements Cashier5{
 	Menu5 myMenu = new Menu5(); 
 	String name; 
 	int Cash; 
 	int debt; 
+	
+	PersonAgent myPerson; 
 
 	private class Bill {
 		Waiter5 w; 
@@ -48,12 +50,12 @@ public class CashierAgent5 extends Agent implements Cashier5{
 	private List<Bill> flakes = Collections.synchronizedList(new ArrayList<Bill>());
 	
 	
-	public CashierAgent5(String name){
-		super();
+	public CashierAgent5(String name, PersonAgent p){
+		super(p);
+		myPerson = p; 
 		this.name = name;
 		Cash = 1000; 
 	}
-
 
 //Messages 
 public void msgmarketbill(Market5 m, int Bill){
@@ -182,7 +184,13 @@ private void processBill(Bill b){
 	}
 }
 
+public String toString(){
+	return name; 
+}
 
+public String getRoleName(){
+	return "Restaurant 5 Cashier";
+}
 
 
 }
