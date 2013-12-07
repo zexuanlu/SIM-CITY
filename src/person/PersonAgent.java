@@ -290,28 +290,28 @@ public class PersonAgent extends Agent implements Person{
 //				}
 //			}
 			//If the person is at home, this event will break him out for events such as work
-			if(atHome){
-				for(SimEvent nextEvent : toDo){
-					if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
-						print("Activating a recurring event");
-						for(MyRole mr : roles){
-							if(mr.type.equals("Home Owner")){
-								mr.setActive(false);
-								((HomeOwnerRole)mr.role).DoGoToFrontDoor();
-							}
-							else if(mr.type.equals("Apt Tenant")){
-								mr.setActive(false);
-								((ApartmentTenantRole)mr.role).DoGoToFrontDoor();
-							}
-						}
-						gui.setPresent(true);
-						goToLocation(nextEvent.location);
-						goToAndDoEvent(nextEvent);
-						atHome = false;
-						return true;
-					}
-				}
-			}
+//			if(atHome){
+//				for(SimEvent nextEvent : toDo){
+//					if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
+//						print("Activating a recurring event");
+//						for(MyRole mr : roles){
+//							if(mr.type.equals("Home Owner")){
+//								mr.setActive(false);
+//								((HomeOwnerRole)mr.role).DoGoToFrontDoor();
+//							}
+//							else if(mr.type.equals("Apt Tenant")){
+//								mr.setActive(false);
+//								((ApartmentTenantRole)mr.role).DoGoToFrontDoor();
+//							}
+//						}
+//						gui.setPresent(true);
+//						goToLocation(nextEvent.location);
+//						goToAndDoEvent(nextEvent);
+//						atHome = false;
+//						return true;
+//					}
+//				}
+//			}
 			for(MyRole r : roles){
 				if(r.isActive){
 					//print("Executing rule in role "+ r.role);
