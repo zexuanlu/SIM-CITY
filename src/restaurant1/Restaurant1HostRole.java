@@ -6,8 +6,8 @@ import person.interfaces.Person;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 
 
 /**
@@ -24,7 +24,7 @@ public class Restaurant1HostRole extends Role {
 	public List<mycustomer> waitingCustomers = Collections.synchronizedList(new ArrayList<mycustomer>());
 	public Collection<Table> tables;
 	public List<mywaiter> waiter = Collections.synchronizedList(new ArrayList<mywaiter>());
-	public Waiter wa;
+	public Restaurant1Waiter wa;
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 	public int tablenum;
@@ -44,9 +44,9 @@ public class Restaurant1HostRole extends Role {
 	enum state {working, applyingforwork, onbreak};
 
 	public class mywaiter{
-		Waiter waiter;
+		Restaurant1Waiter waiter;
 		state s = state.working;
-		mywaiter(Waiter waiter){
+		mywaiter(Restaurant1Waiter waiter){
 			this.waiter = waiter;
 		}
 	}
@@ -63,7 +63,7 @@ public class Restaurant1HostRole extends Role {
 
 	enum Cstate {waiting, deciding, staying, leaving, eating};
 
-	public mywaiter findwaiter(Waiter w){
+	public mywaiter findwaiter(Restaurant1Waiter w){
 		mywaiter a = null;
 		for(mywaiter m: waiter){
 			if(w == m.waiter){
@@ -95,7 +95,7 @@ public class Restaurant1HostRole extends Role {
 
 
 
-	public void msgaddwaiter(Waiter w){
+	public void msgaddwaiter(Restaurant1Waiter w){
 		waiter.add(new mywaiter(w));
 	}
 
@@ -105,7 +105,7 @@ public class Restaurant1HostRole extends Role {
 
 	}
 
-	public void msgLeavingTable(Waiter w, Customer c) {
+	public void msgLeavingTable(Restaurant1Waiter w, Restaurant1Customer c) {
 		for (Table table : tables) {
 			if (table.getOccupant() == c) {
 				print(c + " leaving " + table);
@@ -131,7 +131,7 @@ public class Restaurant1HostRole extends Role {
 		stateChanged();
 	}
 
-	public void msgApplyingforbreak(Waiter w){
+	public void msgApplyingforbreak(Restaurant1Waiter w){
 		mywaiter mw = findwaiter(w);
 		mw.s = state.applyingforwork;
 		stateChanged();

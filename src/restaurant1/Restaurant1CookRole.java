@@ -9,9 +9,9 @@ import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketCashier;
 import restaurant1.gui.CookGui;
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Cook;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Cashier;
+import restaurant1.interfaces.Restaurant1Cook;
+import restaurant1.interfaces.Restaurant1Waiter;
 import restaurant1.shareddata.*;
 import market.interfaces.MarketTruck;
 import market.Food;
@@ -19,9 +19,9 @@ import market.Food;
 
 //Add case in scheduler to tell markettruck to go back
 
-public  class Restaurant1CookRole extends Role implements Cook {
+public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public CookGui cookGui = null;
-	private Cashier cashier;
+	private Restaurant1Cashier cashier;
 	private MarketTruck truck;
 	private MarketCashier marketCashier;
 	private Restaurant1RevolvingStand revStand = new Restaurant1RevolvingStand();
@@ -65,7 +65,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 		this.cookGui = cookGui;
 	}
 	
-	public void setCashier(Cashier c){
+	public void setCashier(Restaurant1Cashier c){
 		cashier = c;
 	}
 	
@@ -83,7 +83,7 @@ public  class Restaurant1CookRole extends Role implements Cook {
 	
 	Timer timer = new Timer();
 
-	public void msghereisorder(Waiter w, String choice, int table){
+	public void msghereisorder(Restaurant1Waiter w, String choice, int table){
 		order.add(new Order(w, choice, table));
 		stateChanged();
 	}

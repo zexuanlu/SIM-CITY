@@ -3,8 +3,8 @@ package restaurant1.test.mock;
 
 import java.util.Map;
 
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Customer;
+import restaurant1.interfaces.Restaurant1Cashier;
+import restaurant1.interfaces.Restaurant1Customer;
 
 /**
  * A sample MockCustomer built to unit test a CashierAgent.
@@ -12,12 +12,12 @@ import restaurant1.interfaces.Customer;
  * @author Monroe Ekilah
  *
  */
-public class MockCustomer extends Mock implements Customer {
+public class MockCustomer extends Mock implements Restaurant1Customer {
 
 	/**
 	 * Reference to the Cashier under test that can be set by the unit test.
 	 */
-	public Cashier cashier;
+	public Restaurant1Cashier cashier;
 	public EventLog log = new EventLog();
 	public MockCustomer(String name) {
 		super(name);

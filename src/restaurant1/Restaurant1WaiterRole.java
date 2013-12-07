@@ -1,9 +1,9 @@
 package restaurant1;
 
 import restaurant1.gui.WaiterGui;
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Cashier;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 import person.interfaces.Person;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the Restaurant1HostRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements Waiter {
+public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements Restaurant1Waiter {
 
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
@@ -28,7 +28,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	public WaiterGui waiterGui = null;
 	private Restaurant1HostRole host = null;
 	private Restaurant1CookRole cook= null;
-	private Cashier cashier = null;
+	private Restaurant1Cashier cashier = null;
 	private List<mycustomer> customer = new ArrayList<mycustomer>();
 	
 	public Map<String, Double> menue = new HashMap<String, Double>();
@@ -49,7 +49,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		menue.put("Pizza", 8.99);
 	}
 	
-	public mycustomer findagent(Customer mc){
+	public mycustomer findagent(Restaurant1Customer mc){
 		mycustomer a = null;
 		for(mycustomer m: customer){
 			if(mc == m.c){
@@ -80,7 +80,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		this.cook = cook;
 	}
 	
-	public void setCashier(Cashier cashier){
+	public void setCashier(Restaurant1Cashier cashier){
 		this.cashier = cashier;
 	}
 	
@@ -103,24 +103,24 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	
 	// Messages
 
-	public void msgIWantFood(Customer cust, int table, int loc) {
+	public void msgIWantFood(Restaurant1Customer cust, int table, int loc) {
 		customer.add(new mycustomer(cust, table, loc));
 		stateChanged();
 	}
 
-	public void msgreadytoorder(Customer customer){
+	public void msgreadytoorder(Restaurant1Customer customer){
 		mycustomer mc =findagent(customer);
 		mc.s = state.readytoorder;
 		stateChanged();
 	}
 	
-	public void msgAnimationDoneAtTable(Customer customer){
+	public void msgAnimationDoneAtTable(Restaurant1Customer customer){
 		mycustomer mc =findagent(customer);
 		mc.s = state.attable;
 		stateChanged();
 	}
 	
-	public void msgorderisready(Customer customer, String choice, int table){
+	public void msgorderisready(Restaurant1Customer customer, String choice, int table){
 		mycustomer mc =findagent(customer);
 		mc.s = state.ordered;
 		mc.table = table;
@@ -140,14 +140,14 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		stateChanged();
 	}
 	
-	public void msgordertotable(Customer customer){
+	public void msgordertotable(Restaurant1Customer customer){
 		mycustomer mc = findagent(customer);
 		mc.s = state.bringattable;
 		stateChanged();
 	}
 	
 	
-	public void msgLeavingTable(Customer c) {
+	public void msgLeavingTable(Restaurant1Customer c) {
 		mycustomer mc = findagent(c);
 		mc.s = state.done;
 		stateChanged();
@@ -177,7 +177,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		stateChanged();
 	}
 	
-	public void msgHereistheCheck(Customer c, double p){
+	public void msgHereistheCheck(Restaurant1Customer c, double p){
 		mycustomer mc = findagent(c);
 		mc.s = state.checkingbill;
 		stateChanged();
@@ -274,7 +274,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		//waiterGui.Dotakecustomer(customer.c);
 	}
 	
-	public void Seating(Customer c){
+	public void Seating(Restaurant1Customer c){
 		mycustomer mc = findagent(c);
 		waiterGui.DoGotoCHomePosition(mc.location);
 		try {

@@ -1,11 +1,11 @@
 package restaurant1.test.mock;
 
 import market.interfaces.MarketCashier;
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Cashier;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 
-public class MockRestaurantCashier extends Mock implements Cashier{
+public class MockRestaurantCashier extends Mock implements Restaurant1Cashier{
 
 	public MockRestaurantCashier(String name) {
 		super(name);
@@ -13,13 +13,13 @@ public class MockRestaurantCashier extends Mock implements Cashier{
 	}
 
 	@Override
-	public void msgCheckthePrice(Waiter w, Customer c, String choice) {
+	public void msgCheckthePrice(Restaurant1Waiter w, Restaurant1Customer c, String choice) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgPayment(Customer c, double paying) {
+	public void msgPayment(Restaurant1Customer c, double paying) {
 		// TODO Auto-generated method stub
 		
 	}

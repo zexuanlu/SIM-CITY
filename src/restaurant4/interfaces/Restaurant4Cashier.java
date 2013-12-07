@@ -1,12 +1,13 @@
 package restaurant4.interfaces;
 
+import restaurant.RestaurantCashier;
 /**
  * A sample Cashier interface built to unit test a CashierAgent.
  *
  * @author Joseph Boman
  *
  */
-public interface Restaurant4Cashier {
+public interface Restaurant4Cashier extends RestaurantCashier{
 	/**
 	 * @param food The food that the customer ordered
 	 * @param c The customer who needs to pay

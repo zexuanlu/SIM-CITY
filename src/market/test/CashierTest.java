@@ -14,8 +14,8 @@ import market.interfaces.MarketCustomer;
 import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
+import restaurant.RestaurantCook;
 import restaurant1.*;
-import restaurant1.interfaces.Cook;
 import restaurant1.test.mock.MockRestaurantCashier;
 import restaurant1.test.mock.MockRestaurantCook;
 

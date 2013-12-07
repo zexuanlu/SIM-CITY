@@ -4,10 +4,10 @@ import java.util.List;
 
 import market.Food;
 import market.interfaces.MarketTruck;
-import restaurant1.interfaces.Cook;
+import restaurant.RestaurantCook;
 import restaurant4.interfaces.Restaurant4Waiter;
 
-public class MockRestaurantCook extends Mock implements Cook{
+public class MockRestaurantCook extends Mock implements RestaurantCook{
 
 	public MockRestaurantCook(String name) {
 		super(name);

@@ -3,9 +3,9 @@ package market.interfaces;
 import java.util.List;
 
 import market.*;
+import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Cook;
+import restaurant1.interfaces.Restaurant1Cashier;
 
 public interface MarketCashier {
 
@@ -18,12 +18,12 @@ public interface MarketCashier {
 	public abstract void msgGoToTable(MarketCustomer customer);
 	// end of in market scenario
 
-	public abstract void MsgIwantFood(Cook cook, Cashier ca, List<Food> food, int number);
+	public abstract void MsgIwantFood(RestaurantCook cook, Restaurant1Cashier ca, List<Food> food, int number);
 
-	public abstract void msgBillFromTheAir(Cashier ca, double money);
+	public abstract void msgBillFromTheAir(Restaurant1Cashier ca, double money);
 	
 	public void msgTruckBack(MarketTruck t);
 	
-	public void msgDevliveryFail(MarketTruck t, Cook cook, List<Food> food);
+	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food);
 	
 }

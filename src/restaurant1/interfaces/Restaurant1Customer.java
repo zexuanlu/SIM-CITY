@@ -2,6 +2,8 @@ package restaurant1.interfaces;
 
 import java.util.Map;
 
+import restaurant.RestaurantCustomer;
+
 
 /**
  * A sample Customer interface built to unit test a CashierAgent.
@@ -9,9 +11,7 @@ import java.util.Map;
  * @author Monroe Ekilah
  *
  */
-public interface Customer {
-
-public void gotHungry();
+public interface Restaurant1Customer extends RestaurantCustomer{
 
 public void msgAskforStatus();
 
