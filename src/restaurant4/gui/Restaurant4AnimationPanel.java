@@ -18,8 +18,8 @@ import java.util.ArrayList;
 public class Restaurant4AnimationPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 2L;
-	private final int WINDOWX = 450;
-    private final int WINDOWY = 350;
+	private final int WINDOWX = 540;
+    private final int WINDOWY = 480;
     static final int TIMERCOUNT = 20;
     static final int TABLEDIST = 100;
     static final int TABLEX = 50;

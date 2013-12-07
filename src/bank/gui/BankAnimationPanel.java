@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class BankAnimationPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 2L;
-	private final int WINDOWX = 640;
+	private final int WINDOWX = 540;
     private final int WINDOWY = 480;
     static final int TIMERCOUNT = 20;
     static final int TELLERBOOTHSIZE = 20;
