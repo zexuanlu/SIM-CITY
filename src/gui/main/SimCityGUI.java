@@ -49,6 +49,7 @@ import simcity.gui.CarGui;
 import utilities.TimeCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -174,59 +175,80 @@ public class SimCityGUI extends JFrame {
 			aptGuis.add(new ApartmentTenantGui(r));
 		}
 		
+		// First quadrant locations
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-				new Position(140, 160), LocationType.Bank);
+				new Position(80, 130), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(220, 160), LocationType.Market);
+				new Position(150, 130), LocationType.Market);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 130), LocationType.Restaurant1);
+		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(290, 130), LocationType.Restaurant2);
+		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(290, 60), LocationType.Restaurant3);
+		
+		// Second quadrant locations
+		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
+				new Position(640, 130), LocationType.Bank);
+		Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
+				new Position(430, 130), LocationType.Market);
+		// FIX HOST ROLES
+		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
+		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(570, 130), LocationType.Restaurant2);
+		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(430, 60), LocationType.Restaurant3);		
+		
+		// Third quadrant locations
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
-				new Position(340, 160), 1, LocationType.Home);
+				new Position(430, 270), 1, LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
-				new Position(340, 80), 2, LocationType.Home);
+				new Position(430, 350), 2, LocationType.Home);
 		Home home3 = new Home("Home 3", homeOwnerRole3, 
-				new Position(450, 160), 3, LocationType.Home);
+				new Position(500, 270), 3, LocationType.Home);
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
-				new Position(540, 160), 4, LocationType.Home);
+				new Position(570, 270), 4, LocationType.Home);
+		// FIX
+		Home home5 = new Home("Home 5", homeOwnerRole4, 
+				new Position(640, 270), 4, LocationType.Home);
 		
-		// NOTE TO JENNIE: can these apartments all be initialized to the same location..? 
+		// Fourth quadrant locations
+		// First apartment complex
 		Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
-				new Position(340, 280), 5, LocationType.Apartment);
+				new Position(40, 270), 5, LocationType.Apartment);
 		Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
-				new Position(340, 320), 6, LocationType.Apartment);
+				new Position(40, 270), 6, LocationType.Apartment);
 		Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
-				new Position(380, 280), 7, LocationType.Apartment);
+				new Position(40, 270), 7, LocationType.Apartment);
 		Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
-				new Position(380, 320), 8, LocationType.Apartment);
+				new Position(40, 270), 8, LocationType.Apartment);
 		Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
-				new Position(340, 280), 9, LocationType.Apartment);
-		Apartment apt6 = new Apartment("Apartment 1", aptTenants.get(5), 
-				new Position(340, 280), 10, LocationType.Apartment);
-		Apartment apt7 = new Apartment("Apartment 1", aptTenants.get(6), 
-				new Position(340, 280), 11, LocationType.Apartment);
-		Apartment apt8 = new Apartment("Apartment 1", aptTenants.get(7), 
-				new Position(340, 280), 12, LocationType.Apartment);
-		Apartment apt9 = new Apartment("Apartment 1", aptTenants.get(8), 
-				new Position(340, 280), 13, LocationType.Apartment);
-		Apartment apt10 = new Apartment("Apartment 1", aptTenants.get(10), 
-				new Position(340, 280), 14, LocationType.Apartment);
-		Apartment apt11 = new Apartment("Apartment 1", aptTenants.get(11), 
-				new Position(340, 280), 15, LocationType.Apartment);
-		Apartment apt12 = new Apartment("Apartment 1", aptTenants.get(12), 
-				new Position(340, 280), 16, LocationType.Apartment);
-		Apartment apt13 = new Apartment("Apartment 1", aptTenants.get(13), 
-				new Position(340, 280), 17, LocationType.Apartment);
-		Apartment apt14 = new Apartment("Apartment 1", aptTenants.get(14), 
-				new Position(340, 280), 18, LocationType.Apartment);
-		Apartment apt15 = new Apartment("Apartment 1", aptTenants.get(15), 
-				new Position(340, 280), 19, LocationType.Apartment);
-		Apartment apt16 = new Apartment("Apartment 1", aptTenants.get(16), 
-				new Position(340, 280), 20, LocationType.Apartment);
-		Apartment apt17 = new Apartment("Apartment 1", aptTenants.get(17), 
-				new Position(340, 280), 21, LocationType.Apartment);
+				new Position(40, 270), 9, LocationType.Apartment);
+		Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
+				new Position(40, 270), 10, LocationType.Apartment);
+		Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
+				new Position(40, 270), 11, LocationType.Apartment);
+		Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
+				new Position(40, 270), 12, LocationType.Apartment);
+		Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
+				new Position(40, 270), 13, LocationType.Apartment);
+		Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
+				new Position(40, 270), 14, LocationType.Apartment);
+		Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
+				new Position(40, 270), 15, LocationType.Apartment);
+		Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
+				new Position(40, 270), 16, LocationType.Apartment);
+		Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
+				new Position(40, 270), 17, LocationType.Apartment);
+		Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
+				new Position(40, 270), 18, LocationType.Apartment);
+		Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
+				new Position(40, 270), 19, LocationType.Apartment);
+		Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
+				new Position(40, 270), 20, LocationType.Apartment);
 		
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant1);
+		// Second apartment complex
+		Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
+				new Position(120, 270), 21, LocationType.Apartment);
+		
+		
 		rest1.setCashier(cashier1);
 		rest1.setCook(cook1);
-		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(0,0), LocationType.Restaurant4);
 		rest4.setCashier(cashier4);
 		rest4.setCook(cook4);
 		
