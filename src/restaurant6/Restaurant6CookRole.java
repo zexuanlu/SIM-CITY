@@ -22,6 +22,9 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	// Timer to cook food
 	Timer cookTimer = new Timer(); 
 	
+	// Timer to check stand
+	Timer standTimer = new Timer();
+	
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
 	
@@ -129,6 +132,13 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		foods.put("Steak", new Restaurant6Food("Steak", steakTime, steakAmount));
 		foods.put("Salad", new Restaurant6Food("Salad", saladTime, saladAmount));
 		foods.put("Pizza", new Restaurant6Food("Pizza", pizzaTime, pizzaAmount));
+		
+		// Initializes check stand timer
+		standTimer.schedule(new TimerTask() {
+			public void run() {
+				msgCheckStand();
+			}
+		}, 1000); 
 	}
 	
 	// Sets the gui for the cook
@@ -234,7 +244,7 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 //	}
 	
 	// Message from market with order fulfillment
-	public void orderFulfilled(List<Food> order) {
+	public void msgHereisYourFood(List<Food> order) {
 		orderPlaced = false;
 		
 		MarketOrder tempOrder = new MarketOrder(MarketOrder.MarketOrderState.Fulfilled);
@@ -290,7 +300,7 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 //					}
 //				}
 				for (MarketOrder r : ordersToMarket) {
-					if (r.state == MarketOrder.MarketOrderState.Fulfilled && !orderPlaced) {
+					if (r.state == MarketOrder.MarketOrderState.Fulfilled) { // && !orderPlaced) {
 						changeInventory(r);
 						return true;
 					}
@@ -415,10 +425,24 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		
 		Restaurant6Order tempOrder = revolvingStand.remove();
 		
-		print("Picked up order of " + tempOrder.getOrder());
-		log.add(new LoggedEvent("Picked up order of " + tempOrder.getOrder()));
+		if (tempOrder != null) {
+			print("Picked up order of " + tempOrder.getOrder());
+			log.add(new LoggedEvent("Picked up order of " + tempOrder.getOrder()));
+			
+			cookOrders.add(tempOrder);
+		}
 		
-		cookOrders.add(tempOrder);
+		else {
+			if (cookGui != null) {
+				cookGui.DoGoToHome();
+			}
+		}
+		
+		standTimer.schedule(new TimerTask() {
+			public void run() {
+				msgCheckStand();
+			}
+		}, 1000); 
 		
 		checkingStand = false;
 	}
