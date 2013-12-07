@@ -174,9 +174,9 @@ public class MarketAgent extends Agent implements Restaurant6Market{
 			canFulfillAll = true;
 		}
 		
-		if (!canFulfillAll) {
-			cook.msgCannotFulfill(ordersToCook);
-		}		
+//		if (!canFulfillAll) {
+//			cook.msgCannotFulfill(ordersToCook);
+//		}		
 		
 		double tempAmount = 0; // To hold the amount that the cashier will owe
 		
@@ -196,7 +196,7 @@ public class MarketAgent extends Agent implements Restaurant6Market{
 			public void run() {
 				print("Finished fulfilling the cook's request");
 				// Send a message to the cook fulfilling order
-				cook.orderFulfilled(ordersCanFulfill);
+//				cook.orderFulfilled(ordersCanFulfill);
 				stateChanged();
 			}
 		}, 50000);

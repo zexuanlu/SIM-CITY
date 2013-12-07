@@ -2,8 +2,8 @@ package market.test.mock;
 
 import java.util.List;
 
+import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Cook;
 import market.Food;
 import market.interfaces.MarketTruck;
 
@@ -24,7 +24,7 @@ public class MockTruck extends Mock implements MarketTruck{
 
 
 	@Override
-	public void gotoPosition(Cook c, List<Food> food, int x,
+	public void gotoPosition(RestaurantCook c, List<Food> food, int x,
 			int y) {
 		// TODO Auto-generated method stub
 		log.add(new LoggedEvent("Got it"));

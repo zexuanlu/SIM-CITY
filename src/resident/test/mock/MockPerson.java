@@ -7,9 +7,9 @@ import java.util.PriorityQueue;
 
 import market.Food;
 import agent.Role;
+import person.SimEvent;
 import person.Location;
 import person.Position;
-import person.SimEvent;
 import person.interfaces.Person;
 import simcity.CityMap;
 

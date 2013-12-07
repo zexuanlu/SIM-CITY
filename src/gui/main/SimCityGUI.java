@@ -4,6 +4,8 @@ import gui.panels.*;
 
 import javax.swing.*;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketTruckGui; 
 import person.Apartment;
@@ -40,6 +42,7 @@ import resident.ApartmentLandlordRole;
 import resident.ApartmentLandlordRole.MyTenant;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
+import resident.gui.ApartmentAnimationPanel;
 import resident.gui.ApartmentTenantGui;
 import resident.gui.HomeOwnerGui;
 import simcity.BusRole;
@@ -80,26 +83,32 @@ public class SimCityGUI extends JFrame {
 	public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
 	public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
 	
-	public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT01", 5, initPerson);
+	public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT5", 5, initPerson);
 	
-	public ApartmentTenantRole apartmentTenant1 = new ApartmentTenantRole("APT01", 5, initPerson);
-	public ApartmentTenantRole apartmentTenant2 = new ApartmentTenantRole("APT02", 6, initPerson);
-	public ApartmentTenantRole apartmentTenant3 = new ApartmentTenantRole("APT03", 7, initPerson);
-	public ApartmentTenantRole apartmentTenant4 = new ApartmentTenantRole("APT04", 8, initPerson);
-	public ApartmentTenantRole apartmentTenant5 = new ApartmentTenantRole("APT04", 9, initPerson);
-	public ApartmentTenantRole apartmentTenant6 = new ApartmentTenantRole("APT04", 10, initPerson);
-	public ApartmentTenantRole apartmentTenant7 = new ApartmentTenantRole("APT04", 11, initPerson);
-	public ApartmentTenantRole apartmentTenant8 = new ApartmentTenantRole("APT04", 12, initPerson);
-	public ApartmentTenantRole apartmentTenant9 = new ApartmentTenantRole("APT04", 13, initPerson);
-	public ApartmentTenantRole apartmentTenant10 = new ApartmentTenantRole("APT04", 14, initPerson);
-	public ApartmentTenantRole apartmentTenant11 = new ApartmentTenantRole("APT04", 15, initPerson);
-	public ApartmentTenantRole apartmentTenant12 = new ApartmentTenantRole("APT04", 16, initPerson);
-	public ApartmentTenantRole apartmentTenant13 = new ApartmentTenantRole("APT04", 17, initPerson);
-	public ApartmentTenantRole apartmentTenant14 = new ApartmentTenantRole("APT04", 18, initPerson);
-	public ApartmentTenantRole apartmentTenant15 = new ApartmentTenantRole("APT04", 19, initPerson);
-	public ApartmentTenantRole apartmentTenant16 = new ApartmentTenantRole("APT04", 20, initPerson);
-	public ApartmentTenantRole apartmentTenant17 = new ApartmentTenantRole("APT04", 21, initPerson);
-	public ApartmentTenantRole apartmentTenant18 = new ApartmentTenantRole("APT04", 22, initPerson);
+//	public ApartmentTenantRole apartmentTenant1 = new ApartmentTenantRole("APT01", 5, initPerson);
+//	public ApartmentTenantRole apartmentTenant2 = new ApartmentTenantRole("APT02", 6, initPerson);
+//	public ApartmentTenantRole apartmentTenant3 = new ApartmentTenantRole("APT03", 7, initPerson);
+//	public ApartmentTenantRole apartmentTenant4 = new ApartmentTenantRole("APT04", 8, initPerson);
+//	public ApartmentTenantRole apartmentTenant5 = new ApartmentTenantRole("APT05", 9, initPerson);
+//	public ApartmentTenantRole apartmentTenant6 = new ApartmentTenantRole("APT06", 10, initPerson);
+//	public ApartmentTenantRole apartmentTenant7 = new ApartmentTenantRole("APT07", 11, initPerson);
+//	public ApartmentTenantRole apartmentTenant8 = new ApartmentTenantRole("APT08", 12, initPerson);
+//	public ApartmentTenantRole apartmentTenant9 = new ApartmentTenantRole("APT09", 13, initPerson);
+//	public ApartmentTenantRole apartmentTenant10 = new ApartmentTenantRole("APT10", 14, initPerson);
+//	public ApartmentTenantRole apartmentTenant11 = new ApartmentTenantRole("APT11", 15, initPerson);
+//	public ApartmentTenantRole apartmentTenant12 = new ApartmentTenantRole("APT12", 16, initPerson);
+//	public ApartmentTenantRole apartmentTenant13 = new ApartmentTenantRole("APT13", 17, initPerson);
+//	public ApartmentTenantRole apartmentTenant14 = new ApartmentTenantRole("APT14", 18, initPerson);
+//	public ApartmentTenantRole apartmentTenant15 = new ApartmentTenantRole("APT15", 19, initPerson);
+//	public ApartmentTenantRole apartmentTenant16 = new ApartmentTenantRole("APT16", 20, initPerson);
+//	public ApartmentTenantRole apartmentTenant17 = new ApartmentTenantRole("APT17", 21, initPerson);
+//	public ApartmentTenantRole apartmentTenant18 = new ApartmentTenantRole("APT18", 22, initPerson);
+	
+	// List of apartment tenant roles
+	private List<ApartmentTenantRole> aptTenants;
+	
+	// List of apartment tenant GUIs
+	private List<ApartmentTenantGui> aptGuis;
 	
 	public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
 	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
@@ -124,25 +133,26 @@ public class SimCityGUI extends JFrame {
 	public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
 	public HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
 	
-	public ApartmentTenantGui ag1 = new ApartmentTenantGui(apartmentTenant1);
-	public ApartmentTenantGui ag2 = new ApartmentTenantGui(apartmentTenant2);
-	public ApartmentTenantGui ag3 = new ApartmentTenantGui(apartmentTenant3);
-	public ApartmentTenantGui ag4 = new ApartmentTenantGui(apartmentTenant4);
-	public ApartmentTenantGui ag5 = new ApartmentTenantGui(apartmentTenant5);
-	public ApartmentTenantGui ag6 = new ApartmentTenantGui(apartmentTenant6);
-	public ApartmentTenantGui ag7 = new ApartmentTenantGui(apartmentTenant5);
-	public ApartmentTenantGui ag8 = new ApartmentTenantGui(apartmentTenant6);
-	public ApartmentTenantGui ag9 = new ApartmentTenantGui(apartmentTenant7);
-	public ApartmentTenantGui ag10 = new ApartmentTenantGui(apartmentTenant8);
-	public ApartmentTenantGui ag11 = new ApartmentTenantGui(apartmentTenant9);
-	public ApartmentTenantGui ag12 = new ApartmentTenantGui(apartmentTenant10);
-	public ApartmentTenantGui ag13 = new ApartmentTenantGui(apartmentTenant11);
-	public ApartmentTenantGui ag14 = new ApartmentTenantGui(apartmentTenant12);
-	public ApartmentTenantGui ag15 = new ApartmentTenantGui(apartmentTenant13);
-	public ApartmentTenantGui ag16 = new ApartmentTenantGui(apartmentTenant14);
-	public ApartmentTenantGui ag17 = new ApartmentTenantGui(apartmentTenant15);
-	public ApartmentTenantGui ag18 = new ApartmentTenantGui(apartmentTenant16);
-	public ApartmentTenantGui ag19 = new ApartmentTenantGui(apartmentTenant17);
+//	public ApartmentTenantGui ag1 = new ApartmentTenantGui(apartmentTenant1);
+//	public ApartmentTenantGui ag2 = new ApartmentTenantGui(apartmentTenant2);
+//	public ApartmentTenantGui ag3 = new ApartmentTenantGui(apartmentTenant3);
+//	public ApartmentTenantGui ag4 = new ApartmentTenantGui(apartmentTenant4);
+//	public ApartmentTenantGui ag5 = new ApartmentTenantGui(apartmentTenant5);
+//	public ApartmentTenantGui ag6 = new ApartmentTenantGui(apartmentTenant6);
+//	public ApartmentTenantGui ag7 = new ApartmentTenantGui(apartmentTenant5);
+//	public ApartmentTenantGui ag8 = new ApartmentTenantGui(apartmentTenant6);
+//	public ApartmentTenantGui ag9 = new ApartmentTenantGui(apartmentTenant7);
+//	public ApartmentTenantGui ag10 = new ApartmentTenantGui(apartmentTenant8);
+//	public ApartmentTenantGui ag11 = new ApartmentTenantGui(apartmentTenant9);
+//	public ApartmentTenantGui ag12 = new ApartmentTenantGui(apartmentTenant10);
+//	public ApartmentTenantGui ag13 = new ApartmentTenantGui(apartmentTenant11);
+//	public ApartmentTenantGui ag14 = new ApartmentTenantGui(apartmentTenant12);
+//	public ApartmentTenantGui ag15 = new ApartmentTenantGui(apartmentTenant13);
+//	public ApartmentTenantGui ag16 = new ApartmentTenantGui(apartmentTenant14);
+//	public ApartmentTenantGui ag17 = new ApartmentTenantGui(apartmentTenant15);
+//	public ApartmentTenantGui ag18 = new ApartmentTenantGui(apartmentTenant16);
+//	public ApartmentTenantGui ag19 = new ApartmentTenantGui(apartmentTenant17);
+	
 	public CityMap citymap; 
 
 	public List<PersonAgent> people = new ArrayList<PersonAgent>();
@@ -200,6 +210,19 @@ public class SimCityGUI extends JFrame {
 		public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
 		public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER"); */
 		
+		// List of apartment tenant roles
+		aptTenants = new ArrayList<ApartmentTenantRole>();
+		
+		for (int i = 5; i < 23; ++i) {
+			aptTenants.add(new ApartmentTenantRole("APT"+i, i, initPerson));
+		}
+		
+		// List of apartment tenant GUIs
+		aptGuis = new ArrayList<ApartmentTenantGui>();
+		
+		for (ApartmentTenantRole r : aptTenants) {
+			aptGuis.add(new ApartmentTenantGui(r));
+		}
 		
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(140, 160), LocationType.Bank);
@@ -213,39 +236,75 @@ public class SimCityGUI extends JFrame {
 				new Position(450, 160), 3, LocationType.Home);
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
 				new Position(540, 160), 4, LocationType.Home);
-		Apartment apt1 = new Apartment("Apartment 1", apartmentTenant1, 
+//		Apartment apt1 = new Apartment("Apartment 1", apartmentTenant1, 
+//				new Position(340, 280), 5, LocationType.Apartment);
+//		Apartment apt2 = new Apartment("Apartment 2", apartmentTenant2, 
+//				new Position(340, 320), 6, LocationType.Apartment);
+//		Apartment apt3 = new Apartment("Apartment 3", apartmentTenant3, 
+//				new Position(380, 280), 7, LocationType.Apartment);
+//		Apartment apt4 = new Apartment("Apartment 4", apartmentTenant4, 
+//				new Position(380, 320), 8, LocationType.Apartment);
+//		Apartment apt5 = new Apartment("Apartment 5", apartmentTenant5, 
+//				new Position(340, 280), 9, LocationType.Apartment);
+//		Apartment apt6 = new Apartment("Apartment 1", apartmentTenant6, 
+//				new Position(340, 280), 10, LocationType.Apartment);
+//		Apartment apt7 = new Apartment("Apartment 1", apartmentTenant7, 
+//				new Position(340, 280), 11, LocationType.Apartment);
+//		Apartment apt8 = new Apartment("Apartment 1", apartmentTenant8, 
+//				new Position(340, 280), 12, LocationType.Apartment);
+//		Apartment apt9 = new Apartment("Apartment 1", apartmentTenant9, 
+//				new Position(340, 280), 13, LocationType.Apartment);
+//		Apartment apt10 = new Apartment("Apartment 1", apartmentTenant10, 
+//				new Position(340, 280), 14, LocationType.Apartment);
+//		Apartment apt11 = new Apartment("Apartment 1", apartmentTenant11, 
+//				new Position(340, 280), 15, LocationType.Apartment);
+//		Apartment apt12 = new Apartment("Apartment 1", apartmentTenant12, 
+//				new Position(340, 280), 16, LocationType.Apartment);
+//		Apartment apt13 = new Apartment("Apartment 1", apartmentTenant13, 
+//				new Position(340, 280), 17, LocationType.Apartment);
+//		Apartment apt14 = new Apartment("Apartment 1", apartmentTenant14, 
+//				new Position(340, 280), 18, LocationType.Apartment);
+//		Apartment apt15 = new Apartment("Apartment 1", apartmentTenant15, 
+//				new Position(340, 280), 19, LocationType.Apartment);
+//		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant16, 
+//				new Position(340, 280), 20, LocationType.Apartment);
+//		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant17, 
+//				new Position(340, 280), 21, LocationType.Apartment);
+		
+		// NOTE TO JENNIE: can these apartments all be initialized to the same location..? 
+		Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
 				new Position(340, 280), 5, LocationType.Apartment);
-		Apartment apt2 = new Apartment("Apartment 2", apartmentTenant2, 
+		Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
 				new Position(340, 320), 6, LocationType.Apartment);
-		Apartment apt3 = new Apartment("Apartment 3", apartmentTenant3, 
+		Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
 				new Position(380, 280), 7, LocationType.Apartment);
-		Apartment apt4 = new Apartment("Apartment 4", apartmentTenant4, 
+		Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
 				new Position(380, 320), 8, LocationType.Apartment);
-		Apartment apt5 = new Apartment("Apartment 5", apartmentTenant5, 
+		Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
 				new Position(340, 280), 9, LocationType.Apartment);
-		Apartment apt6 = new Apartment("Apartment 1", apartmentTenant6, 
+		Apartment apt6 = new Apartment("Apartment 1", aptTenants.get(5), 
 				new Position(340, 280), 10, LocationType.Apartment);
-		Apartment apt7 = new Apartment("Apartment 1", apartmentTenant7, 
+		Apartment apt7 = new Apartment("Apartment 1", aptTenants.get(6), 
 				new Position(340, 280), 11, LocationType.Apartment);
-		Apartment apt8 = new Apartment("Apartment 1", apartmentTenant8, 
+		Apartment apt8 = new Apartment("Apartment 1", aptTenants.get(7), 
 				new Position(340, 280), 12, LocationType.Apartment);
-		Apartment apt9 = new Apartment("Apartment 1", apartmentTenant9, 
+		Apartment apt9 = new Apartment("Apartment 1", aptTenants.get(8), 
 				new Position(340, 280), 13, LocationType.Apartment);
-		Apartment apt10 = new Apartment("Apartment 1", apartmentTenant10, 
+		Apartment apt10 = new Apartment("Apartment 1", aptTenants.get(10), 
 				new Position(340, 280), 14, LocationType.Apartment);
-		Apartment apt11 = new Apartment("Apartment 1", apartmentTenant11, 
+		Apartment apt11 = new Apartment("Apartment 1", aptTenants.get(11), 
 				new Position(340, 280), 15, LocationType.Apartment);
-		Apartment apt12 = new Apartment("Apartment 1", apartmentTenant12, 
+		Apartment apt12 = new Apartment("Apartment 1", aptTenants.get(12), 
 				new Position(340, 280), 16, LocationType.Apartment);
-		Apartment apt13 = new Apartment("Apartment 1", apartmentTenant13, 
+		Apartment apt13 = new Apartment("Apartment 1", aptTenants.get(13), 
 				new Position(340, 280), 17, LocationType.Apartment);
-		Apartment apt14 = new Apartment("Apartment 1", apartmentTenant14, 
+		Apartment apt14 = new Apartment("Apartment 1", aptTenants.get(14), 
 				new Position(340, 280), 18, LocationType.Apartment);
-		Apartment apt15 = new Apartment("Apartment 1", apartmentTenant15, 
+		Apartment apt15 = new Apartment("Apartment 1", aptTenants.get(15), 
 				new Position(340, 280), 19, LocationType.Apartment);
-		Apartment apt16 = new Apartment("Apartment 1", apartmentTenant16, 
+		Apartment apt16 = new Apartment("Apartment 1", aptTenants.get(16), 
 				new Position(340, 280), 20, LocationType.Apartment);
-		Apartment apt17 = new Apartment("Apartment 1", apartmentTenant17, 
+		Apartment apt17 = new Apartment("Apartment 1", aptTenants.get(17), 
 				new Position(340, 280), 21, LocationType.Apartment);
 		
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
@@ -434,73 +493,84 @@ public class SimCityGUI extends JFrame {
 		homeOwnerRole4.setGui(hg4);
 		cityAnimPanel.house4Panel.addGui(hg4);
 		
-		ag1.isPresent = false;
-		apartmentTenant1.setGui(ag1);
-		cityAnimPanel.apt1Panel.addGui(ag1);
+//		ag1.isPresent = false;
+//		apartmentTenant1.setGui(ag1);
+//		cityAnimPanel.apt1Panel.addGui(ag1);
+//		
+//		ag2.isPresent = false;
+//		apartmentTenant2.setGui(ag2);
+//		cityAnimPanel.apt2Panel.addGui(ag2);
+//		
+//		ag3.isPresent = false;
+//		apartmentTenant3.setGui(ag3);
+//		cityAnimPanel.apt3Panel.addGui(ag3);
+//		
+//		ag4.isPresent = false;
+//		apartmentTenant4.setGui(ag4);
+//		cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag5.isPresent = false;
+//		apartmentTenant5.setGui(ag5);
+//		//cityAnimPanel.apt4Panel.addGui(ag5);
+//		
+//		ag6.isPresent = false;
+//		apartmentTenant6.setGui(ag6);
+//		//cityAnimPanel.apt4Panel.addGui(ag6);
+//		
+//		ag7.isPresent = false;
+//		apartmentTenant7.setGui(ag7);
+//		//cityAnimPanel.apt5Panel.addGui(ag7);
+//		
+//		ag8.isPresent = false;
+//		apartmentTenant8.setGui(ag8);
+//		//cityAnimPanel.apt4Panel.addGui(ag8);
+//		
+//		ag9.isPresent = false;
+//		apartmentTenant9.setGui(ag9);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag10.isPresent = false;
+//		apartmentTenant10.setGui(ag10);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag11.isPresent = false;
+//		apartmentTenant11.setGui(ag11);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag12.isPresent = false;
+//		apartmentTenant12.setGui(ag12);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag13.isPresent = false;
+//		apartmentTenant13.setGui(ag13);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag14.isPresent = false;
+//		apartmentTenant14.setGui(ag14);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag15.isPresent = false;
+//		apartmentTenant15.setGui(ag15);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag16.isPresent = false;
+//		apartmentTenant16.setGui(ag16);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
+//		
+//		ag17.isPresent = false;
+//		apartmentTenant17.setGui(ag17);
+//		//cityAnimPanel.apt4Panel.addGui(ag4);
 		
-		ag2.isPresent = false;
-		apartmentTenant2.setGui(ag2);
-		cityAnimPanel.apt2Panel.addGui(ag2);
+		// Loops through the apartment guis to add them to their animation panels
+		for (ApartmentTenantGui aptGui : aptGuis) {
+			aptGui.isPresent = false;
+			cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+		}
 		
-		ag3.isPresent = false;
-		apartmentTenant3.setGui(ag3);
-		cityAnimPanel.apt3Panel.addGui(ag3);
-		
-		ag4.isPresent = false;
-		apartmentTenant4.setGui(ag4);
-		cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag5.isPresent = false;
-		apartmentTenant5.setGui(ag5);
-		//cityAnimPanel.apt4Panel.addGui(ag5);
-		
-		ag6.isPresent = false;
-		apartmentTenant6.setGui(ag6);
-		//cityAnimPanel.apt4Panel.addGui(ag6);
-		
-		ag7.isPresent = false;
-		apartmentTenant7.setGui(ag7);
-		//cityAnimPanel.apt5Panel.addGui(ag7);
-		
-		ag8.isPresent = false;
-		apartmentTenant8.setGui(ag8);
-		//cityAnimPanel.apt4Panel.addGui(ag8);
-		
-		ag9.isPresent = false;
-		apartmentTenant9.setGui(ag9);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag10.isPresent = false;
-		apartmentTenant10.setGui(ag10);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag11.isPresent = false;
-		apartmentTenant11.setGui(ag11);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag12.isPresent = false;
-		apartmentTenant12.setGui(ag12);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag13.isPresent = false;
-		apartmentTenant13.setGui(ag13);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag14.isPresent = false;
-		apartmentTenant14.setGui(ag14);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag15.isPresent = false;
-		apartmentTenant15.setGui(ag15);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag16.isPresent = false;
-		apartmentTenant16.setGui(ag16);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
-		
-		ag17.isPresent = false;
-		apartmentTenant17.setGui(ag17);
-		//cityAnimPanel.apt4Panel.addGui(ag4);
+		// Loops through apartment tenant roles and sets to respective GUI
+		for (ApartmentTenantRole r : aptTenants) {
+			r.setGui(aptGuis.get(aptTenants.indexOf(r)));
+		}
 		
 		btg1.isPresent = false;
 		banktellerrole1.setGui(btg1);
@@ -584,62 +654,120 @@ public class SimCityGUI extends JFrame {
 		people.get(3).roles.get(1).role.switchPerson(people.get(3));
 		people.get(4).addRole(banktellerrole2, "Bank Teller");
 		people.get(4).roles.get(0).role.switchPerson(people.get(4));
-		people.get(4).addRole(apartmentTenant1, "Apt Tenant");
+//		people.get(4).addRole(apartmentTenant1, "Apt Tenant");
+//		people.get(4).roles.get(1).role.switchPerson(people.get(4));
+//		people.get(4).addRole(landlord, "Apt Landlord");
+//		people.get(4).roles.get(2).role.switchPerson(people.get(4));
+//		people.get(5).addRole(banktellerrole2, "Bank Teller");
+//		people.get(5).addRole(apartmentTenant2, "Apt Tenant");
+//		people.get(5).roles.get(1).role.switchPerson(people.get(5));
+//		people.get(6).addRole(marketemployeerole, "Market Employee");
+//		people.get(6).roles.get(0).role.switchPerson(people.get(6));
+//		people.get(6).addRole(apartmentTenant3, "Apt Tenant");
+//		people.get(6).roles.get(1).role.switchPerson(people.get(6));
+//		people.get(7).addRole(marketemployeerole, "Market Employee");
+//		people.get(7).addRole(apartmentTenant4, "Apt Tenant");
+//		people.get(7).roles.get(1).role.switchPerson(people.get(7));
+//		people.get(8).addRole(marketcashierrole, "Market Cashier");
+//		people.get(8).roles.get(0).role.switchPerson(people.get(8));
+//		people.get(8).addRole(apartmentTenant5, "Apt Tenant");
+//		people.get(8).roles.get(1).role.switchPerson(people.get(8));
+//		people.get(9).addRole(marketcashierrole, "Market Cashier");
+//		people.get(9).addRole(apartmentTenant6, "Apt Tenant");
+//		people.get(9).roles.get(1).role.switchPerson(people.get(9));
+//		people.get(10).addRole(cashier1, "Rest 1 Cashier");
+//		people.get(10).roles.get(0).role.switchPerson(people.get(10));
+//		people.get(10).addRole(apartmentTenant7, "Apt Tenant");
+//		people.get(10).roles.get(1).role.switchPerson(people.get(10));
+//		people.get(11).addRole(cashier1, "Rest 1 Cashier");
+//		people.get(11).addRole(apartmentTenant8, "Apt Tenant");
+//		people.get(11).roles.get(1).role.switchPerson(people.get(11));
+//		people.get(12).addRole(cook1, "Rest 1 Cook");
+//		people.get(12).roles.get(0).role.switchPerson(people.get(12));
+//		people.get(12).addRole(apartmentTenant9, "Apt Tenant");
+//		people.get(12).roles.get(1).role.switchPerson(people.get(12));
+//		people.get(13).addRole(cook1, "Rest 1 Cook");
+//		people.get(13).addRole(apartmentTenant10, "Apt Tenant");
+//		people.get(13).roles.get(1).role.switchPerson(people.get(13));
+//		people.get(14).addRole(waiter1, "Rest 1 Waiter");
+//		people.get(14).roles.get(0).role.switchPerson(people.get(14));
+//		people.get(14).addRole(apartmentTenant11, "Apt Tenant");
+//		people.get(14).roles.get(1).role.switchPerson(people.get(14));
+//		people.get(15).addRole(waiter1, "Rest 1 Waiter");
+//		people.get(15).addRole(apartmentTenant12, "Apt Tenant");
+//		people.get(15).roles.get(1).role.switchPerson(people.get(15));
+//		people.get(16).addRole(host1, "Rest 1 Host");
+//		people.get(16).roles.get(0).role.switchPerson(people.get(16));
+//		people.get(16).addRole(apartmentTenant13, "Apt Tenant");
+//		people.get(16).roles.get(1).role.switchPerson(people.get(16));
+//		people.get(17).addRole(host1, "Rest 1 Host");
+//		people.get(17).addRole(apartmentTenant14, "Apt Tenant");
+//		people.get(17).roles.get(1).role.switchPerson(people.get(17));
+//		people.get(18).addRole(apartmentTenant15, "Apt Tenant");
+//		people.get(18).roles.get(0).role.switchPerson(people.get(18));
+//		people.get(19).addRole(apartmentTenant16, "Apt Tenant");
+//		people.get(19).roles.get(0).role.switchPerson(people.get(19));
+//		people.get(20).addRole(apartmentTenant17, "Apt Tenant");
+//		people.get(20).roles.get(0).role.switchPerson(people.get(20));
+//		people.get(21).addRole(apartmentTenant18, "Apt Tenant");
+//		people.get(21).roles.get(0).role.switchPerson(people.get(21));
+		
+		people.get(4).addRole(aptTenants.get(0), "Apt Tenant");
 		people.get(4).roles.get(1).role.switchPerson(people.get(4));
 		people.get(4).addRole(landlord, "Apt Landlord");
 		people.get(4).roles.get(2).role.switchPerson(people.get(4));
 		people.get(5).addRole(banktellerrole2, "Bank Teller");
-		people.get(5).addRole(apartmentTenant2, "Apt Tenant");
+		people.get(5).addRole(aptTenants.get(1), "Apt Tenant");
 		people.get(5).roles.get(1).role.switchPerson(people.get(5));
 		people.get(6).addRole(marketemployeerole, "Market Employee");
 		people.get(6).roles.get(0).role.switchPerson(people.get(6));
-		people.get(6).addRole(apartmentTenant3, "Apt Tenant");
+		people.get(6).addRole(aptTenants.get(2), "Apt Tenant");
 		people.get(6).roles.get(1).role.switchPerson(people.get(6));
 		people.get(7).addRole(marketemployeerole, "Market Employee");
-		people.get(7).addRole(apartmentTenant4, "Apt Tenant");
+		people.get(7).addRole(aptTenants.get(3), "Apt Tenant");
 		people.get(7).roles.get(1).role.switchPerson(people.get(7));
 		people.get(8).addRole(marketcashierrole, "Market Cashier");
 		people.get(8).roles.get(0).role.switchPerson(people.get(8));
-		people.get(8).addRole(apartmentTenant5, "Apt Tenant");
+		people.get(8).addRole(aptTenants.get(4), "Apt Tenant");
 		people.get(8).roles.get(1).role.switchPerson(people.get(8));
 		people.get(9).addRole(marketcashierrole, "Market Cashier");
-		people.get(9).addRole(apartmentTenant6, "Apt Tenant");
+		people.get(9).addRole(aptTenants.get(5), "Apt Tenant");
 		people.get(9).roles.get(1).role.switchPerson(people.get(9));
 		people.get(10).addRole(cashier1, "Rest 1 Cashier");
 		people.get(10).roles.get(0).role.switchPerson(people.get(10));
-		people.get(10).addRole(apartmentTenant7, "Apt Tenant");
+		people.get(10).addRole(aptTenants.get(6), "Apt Tenant");
 		people.get(10).roles.get(1).role.switchPerson(people.get(10));
 		people.get(11).addRole(cashier1, "Rest 1 Cashier");
-		people.get(11).addRole(apartmentTenant8, "Apt Tenant");
+		people.get(11).addRole(aptTenants.get(7), "Apt Tenant");
 		people.get(11).roles.get(1).role.switchPerson(people.get(11));
 		people.get(12).addRole(cook1, "Rest 1 Cook");
 		people.get(12).roles.get(0).role.switchPerson(people.get(12));
-		people.get(12).addRole(apartmentTenant9, "Apt Tenant");
+		people.get(12).addRole(aptTenants.get(8), "Apt Tenant");
 		people.get(12).roles.get(1).role.switchPerson(people.get(12));
 		people.get(13).addRole(cook1, "Rest 1 Cook");
-		people.get(13).addRole(apartmentTenant10, "Apt Tenant");
+		people.get(13).addRole(aptTenants.get(9), "Apt Tenant");
 		people.get(13).roles.get(1).role.switchPerson(people.get(13));
 		people.get(14).addRole(waiter1, "Rest 1 Waiter");
 		people.get(14).roles.get(0).role.switchPerson(people.get(14));
-		people.get(14).addRole(apartmentTenant11, "Apt Tenant");
+		people.get(14).addRole(aptTenants.get(10), "Apt Tenant");
 		people.get(14).roles.get(1).role.switchPerson(people.get(14));
 		people.get(15).addRole(waiter1, "Rest 1 Waiter");
-		people.get(15).addRole(apartmentTenant12, "Apt Tenant");
+		people.get(15).addRole(aptTenants.get(11), "Apt Tenant");
 		people.get(15).roles.get(1).role.switchPerson(people.get(15));
 		people.get(16).addRole(host1, "Rest 1 Host");
 		people.get(16).roles.get(0).role.switchPerson(people.get(16));
-		people.get(16).addRole(apartmentTenant13, "Apt Tenant");
+		people.get(16).addRole(aptTenants.get(12), "Apt Tenant");
 		people.get(16).roles.get(1).role.switchPerson(people.get(16));
 		people.get(17).addRole(host1, "Rest 1 Host");
-		people.get(17).addRole(apartmentTenant14, "Apt Tenant");
+		people.get(17).addRole(aptTenants.get(13), "Apt Tenant");
 		people.get(17).roles.get(1).role.switchPerson(people.get(17));
-		people.get(18).addRole(apartmentTenant15, "Apt Tenant");
+		people.get(18).addRole(aptTenants.get(14), "Apt Tenant");
 		people.get(18).roles.get(0).role.switchPerson(people.get(18));
-		people.get(19).addRole(apartmentTenant16, "Apt Tenant");
+		people.get(19).addRole(aptTenants.get(15), "Apt Tenant");
 		people.get(19).roles.get(0).role.switchPerson(people.get(19));
-		people.get(20).addRole(apartmentTenant17, "Apt Tenant");
+		people.get(20).addRole(aptTenants.get(16), "Apt Tenant");
 		people.get(20).roles.get(0).role.switchPerson(people.get(20));
-		people.get(21).addRole(apartmentTenant18, "Apt Tenant");
+		people.get(21).addRole(aptTenants.get(17), "Apt Tenant");
 		people.get(21).roles.get(0).role.switchPerson(people.get(21));
 
 		for(int i = 18; i < 22; i++){
@@ -754,23 +882,28 @@ public class SimCityGUI extends JFrame {
 		cook1.setMarketCashier(marketcashierrole);
 		cook1.setCashier(cashier1);
 		
-		landlord.tenants.add(new MyTenant(apartmentTenant2, apartmentTenant2.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant3, apartmentTenant3.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant4, apartmentTenant4.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant5, apartmentTenant5.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant6, apartmentTenant6.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant7, apartmentTenant7.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant8, apartmentTenant8.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant9, apartmentTenant9.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant10, apartmentTenant10.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant11, apartmentTenant11.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant12, apartmentTenant12.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant13, apartmentTenant13.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant14, apartmentTenant14.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant15, apartmentTenant15.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant16, apartmentTenant16.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant17, apartmentTenant17.getAptNum()));
-		landlord.tenants.add(new MyTenant(apartmentTenant18, apartmentTenant18.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant2, apartmentTenant2.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant3, apartmentTenant3.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant4, apartmentTenant4.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant5, apartmentTenant5.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant6, apartmentTenant6.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant7, apartmentTenant7.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant8, apartmentTenant8.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant9, apartmentTenant9.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant10, apartmentTenant10.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant11, apartmentTenant11.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant12, apartmentTenant12.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant13, apartmentTenant13.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant14, apartmentTenant14.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant15, apartmentTenant15.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant16, apartmentTenant16.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant17, apartmentTenant17.getAptNum()));
+//		landlord.tenants.add(new MyTenant(apartmentTenant18, apartmentTenant18.getAptNum()));
+		
+		// Messages landlord with initial tenants
+		for (ApartmentTenantRole r : aptTenants) {
+			landlord.msgNewTenant(r, r.getAptNum());
+		}
 		
 		/*
 		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity

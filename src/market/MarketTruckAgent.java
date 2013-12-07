@@ -11,14 +11,14 @@ import simcity.astar.AStarTraversal;
 import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
+import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Cook;
 
 
 public class MarketTruckAgent extends Agent implements MarketTruck{
 	private MarketCustomerRole agent = null;
 	private int xDestination = 140, yDestination = 240;
-	Cook cook;
+	RestaurantCook cook;
 	List<Food> foodlist;
 	MarketCashier cashier;
 	MarketTruckGui myGui;
@@ -39,7 +39,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 
 	
-	public void gotoPosition(Cook c, List<Food> food, int dx, int dy){
+	public void gotoPosition(RestaurantCook c, List<Food> food, int dx, int dy){
 		
 	
 		this.cook = c;

@@ -23,6 +23,7 @@ public class CityControlPanel extends JPanel {
 	public AddPersonPanel addPPanel = new AddPersonPanel(this);
 	public InteractPersonPanel interactPanel = new InteractPersonPanel(this);
 	public TracePanel tracePanel = new TracePanel(this);
+	public ScenarioPanel scenarioPanel = new ScenarioPanel(this);
 
 	public CityControlPanel(SimCityGUI c) {
 		// PANEL SETUP
@@ -39,8 +40,10 @@ public class CityControlPanel extends JPanel {
 		this.add(addPPanel);
 		this.add(interactPanel);
 		this.add(tracePanel);
+		this.add(scenarioPanel);
 		
 		addPPanel.setSimCityGUI(simcitygui);
 		interactPanel.setSimCityGUI(simcitygui);
+		scenarioPanel.setSimCityGUI(simcitygui);
 	}
 }

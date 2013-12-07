@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import person.interfaces.*;
+import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Cook;
 import market.gui.MarketEmployeeGui;
 import market.interfaces.*;
 
@@ -50,12 +50,12 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	}
 
 	public class Myrest{
-		Cook cook;
+		RestaurantCook cook;
 		MarketTruck truck;
 		List<Food> order;
 		public state1 s1 = state1.collecting;
 		int restNum;
-		Myrest(Cook cook, List<Food> order, MarketTruck truck, int number){
+		Myrest(RestaurantCook cook, List<Food> order, MarketTruck truck, int number){
 			this.cook = cook;
 			this.order = order;
 			this.truck = truck;
@@ -88,7 +88,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 		stateChanged();
 	}
 
-	public void msgCollectTheDilivery(Cook cook, List<Food> food, MarketTruck truck, int number){
+	public void msgCollectTheDilivery(RestaurantCook cook, List<Food> food, MarketTruck truck, int number){
 		myrest.add(new Myrest(cook, food, truck, number));
 		stateChanged();
 	}

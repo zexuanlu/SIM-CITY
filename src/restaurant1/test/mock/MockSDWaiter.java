@@ -1,11 +1,11 @@
 package restaurant1.test.mock;
 
 import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 import restaurant1.test.mock.EventLog;
 
-public class MockSDWaiter extends Mock implements Waiter {
+public class MockSDWaiter extends Mock implements Restaurant1Waiter {
 
 	public EventLog log = new EventLog();
 	
@@ -13,19 +13,19 @@ public class MockSDWaiter extends Mock implements Waiter {
 		super("MockSDWaiter");
 	}
 
-	public void msgIWantFood(Customer cust, int table, int loc){
+	public void msgIWantFood(Restaurant1Customer cust, int table, int loc){
 		
 	}
 
-	public void msgreadytoorder(Customer customer){
+	public void msgreadytoorder(Restaurant1Customer customer){
 		log.add(new LoggedEvent("Customer " + customer.toString() + " is ready to order"));
 	}
 	
-	public void msgAnimationDoneAtTable(Customer customer){
+	public void msgAnimationDoneAtTable(Restaurant1Customer customer){
 		
 	}
 	
-	public void msgorderisready(Customer customer, String choice, int table){
+	public void msgorderisready(Restaurant1Customer customer, String choice, int table){
 		log.add(new LoggedEvent("Order for customer " + customer + " is ready"));
 	}
 	
@@ -40,13 +40,13 @@ public class MockSDWaiter extends Mock implements Waiter {
 	}
 
 	@Override
-	public void msgordertotable(Customer customer) {
+	public void msgordertotable(Restaurant1Customer customer) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgLeavingTable(Customer c) {
+	public void msgLeavingTable(Restaurant1Customer c) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -76,7 +76,7 @@ public class MockSDWaiter extends Mock implements Waiter {
 	}
 
 	@Override
-	public void msgHereistheCheck(Customer c, double p) {
+	public void msgHereistheCheck(Restaurant1Customer c, double p) {
 		// TODO Auto-generated method stub
 		
 	}

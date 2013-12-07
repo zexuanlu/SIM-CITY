@@ -50,18 +50,35 @@ public class MockWaiter extends Mock implements Restaurant6Waiter {
 	public void hereIsMyOrder(String myChoice, Restaurant6Customer customerAgent) {
 	}
 
+	/**
+	 * Host tells waiter to seat customer at table
+	 */
 	public void seatAtTable(Restaurant6Customer customer, int tableNum) {
 	}
 
+	/**
+	 * Host tells the waiter that the customer is at pick up spot
+	 */
 	public void msgCustomerAtFront() {
 	}
 
+	/**
+	 * Cook tells the waiter the restaurant is out of food
+	 */
 	public void outOfFood(Restaurant6Order o) {
 	}
 
+	/**
+	 * Cook tells waiter that order is ready
+	 */
 	public void orderIsReady(Restaurant6Order o) {
+		log.add(new LoggedEvent("Regular waiter received message that order of " + o.getOrder() + " is ready."));
+		System.out.println("Regular waiter received message that order of " + o.getOrder() + " is ready.");
 	}
 
+	/**
+	 * Host tells waiter it's okay to go on break
+	 */
 	public void goOnBreak(boolean allowedToGoOnBreak) {
 	}
 

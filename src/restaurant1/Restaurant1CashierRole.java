@@ -2,14 +2,14 @@ package restaurant1;
 
 import java.util.*;
 
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Cashier;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 import agent.Role;
 import person.interfaces.Person;
 import market.interfaces.MarketCashier;
 
-public class Restaurant1CashierRole extends Role implements Cashier{
+public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 	
 	String name;
 	public List<Check> check = Collections.synchronizedList(new ArrayList<Check>());
@@ -40,15 +40,15 @@ public class Restaurant1CashierRole extends Role implements Cashier{
 	}
 	
 	public class Check{
-		Waiter w;
-		public Customer c;
+		Restaurant1Waiter w;
+		public Restaurant1Customer c;
 		String choice;
 		public state s = state.checkrequst;
 		double pay;
 		public double price;
 		public double change;
 		
-		public Check(Waiter wa, Customer ca, String choice){
+		public Check(Restaurant1Waiter wa, Restaurant1Customer ca, String choice){
 			this.w = wa;
 			this.c = ca;
 			this.choice = choice;
@@ -56,7 +56,7 @@ public class Restaurant1CashierRole extends Role implements Cashier{
 	}
 	public enum state {checkrequst, checkback, payingcheck, checkdone};
 	
-	private Check find(Customer c){
+	private Check find(Restaurant1Customer c){
 		Check a = null;
 		for(Check m: check){
 			if(c == m.c){
@@ -67,12 +67,12 @@ public class Restaurant1CashierRole extends Role implements Cashier{
 		return a;
 	}
 	
-	public void msgCheckthePrice(Waiter w, Customer c, String choice){
+	public void msgCheckthePrice(Restaurant1Waiter w, Restaurant1Customer c, String choice){
 		check.add(new Check(w,c,choice));
 		stateChanged();
 	}
 	
-	public void msgPayment(Customer c, double paying){
+	public void msgPayment(Restaurant1Customer c, double paying){
 		Check C = find(c);
 		C.pay = paying;
 		C.s = state.payingcheck;
