@@ -296,6 +296,7 @@ public class PersonAgent extends Agent implements Person{
 						print("Activating a recurring event");
 						for(MyRole mr : roles){
 							if(mr.type.equals("Home Owner")){
+								//FIX
 								mr.setActive(false);
 								((HomeOwnerRole)mr.role).DoGoToFrontDoor();
 							}
@@ -314,10 +315,8 @@ public class PersonAgent extends Agent implements Person{
 			}
 			for(MyRole r : roles){
 				if(r.isActive){
-					//print("Executing rule in role "+ r.role);
 					boolean b;
 					b =  r.role.pickAndExecuteAnAction();
-					//Do("" + b + " "+ r.role);
 					return b;
 				}
 			}
@@ -773,7 +772,7 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(tr, "Apt Tenant");
 					newRole.setActive(true);
 					roles.add(newRole);
-					// FIX - Should we create a gui here? Or not?
+					/// FIX - Should we create a gui here? Or not?
 					((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					gui.setPresent(false);
 					toDo.remove(e);
