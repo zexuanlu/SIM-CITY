@@ -27,25 +27,19 @@ import agent.Role;
 import bank.*;
 import bank.gui.BankHostGui;
 import bank.gui.BankTellerGui;
-import bank.test.mock.MockBankHost;
 import market.*;
 import restaurant1.*;
 import restaurant1.gui.CookGui;
-import restaurant1.gui.CustomerGui;
 import restaurant1.gui.WaiterGui;
 import restaurant4.*;
-import market.test.mock.MockCashier;
 import person.Location;
 import resident.ApartmentLandlordRole;
-import resident.ApartmentLandlordRole.MyTenant;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
-import resident.gui.ApartmentAnimationPanel;
 import resident.gui.ApartmentTenantGui;
 import resident.gui.HomeOwnerGui;
 import simcity.BusRole;
 import simcity.BusStopAgent;
-import simcity.PassengerRole;
 import simcity.CarAgent;
 import simcity.CityMap;
 import simcity.astar.*;
@@ -163,7 +157,6 @@ public class SimCityGUI extends JFrame {
 	public BusStopGui bs7gui = new BusStopGui(busstop7, 420, 400);
 	public BusStopGui bs8gui = new BusStopGui(busstop8, 350, 400);	
 	public MarketTruckAgent truck;
-
 
 	public SimCityGUI() {
 		
