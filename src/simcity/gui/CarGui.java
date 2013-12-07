@@ -14,8 +14,8 @@ import java.awt.Graphics2D;
 public class CarGui implements Gui {
         
         int scale = 20;
-        int deadpositionX = 600;
-        int deadpositionY = 400;
+        int deadpositionX = 720;
+        int deadpositionY = 460;
         public boolean isPresent;
         
         List<Dimension> moves = new ArrayList<Dimension>();

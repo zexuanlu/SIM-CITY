@@ -16,10 +16,10 @@ public class CityMap {
 	//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
 
 	//bus information
-	int WIDTHTOTAL = 640; 
+	int WIDTHTOTAL = 740; 
 	int HEIGHTTOTAL = 480; 
-	int Street1 = 240; 
-	int Street2 = 300; 
+	int Street1 = 220; 
+	int Street2 =380; 
 
 	Map<Bus, ArrayList<BusStop>> routes = new HashMap<Bus, ArrayList<BusStop>>();
 	public Map<String,BusStop> busstops = new HashMap<String,BusStop>();  //map of name of stop to 
