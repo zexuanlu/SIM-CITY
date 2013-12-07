@@ -2,10 +2,10 @@ package resident.gui;
 
 import javax.swing.*;
 
-import agent.Gui;
 import person.interfaces.Person;
 import resident.HomeOwnerRole;
 import resident.interfaces.HomeOwner;
+import utilities.Gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

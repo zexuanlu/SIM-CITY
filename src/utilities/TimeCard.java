@@ -1,6 +1,9 @@
-package agent;
+package utilities;
 
 import java.util.*; 
+
+import agent.Agent;
+import agent.Role;
 import person.interfaces.*;
 
 public class TimeCard extends Agent {

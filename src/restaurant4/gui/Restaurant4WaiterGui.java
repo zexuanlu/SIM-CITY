@@ -2,7 +2,7 @@ package restaurant4.gui;
 
 import restaurant4.Restaurant4WaiterRole;
 import simcity.astar.Position;
-import agent.Gui;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.HashMap;

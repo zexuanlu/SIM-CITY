@@ -2,10 +2,10 @@ package person;
 
 import market.interfaces.MarketCashier;
 import person.Location.LocationType;
-import agent.TimeCard;
 import restaurant1.Restaurant1CashierRole;
 import restaurant1.Restaurant1CookRole;
 import restaurant1.Restaurant1HostRole;
+import utilities.TimeCard;
 
 public class Restaurant extends Location{
 	

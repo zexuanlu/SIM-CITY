@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import agent.TimeCard;
 import person.interfaces.Person;
+import utilities.TimeCard;
  //msgEndOfDay()
 public class SimWorldClock {
 	private Timer clock = new Timer();

@@ -7,11 +7,11 @@ import restaurant1.Restaurant1WaiterRole;
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Waiter;
 import simcity.gui.*;
+import utilities.Gui;
 
 import java.awt.*;
 
 import person.PersonAgent;
-import agent.Gui;
 
 public class WaiterGui implements Gui {
 	

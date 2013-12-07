@@ -2,13 +2,13 @@ package restaurant1.gui;
 
 import restaurant1.Restaurant1CustomerRole;
 import restaurant1.Restaurant1WaiterRole;
+import utilities.Gui;
 
 import java.awt.*;
 
 import javax.swing.ImageIcon;
 
 import person.PersonAgent;
-import agent.Gui;
 
 public class CustomerGui implements Gui{
 

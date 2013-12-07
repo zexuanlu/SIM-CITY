@@ -20,6 +20,7 @@ import person.SimEvent.EventType;
 import person.gui.PersonGui;
 import person.Location.LocationType;
 import simcity.CityMap;
+import utilities.TimeCard;
 import bank.test.mock.*;
 /*
  * Tests the role handoff between the TimeCard and the BankTellerRole sending the role off work 

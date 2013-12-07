@@ -2,7 +2,7 @@ package bank.gui;
 
 import javax.swing.*;
 
-import agent.Gui;
+import utilities.Gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

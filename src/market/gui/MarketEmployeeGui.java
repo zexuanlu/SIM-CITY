@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import person.PersonAgent;
-import agent.Gui;
+import utilities.Gui;
 import market.MarketEmployeeRole;
 
 public class MarketEmployeeGui implements Gui{

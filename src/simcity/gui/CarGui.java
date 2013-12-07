@@ -3,13 +3,12 @@ import simcity.BusRole;
 import simcity.astar.*; 
 import simcity.gui.BusGui.GuiState;
 import simcity.CarAgent; 
+import utilities.Gui;
 
 import java.util.*; 
 import java.awt.*; 
 import java.util.List; 
 import java.awt.Graphics2D;
-
-import agent.Gui;
 
 	
 public class CarGui implements Gui {

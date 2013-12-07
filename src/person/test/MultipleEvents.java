@@ -12,7 +12,6 @@ import market.test.mock.MockCashier;
 
 import org.junit.Test;
 
-import agent.TimeCard;
 import bank.BankTellerRole;
 import bank.test.mock.MockBankHost;
 import person.Bank;
@@ -22,6 +21,7 @@ import person.Position;
 import person.SimEvent;
 import person.Location.LocationType;
 import person.SimEvent.EventType;
+import utilities.TimeCard;
 
 public class MultipleEvents extends TestCase{
 	PersonAgent person = new PersonAgent("Grant");

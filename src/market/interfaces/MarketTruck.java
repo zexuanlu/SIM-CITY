@@ -2,8 +2,8 @@ package market.interfaces;
 
 import java.util.List;
 
-import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
+import utilities.restaurant.RestaurantCook;
 import market.Food;
 
 public interface MarketTruck {

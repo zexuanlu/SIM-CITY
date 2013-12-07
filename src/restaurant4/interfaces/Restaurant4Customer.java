@@ -1,7 +1,7 @@
 package restaurant4.interfaces;
 
-import restaurant.RestaurantCustomer;
 import restaurant4.Restaurant4Menu;
+import utilities.restaurant.RestaurantCustomer;
 
 /**
  * A sample Customer interface built to unit test a CashierAgent.

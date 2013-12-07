@@ -3,10 +3,9 @@ package restaurant6.gui;
 import restaurant6.Restaurant6AbstractWaiterRole;
 import restaurant6.Restaurant6HostRole; 
 import restaurant6.Restaurant6Table;
+import utilities.Gui;
 
 import java.awt.*;
-
-import agent.Gui;
 
 public class Restaurant6WaiterGui implements Gui {
 

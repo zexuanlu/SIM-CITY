@@ -2,8 +2,8 @@ package resident.gui;
 
 import javax.swing.*;  
 
-import agent.Gui;
 import person.interfaces.Person;
+import utilities.Gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

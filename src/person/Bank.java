@@ -1,5 +1,6 @@
 package person;
 
+import utilities.TimeCard;
 import agent.*;
 import bank.BankHostRole;
 import bank.interfaces.*;

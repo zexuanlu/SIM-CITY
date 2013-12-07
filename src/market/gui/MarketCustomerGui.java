@@ -3,7 +3,7 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import agent.Gui;
+import utilities.Gui;
 import market.MarketCustomerRole;
 
 public class MarketCustomerGui implements Gui {

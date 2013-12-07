@@ -26,7 +26,6 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import agent.Role;
-import agent.TimeCard;
 import bank.*;
 import bank.gui.BankHostGui;
 import bank.gui.BankTellerGui;
@@ -54,6 +53,7 @@ import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
+import utilities.TimeCard;
 
 import java.util.ArrayList;
 import java.util.List;

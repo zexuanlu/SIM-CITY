@@ -2,7 +2,7 @@ package restaurant1.interfaces;
 
 import java.util.Map;
 
-import restaurant.RestaurantCustomer;
+import utilities.restaurant.RestaurantCustomer;
 
 
 /**

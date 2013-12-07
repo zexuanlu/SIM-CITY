@@ -2,12 +2,11 @@ package restaurant6.gui;
 
 
 import restaurant6.Restaurant6CookRole;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import agent.Gui;
 
 public class Restaurant6CookGui implements Gui {
 

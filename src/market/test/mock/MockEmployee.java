@@ -2,8 +2,8 @@ package market.test.mock;
 
 import java.util.List;
 
-import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
+import utilities.restaurant.RestaurantCook;
 import market.Food;
 import market.interfaces.MarketCustomer;
 import market.interfaces.MarketEmployee;

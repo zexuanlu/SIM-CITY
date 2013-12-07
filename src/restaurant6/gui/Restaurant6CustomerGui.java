@@ -4,13 +4,12 @@ import restaurant6.Restaurant6CustomerRole;
 import restaurant6.Restaurant6HostRole;
 import restaurant6.Restaurant6Table;
 import restaurant6.Restaurant6WaiterRole;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import agent.Gui;
 
 public class Restaurant6CustomerGui implements Gui{
 

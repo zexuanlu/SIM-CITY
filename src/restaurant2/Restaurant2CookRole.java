@@ -4,9 +4,7 @@ import restaurant2.gui.CookGui;
 import restaurant2.interfaces.Customer;
 import restaurant2.interfaces.Waiter;
 import restaurant2.Restaurant2Order;
-import agent.Agent;
 import agent.Role;
-import apple.laf.JRSUIConstants.Size;
 
 import java.util.ArrayList;
 import java.util.Collections;

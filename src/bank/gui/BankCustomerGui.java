@@ -1,6 +1,5 @@
 package bank.gui;
 
-import agent.Gui;
 import bank.BankCustomerRole;
 
 import java.awt.*;
@@ -8,6 +7,7 @@ import java.util.*;
 
 import person.PersonAgent;
 import simcity.astar.Position;
+import utilities.Gui;
 
 /**
  * This class represents the 

@@ -11,7 +11,6 @@ import javax.swing.*;
 
 import market.gui.MarketTruckGui; 
 import market.gui.MarketAnimationPanel;
-import agent.Gui;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
@@ -24,6 +23,7 @@ import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
 import simcity.gui.PassengerGui;
+import utilities.Gui;
 import person.gui.PersonGui;
 import person.Location;
 import person.Restaurant;
