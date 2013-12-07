@@ -278,7 +278,11 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt16);
 		locations.add(apt17);
 		locations.add(rest1);
+		locations.add(rest2);
+		locations.add(rest3);
 		locations.add(rest4);
+		locations.add(rest5);
+		locations.add(rest6);
 		
 		for(Location location : locations){
 			cityAnimPanel.addLocation(location);

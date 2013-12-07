@@ -400,8 +400,10 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         		g2.setColor(Color.WHITE);
         		g2.fill(button.button);
         		g2.setColor(Color.BLACK);
-        		if(button.type.equals("Close") || button.type.equals("Open"))
+        		if(button.type.equals("Close"))
         			g2.drawString(button.type, (int)button.button.getMinX()-2, (int)button.button.getCenterY()+5);
+        		else if(button.type.equals("Open"))
+        			g2.drawString(button.type, (int)button.button.getMinX(), (int)button.button.getCenterY()+5);
         		else if(button.type.equals("Empty Stock"))
         			g2.drawString(button.type, (int)button.button.getMinX()-15, (int)button.button.getCenterY()+5);
         	}
@@ -511,16 +513,65 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   temp = new radialButton(new Ellipse2D.Double((int)restaurant1.getMaxX()-20, (int)restaurant1.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 1"));
 			   buttons.add(temp);
 		   }
+		   else if (me.getButton() == 3 && restaurant2.contains(me.getX(), me.getY())){
+			   radialButton temp;
+			   if(!locations.get("Rest 2").isClosed())
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant2.getX()-10, (int)restaurant2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Rest 2"));
+			   else
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant2.getX()-10, (int)restaurant2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Rest 2"));
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double((int)restaurant2.getMaxX()-20, (int)restaurant2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 2"));
+			   buttons.add(temp);
+		   }
+		   else if (me.getButton() == 3 && restaurant3.contains(me.getX(), me.getY())){
+			   radialButton temp;
+			   if(!locations.get("Rest 3").isClosed())
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant3.getX()-10, (int)restaurant3.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Rest 3"));
+			   else
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant3.getX()-10, (int)restaurant3.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Rest 3"));
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double((int)restaurant3.getMaxX()-20, (int)restaurant3.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 3"));
+			   buttons.add(temp);
+		   }
+		   else if (me.getButton() == 3 && restaurant4.contains(me.getX(), me.getY())){
+			   radialButton temp;
+			   if(!locations.get("Rest 4").isClosed())
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant4.getX()-10, (int)restaurant4.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Rest 4"));
+			   else
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant4.getX()-10, (int)restaurant4.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Rest 4"));
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double((int)restaurant4.getMaxX()-20, (int)restaurant4.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 4"));
+			   buttons.add(temp);
+		   }
+		   else if (me.getButton() == 3 && restaurant5.contains(me.getX(), me.getY())){
+			   radialButton temp;
+			   if(!locations.get("Rest 5").isClosed())
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant5.getX()-10, (int)restaurant5.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Rest 5"));
+			   else
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant5.getX()-10, (int)restaurant5.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Rest 5"));
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double((int)restaurant5.getMaxX()-20, (int)restaurant5.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 5"));
+			   buttons.add(temp);
+		   }
+		   else if (me.getButton() == 3 && restaurant6.contains(me.getX(), me.getY())){
+			   radialButton temp;
+			   if(!locations.get("Rest 2").isClosed())
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant6.getX()-10, (int)restaurant6.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Rest 2"));
+			   else
+				   temp = new radialButton(new Ellipse2D.Double((int)restaurant6.getX()-10, (int)restaurant6.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Rest 2"));
+			   buttons.add(temp);
+			   temp = new radialButton(new Ellipse2D.Double((int)restaurant6.getMaxX()-20, (int)restaurant6.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 2"));
+			   buttons.add(temp);
+		   }
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		System.out.println("Releasing mouse!");
 		if(buttons.isEmpty()){
 			
 		}
 		else if(me.getButton() == 3 && buttons.get(0).button.contains(me.getX(), me.getY())){
-			System.out.println(buttons.get(0).location.getName());
+			buttons.get(0).location.setClosed(!buttons.get(0).location.isClosed());
 		}
 		else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
 				System.out.println("Emptying stock of Restaurant");
