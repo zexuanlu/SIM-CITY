@@ -622,8 +622,7 @@ public class SimCityGUI extends JFrame {
 		SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
 		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
 		SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
-
-
+		
 		bankhostrole.addTeller(banktellerrole1);
 		bankhostrole.addTeller(banktellerrole2);
 		banktellerrole1.bh = bankhostrole;
