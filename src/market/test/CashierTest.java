@@ -14,10 +14,10 @@ import market.interfaces.MarketCustomer;
 import market.test.mock.*;
 import junit.framework.TestCase;
 import market.Food;
-import restaurant.RestaurantCook;
 import restaurant1.*;
 import restaurant1.test.mock.MockRestaurantCashier;
 import restaurant1.test.mock.MockRestaurantCook;
+import utilities.restaurant.RestaurantCook;
 
 public class CashierTest extends TestCase{
 

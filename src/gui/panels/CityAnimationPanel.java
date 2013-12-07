@@ -11,7 +11,6 @@ import javax.swing.*;
 
 import market.gui.MarketTruckGui; 
 import market.gui.MarketAnimationPanel;
-import agent.Gui;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
@@ -24,6 +23,7 @@ import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
 import simcity.gui.PassengerGui;
+import utilities.Gui;
 import person.gui.PersonGui;
 import person.Location;
 import person.Restaurant;
@@ -51,6 +51,19 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
 	public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
+	
+	public ImageIcon img = new ImageIcon("image/market1.png");
+	public Image m1 = img.getImage();
+	public ImageIcon img1 = new ImageIcon("image/bank.png");
+	public Image b = img1.getImage();
+	public ImageIcon img2 = new ImageIcon("image/house1.png");
+	public Image h1 = img2.getImage();
+	public ImageIcon img3 = new ImageIcon("image/market2.png");
+	public Image m2 = img3.getImage();
+	public ImageIcon img4 = new ImageIcon("image/house2.png");
+	public Image h2 = img4.getImage();
+	public ImageIcon img5 = new ImageIcon("image/house3.png");
+	public Image h3 = img5.getImage();
 	
 	// Creating the apartment panels
 //	public ApartmentAnimationPanel apt1Panel = new ApartmentAnimationPanel(5);
@@ -90,11 +103,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int APARTMENTSIZE = 10;
 	Timer timer;
 	
-	enum state {none, bank, market, restaurant1, house1, house2, house3, house4, apartment}
+	enum state {none, bank, market, restaurant1, restaurant4, house1, house2, house3, house4, apartment}
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D market = new Rectangle2D.Double(220, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D restaurant1 = new Rectangle2D.Double(220,80, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant4 = new Rectangle2D.Double(0,0, BUILDINGSIZE,BUILDINGSIZE);
 	Rectangle2D house1 = new Rectangle2D.Double(340, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house2 = new Rectangle2D.Double(340, 80, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house3 = new Rectangle2D.Double(450, 160, BUILDINGSIZE, BUILDINGSIZE);
@@ -284,12 +298,18 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(house4);
         g2.fill(market);
         g2.fill(restaurant1);
+        g2.fill(restaurant4);
 
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
         g2.fillRect(280, 0, 60, 480);
         g2.fillRect(0, 220, 640, 60);
         
+        g2.drawImage(b, 140, 160, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(m1, 220, 160, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h1, 340, 160, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h2, 340, 80, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h3, 540, 160, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         
         //Hover Text
     	g2.setColor(Color.BLACK);
@@ -301,6 +321,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         else if(s == state.restaurant1){
         	g2.drawString("Restaurant 1", 217, 115);
+        }
+        else if(s == state.restaurant4){
+        	g2.drawString("Restaurant 4", 20, 20);
         }
         else if(s == state.house1){
         	g2.drawString("House 1", 345, 195);
@@ -528,6 +551,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if(restaurant1.contains(me.getX(), me.getY())){
 			   s = state.restaurant1;
+		   }
+		   else if(restaurant4.contains(me.getX(), me.getY())){
+			   s = state.restaurant4;
 		   }
 		   else if(apartmentComplex1.contains(me.getX(), me.getY())){
 			   s = state.apartment;

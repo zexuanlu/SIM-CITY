@@ -1,4 +1,4 @@
-package restaurant;
+package utilities.restaurant;
 
 import java.util.List;
 

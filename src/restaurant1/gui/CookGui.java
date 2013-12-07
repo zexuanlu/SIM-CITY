@@ -7,9 +7,9 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import person.PersonAgent;
-import agent.Gui;
 import restaurant1.Restaurant1CookRole;
 import restaurant1.Restaurant1WaiterRole;
+import utilities.Gui;
 
 public class CookGui implements Gui{
 

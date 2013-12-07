@@ -1,7 +1,7 @@
 package restaurant4.gui;
 
 import restaurant4.Restaurant4CookRole;
-import agent.Gui;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.*;

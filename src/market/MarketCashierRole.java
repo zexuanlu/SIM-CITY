@@ -2,9 +2,8 @@ package market;
 
 import agent.*;
 import person.interfaces.*;
-import restaurant.RestaurantCashier;
-import restaurant.RestaurantCook;
-import restaurant1.interfaces.Restaurant1Cashier;
+import utilities.restaurant.RestaurantCashier;
+import utilities.restaurant.RestaurantCook;
 
 import java.util.*;
 

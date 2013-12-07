@@ -1,5 +1,6 @@
 package restaurant5.interfaces;
 
+import restaurant.RestaurantCustomer; 
 import restaurant5.Menu5;
 import restaurant5.gui.CustomerGui5; 
 import restaurant5.gui.FoodGui5;
@@ -10,7 +11,7 @@ import restaurant5.gui.FoodGui5;
  * @author Monroe Ekilah
  *
  */
-public interface Customer5 {
+public interface Customer5 extends RestaurantCustomer {
 	/**
 	 * @param total The cost according to the cashier
 	 *

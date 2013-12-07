@@ -4,8 +4,8 @@ import java.util.List;
 
 import market.Food;
 import market.interfaces.MarketTruck;
-import restaurant.RestaurantCook;
 import restaurant4.interfaces.Restaurant4Waiter;
+import utilities.restaurant.RestaurantCook;
 
 public class MockRestaurantCook extends Mock implements RestaurantCook{
 

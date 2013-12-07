@@ -120,12 +120,12 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		if(money > b.pay){
 			money-= b.pay;
 			Do("Here is "+ b.pay);
-			bill.get(0).m.msgBillFromTheAir(this, b.pay);
+			bill.get(0).m.msgBillFromTheAir(b.pay);
 			bill.remove(0);
 		}
 		else{
 			b.pay -= money;
-			bill.get(0).m.msgBillFromTheAir(this, money);
+			bill.get(0).m.msgBillFromTheAir(money);
 			money = 0;
 			Do("Money not enough, I will pay the rest next time");
 		}

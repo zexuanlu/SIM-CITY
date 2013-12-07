@@ -4,8 +4,6 @@ import gui.panels.*;
 
 import javax.swing.*;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketTruckGui; 
 import person.Apartment;
@@ -26,7 +24,6 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import agent.Role;
-import agent.TimeCard;
 import bank.*;
 import bank.gui.BankHostGui;
 import bank.gui.BankTellerGui;
@@ -36,6 +33,7 @@ import restaurant1.*;
 import restaurant1.gui.CookGui;
 import restaurant1.gui.CustomerGui;
 import restaurant1.gui.WaiterGui;
+import restaurant4.*;
 import market.test.mock.MockCashier;
 import person.Location;
 import resident.ApartmentLandlordRole;
@@ -54,6 +52,7 @@ import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
+import utilities.TimeCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +114,10 @@ public class SimCityGUI extends JFrame {
 	public Restaurant1CustomerRole cust1 = new Restaurant1CustomerRole("Customer 1", initPerson);
 	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
 	public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
+	
+	public Restaurant4HostRole host4 = new Restaurant4HostRole("Host 4", initPerson);
+	public Restaurant4CookRole cook4 = new Restaurant4CookRole("Cook 4", initPerson);
+	public Restaurant4CashierRole cashier4 = new Restaurant4CashierRole("Cashier 4", initPerson);
 	/*
 	 * Role gui's must be initialized in SimCityGui with the role as happens below
 	 */
@@ -307,9 +310,12 @@ public class SimCityGUI extends JFrame {
 		Apartment apt17 = new Apartment("Apartment 1", aptTenants.get(17), 
 				new Position(340, 280), 21, LocationType.Apartment);
 		
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant1);
 		rest1.setCashier(cashier1);
 		rest1.setCook(cook1);
+		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(0,0), LocationType.Restaurant4);
+		rest4.setCashier(cashier4);
+		rest4.setCook(cook4);
 		
 		locations.add(bank);
 		locations.add(market);
@@ -335,6 +341,7 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt16);
 		locations.add(apt17);
 		locations.add(rest1);
+		locations.add(rest4);
 		for(Location location : locations){
 			cityAnimPanel.addLocation(location);
 		}

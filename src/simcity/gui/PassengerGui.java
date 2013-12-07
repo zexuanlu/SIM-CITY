@@ -3,9 +3,9 @@ package simcity.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import agent.Gui;
 import simcity.PassengerRole; 
 import simcity.gui.BusGui.GuiState;
+import utilities.Gui;
 
 public class PassengerGui implements Gui {
 

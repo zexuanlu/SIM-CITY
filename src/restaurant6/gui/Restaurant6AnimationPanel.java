@@ -2,8 +2,8 @@ package restaurant6.gui;
 
 import javax.swing.*;  
 
-import agent.Gui;
 import restaurant6.Restaurant6CookRole;
+import utilities.Gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

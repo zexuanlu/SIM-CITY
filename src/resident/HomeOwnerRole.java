@@ -44,7 +44,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	}
 	
 	// States for the home owner 
-	public enum MyState {Sleeping, Awake};
+	public enum MyState {Sleeping, Awake, Cooking};
 	private MyState state;
 	
 	// Returns the name of the home owner
@@ -70,12 +70,14 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	public static class MyPriority {
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, MaintainHome, GoToMarket, RestockFridge, GoToRestaurant, NoFood}
 		public Task task;
+		public enum Type {Hunger, Cleaning, Maintainance, Shop}
+		public Type type;
 		public int timeDuration;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
 
-		public MyPriority(Task t) {
+		public MyPriority(Task t, Type type) {
 			task = t;
-			
+			this.type = type;
 			// Initializing all of the tasks and their times
 			taskTime.put(Task.NeedToEat, 0);
 			taskTime.put(Task.Cooking, 30);
@@ -128,8 +130,14 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 */
 	public void updateVitals(int hunger, int timer) {
 		if (hunger >= hungerThreshold) {
+			if(state == MyState.Cooking)
+				return;
+			for(MyPriority mp : toDoList){
+				if(mp.type == MyPriority.Type.Hunger)
+					return;
+			}
 			// Add eating to the list of priorities that the resident has
-			toDoList.add(new MyPriority(MyPriority.Task.NeedToEat));
+			toDoList.add(new MyPriority(MyPriority.Task.NeedToEat, MyPriority.Type.Hunger));
 			
 			// Log that the message has been received
 			log.add(new LoggedEvent("I'm hungry."));
@@ -142,7 +150,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 
 	public void msgFoodDone() {
 		// Add getting cooked food to the list of priorities 
-		toDoList.add(new MyPriority(MyPriority.Task.Eating));
+		toDoList.add(new MyPriority(MyPriority.Task.Eating, MyPriority.Type.Hunger));
 		
 		log.add(new LoggedEvent("My food is ready! I can eat now."));
 		
@@ -153,7 +161,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 
 	public void msgDoneEating() {
 		// Add washing dishes to the list of priorities
-		toDoList.add(new MyPriority(MyPriority.Task.WashDishes));
+		toDoList.add(new MyPriority(MyPriority.Task.WashDishes, MyPriority.Type.Cleaning));
 		
 		log.add(new LoggedEvent("Done eating. I'm going to wash dishes now."));
 		
@@ -182,7 +190,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		print("I just finished going to the market. Time to put all my groceries in the fridge.");
 		
 		// Add restocking fridge to the to do list
-		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));		
+		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge, MyPriority.Type.Shop));		
 
 		for (Food f : groceries) {
 			myFridge.add(new Food(f.choice, f.amount));
@@ -203,7 +211,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	
 	public void msgMaintainHome() {
 		// Adds calling housekeeper to the list of priorities
-		toDoList.add(new MyPriority(MyPriority.Task.MaintainHome));
+		toDoList.add(new MyPriority(MyPriority.Task.MaintainHome, MyPriority.Type.Maintainance));
 		
 		log.add(new LoggedEvent("It's been a day. I need to clean my house!"));
 		
@@ -253,7 +261,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			sleep();
 			return true;
 		}
-		if (!toDoList.isEmpty() && state == MyState.Awake) {
+		if (!toDoList.isEmpty() && state != MyState.Sleeping) {
 			for (MyPriority p : toDoList) { // Eating is the most important
 				if (p.task == MyPriority.Task.NeedToEat) {
 					checkFridge(p);
@@ -336,42 +344,41 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	}
 		
 	private void checkFridge(MyPriority p) {
-		toDoList.remove(p);
-		
+	
 		DoGoToFridge();
 
 		if (myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
-			toDoList.add(new MyPriority(MyPriority.Task.NoFood));
+			toDoList.add(new MyPriority(MyPriority.Task.NoFood, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has no food. I must now decide if I should go to the market or go out to eat."));
 			print("My fridge has no food. I must now decide if I should go to the market or go out to eat.");
 		}
 		else { // Cook the food
-			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has food. I can cook now!"));
 			print("My fridge has food. I can cook now!");
-		}	
+		}
+		toDoList.remove(p);
 	}
 
 	private void decideMarketOrGoOut(MyPriority p) {
-		toDoList.remove(p);
-
 		if (person.msgCheckWallet() < minRestaurantMoney) { 
-			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
-			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket, MyPriority.Type.Hunger)); 
+			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
 			
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough money to go and come home."));
 			
 			print("I'm going to go to the market. I have enough money to go and come home.");
 		}
 		else { 
-			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
-			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant, MyPriority.Type.Hunger));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket, MyPriority.Type.Shop));
 			
 			log.add(new LoggedEvent("I have enough money to go to the restaurant, and go to the market when I have time."));
 			
 			print("I have enough money to go to the restaurant, and go to the market when I have time.");
 		}
+		toDoList.remove(p);
 	}
 	
 	private void goToRestaurant(MyPriority p) {
@@ -411,8 +418,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	}
 
 	private void cookFood(MyPriority p) {
-		toDoList.remove(p);
-		
 		DoGoToFridge();
 
 		int max = -1;
@@ -442,23 +447,23 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
 			print("My fridge has no more " + maxChoice + ".");
 		}
-		
+		toDoList.remove(p);
+		state = MyState.Cooking;
 		DoCookFood(maxChoice);
 	}
 	
 
 	private void eatFood(MyPriority p) {
-		toDoList.remove(p);
-
-		DoGetCookedFood();
-        
 		person.setHungerLevel(0);
+		state = MyState.Awake;
+		toDoList.remove(p);
+		DoGetCookedFood();
 	}
 
 	private void washDishes(MyPriority p) {
 		toDoList.remove(p);
 
-		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
+		final MyPriority prior = new MyPriority(MyPriority.Task.Washing, MyPriority.Type.Cleaning);
 		final HomeOwnerRole temp = new HomeOwnerRole(this.person, this.name, this.houseNumber);
 		toDoList.add(prior);
 

@@ -1,6 +1,6 @@
 package restaurant4.interfaces;
 
-import restaurant.RestaurantCashier;
+import utilities.restaurant.RestaurantCashier;
 /**
  * A sample Cashier interface built to unit test a CashierAgent.
  *

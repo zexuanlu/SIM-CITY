@@ -1,5 +1,7 @@
 package restaurant5;
 import java.util.*;
+
+import market.interfaces.MarketCashier;
 import person.PersonAgent; 
 import restaurant5.interfaces.Cashier5; 
 import restaurant5.interfaces.Customer5; 
@@ -63,6 +65,11 @@ public void msgmarketbill(Market5 m, int Bill){
 	marketbill.mstate = MarketState.toPay; 
 	marketbills.add(marketbill);
 	stateChanged();
+}
+
+
+public void msgPleasepaytheBill(MarketCashier c, double bills){
+	//IMPLEMENT THIS SHIT
 }
 	
 public void msgcomputeBill(Waiter5 w1, Customer5 c1, String choice){

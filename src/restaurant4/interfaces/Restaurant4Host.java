@@ -1,12 +1,14 @@
 package restaurant4.interfaces;
 
+import utilities.restaurant.*;
+
 /**
  * A sample Host interface built to unit test a CashierAgent.
  *
  * @author Joseph Boman
  *
  */
-public interface Restaurant4Host {
+public interface Restaurant4Host extends RestaurantHost{
 	
 	public abstract void msgTableFree(int table);
 

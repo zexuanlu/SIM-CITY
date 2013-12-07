@@ -1,11 +1,11 @@
 package resident.gui;
 
 import resident.HomeOwnerRole;
+import utilities.Gui;
 
 import java.awt.*;
 
 import person.PersonAgent;
-import agent.Gui;
 
 public class HomeOwnerGui implements Gui {
 

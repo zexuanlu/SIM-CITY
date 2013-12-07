@@ -2,7 +2,7 @@ package restaurant1.interfaces;
 
 import java.util.List;
 
-import restaurant.RestaurantCook;
+import utilities.restaurant.RestaurantCook;
 import market.Food;
 import market.interfaces.*;
 

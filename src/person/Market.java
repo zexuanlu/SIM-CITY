@@ -1,5 +1,6 @@
 package person;
 
+import utilities.TimeCard;
 import market.MarketCashierRole; 
 import market.interfaces.MarketCashier;
 import agent.*;

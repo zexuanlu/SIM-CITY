@@ -11,7 +11,7 @@ import simcity.astar.AStarTraversal;
 import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
-import restaurant.RestaurantCook;
+import utilities.restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
 
 

@@ -3,10 +3,8 @@ package market.interfaces;
 import java.util.List;
 
 import market.*;
-import restaurant.RestaurantCashier;
-import restaurant.RestaurantCook;
-import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Restaurant1Cashier;
+import utilities.restaurant.RestaurantCashier;
+import utilities.restaurant.RestaurantCook;
 
 public interface MarketCashier {
 

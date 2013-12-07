@@ -4,10 +4,9 @@ import person.PersonAgent;
 import restaurant1.*;
 import restaurant1.gui.*;
 import restaurant1.shareddata.*;
+import utilities.Gui;
 
 import javax.swing.*;
-
-import agent.Gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

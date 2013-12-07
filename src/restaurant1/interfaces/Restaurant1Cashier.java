@@ -1,6 +1,6 @@
 package restaurant1.interfaces;
 
-import restaurant.RestaurantCashier;
+import utilities.restaurant.RestaurantCashier;
 
 public interface Restaurant1Cashier extends RestaurantCashier{
 

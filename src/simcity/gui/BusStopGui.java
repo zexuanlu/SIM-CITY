@@ -2,8 +2,8 @@ package simcity.gui;
 
 import java.awt.*;
 
-import agent.Gui;
 import simcity.BusStopAgent; 
+import utilities.Gui;
 
 public class BusStopGui implements Gui{	
 	
