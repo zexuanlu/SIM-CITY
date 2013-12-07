@@ -174,9 +174,9 @@ public class SimCityGUI extends JFrame {
 			aptGuis.add(new ApartmentTenantGui(r));
 		}
 		
-		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
+		Bank bank = new Bank("Bank 1", new TimeCard(), bankhostrole, 
 				new Position(140, 160), LocationType.Bank);
-		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
+		Market market = new Market("Market 1", marketcashierrole, new TimeCard(), 
 				new Position(220, 160), LocationType.Market);
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
 				new Position(340, 160), 1, LocationType.Home);
