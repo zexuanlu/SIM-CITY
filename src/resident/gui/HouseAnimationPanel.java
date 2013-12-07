@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class HouseAnimationPanel extends JPanel implements ActionListener {
 	
-    private final int WINDOWX = 640;
+    private final int WINDOWX = 540;
     private final int WINDOWY = 480;
     private static int fridgeX = 70;
     private static int fridgeY = 190;

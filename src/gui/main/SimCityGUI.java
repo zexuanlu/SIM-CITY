@@ -154,8 +154,8 @@ public class SimCityGUI extends JFrame {
 	public BusStopGui bs4gui = new BusStopGui(busstop4, 30, 260);
 	public BusStopGui bs5gui = new BusStopGui(busstop5, 350, 30);
 	public BusStopGui bs6gui = new BusStopGui(busstop6, 420, 30);
-	public BusStopGui bs7gui = new BusStopGui(busstop7, 420, 400);
-	public BusStopGui bs8gui = new BusStopGui(busstop8, 350, 400);	
+	public BusStopGui bs7gui = new BusStopGui(busstop7, 420, 420);
+	public BusStopGui bs8gui = new BusStopGui(busstop8, 350, 420);	
 	public MarketTruckAgent truck;
 
 	public SimCityGUI() {

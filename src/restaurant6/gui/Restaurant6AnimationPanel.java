@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class Restaurant6AnimationPanel extends JPanel implements ActionListener {
 
-    private final int WINDOWX = 1000;
-    private final int WINDOWY = 1000;
+    private final int WINDOWX = 540;
+    private final int WINDOWY = 480;
     private Image bufferImage;
     private Dimension bufferSize;
     public int tableXPos = 200;

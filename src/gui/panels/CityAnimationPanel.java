@@ -85,19 +85,19 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int APARTMENTSIZE = 10;
 	Timer timer;
 	
-	enum state {none, bank1, market1, bank2, market2, restaurant1, restaurant4, house1, house2, house3, house4, restaurant2, restaurant3, restaurant5, restaurant6, apartment1, apartment2, apartment3, apartment4, casino}
+	enum state {none, bank1, market1, bank2, market2, restaurant1, restaurant4, house1, house2, house3, house4, restaurant2, restaurant3, restaurant5, restaurant6, apartment1, apartment2, apartment3, apartment4, casino, house5}
 	//Buttons for buildings
-	Rectangle2D bank = new Rectangle2D.Double(70, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D market = new Rectangle2D.Double(140, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant1 = new Rectangle2D.Double(210, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant2 = new Rectangle2D.Double(280, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant3 = new Rectangle2D.Double(280, 60, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D bank = new Rectangle2D.Double(80, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D market = new Rectangle2D.Double(150, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant1 = new Rectangle2D.Double(220, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant2 = new Rectangle2D.Double(290, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant3 = new Rectangle2D.Double(290, 60, BUILDINGSIZE, BUILDINGSIZE);
 
-	Rectangle2D house1 = new Rectangle2D.Double(410, 260, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D house2 = new Rectangle2D.Double(410, 330, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D house3 = new Rectangle2D.Double(480, 260, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D house4 = new Rectangle2D.Double(550, 260, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D house5 = new Rectangle2D.Double(620, 260, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house1 = new Rectangle2D.Double(430, 270, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house2 = new Rectangle2D.Double(430, 350, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house3 = new Rectangle2D.Double(500, 270, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house4 = new Rectangle2D.Double(570, 270, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D house5 = new Rectangle2D.Double(640, 270, BUILDINGSIZE, BUILDINGSIZE);
 	
 	private List<Rectangle2D> apartmentComplex1Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
 	private List<Rectangle2D> apartmentComplex2Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
@@ -105,17 +105,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	private List<Rectangle2D> apartmentComplex4Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
 	
 	// First apartment complex
-	Rectangle2D apartmentComplex1 = new Rectangle2D.Double(30, 260, BUILDINGSIZE+10, BUILDINGSIZE+10);
-	Rectangle2D apartmentComplex2 = new Rectangle2D.Double(110, 260, BUILDINGSIZE+10, BUILDINGSIZE+10);
-	Rectangle2D apartmentComplex3 = new Rectangle2D.Double(190, 260, BUILDINGSIZE+10, BUILDINGSIZE+10);
-	Rectangle2D apartmentComplex4 = new Rectangle2D.Double(270, 260, BUILDINGSIZE+10, BUILDINGSIZE+10);
-	Rectangle2D apartmentComplex5 = new Rectangle2D.Double(270, 340, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartmentComplex1 = new Rectangle2D.Double(40, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartmentComplex2 = new Rectangle2D.Double(120, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartmentComplex3 = new Rectangle2D.Double(200, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D apartmentComplex4 = new Rectangle2D.Double(280, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
+	Rectangle2D casino = new Rectangle2D.Double(280, 350, BUILDINGSIZE+10, BUILDINGSIZE+10);
 
-	Rectangle2D bank2 = new Rectangle2D.Double(620, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D market2 = new Rectangle2D.Double(550, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant4 = new Rectangle2D.Double(410, 60, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant5 = new Rectangle2D.Double(410, 130, BUILDINGSIZE, BUILDINGSIZE);
-	Rectangle2D restaurant6 = new Rectangle2D.Double(480, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D bank2 = new Rectangle2D.Double(640, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D market2 = new Rectangle2D.Double(430, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant4 = new Rectangle2D.Double(500, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant5 = new Rectangle2D.Double(570, 130, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant6 = new Rectangle2D.Double(430, 60, BUILDINGSIZE, BUILDINGSIZE);
 	
 	public CityAnimationPanel() {
 		//PANEL SETUP
@@ -236,11 +236,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(apartmentComplex2);
         g2.fill(apartmentComplex3);
         g2.fill(apartmentComplex4);
-        g2.fill(apartmentComplex5);
+        g2.fill(casino);
         g2.fill(house1);
         g2.fill(house2);
         g2.fill(house3);
         g2.fill(house4);
+        g2.fill(house5);
         g2.fill(market);
         g2.fill(market2);
         g2.fill(restaurant1);
@@ -250,7 +251,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(restaurant6);
         g2.fill(restaurant4);
 
-        //draw out the roads
+        // Draw out the sidewalks 
+        g2.setColor(Color.WHITE);
+        g2.fillRect(350, 0, 10, 480);
+        g2.fillRect(0, 190, 740, 10);
+        g2.fillRect(420, 0, 10, 480);
+        g2.fillRect(0, 260, 740, 10);
+        
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
         g2.fillRect(360, 0, 60, 480);
@@ -306,6 +313,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         else if(s == state.house4){
         	g2.drawString("House 4", (int)house4.getX()+7, (int)house4.getY()+35);
         }
+        else if(s == state.house5){
+        	g2.drawString("House 5", (int)house5.getX()+7, (int)house5.getY()+35);
+        }
         else if(s == state.apartment1){
         	g2.drawString("Apartment 1", (int)apartmentComplex1.getX()+3, (int)apartmentComplex1.getY()+40);
         	for (Rectangle2D apt : apartmentComplex1Components) {
@@ -329,6 +339,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         	for (Rectangle2D apt : apartmentComplex4Components) {
         		g2.fill(apt);
         	}
+        }
+        else if(s == state.casino){
+        	g2.drawString("Casino", (int)casino.getX()+15, (int)casino.getY()+40);
         }
         //Update the position of the guis in the various buildings
         for(Gui gui : marketPanel.guis){
@@ -559,6 +572,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if(house4.contains(me.getX(), me.getY())){
 			   s = state.house4;
+		   }
+		   else if(house5.contains(me.getX(), me.getY())){
+			   s = state.house5;
 		   }
 		   else if(casino.contains(me.getX(), me.getY())){
 			   s = state.casino;

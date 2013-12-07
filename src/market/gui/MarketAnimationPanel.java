@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MarketAnimationPanel extends JPanel implements ActionListener {
 	
-    private final int WINDOWX = 640;
+    private final int WINDOWX = 540;
     private final int WINDOWY = 480;
     private Image bufferImage;
     private Dimension bufferSize;

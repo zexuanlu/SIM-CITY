@@ -28,7 +28,7 @@ public class PassengerGui implements Gui {
 		
 		if (guistate != GuiState.onBus){
 	       g.setColor(Color.BLUE);
-	       g.fillRect(xPos,yPos,20,20);
+	       g.fillRect(xPos,yPos,10,10);
 		}
     }
 	

@@ -12,8 +12,8 @@ import java.awt.*;
 public class BuildingAnimationPanel extends JPanel {
 	
 	private String title = " Building Animation ";
-	public static final int WIDTH = CityAnimationPanel.WIDTH;
-	public static final int HEIGHT = CityAnimationPanel.HEIGHT;
+	public static final int WIDTH = 540;
+	public static final int HEIGHT = 480;
 	
 	public BuildingAnimationPanel() {
 		// PANEL SETUP
