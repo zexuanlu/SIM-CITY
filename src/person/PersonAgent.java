@@ -346,7 +346,7 @@ public class PersonAgent extends Agent implements Person{
 	/* Actions */
 	private void goToAndDoEvent(SimEvent e){		
 ////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
-			if(e.location.type == LocationType.Restaurant){
+			if(e.location.type == LocationType.Restaurant1){
 				Restaurant rest = (Restaurant)e.location;
 				if(e.type == EventType.CustomerEvent){
 					for(MyRole mr : roles){

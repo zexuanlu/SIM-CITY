@@ -310,10 +310,10 @@ public class SimCityGUI extends JFrame {
 		Apartment apt17 = new Apartment("Apartment 1", aptTenants.get(17), 
 				new Position(340, 280), 21, LocationType.Apartment);
 		
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 80), LocationType.Restaurant1);
 		rest1.setCashier(cashier1);
 		rest1.setCook(cook1);
-		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(0,0), LocationType.Restaurant);
+		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(0,0), LocationType.Restaurant4);
 		rest4.setCashier(cashier4);
 		rest4.setCook(cook4);
 		
