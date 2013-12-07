@@ -277,9 +277,11 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt17);
 		locations.add(rest1);
 		locations.add(rest4);
+		
 		for(Location location : locations){
 			cityAnimPanel.addLocation(location);
 		}
+		
 		citymap = new CityMap(locations);
 
 		// SETUP
@@ -328,38 +330,6 @@ public class SimCityGUI extends JFrame {
 					}
 				}				
 			}
-			
-			
-			/**
-			for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
-				for (int y = 11; y<14; y++){
-					grid[0][y].release(); 
-				}
-			}
-			for (int y =0 ;y<50; y++){ //creation location
-				grid[0][12].release();
-			}
-			for (int y =0 ;y<50; y++){ //bank location
-				grid[7][12].release();
-			}
-			
-			for (int y = 0; y < 11; y ++){
-				for (int x = 0; x < 14; x++){
-					grid[x][y].acquire(); 
-				}
-				for (int x=17; x<gridX; x++){
-					grid[x][y].acquire();
-				}
-			}
-
-			for (int y = 14; y<gridY; y++){
-				for (int x = 0; x < 14; x++){
-					grid[x][y].acquire(); 
-				}
-				for (int x=17; x<gridX; x++){
-					grid[x][y].acquire();
-				}
-			}*/
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
 		}
