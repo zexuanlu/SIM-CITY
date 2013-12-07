@@ -4,9 +4,9 @@ import agent.Role;
 import person.interfaces.Person;
 
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
 import restaurant1.interfaces.Restaurant1Customer;
+import utilities.restaurant.*;
 import restaurant1.interfaces.Restaurant1Waiter;
 
 
@@ -17,7 +17,7 @@ import restaurant1.interfaces.Restaurant1Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the Restaurant1HostRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class Restaurant1HostRole extends Role {
+public class Restaurant1HostRole extends Role implements RestaurantHost{
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.

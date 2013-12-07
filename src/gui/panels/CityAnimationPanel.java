@@ -90,11 +90,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public static final int APARTMENTSIZE = 10;
 	Timer timer;
 	
-	enum state {none, bank, market, restaurant1, house1, house2, house3, house4, apartment}
+	enum state {none, bank, market, restaurant1, restaurant4, house1, house2, house3, house4, apartment}
 	//Buttons for buildings
 	Rectangle2D bank = new Rectangle2D.Double(140, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D market = new Rectangle2D.Double(220, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D restaurant1 = new Rectangle2D.Double(220,80, BUILDINGSIZE, BUILDINGSIZE);
+	Rectangle2D restaurant4 = new Rectangle2D.Double(0,0, BUILDINGSIZE,BUILDINGSIZE);
 	Rectangle2D house1 = new Rectangle2D.Double(340, 160, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house2 = new Rectangle2D.Double(340, 80, BUILDINGSIZE, BUILDINGSIZE);
 	Rectangle2D house3 = new Rectangle2D.Double(450, 160, BUILDINGSIZE, BUILDINGSIZE);
@@ -284,6 +285,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(house4);
         g2.fill(market);
         g2.fill(restaurant1);
+        g2.fill(restaurant4);
 
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
@@ -301,6 +303,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         else if(s == state.restaurant1){
         	g2.drawString("Restaurant 1", 217, 115);
+        }
+        else if(s == state.restaurant4){
+        	g2.drawString("Restaurant 4", 20, 20);
         }
         else if(s == state.house1){
         	g2.drawString("House 1", 345, 195);
@@ -528,6 +533,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		   }
 		   else if(restaurant1.contains(me.getX(), me.getY())){
 			   s = state.restaurant1;
+		   }
+		   else if(restaurant4.contains(me.getX(), me.getY())){
+			   s = state.restaurant4;
 		   }
 		   else if(apartmentComplex1.contains(me.getX(), me.getY())){
 			   s = state.apartment;

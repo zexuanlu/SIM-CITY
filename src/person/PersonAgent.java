@@ -33,6 +33,7 @@ import restaurant1.Restaurant1WaiterRole;
 import restaurant1.gui.CookGui;
 import restaurant1.gui.CustomerGui;
 import restaurant1.gui.WaiterGui;
+import restaurant1.interfaces.Restaurant1Host;
 import simcity.CarAgent;
 import simcity.gui.CarGui; 
 import simcity.PassengerRole;
@@ -367,7 +368,7 @@ public class PersonAgent extends Agent implements Person{
 					cg.isPresent = true;
 					cRole.setGui(cg);
 					cap.rest1Panel.addGui(cg);
-					cRole.setHost(rest.getHost());
+					cRole.setHost(((Restaurant1Host)rest.getHost()));
 					cRole.gotHungry();
 					gui.setPresent(false);
 					toDo.remove(e);
@@ -388,7 +389,7 @@ public class PersonAgent extends Agent implements Person{
 							return;
 						}
 					}
-					MyRole newRole = new MyRole(rest.getHost(), "Rest 1 Host");
+					MyRole newRole = new MyRole(((Restaurant1HostRole)rest.getHost()), "Rest 1 Host");
 					newRole.setActive(true);
 					roles.add(newRole);
 					rest.getTimeCard().msgBackToWork(this, newRole.role);
@@ -489,7 +490,7 @@ public class PersonAgent extends Agent implements Person{
 							return;
 						}
 					} 
-					MyRole newRole = new MyRole(rest.getCook(), "Rest 1 Cook");//FIX
+					MyRole newRole = new MyRole(((Restaurant1CookRole)rest.getCook()), "Rest 1 Cook");//FIX
 					newRole.setActive(true);
 					roles.add(newRole);
 					((Restaurant1CookRole)newRole.role).cookGui.setPresent(true);
@@ -519,7 +520,7 @@ public class PersonAgent extends Agent implements Person{
 							return;
 						}
 					}
-					MyRole newRole = new MyRole(rest.getCashier(), "Rest 1 Cashier");//FIX
+					MyRole newRole = new MyRole(((Restaurant1CashierRole)rest.getCashier()), "Rest 1 Cashier");//FIX
 					newRole.setActive(true);
 					roles.add(newRole);
 					rest.getTimeCard().msgBackToWork(this, newRole.role);

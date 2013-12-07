@@ -3,7 +3,9 @@ package restaurant1;
 import restaurant1.gui.CustomerGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Host;
 import restaurant1.interfaces.Restaurant1Waiter;
+import utilities.restaurant.RestaurantHost;
 import agent.Role;
 import person.interfaces.Person;
 
@@ -30,7 +32,7 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	private String choice;
 	private double money = 30, salad = 5.99, pizza = 8.99, chicken = 11, steak = 15;
 	// agent correspondents
-	private Restaurant1HostRole host = null;
+	private Restaurant1Host host = null;
 	private Restaurant1Cashier cashier = null;
 
 	public Map<String, Double> menue = new HashMap<String, Double>();
@@ -60,8 +62,8 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	/**
 	 * hack to establish connection to Host agent.
 	 */
-	public void setHost(Restaurant1HostRole host) {
-		this.host = host;
+	public void setHost(Restaurant1Host restaurantHost) {
+		this.host = restaurantHost;
 	}
 
 	public void setwaiter(Restaurant1Waiter waiter){
