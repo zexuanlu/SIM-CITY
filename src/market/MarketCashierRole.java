@@ -3,9 +3,9 @@ package market;
 import agent.*;
 import person.PersonAgent;
 import person.interfaces.*;
+import restaurant.RestaurantCook;
 import restaurant1.Restaurant1CookRole;
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Cook;
+import restaurant1.interfaces.Restaurant1Cashier;
 
 import java.util.*;
 
@@ -63,8 +63,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 
 	public class Myrest{
-		Cook ck;
-		Cashier ca;
+		RestaurantCook ck;
+		Restaurant1Cashier ca;
 		List<Food> order;
 		public List<Food> collectedOrder = new ArrayList<Food>();
 		public int bill;
@@ -73,7 +73,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		public int restNum;
 		public state1 s1 = state1.ordering;
 
-		Myrest(Cook ck, Cashier ca, List<Food> order, int restNum){
+		Myrest(RestaurantCook ck, Restaurant1Cashier ca, List<Food> order, int restNum){
 			this.ck = ck;
 			this.ca = ca;
 			this.order = order;
@@ -83,10 +83,10 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public enum state1{ordering, ordered};
 	
 	public class PendingOrder{
-		Cook ck;
+		RestaurantCook ck;
 		List<Food> order;
 		
-		public PendingOrder(Cook ck, List<Food> order){
+		public PendingOrder(RestaurantCook ck, List<Food> order){
 			this.ck = ck;
 			this.order = order;
 		}
@@ -143,12 +143,12 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}				
 	// end of in market scenario
 
-	public void MsgIwantFood(Cook cook, Cashier ca, List<Food> food, int number){
+	public void MsgIwantFood(RestaurantCook cook, Restaurant1Cashier ca, List<Food> food, int number){
 		myrest.add(new Myrest(cook, ca, food, number));
 		stateChanged();
 	}
 
-	public void msgBillFromTheAir(Cashier ca, double money){
+	public void msgBillFromTheAir(Restaurant1Cashier ca, double money){
 		income += money;
 		stateChanged();
 	}
@@ -158,7 +158,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		stateChanged();
 	}
 	
-	public void msgDevliveryFail(MarketTruck t, Cook cook, List<Food> food){
+	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food){
 		truck.add(t);
 		pendingOrder.add(new PendingOrder(cook, food));
 		stateChanged();

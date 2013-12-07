@@ -1,6 +1,6 @@
 package restaurant1;
 
-import restaurant1.interfaces.Customer;
+import restaurant1.interfaces.Restaurant1Customer;
 import agent.Agent;
 import agent.Role;
 import person.interfaces.Person;
@@ -16,7 +16,7 @@ public abstract class Restaurant1AbstractWaiter extends Role {
 	}
 	
 	public static class mycustomer {
-		Customer c;
+		Restaurant1Customer c;
 		int table;
 		int location;
 		String choice;
@@ -24,7 +24,7 @@ public abstract class Restaurant1AbstractWaiter extends Role {
 		
 		state s = state.waiting;
 		
-		mycustomer(Customer c, int table, int location){
+		mycustomer(Restaurant1Customer c, int table, int location){
 			this.location = location;
 			this.c = c;
 			this.table = table;

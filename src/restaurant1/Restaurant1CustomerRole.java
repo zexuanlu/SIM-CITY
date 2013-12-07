@@ -1,9 +1,9 @@
 package restaurant1;
 
 import restaurant1.gui.CustomerGui;
-import restaurant1.interfaces.Cashier;
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Cashier;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 import agent.Role;
 import person.interfaces.Person;
 
@@ -17,12 +17,12 @@ import java.util.TimerTask;
 /**
  * Restaurant customer agent.
  */
-public class Restaurant1CustomerRole extends Role implements Customer {
+public class Restaurant1CustomerRole extends Role implements Restaurant1Customer {
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
 	public CustomerGui customerGui;
-	private Waiter waiter;
+	private Restaurant1Waiter waiter;
 	private int location = 0;
 	private int orderingtime = 4000;
 	private int eatingtime = 5000;
@@ -31,7 +31,7 @@ public class Restaurant1CustomerRole extends Role implements Customer {
 	private double money = 30, salad = 5.99, pizza = 8.99, chicken = 11, steak = 15;
 	// agent correspondents
 	private Restaurant1HostRole host = null;
-	private Cashier cashier = null;
+	private Restaurant1Cashier cashier = null;
 
 	public Map<String, Double> menue = new HashMap<String, Double>();
 
@@ -64,11 +64,11 @@ public class Restaurant1CustomerRole extends Role implements Customer {
 		this.host = host;
 	}
 
-	public void setwaiter(Waiter waiter){
+	public void setwaiter(Restaurant1Waiter waiter){
 		this.waiter = waiter;
 	}
 
-	public void setCashier(Cashier cashier){
+	public void setCashier(Restaurant1Cashier cashier){
 		this.cashier = cashier;
 	}
 

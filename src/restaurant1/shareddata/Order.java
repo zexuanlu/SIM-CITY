@@ -1,10 +1,10 @@
 package restaurant1.shareddata;
 
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Waiter;
 
 public class Order {
 
-	public Waiter w;
+	public Restaurant1Waiter w;
 	public String choice;
 	public int table;	
 	public enum state 
@@ -12,7 +12,7 @@ public class Order {
 
 	public state s = state.pending;
 
-	public Order(Waiter w, String choice, int table){
+	public Order(Restaurant1Waiter w, String choice, int table){
 		this.w = w;
 		this.choice = choice;
 		this.table = table;

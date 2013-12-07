@@ -4,8 +4,8 @@ package restaurant1.gui;
 import restaurant1.Restaurant1HostRole;
 import restaurant1.Restaurant1SDWaiterRole;
 import restaurant1.Restaurant1WaiterRole;
-import restaurant1.interfaces.Customer;
-import restaurant1.interfaces.Waiter;
+import restaurant1.interfaces.Restaurant1Customer;
+import restaurant1.interfaces.Restaurant1Waiter;
 import simcity.gui.*;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ import agent.Gui;
 public class WaiterGui implements Gui {
 	
 
-    private Waiter agent = null;
+    private Restaurant1Waiter agent = null;
     private Restaurant1HostRole host;
     public boolean isPresent = false;
     private int countNumber = 0;
@@ -169,7 +169,7 @@ public class WaiterGui implements Gui {
 
     }
 
-    public void DoGoToTakeOrder(Customer c, int seattable) {
+    public void DoGoToTakeOrder(Restaurant1Customer c, int seattable) {
     	//customer = c;
     	if(seattable == 1){
         xDestination = xTable + distance;
@@ -187,7 +187,7 @@ public class WaiterGui implements Gui {
 
     }
     
-    public void DoBackToTable(Customer c,int seattable) {
+    public void DoBackToTable(Restaurant1Customer c,int seattable) {
     	if(seattable == 1){
         xDestination = xTable + distance;
         yDestination = yTable - distance;
