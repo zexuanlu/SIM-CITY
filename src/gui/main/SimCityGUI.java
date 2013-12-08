@@ -176,18 +176,18 @@ public class SimCityGUI extends JFrame {
 		}
 		
 		// First quadrant locations
-		Bank bank = new Bank("Bank 1", new TimeCard(), bankhostrole, 
+		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(80, 130), LocationType.Bank);
-		Market market = new Market("Market 1", marketcashierrole, new TimeCard(), 
+		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
 				new Position(150, 130), LocationType.Market);
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 130), LocationType.Restaurant1);
 		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(290, 130), LocationType.Restaurant2);
 		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(290, 60), LocationType.Restaurant3);
 		
 		// Second quadrant locations
-		Bank bank2 = new Bank("Bank 2", new TimeCard(), bankhostrole, 
+		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
 				new Position(640, 130), LocationType.Bank);
-		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
+		Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
 				new Position(430, 130), LocationType.Market);
 		// FIX HOST ROLES
 		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
@@ -253,9 +253,7 @@ public class SimCityGUI extends JFrame {
 		rest4.setCook(cook4);
 		
 		locations.add(bank);
-		locations.add(bank2);
 		locations.add(market);
-		locations.add(market2);
 		locations.add(home1);
 		locations.add(home2);
 		locations.add(home3);
@@ -278,11 +276,7 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt16);
 		locations.add(apt17);
 		locations.add(rest1);
-		locations.add(rest2);
-		locations.add(rest3);
 		locations.add(rest4);
-		locations.add(rest5);
-		locations.add(rest6);
 		
 		for(Location location : locations){
 			cityAnimPanel.addLocation(location);
@@ -335,6 +329,12 @@ public class SimCityGUI extends JFrame {
 						grid[0][y].release(); 
 					}
 				}				
+				
+				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
+					for (int y = 10; y<13; y++){
+						grid[1][y].release(); 
+					}
+				}		
 			}
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
@@ -406,7 +406,7 @@ public class SimCityGUI extends JFrame {
 		
 
 		truck = new MarketTruckAgent();
-		MarketTruckGui truckGui = new MarketTruckGui(truck);
+		MarketTruckGui truckGui = new MarketTruckGui(truck, bldngAnimPanel);
 		truck.setGui(truckGui);
 		truck.startThread();
 		cityAnimPanel.addGui(truckGui);
@@ -442,7 +442,7 @@ public class SimCityGUI extends JFrame {
 		// Loops through the apartment guis to add them to their animation panels
 		for (ApartmentTenantGui aptGui : aptGuis) {
 			aptGui.isPresent = false;
-			cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+			//cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
 		}
 		
 		// Loops through apartment tenant roles and sets to respective GUI
@@ -472,10 +472,10 @@ public class SimCityGUI extends JFrame {
 		busstop8.startThread();
 
 		bus.setBusMap(citymap);
-		bus.addtoRoute(busstop1.name);
-		bus.addtoRoute(busstop2.name);
-		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
+		bus.addtoRoute(busstop3.name);
+		bus.addtoRoute(busstop2.name);
+		bus.addtoRoute(busstop1.name);
 		bus.startThread();
 		bus.msgStartBus();
 
@@ -488,18 +488,20 @@ public class SimCityGUI extends JFrame {
 		bus2.msgStartBus();
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
-
 		/*
 		 * Adds the people with a given house number. This is for homes. Any dynamically added person will
 		 * be added as an apartment tenant.
 		 */
 
 //		for (int i=1; i<6; i++){
+		int x = 100; 
+		int y = 100; 
 		for (int i=0; i<22; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
-			PersonGui pgui = new PersonGui(p);
-			p.gui = pgui;
+			PersonGui pgui = new PersonGui(p, x, y);
+			x = x+20; 
+			p.setGui(pgui);
 			System.out.println(""+i);
 			if(i < 21){
 				p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
@@ -703,8 +705,8 @@ public class SimCityGUI extends JFrame {
 	}
 	
 	public void addPerson(PersonAgent p) {
-		PersonGui pgui = new PersonGui(p);
-		p.gui = pgui;
+		PersonGui pgui = new PersonGui(p,100,100);
+		p.setGui(pgui);
 		p.setAnimationPanel(cityAnimPanel);
 		people.add(p);
 		peoplegui.add(pgui);
