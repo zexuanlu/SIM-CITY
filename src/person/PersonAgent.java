@@ -290,12 +290,11 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+
 			for(MyRole r : roles){
 				if(r.isActive){
-					//print("Executing rule in role "+ r.role);
 					boolean b;
 					b =  r.role.pickAndExecuteAnAction();
-					//Do("" + b + " "+ r.role);
 					return b;
 				}
 			}
@@ -312,7 +311,8 @@ public class PersonAgent extends Agent implements Person{
 			
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					goToLocation(nextEvent.location);
+					if(!atHome)
+						goToLocation(nextEvent.location);
 					goToAndDoEvent(nextEvent);
 					return true;
 				}
@@ -758,7 +758,7 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(tr, "Apt Tenant");
 					newRole.setActive(true);
 					roles.add(newRole);
-					// FIX - Should we create a gui here? Or not?
+					/// FIX - Should we create a gui here? Or not?
 					((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
 					gui.setPresent(false);
 					toDo.remove(e);
@@ -807,7 +807,7 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
-		if(!addedAnEvent && !containsEvent("Go home")){
+		if(!addedAnEvent && !containsEvent("Go home") && !cityMap.ateOutLast){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
@@ -817,6 +817,10 @@ public class PersonAgent extends Agent implements Person{
 			}
 			toDo.add(goHome);
 			addedAnEvent = true;
+		}
+		else{
+			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
+			addedAnEvent = true;	
 		}
 		return addedAnEvent;
 		//buy a car
@@ -870,7 +874,6 @@ public class PersonAgent extends Agent implements Person{
 			print("Arrived at Destination");
 //		}
 	}
-
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
 

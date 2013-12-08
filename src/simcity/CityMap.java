@@ -28,9 +28,12 @@ public class CityMap {
 	public List<Location> map;
 	public DistCompare comparator = new DistCompare();
 	public PriorityQueue distancePriority = new PriorityQueue<Double>(10, comparator);
+	public List<Location> history = new ArrayList<Location>(); //keep track of previous restaurants you've been to
+	public boolean ateOutLast;
 
 	public CityMap(List<Location> locations){
-		map = locations; 
+		map = locations;
+		ateOutLast = false;
 	}
 
 	public CityMap(){
@@ -43,7 +46,7 @@ public class CityMap {
 		b.destinationX = dimensions.get(destStop).width;
 		b.destinationY = dimensions.get(destStop).height; 
 		b.bus = busses.get(destStop);
-		
+
 		b.busstop = getClosestStopinRoute(originx, originy, b.bus);
 		b.busStopX = getDimension(b.busstop).width;
 		b.busStopY = getDimension(b.busstop).height;
@@ -152,6 +155,14 @@ public class CityMap {
 		}
 		return ll;
 	}
+	public Location eatOutOrIn(){
+		Location l = chooseRandom(LocationType.Restaurant1);
+		if(!history.contains(l)){
+			history.add(l);
+		}
+		ateOutLast = true;
+		return l;
+	}
 	public Location getByType(LocationType lt){
 
 		Location destination = new Location();
@@ -196,7 +207,7 @@ public class CityMap {
 	}
 	public Location chooseRandom(LocationType type) {
 		Random chooser = new Random();
-		int i = chooser.nextInt(map.size()); //number of restaurants
+		int i = chooser.nextInt(map.size());
 		return map.get(i);
 	}
 	public Location chooseByLocation(int yourX, int yourY, int searchRadius, LocationType type){

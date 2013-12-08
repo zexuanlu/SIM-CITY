@@ -22,12 +22,12 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
     private final int WINDOWY = 480;
     static final int TIMERCOUNT = 20;
     static final int TELLERBOOTHSIZE = 20;
-    static final int TELLERBOOTHX = 40;
+    static final int TELLERBOOTHX = 80;
     static final int TELLERBOOTHY = 360;
-    static final int HOSTDESKWIDTH = 60;
-    static final int HOSTDESKHEIGHT = 20;
-    static final int HOSTDESKX = 300;
-    static final int HOSTDESKY = 100;
+    static final int HOSTDESKWIDTH = 20;
+    static final int HOSTDESKHEIGHT = 60;
+    static final int HOSTDESKX = 450;
+    static final int HOSTDESKY = 50;
 
     public List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 
@@ -55,9 +55,9 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 
         //Here are the teller booths
         g2.setColor(Color.BLACK);
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 5; i++){
             g2.setColor(Color.BLACK);
-        	g2.fillRect(TELLERBOOTHX + 60*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE);
+        	g2.fillRect(TELLERBOOTHX + 80*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE);
         }
 
         g2.setColor(Color.RED);

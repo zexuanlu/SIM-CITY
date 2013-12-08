@@ -31,6 +31,7 @@ public class MarketTruckGui implements Gui {
 	public enum GuiState {gotoStop, atStop,canStop};
 	GuiState guistate;
 	
+
 //	private ImageIcon t = new ImageIcon(this.getClass().getResource("5592cded-1.png"));
 //	private Image i = t.getImage();
 
@@ -43,7 +44,9 @@ public class MarketTruckGui implements Gui {
 	public void draw(Graphics2D g) {
 //		g.setColor(Color.red);
 //		g.fillRect(xPos, yPos, distance, distance);
+
 //		g.drawImage(i, 170, 110, distance, distance, buildPanel);
+
 	}
 
 	public boolean isPresent() {
