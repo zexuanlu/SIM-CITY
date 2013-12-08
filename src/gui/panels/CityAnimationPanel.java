@@ -17,6 +17,9 @@ import resident.gui.ApartmentAnimationPanel;
 import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant1.gui.Restaurant1AnimationPanel;
+import restaurant2.gui.Restaurant2AnimationPanel;
+import restaurant4.gui.Restaurant4AnimationPanel;
+import restaurant5.gui.Restaurant5AnimationPanel;
 import restaurant6.gui.Restaurant6AnimationPanel;
 import simcity.CarAgent;
 import simcity.gui.BusGui;
@@ -48,8 +51,14 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 
 	private BuildingAnimationPanel BuildPanel;
 	public BankAnimationPanel bankPanel = new BankAnimationPanel();
+	public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
 	public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
+	public MarketAnimationPanel marketPanel2 = new MarketAnimationPanel();
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
+	public Restaurant2AnimationPanel rest2Panel = new Restaurant2AnimationPanel();
+	//public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); FIX
+	public Restaurant4AnimationPanel rest4Panel = new Restaurant4AnimationPanel();
+	public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
 	public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
 	
 //	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
@@ -69,6 +78,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
 	public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
 	public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
+	public HouseAnimationPanel house5Panel = new HouseAnimationPanel(5);
 	private List<JPanel> panels = new ArrayList<JPanel>();
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
@@ -140,6 +150,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		homes.add(house2Panel);
 		homes.add(house3Panel);
 		homes.add(house4Panel);
+		homes.add(house5Panel);
 		
 		// Creating the apartment animation panel
 		for (int i = 5; i < 25; ++i) {
@@ -147,8 +158,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		}
 		
 		panels.add(bankPanel);
+		panels.add(bankPanel2);
 		panels.add(marketPanel);
+		panels.add(marketPanel2);
 		panels.add(rest1Panel);
+		panels.add(rest4Panel);
 		
     	setSize(WIDTH, HEIGHT);
         setVisible(true);
@@ -166,17 +180,54 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   BuildPanel.repaint();
 			   BuildPanel.add(bankPanel);
 		   }
+		   else if(me.getButton() == 1 && bank2.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(bankPanel2);
+		   }
 		   else if(me.getButton() == 1 && market.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
 			   BuildPanel.add(marketPanel);
 		   }
+		   else if(me.getButton() == 1 && market2.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(marketPanel2);
+		   }
 		   else if(me.getButton() == 1 && restaurant1.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
 			   BuildPanel.add(rest1Panel);
+		   }
+		   else if(me.getButton() == 1 && restaurant2.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(rest2Panel);
+		   }
+		   //FIX - add in restaurant 3
+		   else if(me.getButton() == 1 && restaurant4.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(rest4Panel); 
+		   }
+		   else if(me.getButton() == 1 && restaurant5.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(rest5Panel); 
+		   }
+		   else if(me.getButton() == 1 && restaurant6.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(rest6Panel); 
 		   }
 		   else if(me.getButton() == 1 && house1.contains(me.getX(), me.getY())){
 			   if(BuildPanel.getComponentCount() > 0)
@@ -201,6 +252,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
 			   BuildPanel.repaint();
 			   BuildPanel.add(house4Panel);
+		   }
+		   else if(me.getButton() == 1 && house5.contains(me.getX(), me.getY())){
+			   if(BuildPanel.getComponentCount() > 0)
+			   		BuildPanel.remove(BuildPanel.getComponent(0));			   
+			   BuildPanel.repaint();
+			   BuildPanel.add(house5Panel);
 		   }
 		   else {
 			   for (Rectangle2D apt : apartmentComplex1Components) {

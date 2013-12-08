@@ -12,7 +12,6 @@ public class SimWorldClock {
 	private Timer clock = new Timer();
 	public List<PersonAgent> people;
 	public List<TimeCard> timeCards;
-	public TimeCard bankTimeCard;
 	private int currentHour;
 	public int endOfDay;
 
@@ -28,7 +27,7 @@ public class SimWorldClock {
 			public void run() {
 				updateWorldClock();
 			}
-		}, 0, 6000); // one minute per hour 
+		}, 0, 3000); // one minute per hour 
 	}
 	private void updateWorldClock(){
 		System.out.println("Time is now " + currentHour );
@@ -39,9 +38,6 @@ public class SimWorldClock {
 			for(TimeCard timeCard : timeCards){
 				timeCard.msgEndOfDay();
 			}
-		}
-		if(currentHour == 23){
-			bankTimeCard.msgEndOfDay();
 		}
 		if(currentHour != 24){
 			currentHour++;

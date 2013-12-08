@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AnimationPanel extends JPanel implements ActionListener {
+public class Restaurant2AnimationPanel extends JPanel implements ActionListener {
 
     private final int WINDOWX = 540;
     private final int WINDOWY = 480;
@@ -28,7 +28,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
 
     private List<Gui> guis = new ArrayList<Gui>();
 
-    public AnimationPanel() {
+    public Restaurant2AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
         

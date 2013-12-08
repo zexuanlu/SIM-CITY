@@ -269,6 +269,7 @@ public class PersonAgent extends Agent implements Person{
 				role.setActive(true);
 			}
 		}
+		gui.setPresent(false);
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
@@ -517,7 +518,10 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
 					for(MyRole mr : roles){
 						if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 200.00);//FIX - Should be fixed at some point to reflect a percent
+							if(e.directive.equals("deposit"))
+								((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+							else if(e.directive.equals("withdraw"))
+								((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
 							mr.setActive(true);
 							gui.setPresent(false);
 							((BankCustomerRole)mr.role).gui.setPresent(true);
@@ -533,7 +537,10 @@ public class PersonAgent extends Agent implements Person{
 					BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 					((BankCustomerRole)newRole.role).setGui(bcg);
 					cap.bankPanel.addGui(bcg);
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 200.00); //FIX - Should be fixed at some point to reflect a percent
+					if(e.directive.equals("deposit"))
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+					else if(e.directive.equals("withdraw"))
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 					gui.setPresent(false);
 					toDo.remove(e); //remove the event from the queue
 					return;
@@ -578,6 +585,7 @@ public class PersonAgent extends Agent implements Person{
 				else if(e.type == EventType.HostEvent){
 					for(MyRole mr : roles){
 						if(mr.type.equals("Bank Host")){
+							print("Messaging the Time Card!");
 							bank.getTimeCard().msgBackToWork(this, mr.role); 
 							try{
 								wait.acquire();
@@ -862,6 +870,7 @@ public class PersonAgent extends Agent implements Person{
 					e1.printStackTrace();
 				}
 			}
+			print("Arrived at Destination");
 //		}
 	}
 	private void dowalkto(int originx, int originy){
@@ -982,7 +991,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 400.00){
+		if (this.wallet.getOnHand() >= 4000000.00){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
@@ -1001,6 +1010,9 @@ public class PersonAgent extends Agent implements Person{
          return null;
 	 }
  
+	 public String toString(){
+		 return name;
+	 }
 	 public String getActiveRoleName(){
 		 String none = "No Active Role";
          for(MyRole role : roles){
