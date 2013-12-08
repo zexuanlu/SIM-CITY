@@ -798,7 +798,7 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
-		if(!addedAnEvent && !containsEvent("Go home")){
+		if(!addedAnEvent && !containsEvent("Go home") && !cityMap.ateOutLast){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
@@ -808,6 +808,10 @@ public class PersonAgent extends Agent implements Person{
 			}
 			toDo.add(goHome);
 			addedAnEvent = true;
+		}
+		else{
+			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
+			addedAnEvent = true;	
 		}
 		return addedAnEvent;
 		//buy a car
@@ -860,7 +864,6 @@ public class PersonAgent extends Agent implements Person{
 			}
 //		}
 	}
-
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
 
