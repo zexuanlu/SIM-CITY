@@ -1,11 +1,14 @@
 package restaurant6;
 
 import agent.Agent;   
+import agent.Role;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import person.interfaces.Person;
 import restaurant6.interfaces.Restaurant6Waiter;
+import utilities.restaurant.RestaurantHost;
 
 
 /**
@@ -15,7 +18,7 @@ import restaurant6.interfaces.Restaurant6Waiter;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class Restaurant6HostRole extends Agent {
+public class Restaurant6HostRole extends Role implements RestaurantHost {
         
         // A global for the number of tables
         static final int NTABLES = 3;
@@ -80,8 +83,8 @@ public class Restaurant6HostRole extends Agent {
         private Semaphore customerAtFront = new Semaphore(0,true);
         
         // Constructor for the host agent
-        public Restaurant6HostRole(String name) {
-            super();
+        public Restaurant6HostRole(String name, Person p) {
+            super(p);
 
             this.name = name;
             int x = 200;
@@ -216,7 +219,7 @@ public class Restaurant6HostRole extends Agent {
         /**
          * Scheduler.  Determine what action is called for, and do it.
          */
-        protected boolean pickAndExecuteAnAction() {
+        public boolean pickAndExecuteAnAction() {
                 /* If there is a table that is unoccupied, the scheduler will look
                  * for the waiter with the fewest number of customers and assign the 
                  * waiting customer to that waiter.
@@ -412,4 +415,8 @@ public class Restaurant6HostRole extends Agent {
             
             minCustomers = tempMin;
         }
+
+		public String getRoleName() {
+			return "Restaurant 6 Host";
+		}
 }

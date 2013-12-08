@@ -5,6 +5,7 @@ import person.PersonAgent;
 import restaurant5.gui.HostGui5;
 import restaurant5.gui.Table5;
 import restaurant5.interfaces.Waiter5; 
+import utilities.restaurant.RestaurantHost;
 
 import java.util.*;
 
@@ -15,7 +16,7 @@ import java.util.*;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent5 extends Role {
+public class HostAgent5 extends Role implements RestaurantHost {
     LinkedList<myWaiter> waiterQ = new LinkedList<myWaiter>();
     public class myWaiter {
     	myWaiter(Waiter5 _w, WaiterState _s){

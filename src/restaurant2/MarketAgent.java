@@ -1,6 +1,6 @@
 package restaurant2;
 
-import restaurant2.gui.CustomerGui;
+import restaurant2.gui.Restaurant2CustomerGui;
 import restaurant2.interfaces.Market;
 import agent.Agent;
 

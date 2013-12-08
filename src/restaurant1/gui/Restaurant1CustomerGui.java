@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 import person.PersonAgent;
 
-public class CustomerGui implements Gui{
+public class Restaurant1CustomerGui implements Gui{
 
 	private Restaurant1CustomerRole agent = null;
 	public boolean isPresent = false;
@@ -35,7 +35,7 @@ public class CustomerGui implements Gui{
 	public static final int y1Table = 250;
 	public static final int y2Table = 150;
 
-	public CustomerGui(Restaurant1CustomerRole c, Restaurant1AnimationPanel gui){ //HostAgent m) {
+	public Restaurant1CustomerGui(Restaurant1CustomerRole c, Restaurant1AnimationPanel gui){ //HostAgent m) {
 		agent = c;
 		xPos = 0;
 		yPos = 0;

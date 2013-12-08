@@ -5,24 +5,21 @@ import restaurant6.interfaces.Restaurant6Waiter;
 
 import java.util.*;
 
+import person.interfaces.Person;
+
 /**
  * Restaurant Waiter Agent
  */
 
 public class Restaurant6WaiterRole extends Restaurant6AbstractWaiterRole implements Restaurant6Waiter {
 	
-	public Restaurant6WaiterRole(String name) {
-		super(name);
+	public Restaurant6WaiterRole(String name, Person p) {
+		super(name, p);
 
 		this.name = name;
 		
 		waiterState = MyWaiterState.Working;
 	}
-
-	/**
-	 * Scheduler.  Determine what action is called for, and do it.
-	 */
-
 
 	// Actions
 	// Goes to cook to put in order
@@ -39,6 +36,11 @@ public class Restaurant6WaiterRole extends Restaurant6AbstractWaiterRole impleme
 		customer.setState(MyCustomer.CustState.WaitingForFood);
 		cook.hereIsAnOrder(customer.order); // Messages cook the customer's order
 		waiterGui.DoGoToHomePosition(); // GUI leaves cook
+	}
+
+	// Gets person's role name
+	public String getRoleName() {
+		return "Restaurant 6 Waiter";
 	}
 
 }

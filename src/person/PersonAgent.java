@@ -30,9 +30,9 @@ import restaurant1.Restaurant1CustomerRole;
 import restaurant1.Restaurant1HostRole;
 import restaurant1.Restaurant1SDWaiterRole;
 import restaurant1.Restaurant1WaiterRole;
-import restaurant1.gui.CookGui;
-import restaurant1.gui.CustomerGui;
-import restaurant1.gui.WaiterGui;
+import restaurant1.gui.Restaurant1CookGui;
+import restaurant1.gui.Restaurant1CustomerGui;
+import restaurant1.gui.Restaurant1WaiterGui;
 import restaurant1.interfaces.Restaurant1Host;
 import simcity.CarAgent;
 import simcity.gui.CarGui; 
@@ -346,7 +346,7 @@ public class PersonAgent extends Agent implements Person{
 	/* Actions */
 	private void goToAndDoEvent(SimEvent e){		
 ////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
-			if(e.location.type == LocationType.Restaurant1){
+			if(e.location.type == LocationType.Restaurant){
 				Restaurant rest = (Restaurant)e.location;
 				if(e.type == EventType.CustomerEvent){
 					for(MyRole mr : roles){
@@ -364,7 +364,7 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(cRole, "Rest 1 Customer");
 					newRole.setActive(true);
 					roles.add(newRole);
-					CustomerGui cg = new CustomerGui(cRole, null);
+					Restaurant1CustomerGui cg = new Restaurant1CustomerGui(cRole, null);
 					cg.isPresent = true;
 					cRole.setGui(cg);
 					cap.rest1Panel.addGui(cg);
@@ -423,7 +423,7 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(wRole, "Rest 1 Waiter");
 					newRole.setActive(true);
 					roles.add(newRole);
-					WaiterGui wg = new WaiterGui((Restaurant1WaiterRole)newRole.role, null);
+					Restaurant1WaiterGui wg = new Restaurant1WaiterGui((Restaurant1WaiterRole)newRole.role);
 					wg.isPresent = true;
 					cap.rest1Panel.addGui(wg);
 					rest.getTimeCard().msgBackToWork(this, newRole.role);
@@ -460,7 +460,7 @@ public class PersonAgent extends Agent implements Person{
 					MyRole newRole = new MyRole(sdRole, "Rest 1 SDWaiter");
 					newRole.setActive(true);
 					roles.add(newRole);
-					WaiterGui wg = new WaiterGui((Restaurant1SDWaiterRole)newRole.role, null);
+					Restaurant1WaiterGui wg = new Restaurant1WaiterGui((Restaurant1SDWaiterRole)newRole.role);
 					wg.isPresent = true;
 					cap.rest1Panel.addGui(wg);
 					rest.getTimeCard().msgBackToWork(this, newRole.role);

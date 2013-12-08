@@ -1,10 +1,11 @@
 package restaurant5.gui;
 
 import restaurant5.CustomerAgent5;
+import utilities.Gui;
 
 import java.awt.*;
 
-public class CustomerGui5 implements Gui5{
+public class CustomerGui5 implements Gui{
 	private int sit; 
 
 	private CustomerAgent5 agent = null;

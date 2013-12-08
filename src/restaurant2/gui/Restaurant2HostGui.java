@@ -3,10 +3,11 @@ package restaurant2.gui;
 
 import restaurant2.Restaurant2CustomerRole;
 import restaurant2.Restaurant2HostRole;
+import utilities.Gui;
 
 import java.awt.*;
 
-public class HostGui implements Gui {
+public class Restaurant2HostGui implements Gui {
 
     private Restaurant2HostRole agent = null;
 
@@ -20,7 +21,7 @@ public class HostGui implements Gui {
     public static final int xTable3 = 50;
     public static final int yTable3 = 50;
     
-    public HostGui(Restaurant2HostRole agent) {
+    public Restaurant2HostGui(Restaurant2HostRole agent) {
         this.agent = agent;
     }
     public void updatePosition() {

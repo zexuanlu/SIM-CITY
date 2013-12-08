@@ -1,6 +1,6 @@
 package restaurant2;
 
-import restaurant2.gui.CustomerGui;
+import restaurant2.gui.Restaurant2CustomerGui;
 import restaurant2.interfaces.Customer;
 import restaurant2.interfaces.Waiter;
 import agent.Agent;
@@ -30,7 +30,7 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	private Semaphore waitForPayment = new Semaphore(0, true);
 	Timer timer = new Timer();
 	Timer thinkTimer = new Timer();
-	private CustomerGui customerGui;
+	private Restaurant2CustomerGui customerGui;
 	private Waiter waiter;
 	// agent correspondents
 	private Restaurant2HostRole host;
@@ -385,11 +385,11 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 		return "customer " + getName();
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(Restaurant2CustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public Restaurant2CustomerGui getGui() {
 		return customerGui;
 	}
 	@Override

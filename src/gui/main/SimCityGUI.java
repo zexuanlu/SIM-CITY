@@ -1,6 +1,7 @@
 package gui.main;
 
-import gui.panels.*;
+import gui.panels.*; 
+import utilities.Gui;
 
 import javax.swing.*;
 
@@ -29,9 +30,20 @@ import bank.gui.BankHostGui;
 import bank.gui.BankTellerGui;
 import market.*;
 import restaurant1.*;
-import restaurant1.gui.CookGui;
-import restaurant1.gui.WaiterGui;
+import restaurant1.gui.Restaurant1CookGui;
+import restaurant1.gui.Restaurant1WaiterGui;
+import restaurant2.*;
+import restaurant2.gui.Restaurant2CookGui;
+import restaurant2.gui.Restaurant2WaiterGui;
+import restaurant5.*;
+import restaurant5.gui.CookGui5;
+import restaurant5.gui.WaiterGui5;
 import restaurant4.*;
+import restaurant4.gui.Restaurant4CookGui;
+import restaurant4.gui.Restaurant4WaiterGui;
+import restaurant6.*;
+import restaurant6.gui.Restaurant6CookGui;
+import restaurant6.gui.Restaurant6WaiterGui;
 import person.Location;
 import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
@@ -63,54 +75,249 @@ public class SimCityGUI extends JFrame {
 	private PersonAgent initPerson; 
 	public SimWorldClock simclock;
 	
-	public BankDatabaseAgent bankdatabase = new BankDatabaseAgent();
-	
-	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"BTR1");
-	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "BTR2");
-	public BankHostRole bankhostrole = new BankHostRole(initPerson,"BHR"); 
-	
-	public MarketCashierRole marketcashierrole = new MarketCashierRole(initPerson, "MCR"); 
-	public MarketEmployeeRole marketemployeerole = new MarketEmployeeRole(initPerson, "MER");
-	
-	public HomeOwnerRole homeOwnerRole1 = new HomeOwnerRole(initPerson, "HMO1", 1);
-	public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO2", 2);
-	public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
-	public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
-	
-	public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT5", 5, initPerson);
-
-	// List of apartment tenant roles
-	private List<ApartmentTenantRole> aptTenants;
-	
-	// List of apartment tenant GUIs
-	private List<ApartmentTenantGui> aptGuis;
-	
-	public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
-	public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
-	public Restaurant1CustomerRole cust1 = new Restaurant1CustomerRole("Customer 1", initPerson);
-	public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
-	public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
-	
-	public Restaurant4HostRole host4 = new Restaurant4HostRole("Host 4", initPerson);
-	public Restaurant4CookRole cook4 = new Restaurant4CookRole("Cook 4", initPerson);
-	public Restaurant4CashierRole cashier4 = new Restaurant4CashierRole("Cashier 4", initPerson);
-	/*
-	 * Role gui's must be initialized in SimCityGui with the role as happens below
-	 */
-
-	public BankTellerGui btg1 = new BankTellerGui(banktellerrole1);
-	public BankTellerGui btg2 = new BankTellerGui(banktellerrole2);
-	public BankHostGui bhg = new BankHostGui(bankhostrole);
-	
-	public MarketEmployeeGui meg = new MarketEmployeeGui(marketemployeerole);
-	
-	public WaiterGui wg = new WaiterGui(waiter1, null);
-	public CookGui cg = new CookGui(cook1, null);
-	
-	public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
-	public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
-	public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
-	public HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
+//	/**
+//	 * BANK INITIALIZATION OF EMPLOYEES
+//	 */
+//	public BankDatabaseAgent bankdatabase = new BankDatabaseAgent();
+//	
+//	// First Bank's Employees: FIRST SHIFT
+//	public BankTellerRole banktellerrole1 = new BankTellerRole(initPerson,"B1TR1");
+//	public BankTellerRole banktellerrole2 = new BankTellerRole(initPerson, "B1TR2");
+//	public BankHostRole bankhostrole = new BankHostRole(initPerson,"B1HR1"); 
+//	
+//	// First Bank's Employees: SECOND SHIFT 
+//	public BankTellerRole banktellerrole3 = new BankTellerRole(initPerson,"B1TR1");
+//	public BankTellerRole banktellerrole4 = new BankTellerRole(initPerson, "B1TR2");
+//	public BankHostRole bankhostrole2 = new BankHostRole(initPerson,"B1HR2"); 
+//	
+//	// Second Bank's Employees: FIRST SHIFT
+//	public BankTellerRole bank2tellerrole1 = new BankTellerRole(initPerson,"B2TR1");
+//	public BankTellerRole bank2tellerrole2 = new BankTellerRole(initPerson, "B2TR2");
+//	public BankHostRole bank2hostrole1 = new BankHostRole(initPerson,"B2HR1");
+//	
+//	// Second Bank's Employees: SECOND SHIFT
+//	public BankTellerRole bank2tellerrole3 = new BankTellerRole(initPerson,"B2TR3");
+//	public BankTellerRole bank2tellerrole4 = new BankTellerRole(initPerson, "B2TR4");
+//	public BankHostRole bank2hostrole2 = new BankHostRole(initPerson,"B2HR2");
+//	
+//	/**
+//	 * MARKET ROLE INITIALIZATION
+//	 */
+//	// Market 1's Employees: FIRST SHIFT
+//	public MarketCashierRole market1cashierrole1 = new MarketCashierRole(initPerson, "M1CR1"); 
+//	public MarketEmployeeRole market1employeerole1 = new MarketEmployeeRole(initPerson, "M1ER1");
+//	
+//	// Market 1's Employees: SECOND SHIFT
+//	public MarketCashierRole market1cashierrole2 = new MarketCashierRole(initPerson, "M1CR2"); 
+//	public MarketEmployeeRole market1employeerole2 = new MarketEmployeeRole(initPerson, "M1ER2");
+//	
+//	// Market 2's Employees: FIRST SHIFT
+//	public MarketCashierRole market2cashierrole1 = new MarketCashierRole(initPerson, "M2CR1"); 
+//	public MarketEmployeeRole market2employeerole1 = new MarketEmployeeRole(initPerson, "M2ER1");
+//	
+//	// Market 2's Employees: SECOND SHIFT
+//	public MarketCashierRole market2cashierrole2 = new MarketCashierRole(initPerson, "M2CR2"); 
+//	public MarketEmployeeRole market2employeerole2 = new MarketEmployeeRole(initPerson, "M2ER2");
+//	
+//	/**
+//	 * RESIDENT ROLE INITIALIZAITON
+//	 */
+//	public HomeOwnerRole homeOwnerRole1 = new HomeOwnerRole(initPerson, "HMO1", 1);
+//	public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO2", 2);
+//	public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
+//	public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
+//	public HomeOwnerRole homeOwnerRole5 = new HomeOwnerRole(initPerson, "HM05", 5);
+//	
+//	public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT5", 5, initPerson);
+//
+//	// List of apartment tenant roles
+//	private List<ApartmentTenantRole> aptTenants;
+//	
+//	// List of apartment tenant GUIs
+//	private List<ApartmentTenantGui> aptGuis;
+//	
+//	/**
+//	 * RESTAURANT EMPLOYEE INITIALIZATION
+//	 */
+//	// First restaurant's employees: FIRST SHIFT
+//	public Restaurant1HostRole rest1Host = new Restaurant1HostRole("Host 1 Shift 1", initPerson);
+//	public Restaurant1CookRole rest1Cook = new Restaurant1CookRole("Cook 1 Shift 1", initPerson);
+//	public Restaurant1CustomerRole rest1Cust = new Restaurant1CustomerRole("Customer 1 Shift 1", initPerson);
+//	public Restaurant1CashierRole rest1Cashier = new Restaurant1CashierRole("Cashier 1 Shift 1", initPerson);
+//	public Restaurant1SDWaiterRole rest1SDWaiter = new Restaurant1SDWaiterRole("Shared Data Waiter 1 Shift 1", initPerson);
+//	public Restaurant1WaiterRole rest1Waiter = new Restaurant1WaiterRole("Waiter 1 Shift 1", initPerson);
+//	
+//	// First restaurant's employees: SECOND SHIFT
+//	public Restaurant1HostRole rest1Host2 = new Restaurant1HostRole("Host 1 Shift 2", initPerson);
+//	public Restaurant1CookRole rest1Cook2 = new Restaurant1CookRole("Cook 1 Shift 2", initPerson);
+//	public Restaurant1CustomerRole rest1Cust2 = new Restaurant1CustomerRole("Customer 1 Shift 2", initPerson);
+//	public Restaurant1CashierRole rest1Cashier2 = new Restaurant1CashierRole("Cashier 1 Shift 2", initPerson);
+//	public Restaurant1SDWaiterRole rest1SDWaiter2 = new Restaurant1SDWaiterRole("Shared Data Waiter 1 Shift 2", initPerson);
+//	public Restaurant1WaiterRole rest1Waiter2 = new Restaurant1WaiterRole("Waiter 1 Shift 2", initPerson);
+//	
+//	// Second restaurant's employees: FIRST SHIFT
+//	public Restaurant2HostRole rest2Host = new Restaurant2HostRole("Host 2 Shift 1", initPerson);
+//	public Restaurant2CookRole rest2Cook = new Restaurant2CookRole("Cook 2 Shift 1", initPerson);
+//	public Restaurant2CustomerRole rest2Cust = new Restaurant2CustomerRole("Customer 2 Shift 1", initPerson);
+//	public Restaurant2CashierRole rest2Cashier = new Restaurant2CashierRole("Cashier 2 Shift 1", initPerson);
+//	public Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", initPerson);
+//	public Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", initPerson);
+//	
+//	// Second restaurant's employees: SECOND SHIFT
+//	public Restaurant2HostRole rest2Host2 = new Restaurant2HostRole("Host 2 Shift 2", initPerson);
+//	public Restaurant2CookRole rest2Cook2 = new Restaurant2CookRole("Cook 2 Shift 2", initPerson);
+//	public Restaurant2CustomerRole rest2Cust2 = new Restaurant2CustomerRole("Customer 2 Shift 2", initPerson);
+//	public Restaurant2CashierRole rest2Cashier2 = new Restaurant2CashierRole("Cashier 2 Shift 2", initPerson);
+//	public Restaurant2SDWaiterRole rest2SDWaiter2 = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 2", initPerson);
+//	public Restaurant2WaiterRole rest2Waiter2 = new Restaurant2WaiterRole("Waiter 1 Shift 2", initPerson);
+//	
+//	// Fourth restaurant's employees: FIRST SHIFT 
+//	public Restaurant4CustomerRole rest4Cust = new Restaurant4CustomerRole("Customer 4 Shift 1", initPerson);
+//	public Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", initPerson);
+//	public Restaurant4CookRole rest4Cook = new Restaurant4CookRole("Cook 4 Shift 1", initPerson);
+//	public Restaurant4CashierRole rest4Cashier = new Restaurant4CashierRole("Cashier 4 Shift 1", initPerson);
+//	public Restaurant4SDWaiterRole rest4SDWaiter = new Restaurant4SDWaiterRole("Shared Data Waiter 4 Shift 1", initPerson);
+//	public Restaurant4WaiterRole rest4Waiter = new Restaurant4WaiterRole("Waiter 4 Shift 1", initPerson);
+//	
+//	// Fourth restaurant's employees: SECOND SHIFT 
+//	public Restaurant4CustomerRole rest4Cust2 = new Restaurant4CustomerRole("Customer 4 Shift 2", initPerson);
+//	public Restaurant4HostRole rest4Host2 = new Restaurant4HostRole("Host 4 Shift 2", initPerson);
+//	public Restaurant4CookRole rest4Cook2 = new Restaurant4CookRole("Cook 4 Shift 2", initPerson);
+//	public Restaurant4CashierRole rest4Cashier2 = new Restaurant4CashierRole("Cashier 4 Shift 2", initPerson);
+//	public Restaurant4SDWaiterRole rest4SDWaiter2 = new Restaurant4SDWaiterRole("Shared Data Waiter 4 Shift 2", initPerson);
+//	public Restaurant4WaiterRole rest4Waiter2 = new Restaurant4WaiterRole("Waiter 4 Shift 2", initPerson);
+//	
+//	// Fifth restaurant's employees: FIRST SHIFT
+//	public CustomerAgent5 rest5Cust = new CustomerAgent5("Customer 5 Shift 1", initPerson);
+//	public HostAgent5 rest5Host = new HostAgent5("Host 5 Shift 1", initPerson);
+//	public CookAgent5 rest5Cook = new CookAgent5("Cook 5 Shift 1", initPerson);
+//	public CashierAgent5 rest5Cashier = new CashierAgent5("Cashier 5 Shift 1", initPerson);
+//	public SDWaiterAgent5 rest5SDWaiter = new SDWaiterAgent5("Shared Data Waiter 5 Shift 1", initPerson);
+//	public WaiterAgent5 rest5Waiter = new WaiterAgent5("Waiter 5 Shift 1", initPerson);
+//	
+//	// Fifth restaurant's employees: SECOND SHIFT
+//	public CustomerAgent5 rest5Cust2 = new CustomerAgent5("Customer 5 Shift 2", initPerson);
+//	public HostAgent5 rest5Host2 = new HostAgent5("Host 5 Shift 2", initPerson);
+//	public CookAgent5 rest5Cook2 = new CookAgent5("Cook 5 Shift 2", initPerson);
+//	public CashierAgent5 rest5Cashier2 = new CashierAgent5("Cashier 5 Shift 2", initPerson);
+//	public SDWaiterAgent5 rest5SDWaiter2 = new SDWaiterAgent5("Shared Data Waiter 5 Shift 2", initPerson);
+//	public WaiterAgent5 rest5Waiter2 = new WaiterAgent5("Waiter 5 Shift 2", initPerson);
+//	
+//	// Sixth restaurant's employees: FIRST SHIFT
+//	public Restaurant6CustomerRole rest6Cust = new Restaurant6CustomerRole("Customer 6 Shift 1", initPerson);
+//	public Restaurant6HostRole rest6Host = new Restaurant6HostRole("Host 6 Shift 1", initPerson);
+//	public Restaurant6CookRole rest6Cook = new Restaurant6CookRole("Cook 6 Shift 1", initPerson);
+//	public Restaurant6CashierRole rest6Cashier = new Restaurant6CashierRole("Cashier 6 Shift 1", initPerson);
+//	public Restaurant6SDWaiterRole rest6SDWaiter = new Restaurant6SDWaiterRole("Shared Data Waiter 6 Shift 1", initPerson);
+//	public Restaurant6WaiterRole rest6Waiter = new Restaurant6WaiterRole("Waiter 6 Shift 1", initPerson);
+//	
+//	// Sixth restaurant's employees: SECOND SHIFT
+//	public Restaurant6CustomerRole rest6Cust2 = new Restaurant6CustomerRole("Customer 6 Shift 2", initPerson);
+//	public Restaurant6HostRole rest6Host2 = new Restaurant6HostRole("Host 6 Shift 2", initPerson);
+//	public Restaurant6CookRole rest6Cook2 = new Restaurant6CookRole("Cook 6 Shift 2", initPerson);
+//	public Restaurant6CashierRole rest6Cashier2 = new Restaurant6CashierRole("Cashier 6 Shift 2", initPerson);
+//	public Restaurant6SDWaiterRole rest6SDWaiter2 = new Restaurant6SDWaiterRole("Shared Data Waiter 6 Shift 2", initPerson);
+//	public Restaurant6WaiterRole rest6Waiter2 = new Restaurant6WaiterRole("Waiter 6 Shift 2", initPerson);
+//	
+//	/*
+//	 * Role gui's must be initialized in SimCityGui with the role as happens below
+//	 */
+//
+//	/**
+//	 * BANK GUI CREATION
+//	 */
+//	// First Bank: FIRST SHIFT
+//	public BankTellerGui b1tg1 = new BankTellerGui(banktellerrole1);
+//	public BankTellerGui b1tg2 = new BankTellerGui(banktellerrole2);
+//	public BankHostGui b1hg1 = new BankHostGui(bankhostrole);
+//	
+//	// First Bank: SECOND SHIFT
+//	public BankTellerGui b1tg3 = new BankTellerGui(banktellerrole3);
+//	public BankTellerGui b1tg4 = new BankTellerGui(banktellerrole4);
+//	public BankHostGui b1hg2 = new BankHostGui(bankhostrole2);
+//	
+//	// Second Bank: FIRST SHIFT
+//	public BankTellerGui b2tg1 = new BankTellerGui(bank2tellerrole1);
+//	public BankTellerGui b2tg2 = new BankTellerGui(bank2tellerrole2);
+//	public BankHostGui b2hg1 = new BankHostGui(bank2hostrole1);
+//	
+//	// Second Bank: SECOND SHIFT
+//	public BankTellerGui b2tg3 = new BankTellerGui(bank2tellerrole3);
+//	public BankTellerGui b2tg4 = new BankTellerGui(bank2tellerrole4);
+//	public BankHostGui b2hg2 = new BankHostGui(bank2hostrole2);
+//	
+//	/**
+//	 * MARKET GUI CREATION
+//	 */
+//	// First Market
+//	public MarketEmployeeGui m1eg1 = new MarketEmployeeGui(market1employeerole1);
+//	public MarketEmployeeGui m1eg2 = new MarketEmployeeGui(market1employeerole2);
+//	
+//	// Second Market
+//	public MarketEmployeeGui m2eg1 = new MarketEmployeeGui(market2employeerole1);
+//	public MarketEmployeeGui m2eg2 = new MarketEmployeeGui(market2employeerole2);
+//	
+//	/**
+//	 * RESTAURANT GUI CREATION
+//	 */
+//	// First Restaurant: FIRST SHIFT
+//	public Restaurant1WaiterGui r1sharedwg1 = new Restaurant1WaiterGui(rest1SDWaiter);
+//	public Restaurant1WaiterGui r1wg1 = new Restaurant1WaiterGui(rest1Waiter);
+//	public Restaurant1CookGui r1cg1 = new Restaurant1CookGui(rest1Cook, null);
+//	
+//	// First Restaurant: SECOND SHIFT
+//	public Restaurant1WaiterGui r1sharedwg2 = new Restaurant1WaiterGui(rest1SDWaiter2);
+//	public Restaurant1WaiterGui r1wg2 = new Restaurant1WaiterGui(rest1Waiter2);
+//	public Restaurant1CookGui r1cg2 = new Restaurant1CookGui(rest1Cook2, null);	
+//	
+//	// Second Restaurant: FIRST SHIFT
+//	public Restaurant2WaiterGui r2sharedwg1 = new Restaurant2WaiterGui(rest2SDWaiter);
+//	public Restaurant2WaiterGui r2wg1 = new Restaurant2WaiterGui(rest2Waiter);
+//	public Restaurant2CookGui r2cg1 = new Restaurant2CookGui(rest2Cook);
+//	
+//	// Second Restaurant: SECOND SHIFT
+//	public Restaurant2WaiterGui r2sharedwg2 = new Restaurant2WaiterGui(rest2SDWaiter2);
+//	public Restaurant2WaiterGui r2wg2 = new Restaurant2WaiterGui(rest2Waiter2);
+//	public Restaurant2CookGui r2cg2 = new Restaurant2CookGui(rest2Cook2);
+//	
+//	// Fourth Restaurant: FIRST SHIFT
+//	public Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, null, -20, -20);
+//	public Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, null, -20, -20);
+//	public Restaurant4CookGui r4cg1 = new Restaurant4CookGui(rest4Cook, null);
+//	
+//	// Fourth Restaurant: SECOND SHIFT
+//	public Restaurant4WaiterGui r4sharedwg2 = new Restaurant4WaiterGui(rest4SDWaiter2, null, -20, -20);
+//	public Restaurant4WaiterGui r4wg2 = new Restaurant4WaiterGui(rest4Waiter2, null, -20, -20);
+//	public Restaurant4CookGui r4cg2 = new Restaurant4CookGui(rest4Cook2, null);
+//	
+//	// Fifth Restaurant: FIRST SHIFT
+//	public WaiterGui5 r5sharedwg1 = new WaiterGui5(rest5SDWaiter, -20);
+//	public WaiterGui5 r5wg1 = new WaiterGui5(rest5Waiter, -20);
+//	public CookGui5 r5cg1 = new CookGui5(rest5Cook);
+//	
+//	// Fifth Restaurant: SECOND SHIFT
+//	public WaiterGui5 r5sharedwg2 = new WaiterGui5(rest5SDWaiter2, -20);
+//	public WaiterGui5 r5wg2 = new WaiterGui5(rest5Waiter2, -20);
+//	public CookGui5 r5cg2 = new CookGui5(rest5Cook2);
+//	
+//	// Sixth Restaurant: FIRST SHIFT
+//	public Restaurant6WaiterGui r6sharedwg1 = new Restaurant6WaiterGui(rest6SDWaiter, -20, -20);
+//	public Restaurant6WaiterGui r6wg1 = new Restaurant6WaiterGui(rest6Waiter, -20, -20);
+//	public Restaurant6CookGui r6cg1 = new Restaurant6CookGui(rest6Cook);
+//	
+//	// Sixth Restaurant: SECOND SHIFT
+//	public Restaurant6WaiterGui r6sharedwg2 = new Restaurant6WaiterGui(rest6SDWaiter2, -20, -20);
+//	public Restaurant6WaiterGui r6wg2 = new Restaurant6WaiterGui(rest6Waiter2, -20, -20);
+//	public Restaurant6CookGui r6cg2 = new Restaurant6CookGui(rest6Cook2);
+//	
+//	/**
+//	 * RESIDENT GUIS
+//	 */
+//	public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
+//	public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
+//	public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
+//	public HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
+//	public HomeOwnerGui hg5 = new HomeOwnerGui(homeOwnerRole5);
 	
 	public CityMap citymap; 
 
@@ -157,137 +364,147 @@ public class SimCityGUI extends JFrame {
 	public BusStopGui bs6gui = new BusStopGui(busstop6, 420, 30);
 	public BusStopGui bs7gui = new BusStopGui(busstop7, 420, 420);
 	public BusStopGui bs8gui = new BusStopGui(busstop8, 350, 420);	
-	public MarketTruckAgent truck;
+	
+	// Creating market truck agents
+	public MarketTruckAgent truck1;
+	public MarketTruckAgent truck2;
 
 	public SimCityGUI() {
 		
 		// List of apartment tenant roles
-		aptTenants = new ArrayList<ApartmentTenantRole>();
-		
-		for (int i = 5; i < 23; ++i) {
-			aptTenants.add(new ApartmentTenantRole("APT"+i, i, initPerson));
-		}
-		
-		// List of apartment tenant GUIs
-		aptGuis = new ArrayList<ApartmentTenantGui>();
-		
-		for (ApartmentTenantRole r : aptTenants) {
-			aptGuis.add(new ApartmentTenantGui(r));
-		}
-		
-		// First quadrant locations
-		Bank bank = new Bank("Bank 1", new TimeCard(), bankhostrole, 
-				new Position(80, 130), LocationType.Bank);
-		Market market = new Market("Market 1", marketcashierrole, new TimeCard(), 
-				new Position(150, 130), LocationType.Market);
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 130), LocationType.Restaurant1);
-		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(290, 130), LocationType.Restaurant2);
-		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(290, 60), LocationType.Restaurant3);
-		
-		// Second quadrant locations
-		Bank bank2 = new Bank("Bank 2", new TimeCard(), bankhostrole, 
-				new Position(640, 130), LocationType.Bank);
-		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
-				new Position(430, 130), LocationType.Market);
-		// FIX HOST ROLES
-		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
-		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(570, 130), LocationType.Restaurant2);
-		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(430, 60), LocationType.Restaurant3);		
-		
-		// Third quadrant locations
-		Home home1 = new Home("Home 1", homeOwnerRole1, 
-				new Position(430, 270), 1, LocationType.Home);
-		Home home2 = new Home("Home 2", homeOwnerRole2, 
-				new Position(430, 350), 2, LocationType.Home);
-		Home home3 = new Home("Home 3", homeOwnerRole3, 
-				new Position(500, 270), 3, LocationType.Home);
-		Home home4 = new Home("Home 4", homeOwnerRole4, 
-				new Position(570, 270), 4, LocationType.Home);
-		// FIX
-		Home home5 = new Home("Home 5", homeOwnerRole4, 
-				new Position(640, 270), 4, LocationType.Home);
-		
-		// Fourth quadrant locations
-		// First apartment complex
-		Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
-				new Position(40, 270), 5, LocationType.Apartment);
-		Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
-				new Position(40, 270), 6, LocationType.Apartment);
-		Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
-				new Position(40, 270), 7, LocationType.Apartment);
-		Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
-				new Position(40, 270), 8, LocationType.Apartment);
-		Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
-				new Position(40, 270), 9, LocationType.Apartment);
-		Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
-				new Position(40, 270), 10, LocationType.Apartment);
-		Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
-				new Position(40, 270), 11, LocationType.Apartment);
-		Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
-				new Position(40, 270), 12, LocationType.Apartment);
-		Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
-				new Position(40, 270), 13, LocationType.Apartment);
-		Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
-				new Position(40, 270), 14, LocationType.Apartment);
-		Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
-				new Position(40, 270), 15, LocationType.Apartment);
-		Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
-				new Position(40, 270), 16, LocationType.Apartment);
-		Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
-				new Position(40, 270), 17, LocationType.Apartment);
-		Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
-				new Position(40, 270), 18, LocationType.Apartment);
-		Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
-				new Position(40, 270), 19, LocationType.Apartment);
-		Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
-				new Position(40, 270), 20, LocationType.Apartment);
-		
-		// Second apartment complex
-		Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
-				new Position(120, 270), 21, LocationType.Apartment);
-		
-		
-		rest1.setCashier(cashier1);
-		rest1.setCook(cook1);
-		rest4.setCashier(cashier4);
-		rest4.setCook(cook4);
-		
-		locations.add(bank);
-		locations.add(bank2);
-		locations.add(market);
-		locations.add(market2);
-		locations.add(home1);
-		locations.add(home2);
-		locations.add(home3);
-		locations.add(home4);
-		locations.add(apt1);
-		locations.add(apt2);
-		locations.add(apt3);
-		locations.add(apt4);
-		locations.add(apt5);
-		locations.add(apt6);
-		locations.add(apt7);
-		locations.add(apt8);
-		locations.add(apt9);
-		locations.add(apt10);
-		locations.add(apt11);
-		locations.add(apt12);
-		locations.add(apt13);
-		locations.add(apt14);
-		locations.add(apt15);
-		locations.add(apt16);
-		locations.add(apt17);
-		locations.add(rest1);
-		locations.add(rest2);
-		locations.add(rest3);
-		locations.add(rest4);
-		locations.add(rest5);
-		locations.add(rest6);
-		
-		for(Location location : locations){
-			cityAnimPanel.addLocation(location);
-		}
-		
+//		aptTenants = new ArrayList<ApartmentTenantRole>();
+//		
+//		for (int i = 5; i < 23; ++i) {
+//			aptTenants.add(new ApartmentTenantRole("APT"+i, i, initPerson));
+//		}
+//		
+//		// List of apartment tenant GUIs
+//		aptGuis = new ArrayList<ApartmentTenantGui>();
+//		
+//		for (ApartmentTenantRole r : aptTenants) {
+//			aptGuis.add(new ApartmentTenantGui(r));
+//		}
+//		
+//		/**
+//		 * INITIALIZING LOCATIONS
+//		 */
+//		// First quadrant locations
+//		Bank bank = new Bank("Bank 1", new TimeCard(), bankhostrole, 
+//				new Position(80, 130), LocationType.Bank);
+//		Market market = new Market("Market 1", market1cashierrole1, new TimeCard(), 
+//				new Position(150, 130), LocationType.Market);
+//		Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(220, 130), LocationType.Restaurant);
+//		Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(290, 130), LocationType.Restaurant);
+//		Restaurant rest3 = new Restaurant("Rest 3", rest1Host, new TimeCard(), new Position(290, 60), LocationType.Restaurant);
+//		
+//		// Second quadrant locations
+//		Bank bank2 = new Bank("Bank 2", new TimeCard(), bank2hostrole1, 
+//				new Position(640, 130), LocationType.Bank);
+//		Market market2 = new Market("Market 2", market2cashierrole1, new TimeCard(), 
+//				new Position(430, 130), LocationType.Market);
+//		Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(500, 130), LocationType.Restaurant);
+//		Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(570, 130), LocationType.Restaurant);
+//		Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(430, 60), LocationType.Restaurant);		
+//		
+//		// Third quadrant locations
+//		Home home1 = new Home("Home 1", homeOwnerRole1, 
+//				new Position(430, 270), 1, LocationType.Home);
+//		Home home2 = new Home("Home 2", homeOwnerRole2, 
+//				new Position(430, 350), 2, LocationType.Home);
+//		Home home3 = new Home("Home 3", homeOwnerRole3, 
+//				new Position(500, 270), 3, LocationType.Home);
+//		Home home4 = new Home("Home 4", homeOwnerRole4, 
+//				new Position(570, 270), 4, LocationType.Home);
+//		Home home5 = new Home("Home 5", homeOwnerRole5, 
+//				new Position(640, 270), 4, LocationType.Home);
+//		
+//		// Fourth quadrant locations
+//		// First apartment complex
+//		Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
+//				new Position(40, 270), 5, LocationType.Apartment);
+//		Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
+//				new Position(40, 270), 6, LocationType.Apartment);
+//		Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
+//				new Position(40, 270), 7, LocationType.Apartment);
+//		Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
+//				new Position(40, 270), 8, LocationType.Apartment);
+//		Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
+//				new Position(40, 270), 9, LocationType.Apartment);
+//		Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
+//				new Position(40, 270), 10, LocationType.Apartment);
+//		Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
+//				new Position(40, 270), 11, LocationType.Apartment);
+//		Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
+//				new Position(40, 270), 12, LocationType.Apartment);
+//		Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
+//				new Position(40, 270), 13, LocationType.Apartment);
+//		Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
+//				new Position(40, 270), 14, LocationType.Apartment);
+//		Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
+//				new Position(40, 270), 15, LocationType.Apartment);
+//		Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
+//				new Position(40, 270), 16, LocationType.Apartment);
+//		Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
+//				new Position(40, 270), 17, LocationType.Apartment);
+//		Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
+//				new Position(40, 270), 18, LocationType.Apartment);
+//		Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
+//				new Position(40, 270), 19, LocationType.Apartment);
+//		Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
+//				new Position(40, 270), 20, LocationType.Apartment);
+//		
+//		// Second apartment complex
+//		Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
+//				new Position(120, 270), 21, LocationType.Apartment);
+//		
+//		locations.add(bank);
+//		locations.add(bank2);
+//		locations.add(market);
+//		locations.add(market2);
+//		locations.add(home1);
+//		locations.add(home2);
+//		locations.add(home3);
+//		locations.add(home4);
+//		locations.add(apt1);
+//		locations.add(apt2);
+//		locations.add(apt3);
+//		locations.add(apt4);
+//		locations.add(apt5);
+//		locations.add(apt6);
+//		locations.add(apt7);
+//		locations.add(apt8);
+//		locations.add(apt9);
+//		locations.add(apt10);
+//		locations.add(apt11);
+//		locations.add(apt12);
+//		locations.add(apt13);
+//		locations.add(apt14);
+//		locations.add(apt15);
+//		locations.add(apt16);
+//		locations.add(apt17);
+//		locations.add(rest1);
+//		locations.add(rest2);
+//		locations.add(rest3);
+//		locations.add(rest4);
+//		locations.add(rest5);
+//		locations.add(rest6);
+//		
+//		for(Location location : locations){
+//			cityAnimPanel.addLocation(location);
+//		}
+//		
+//		// SETTING COOK & CASHIER FOR RESTAURANTS
+//		rest1.setCashier(rest1Cashier);
+//		rest1.setCook(rest1Cook);
+//		rest2.setCashier(rest2Cashier);
+//		rest2.setCook(rest2Cook);
+//		rest4.setCashier(rest4Cashier);
+//		rest4.setCook(rest4Cook);
+//		rest5.setCashier(rest5Cashier);
+//		rest5.setCook(rest5Cook);
+//		rest6.setCashier(rest6Cashier);
+//		rest6.setCook(rest6Cook);
+//		
 		citymap = new CityMap(locations);
 
 		// SETUP
@@ -403,64 +620,91 @@ public class SimCityGUI extends JFrame {
 		 * that pointer is given to people. Below the waiter1 role's gui is set and added to the right animation panel
 		 * in cityAnimationPanel.
 		 */
-		
 
-		truck = new MarketTruckAgent();
-		MarketTruckGui truckGui = new MarketTruckGui(truck);
-		truck.setGui(truckGui);
-		truck.startThread();
-		cityAnimPanel.addGui(truckGui);
+		/**
+		 * SETTING MARKET GUIS TO AGENTS
+		 */
+		truck1 = new MarketTruckAgent();
+		MarketTruckGui truck1Gui = new MarketTruckGui(truck1);
+		truck1.setGui(truck1Gui);
+		truck1.startThread();
+		cityAnimPanel.addGui(truck1Gui);
 		
-		meg.isPresent = false;
-		marketemployeerole.setGui(meg);
-		cityAnimPanel.marketPanel.addGui(meg);
+		truck2 = new MarketTruckAgent();
+		MarketTruckGui truck2Gui = new MarketTruckGui(truck2);
+		truck2.setGui(truck2Gui);
+		truck2.startThread();
+		cityAnimPanel.addGui(truck2Gui);
 		
-		wg.isPresent = false;
-		waiter1.setGui(wg);
-		cityAnimPanel.rest1Panel.addGui(wg);
-		
-		cg.isPresent = false;
-		cook1.setGui(cg);
-		cityAnimPanel.rest1Panel.addGui(cg);
-		
-		hg1.isPresent = false;
-		homeOwnerRole1.setGui(hg1);
-		cityAnimPanel.house1Panel.addGui(hg1);
-		
-		hg2.isPresent = false;
-		homeOwnerRole2.setGui(hg2);
-		cityAnimPanel.house2Panel.addGui(hg2);
-		
-		hg3.isPresent = false;
-		homeOwnerRole3.setGui(hg3);
-		cityAnimPanel.house3Panel.addGui(hg3);
-		
-		hg4.isPresent = false;
-		homeOwnerRole4.setGui(hg4);
-		cityAnimPanel.house4Panel.addGui(hg4);
-		
-		// Loops through the apartment guis to add them to their animation panels
-		for (ApartmentTenantGui aptGui : aptGuis) {
-			aptGui.isPresent = false;
-			cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
-		}
-		
-		// Loops through apartment tenant roles and sets to respective GUI
-		for (ApartmentTenantRole r : aptTenants) {
-			r.setGui(aptGuis.get(aptTenants.indexOf(r)));
-		}
-		
-		btg1.isPresent = false;
-		banktellerrole1.setGui(btg1);
-		cityAnimPanel.bankPanel.addGui(btg1);
-		
-		btg2.isPresent = false;
-		banktellerrole2.setGui(btg2);
-		cityAnimPanel.bankPanel.addGui(btg2);
-		
-		bhg.isPresent = false;
-		bankhostrole.setGui(bhg);
-		cityAnimPanel.bankPanel.addGui(bhg);
+//		// Market 1
+//		m1eg1.isPresent = false;
+//		market1employeerole1.setGui(m1eg1);
+//		cityAnimPanel.marketPanel.addGui(m1eg1);
+//		m1eg2.isPresent = false;
+//		market1employeerole2.setGui(m1eg2);
+//		cityAnimPanel.marketPanel.addGui(m1eg2);
+//		
+//		// Market 2 
+//		m2eg1.isPresent = false;
+//		market1employeerole1.setGui(m2eg1);
+//		cityAnimPanel.marketPanel.addGui(m2eg1);
+//		m2eg2.isPresent = false;
+//		market1employeerole2.setGui(m2eg2);
+//		cityAnimPanel.marketPanel.addGui(m2eg2);
+//		
+//		/**
+//		 * SETTING RESTAURANT GUIS
+//		 */
+//		r1sharedwg1.isPresent = false;
+//		rest1SDWaiter.setGui(r1sharedwg1);
+//		cityAnimPanel.rest1Panel.addGui(r1sharedwg1);
+//		
+//		r1sharedwg2.isPresent = false;
+//		rest1SDWaiter2.setGui(r1sharedwg2);
+//		cityAnimPanel.rest1Panel.addGui(r1sharedwg2);
+//		
+//		r1cg1.isPresent = false;
+//		rest1Cook.setGui(r1cg1);
+//		cityAnimPanel.rest1Panel.addGui(r1cg1);
+//		
+//		hg1.isPresent = false;
+//		homeOwnerRole1.setGui(hg1);
+//		cityAnimPanel.house1Panel.addGui(hg1);
+//		
+//		hg2.isPresent = false;
+//		homeOwnerRole2.setGui(hg2);
+//		cityAnimPanel.house2Panel.addGui(hg2);
+//		
+//		hg3.isPresent = false;
+//		homeOwnerRole3.setGui(hg3);
+//		cityAnimPanel.house3Panel.addGui(hg3);
+//		
+//		hg4.isPresent = false;
+//		homeOwnerRole4.setGui(hg4);
+//		cityAnimPanel.house4Panel.addGui(hg4);
+//		
+//		// Loops through the apartment guis to add them to their animation panels
+//		for (ApartmentTenantGui aptGui : aptGuis) {
+//			aptGui.isPresent = false;
+//			cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+//		}
+//		
+//		// Loops through apartment tenant roles and sets to respective GUI
+//		for (ApartmentTenantRole r : aptTenants) {
+//			r.setGui(aptGuis.get(aptTenants.indexOf(r)));
+//		}
+//		
+//		b1tg1.isPresent = false;
+//		banktellerrole1.setGui(b1tg1);
+//		cityAnimPanel.bankPanel.addGui(b1tg1);
+//		
+//		b1tg2.isPresent = false;
+//		banktellerrole2.setGui(b1tg2);
+//		cityAnimPanel.bankPanel.addGui(b1tg2);
+//		
+//		b1hg1.isPresent = false;
+//		bankhostrole.setGui(b1hg1);
+//		cityAnimPanel.bankPanel.addGui(b1hg1);
 	
 		busstop1.startThread();
 		busstop2.startThread();
@@ -495,200 +739,202 @@ public class SimCityGUI extends JFrame {
 		 */
 
 //		for (int i=1; i<6; i++){
-		for (int i=0; i<22; i++){
-			aStarTraversal = new AStarTraversal(grid);
-			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
-			PersonGui pgui = new PersonGui(p);
-			p.gui = pgui;
-			System.out.println(""+i);
-			if(i < 21){
-				p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
-				p.homeNumber = i+1;
-			}
-			else
-				p.homeNumber = i;
-			people.add(p);
-			peoplegui.add(pgui);
-			cityAnimPanel.addGui(pgui);
-			p.setAnimationPanel(cityAnimPanel);
-			//p.setcitygui(this);
-		}
-		
-		for (int i=5;i<22;i++){
-			people.get(i).msgAddMoney(-200);
-		}
-		
-		people.get(0).addRole(bankhostrole, "Bank Host");
-		people.get(0).roles.get(0).role.switchPerson(people.get(0));
-		people.get(0).addRole(homeOwnerRole1, "Home Owner");
-		people.get(0).roles.get(1).role.switchPerson(people.get(0));
-		people.get(1).addRole(bankhostrole, "Bank Host");
-		people.get(1).addRole(homeOwnerRole2, "Home Owner");
-		people.get(1).roles.get(1).role.switchPerson(people.get(1));
-		people.get(2).addRole(banktellerrole1, "Bank Teller");
-		people.get(2).roles.get(0).role.switchPerson(people.get(2));
-		people.get(2).addRole(homeOwnerRole3, "Home Owner");
-		people.get(2).roles.get(1).role.switchPerson(people.get(2));
-		people.get(3).addRole(banktellerrole1, "Bank Teller");
-		people.get(3).addRole(homeOwnerRole4, "Home Owner");
-		people.get(3).roles.get(1).role.switchPerson(people.get(3));
-		people.get(4).addRole(banktellerrole2, "Bank Teller");
-		people.get(4).roles.get(0).role.switchPerson(people.get(4));
-
-		people.get(4).addRole(aptTenants.get(0), "Apt Tenant");
-		people.get(4).roles.get(1).role.switchPerson(people.get(4));
-		people.get(4).addRole(landlord, "Apt Landlord");
-		people.get(4).roles.get(2).role.switchPerson(people.get(4));
-		people.get(5).addRole(banktellerrole2, "Bank Teller");
-		people.get(5).addRole(aptTenants.get(1), "Apt Tenant");
-		people.get(5).roles.get(1).role.switchPerson(people.get(5));
-		people.get(6).addRole(marketemployeerole, "Market Employee");
-		people.get(6).roles.get(0).role.switchPerson(people.get(6));
-		people.get(6).addRole(aptTenants.get(2), "Apt Tenant");
-		people.get(6).roles.get(1).role.switchPerson(people.get(6));
-		people.get(7).addRole(marketemployeerole, "Market Employee");
-		people.get(7).addRole(aptTenants.get(3), "Apt Tenant");
-		people.get(7).roles.get(1).role.switchPerson(people.get(7));
-		people.get(8).addRole(marketcashierrole, "Market Cashier");
-		people.get(8).roles.get(0).role.switchPerson(people.get(8));
-		people.get(8).addRole(aptTenants.get(4), "Apt Tenant");
-		people.get(8).roles.get(1).role.switchPerson(people.get(8));
-		people.get(9).addRole(marketcashierrole, "Market Cashier");
-		people.get(9).addRole(aptTenants.get(5), "Apt Tenant");
-		people.get(9).roles.get(1).role.switchPerson(people.get(9));
-		people.get(10).addRole(cashier1, "Rest 1 Cashier");
-		people.get(10).roles.get(0).role.switchPerson(people.get(10));
-		people.get(10).addRole(aptTenants.get(6), "Apt Tenant");
-		people.get(10).roles.get(1).role.switchPerson(people.get(10));
-		people.get(11).addRole(cashier1, "Rest 1 Cashier");
-		people.get(11).addRole(aptTenants.get(7), "Apt Tenant");
-		people.get(11).roles.get(1).role.switchPerson(people.get(11));
-		people.get(12).addRole(cook1, "Rest 1 Cook");
-		people.get(12).roles.get(0).role.switchPerson(people.get(12));
-		people.get(12).addRole(aptTenants.get(8), "Apt Tenant");
-		people.get(12).roles.get(1).role.switchPerson(people.get(12));
-		people.get(13).addRole(cook1, "Rest 1 Cook");
-		people.get(13).addRole(aptTenants.get(9), "Apt Tenant");
-		people.get(13).roles.get(1).role.switchPerson(people.get(13));
-		people.get(14).addRole(waiter1, "Rest 1 Waiter");
-		people.get(14).roles.get(0).role.switchPerson(people.get(14));
-		people.get(14).addRole(aptTenants.get(10), "Apt Tenant");
-		people.get(14).roles.get(1).role.switchPerson(people.get(14));
-		people.get(15).addRole(waiter1, "Rest 1 Waiter");
-		people.get(15).addRole(aptTenants.get(11), "Apt Tenant");
-		people.get(15).roles.get(1).role.switchPerson(people.get(15));
-		people.get(16).addRole(host1, "Rest 1 Host");
-		people.get(16).roles.get(0).role.switchPerson(people.get(16));
-		people.get(16).addRole(aptTenants.get(12), "Apt Tenant");
-		people.get(16).roles.get(1).role.switchPerson(people.get(16));
-		people.get(17).addRole(host1, "Rest 1 Host");
-		people.get(17).addRole(aptTenants.get(13), "Apt Tenant");
-		people.get(17).roles.get(1).role.switchPerson(people.get(17));
-		people.get(18).addRole(aptTenants.get(14), "Apt Tenant");
-		people.get(18).roles.get(0).role.switchPerson(people.get(18));
-		people.get(19).addRole(aptTenants.get(15), "Apt Tenant");
-		people.get(19).roles.get(0).role.switchPerson(people.get(19));
-		people.get(20).addRole(aptTenants.get(16), "Apt Tenant");
-		people.get(20).roles.get(0).role.switchPerson(people.get(20));
-		people.get(21).addRole(aptTenants.get(17), "Apt Tenant");
-		people.get(21).roles.get(0).role.switchPerson(people.get(21));
-
-		for(int i = 18; i < 22; i++){
-			people.get(i).wallet.setOnHand(0.00);
-		}
-		
-		rest1.getTimeCard().startThread();
-		market.getTimeCard().startThread();
-		bank.getTimeCard().startThread();
-		bankdatabase.startThread();
-		
-		 //people.get(0).startThread();
-		//people.get(0).setAnimationPanel(cityAnimPanel);
-		/* 
-		 * Every person added to SimCity must have at least one SimEvent to do much of anything
-		 * SimEvent constructor goes like : Location, priority, start time, EventType
-		 * Locations will have been pre-made because they must be added to the CityMap (above)
-		 * so use these premade locations (Lines: 132 - 138)
-		 * 
-		 * Creating host, cook, cashier, waiter, and teller events
-		 * */
-		SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
-		SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
-		SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
-		SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CookEvent);
-		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
-		SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CashierEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
-		SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 14, EventType.SDWaiterEvent);
-		SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
-		SimEvent tellerGoToBank2 = new SimEvent(bank, 14, EventType.TellerEvent);
-		SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
-		SimEvent hostGoToBank2 = new SimEvent(bank, 14, EventType.HostEvent);
-		SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
-		SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
-		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
-		SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
-		
-		bankhostrole.addTeller(banktellerrole1);
-		bankhostrole.addTeller(banktellerrole2);
-		banktellerrole1.bh = bankhostrole;
-		banktellerrole2.bh = bankhostrole;
-		banktellerrole1.bd = bankdatabase;
-		banktellerrole2.bd = bankdatabase;
-		
-		marketcashierrole.addEmployee(marketemployeerole);
-		waiter1.setcook(cook1);
-		waiter1.sethost(host1);
-		waiter1.setRevolvingStand(cook1.getRevStand());
-		marketemployeerole.setCashier(marketcashierrole);
-		host1.msgaddwaiter(waiter1);
-		waiter1.setCashier(cashier1);
-		cook1.setMarketCashier(marketcashierrole);
-		cook1.setCashier(cashier1);
-		
-
-		// Messages landlord with initial tenants
-		for (ApartmentTenantRole r : aptTenants) {
-			landlord.msgNewTenant(r, r.getAptNum());
-		}
-		
-		/*
-		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
-		 * Host, cook, cashier, waiter and teller events
-		 */
-		people.get(0).toDo.add(hostGoToBank);
-		people.get(1).toDo.add(hostGoToBank2);
-		people.get(2).toDo.add(tellerGoToBank);
-		people.get(3).toDo.add(tellerGoToBank2);
-		people.get(4).toDo.add(tellerGoToBank);
-		people.get(5).toDo.add(tellerGoToBank2);
-		people.get(6).toDo.add(employeeGoToMarket);
-		people.get(7).toDo.add(employeeGoToMarket2);
-		people.get(8).toDo.add(cashierGoToMarket);
-		people.get(9).toDo.add(cashierGoToMarket2);
-		people.get(10).toDo.add(cashierGoToRestaurant);
-		people.get(11).toDo.add(cashierGoToRestaurant2);
-		people.get(12).toDo.add(cookGoToRestaurant);
-		people.get(13).toDo.add(cookGoToRestaurant2);
-		people.get(14).toDo.add(waiterGoToRestaurant);
-		people.get(15).toDo.add(waiterGoToRestaurant2);
-		people.get(16).toDo.add(hostGoToRestaurant);
-		people.get(17).toDo.add(hostGoToRestaurant2);
-		
-		truck.setCashier(marketcashierrole);
-		marketcashierrole.addTruck(truck);
+//		for (int i=0; i<22; i++){
+//			aStarTraversal = new AStarTraversal(grid);
+//			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
+//			PersonGui pgui = new PersonGui(p);
+//			p.gui = pgui;
+//			System.out.println(""+i);
+//			if(i < 21){
+//				p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
+//				p.homeNumber = i+1;
+//			}
+//			else
+//				p.homeNumber = i;
+//			people.add(p);
+//			peoplegui.add(pgui);
+//			cityAnimPanel.addGui(pgui);
+//			p.setAnimationPanel(cityAnimPanel);
+//			//p.setcitygui(this);
+//		}
+//		
+//		for (int i=5;i<22;i++){
+//			people.get(i).msgAddMoney(-200);
+//		}
+//		
+//		people.get(0).addRole(bankhostrole, "Bank Host");
+//		people.get(0).roles.get(0).role.switchPerson(people.get(0));
+//		people.get(0).addRole(homeOwnerRole1, "Home Owner");
+//		people.get(0).roles.get(1).role.switchPerson(people.get(0));
+//		people.get(1).addRole(bankhostrole, "Bank Host");
+//		people.get(1).addRole(homeOwnerRole2, "Home Owner");
+//		people.get(1).roles.get(1).role.switchPerson(people.get(1));
+//		people.get(2).addRole(banktellerrole1, "Bank Teller");
+//		people.get(2).roles.get(0).role.switchPerson(people.get(2));
+//		people.get(2).addRole(homeOwnerRole3, "Home Owner");
+//		people.get(2).roles.get(1).role.switchPerson(people.get(2));
+//		people.get(3).addRole(banktellerrole1, "Bank Teller");
+//		people.get(3).addRole(homeOwnerRole4, "Home Owner");
+//		people.get(3).roles.get(1).role.switchPerson(people.get(3));
+//		people.get(4).addRole(banktellerrole2, "Bank Teller");
+//		people.get(4).roles.get(0).role.switchPerson(people.get(4));
+//
+//		people.get(4).addRole(aptTenants.get(0), "Apt Tenant");
+//		people.get(4).roles.get(1).role.switchPerson(people.get(4));
+//		people.get(4).addRole(landlord, "Apt Landlord");
+//		people.get(4).roles.get(2).role.switchPerson(people.get(4));
+//		people.get(5).addRole(banktellerrole2, "Bank Teller");
+//		people.get(5).addRole(aptTenants.get(1), "Apt Tenant");
+//		people.get(5).roles.get(1).role.switchPerson(people.get(5));
+//		people.get(6).addRole(marketemployeerole, "Market Employee");
+//		people.get(6).roles.get(0).role.switchPerson(people.get(6));
+//		people.get(6).addRole(aptTenants.get(2), "Apt Tenant");
+//		people.get(6).roles.get(1).role.switchPerson(people.get(6));
+//		people.get(7).addRole(marketemployeerole, "Market Employee");
+//		people.get(7).addRole(aptTenants.get(3), "Apt Tenant");
+//		people.get(7).roles.get(1).role.switchPerson(people.get(7));
+//		people.get(8).addRole(marketcashierrole, "Market Cashier");
+//		people.get(8).roles.get(0).role.switchPerson(people.get(8));
+//		people.get(8).addRole(aptTenants.get(4), "Apt Tenant");
+//		people.get(8).roles.get(1).role.switchPerson(people.get(8));
+//		people.get(9).addRole(marketcashierrole, "Market Cashier");
+//		people.get(9).addRole(aptTenants.get(5), "Apt Tenant");
+//		people.get(9).roles.get(1).role.switchPerson(people.get(9));
+//		people.get(10).addRole(rest1Cashier, "Rest 1 Cashier");
+//		people.get(10).roles.get(0).role.switchPerson(people.get(10));
+//		people.get(10).addRole(aptTenants.get(6), "Apt Tenant");
+//		people.get(10).roles.get(1).role.switchPerson(people.get(10));
+//		people.get(11).addRole(rest1Cashier, "Rest 1 Cashier");
+//		people.get(11).addRole(aptTenants.get(7), "Apt Tenant");
+//		people.get(11).roles.get(1).role.switchPerson(people.get(11));
+//		people.get(12).addRole(rest1Cook, "Rest 1 Cook");
+//		people.get(12).roles.get(0).role.switchPerson(people.get(12));
+//		people.get(12).addRole(aptTenants.get(8), "Apt Tenant");
+//		people.get(12).roles.get(1).role.switchPerson(people.get(12));
+//		people.get(13).addRole(rest1Cook, "Rest 1 Cook");
+//		people.get(13).addRole(aptTenants.get(9), "Apt Tenant");
+//		people.get(13).roles.get(1).role.switchPerson(people.get(13));
+//		people.get(14).addRole(rest1SDWaiter, "Rest 1 Waiter");
+//		people.get(14).roles.get(0).role.switchPerson(people.get(14));
+//		people.get(14).addRole(aptTenants.get(10), "Apt Tenant");
+//		people.get(14).roles.get(1).role.switchPerson(people.get(14));
+//		people.get(15).addRole(rest1SDWaiter, "Rest 1 Waiter");
+//		people.get(15).addRole(aptTenants.get(11), "Apt Tenant");
+//		people.get(15).roles.get(1).role.switchPerson(people.get(15));
+//		people.get(16).addRole(rest1Host, "Rest 1 Host");
+//		people.get(16).roles.get(0).role.switchPerson(people.get(16));
+//		people.get(16).addRole(aptTenants.get(12), "Apt Tenant");
+//		people.get(16).roles.get(1).role.switchPerson(people.get(16));
+//		people.get(17).addRole(rest1Host, "Rest 1 Host");
+//		people.get(17).addRole(aptTenants.get(13), "Apt Tenant");
+//		people.get(17).roles.get(1).role.switchPerson(people.get(17));
+//		people.get(18).addRole(aptTenants.get(14), "Apt Tenant");
+//		people.get(18).roles.get(0).role.switchPerson(people.get(18));
+//		people.get(19).addRole(aptTenants.get(15), "Apt Tenant");
+//		people.get(19).roles.get(0).role.switchPerson(people.get(19));
+//		people.get(20).addRole(aptTenants.get(16), "Apt Tenant");
+//		people.get(20).roles.get(0).role.switchPerson(people.get(20));
+//		people.get(21).addRole(aptTenants.get(17), "Apt Tenant");
+//		people.get(21).roles.get(0).role.switchPerson(people.get(21));
+//
+//		for(int i = 18; i < 22; i++){
+//			people.get(i).wallet.setOnHand(0.00);
+//		}
+//		
+//		rest1.getTimeCard().startThread();
+//		market.getTimeCard().startThread();
+//		bank.getTimeCard().startThread();
+//		bankdatabase.startThread();
+//		
+//		 //people.get(0).startThread();
+//		//people.get(0).setAnimationPanel(cityAnimPanel);
+//		/* 
+//		 * Every person added to SimCity must have at least one SimEvent to do much of anything
+//		 * SimEvent constructor goes like : Location, priority, start time, EventType
+//		 * Locations will have been pre-made because they must be added to the CityMap (above)
+//		 * so use these premade locations (Lines: 132 - 138)
+//		 * 
+//		 * Creating host, cook, cashier, waiter, and teller events
+//		 * */
+//		SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
+//		SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
+//		SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
+//		SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CookEvent);
+//		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
+//		SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CashierEvent);
+//		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
+//		SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 14, EventType.SDWaiterEvent);
+//		SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
+//		SimEvent tellerGoToBank2 = new SimEvent(bank, 14, EventType.TellerEvent);
+//		SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
+//		SimEvent hostGoToBank2 = new SimEvent(bank, 14, EventType.HostEvent);
+//		SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
+//		SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
+//		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
+//		SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
+//		
+//		bankhostrole.addTeller(banktellerrole1);
+//		bankhostrole.addTeller(banktellerrole2);
+//		banktellerrole1.bh = bankhostrole;
+//		banktellerrole2.bh = bankhostrole;
+//		banktellerrole1.bd = bankdatabase;
+//		banktellerrole2.bd = bankdatabase;
+//		
+//		marketcashierrole.addEmployee(marketemployeerole);
+//		rest1SDWaiter.setcook(rest1Cook);
+//		rest1SDWaiter.sethost(rest1Host);
+//		rest1SDWaiter.setRevolvingStand(rest1Cook.getRevStand());
+//		marketemployeerole.setCashier(marketcashierrole);
+//		rest1Host.msgaddwaiter(rest1SDWaiter);
+//		rest1SDWaiter.setCashier(rest1Cashier);
+//		rest1Cook.setMarketCashier(marketcashierrole);
+//		rest1Cook.setCashier(rest1Cashier);
+//		
+//
+//		// Messages landlord with initial tenants
+//		for (ApartmentTenantRole r : aptTenants) {
+//			landlord.msgNewTenant(r, r.getAptNum());
+//		}
+//		
+//		/*
+//		 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
+//		 * Host, cook, cashier, waiter and teller events
+//		 */
+//		people.get(0).toDo.add(hostGoToBank);
+//		people.get(1).toDo.add(hostGoToBank2);
+//		people.get(2).toDo.add(tellerGoToBank);
+//		people.get(3).toDo.add(tellerGoToBank2);
+//		people.get(4).toDo.add(tellerGoToBank);
+//		people.get(5).toDo.add(tellerGoToBank2);
+//		people.get(6).toDo.add(employeeGoToMarket);
+//		people.get(7).toDo.add(employeeGoToMarket2);
+//		people.get(8).toDo.add(cashierGoToMarket);
+//		people.get(9).toDo.add(cashierGoToMarket2);
+//		people.get(10).toDo.add(cashierGoToRestaurant);
+//		people.get(11).toDo.add(cashierGoToRestaurant2);
+//		people.get(12).toDo.add(cookGoToRestaurant);
+//		people.get(13).toDo.add(cookGoToRestaurant2);
+//		people.get(14).toDo.add(waiterGoToRestaurant);
+//		people.get(15).toDo.add(waiterGoToRestaurant2);
+//		people.get(16).toDo.add(hostGoToRestaurant);
+//		people.get(17).toDo.add(hostGoToRestaurant2);
+//		
+//		truck1.setCashier(marketcashierrole);
+//		marketcashierrole.addTruck(truck1);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
-		simclock.bankTimeCard = bank.getTimeCard();
-		simclock.timeCards.add(market.getTimeCard());
-		simclock.timeCards.add(rest1.getTimeCard());
-		for (PersonAgent p: people){
-			p.setcitygui(this);
-			p.startThread();
-		}
+		
+		cityCtrlPanel.scenarioPanel.setCityAnim(cityAnimPanel);
+//		simclock.bankTimeCard = bank.getTimeCard();
+//		simclock.timeCards.add(market.getTimeCard());
+//		simclock.timeCards.add(rest1.getTimeCard());
+//		for (PersonAgent p: people){
+//			p.setcitygui(this);
+//			p.startThread();
+//		}
 		
 		// Sets the sim world clock to the interaction panel's so events can be created with correct start time
-		cityCtrlPanel.interactPanel.setClock(simclock);
+//		cityCtrlPanel.interactPanel.setClock(simclock);
 	}
 
 	public CarAgent createCar(PersonAgent p){

@@ -1,9 +1,10 @@
 package restaurant2;
 
-import restaurant2.gui.CookGui;
+import restaurant2.gui.Restaurant2CookGui;
 import restaurant2.interfaces.Customer;
 import restaurant2.interfaces.Waiter;
 import restaurant2.Restaurant2Order;
+import utilities.restaurant.RestaurantCook;
 import agent.Role;
 
 import java.util.ArrayList;
@@ -15,17 +16,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import market.interfaces.MarketTruck;
 import person.interfaces.Person;
 
 /**
  * Restaurant customer agent.
  */
-public class Restaurant2CookRole extends Role {
+public class Restaurant2CookRole extends Role implements RestaurantCook {
 
 	Timer timer = new Timer();
 	Timer clear = new Timer();
 	Timer checkStand = new Timer();
-	CookGui cookGui = null;
+	Restaurant2CookGui cookGui = null;
 	Grill grill = new Grill();
 	public enum OrderState {Uncooked, Cooking, Cooked};
 
@@ -79,7 +81,7 @@ public class Restaurant2CookRole extends Role {
 		markets.add(mm3);
 
 	}
-	public void setGui(CookGui c){
+	public void setGui(Restaurant2CookGui c){
 		cookGui = c;
 	}
 	// Messages
@@ -478,9 +480,21 @@ public class Restaurant2CookRole extends Role {
 		}
 
 	}*/
+	
+	// FIX
 	@Override
 	public String getRoleName() {
 		return this.getName();
+	}
+	@Override
+	public void msgHereisYourFood(MarketTruck t, List<market.Food> fList) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void msgEmptyStock() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

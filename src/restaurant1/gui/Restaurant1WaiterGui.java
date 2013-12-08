@@ -1,7 +1,5 @@
 package restaurant1.gui;
 
-
-import restaurant1.Restaurant1HostRole;
 import restaurant1.Restaurant1SDWaiterRole;
 import restaurant1.Restaurant1WaiterRole;
 import restaurant1.interfaces.Restaurant1Customer;
@@ -13,11 +11,10 @@ import java.awt.*;
 
 import person.PersonAgent;
 
-public class WaiterGui implements Gui {
+public class Restaurant1WaiterGui implements Gui {
 	
 
     private Restaurant1Waiter agent = null;
-    private Restaurant1HostRole host;
     public boolean isPresent = false;
     private int countNumber = 0;
     private int customernumber = 0;
@@ -38,14 +35,12 @@ public class WaiterGui implements Gui {
     public static final int x1Table = 300;
     public static final int y1Table = 150;
     
-    public WaiterGui(Restaurant1WaiterRole agent, Restaurant1HostRole host) {
+    public Restaurant1WaiterGui(Restaurant1WaiterRole agent) {
         this.agent = agent;
-        this.host = host;
     }
     
-    public WaiterGui(Restaurant1SDWaiterRole agent, Restaurant1HostRole host) {
+    public Restaurant1WaiterGui(Restaurant1SDWaiterRole agent) {
         this.agent = agent;
-        this.host = host;
     }
     
     public void setOrigion(int number){

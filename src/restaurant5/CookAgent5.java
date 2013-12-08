@@ -3,10 +3,13 @@ package restaurant5;
 import agent.Role;
 import restaurant5.gui.CookGui5;
 import restaurant5.interfaces.Waiter5; 
+import utilities.restaurant.RestaurantCook;
 import person.PersonAgent; 
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
+import market.interfaces.MarketTruck;
 
 /**
  * Restaurant Host Agent
@@ -15,7 +18,7 @@ import java.util.concurrent.Semaphore;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CookAgent5 extends Role {
+public class CookAgent5 extends Role implements RestaurantCook {
 	PersonAgent myPerson; 
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
@@ -110,18 +113,9 @@ public class CookAgent5 extends Role {
 		platenumber.add(1);
 		platenumber.add(2);
 		platenumber.add(3);
-		
-		
-		timer.schedule(new TimerTask() {
-			public void run() {
-				checkstand = true;
-				stateChanged();
-			}
-		},
-			2000);//getHungerLevel() * 1000);//how long to wait before running task
 		}
     
-
+    
 		
 	public void msgHereIsOrder(Waiter5 w, String choice, int table) {
 		State _s = State.pending;
@@ -430,6 +424,22 @@ public class CookAgent5 extends Role {
 
 	public String getRoleName(){
 		return "Restaurant 5 Cook";
+	}
+
+
+	//FIX
+	@Override
+	public void msgHereisYourFood(MarketTruck t, List<market.Food> fList) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void msgEmptyStock() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

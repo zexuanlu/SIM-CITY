@@ -4,10 +4,12 @@ package restaurant5.gui;
 import restaurant5.CustomerAgent5;
 import restaurant5.WaiterBase5;
 import restaurant5.interfaces.Customer5; 
+import utilities.Gui;
+
 import java.awt.*;
 import java.util.ArrayList;
 
-public class WaiterGui5 implements Gui5 {
+public class WaiterGui5 implements Gui {
 	private int waitingX; 
 	private int waitingY; 
     private WaiterBase5 agent = null;

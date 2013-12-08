@@ -3,12 +3,13 @@ package restaurant5.gui;
 
 import restaurant5.CustomerAgent5;
 import restaurant5.HostAgent5;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostGui5 implements Gui5 {
+public class HostGui5 implements Gui {
 
     private HostAgent5 agent = null;
 

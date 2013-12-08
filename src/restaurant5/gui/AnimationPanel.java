@@ -2,6 +2,8 @@ package restaurant5.gui;
 
 import javax.swing.*;
 
+import utilities.Gui;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,7 @@ public class AnimationPanel extends JPanel implements ActionListener {
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui5> guis = new ArrayList<Gui5>();
+    private List<Gui> guis = new ArrayList<Gui>();
 
     public AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -64,13 +66,13 @@ public class AnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(560,120,30,30);
    
 
-        for(Gui5 gui : guis) {
+        for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.updatePosition();
             }
         }
 
-        for(Gui5 gui : guis) {
+        for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.draw(g2);
             }

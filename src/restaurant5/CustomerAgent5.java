@@ -359,6 +359,12 @@ public class CustomerAgent5 extends Role implements Customer5 {
 	public String getRoleName(){
 		return "Restaurant 5 Customer";
 	}
+
+	@Override
+	public void msgGotHungry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
 

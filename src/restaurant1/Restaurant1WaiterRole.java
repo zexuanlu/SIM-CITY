@@ -1,6 +1,6 @@
 package restaurant1;
 
-import restaurant1.gui.WaiterGui;
+import restaurant1.gui.Restaurant1WaiterGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Waiter;
@@ -25,7 +25,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	private Semaphore atTable = new Semaphore(0,true);
 	private Semaphore atCook = new Semaphore(0,true);
 	boolean isBack = true;//, atCook = false;
-	public WaiterGui waiterGui = null;
+	public Restaurant1WaiterGui waiterGui = null;
 	private Restaurant1HostRole host = null;
 	private Restaurant1CookRole cook= null;
 	private Restaurant1Cashier cashier = null;
@@ -401,11 +401,11 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	}
 	
 	
-	public void setGui(WaiterGui gui) {
+	public void setGui(Restaurant1WaiterGui gui) {
 		waiterGui = gui;
 	}
 
-	public WaiterGui getGui() {
+	public Restaurant1WaiterGui getGui() {
 		return waiterGui;
 	}
 

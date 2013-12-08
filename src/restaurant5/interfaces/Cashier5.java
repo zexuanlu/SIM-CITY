@@ -1,5 +1,6 @@
 package restaurant5.interfaces;
-import restaurant.RestaurantCashier; 
+
+import utilities.restaurant.RestaurantCashier;
 
 public interface Cashier5 extends RestaurantCashier {
 	/**

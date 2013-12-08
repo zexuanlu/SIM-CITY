@@ -1,16 +1,14 @@
 package restaurant6;
 
-import agent.Agent;  
+import agent.Role;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.concurrent.Semaphore;
 
+import person.interfaces.Person;
 import market.Food;
 import market.interfaces.MarketCashier;
 import restaurant6.Restaurant6Check.CheckState;
-import restaurant6.Restaurant6CustomerRole.AgentEvent;
-import restaurant6.Restaurant6Order.OrderState;
 import restaurant6.interfaces.Restaurant6Cashier;
 import restaurant6.interfaces.Restaurant6Customer;
 import restaurant6.interfaces.Restaurant6Market;
@@ -22,7 +20,7 @@ import restaurant6.test.mock.LoggedEvent;
  * Restaurant Cook Agent
  */
 
-public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier {
+public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
@@ -81,8 +79,8 @@ public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier 
 	}
 
 	// CashierAgent constructor
-	public Restaurant6CashierRole(String name) {
-		super();
+	public Restaurant6CashierRole(String name, Person p) {
+		super(p);
 		cashierName = name;
 		// Creates map of food choices to food objects
 		prices.put("Chicken", 10.99);
@@ -262,6 +260,11 @@ public class Restaurant6CashierRole extends Agent implements Restaurant6Cashier 
 		log.add(new LoggedEvent("My money is now $" + df.format(restaurantMoney)));
 		print("My money is now $" + df.format(restaurantMoney));
 		markets.remove(m);		
+	}
+
+	// Returns the name of the role
+	public String getRoleName() {
+		return "Restaurant 6 Cashier";
 	}
 }
 

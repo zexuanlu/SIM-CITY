@@ -2,11 +2,12 @@ package restaurant5.gui;
 
 
 import restaurant5.CookAgent5; 
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.*;
 
-public class CookGui5 implements Gui5 {
+public class CookGui5 implements Gui {
 
 	
     private int standX = 480; 

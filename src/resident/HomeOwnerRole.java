@@ -387,7 +387,8 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		DoGoToFrontDoor();
 		
 		if (person.getMap() != null) {
-			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant);
+			// FIX
+			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant1);
 
 			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
 			person.msgAddEvent(new SimEvent("Go to restaurant", location, SimEvent.EventType.CustomerEvent));

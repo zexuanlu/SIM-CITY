@@ -2,13 +2,14 @@ package restaurant2.gui;
 
 import restaurant2.Restaurant2CustomerRole;
 import restaurant2.Restaurant2HostRole;
+import utilities.Gui;
 
 import java.awt.*;
 
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
-public class CustomerGui implements Gui{
+public class Restaurant2CustomerGui implements Gui{
 
 	private Restaurant2CustomerRole agent = null;
 	private boolean isPresent = false;
@@ -32,7 +33,7 @@ public class CustomerGui implements Gui{
     public static final int xCookStation = 500;
 
     private String text = " ";
-	public CustomerGui(Restaurant2CustomerRole c, int x, int y){
+	public Restaurant2CustomerGui(Restaurant2CustomerRole c, int x, int y){
 		agent = c;
 		xPos = -20;
 		yPos = -20;

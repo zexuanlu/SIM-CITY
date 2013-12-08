@@ -1,5 +1,6 @@
 package restaurant4.gui;
 
+import restaurant4.Restaurant4AbstractWaiter;
 import restaurant4.Restaurant4WaiterRole;
 import simcity.astar.Position;
 import utilities.Gui;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public class Restaurant4WaiterGui implements Gui {
 
-    private Restaurant4WaiterRole agent = null;
+    private Restaurant4AbstractWaiter agent = null;
     Restaurant4AnimationPanel gui;
     private boolean tired = false;
     private GUIstate s = GUIstate.None;
@@ -26,7 +27,7 @@ public class Restaurant4WaiterGui implements Gui {
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
-    public Restaurant4WaiterGui(Restaurant4WaiterRole agent, Restaurant4AnimationPanel gui, int x, int y) {
+    public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, Restaurant4AnimationPanel gui, int x, int y) {
         this.agent = agent;
         this.gui = gui;
         locations.put("Home", new Position(x, y));

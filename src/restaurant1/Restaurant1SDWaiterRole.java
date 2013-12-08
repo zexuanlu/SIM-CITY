@@ -1,7 +1,7 @@
 package restaurant1;
 
 import restaurant1.Restaurant1AbstractWaiter.state;
-import restaurant1.gui.WaiterGui;
+import restaurant1.gui.Restaurant1WaiterGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Waiter;
@@ -20,7 +20,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		private Semaphore atTable = new Semaphore(0,true);
 		private Semaphore atCook = new Semaphore(0, true);
 		boolean isBack = true;
-		public WaiterGui waiterGui = null;
+		public Restaurant1WaiterGui waiterGui = null;
 		private Restaurant1HostRole host = null;
 		private Restaurant1CookRole cook= null;
 		private Restaurant1Cashier cashier = null;
@@ -401,11 +401,11 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		}
 		
 		
-		public void setGui(WaiterGui gui) {
+		public void setGui(Restaurant1WaiterGui gui) {
 			waiterGui = gui;
 		}
 
-		public WaiterGui getGui() {
+		public Restaurant1WaiterGui getGui() {
 			return waiterGui;
 		}
 
