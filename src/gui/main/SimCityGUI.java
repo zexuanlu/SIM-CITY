@@ -177,12 +177,12 @@ public class SimCityGUI extends JFrame {
 		
 		// First quadrant locations
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-				new Position(80, 130), LocationType.Bank);
+				new Position(80, 190), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(150, 130), LocationType.Market);
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 130), LocationType.Restaurant1);
-		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(290, 130), LocationType.Restaurant2);
-		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(290, 60), LocationType.Restaurant3);
+				new Position(150, 190), LocationType.Market);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 190), LocationType.Restaurant1);
+		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(290, 190), LocationType.Restaurant2);
+		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(350, 60), LocationType.Restaurant3);
 		
 		// Second quadrant locations
 		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
@@ -198,11 +198,11 @@ public class SimCityGUI extends JFrame {
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
 				new Position(430, 270), 1, LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
-				new Position(430, 350), 2, LocationType.Home);
+				new Position(420, 350), 2, LocationType.Home);
 		Home home3 = new Home("Home 3", homeOwnerRole3, 
 				new Position(500, 270), 3, LocationType.Home);
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
-				new Position(570, 270), 4, LocationType.Home);
+				new Position(570, 260), 4, LocationType.Home);
 		// FIX
 		Home home5 = new Home("Home 5", homeOwnerRole4, 
 				new Position(640, 270), 4, LocationType.Home);

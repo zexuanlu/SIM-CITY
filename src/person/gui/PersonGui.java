@@ -30,18 +30,15 @@ public class PersonGui implements Gui{
 		atLight = false;
 	}
 	public void updatePosition() {
-		if (xPos < xDestination){ //&& (yPos < 200 + 70 || yPos > 200 - 70)){ 
-			xPos++; 
-		}
-		else if (xPos > xDestination){// && (yPos < 200 + 70 || yPos > 200 - 70)){ 
-			xPos--; 
-		}
-		if (yPos < yDestination ){//&& (xPos < 360 + 70 || xPos > 360 - 70)){ 
-			yPos++; 
-		}
-		else if (yPos > yDestination ){//{&& (xPos < 360 + 70 || xPos > 360 - 70)){ 
-			yPos--; 
-		}
+    	if (xPos < xDestination && (yPos == 200 || yPos == 260))
+            xPos++;
+        else if (xPos > xDestination && (yPos == 200 || yPos == 260))
+            xPos--;
+
+        if (yPos < yDestination && (xPos == 350 || xPos == 420))
+            yPos++;
+        else if (yPos > yDestination && (xPos == 350 || xPos == 420))
+            yPos--;
 		if(yPos == yDestination && xPos == xDestination && !arrived){
 			arrived = true;
 			agent.msgAtDest(new Position(yPos, xPos));

@@ -37,14 +37,14 @@ public class PassengerGui implements Gui {
     }
     
     public void updatePosition() {
-    	if (xPos < xDestination)
+    	if (xPos < xDestination && (yPos == 200 || yPos == 260))
             xPos++;
-        else if (xPos > xDestination)
+        else if (xPos > xDestination && (yPos == 200 || yPos == 260))
             xPos--;
 
-        if (yPos < yDestination)
+        if (yPos < yDestination && (xPos == 350 || xPos == 420))
             yPos++;
-        else if (yPos > yDestination)
+        else if (yPos > yDestination && (xPos == 350 || xPos == 420))
             yPos--;
         
         if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
