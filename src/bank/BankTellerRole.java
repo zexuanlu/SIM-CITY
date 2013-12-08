@@ -21,6 +21,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	//Data
 	public EventLog log;//Used for testing
 	String name;//The name of the bank teller
+	public int cowardice = 0;
 	public boolean endOfDay = false; //Used at the end of the day
 	public List<Task> tasks;//A list of tasks that the teller needs to perform
 	public BankDatabase bd;//The bank database. Given to the teller upon creation
@@ -112,6 +113,13 @@ public class BankTellerRole extends Role implements BankTeller {
 		log.add(new LoggedEvent("Received msgINeedLoan from BankCustomer"));
 		this.bc = bc;
 		tasks.add(new Task("getLoan", amount, accountNumber));
+		stateChanged();
+	}
+	
+	public void msgThisIsAHoldup(BankCustomer bc, double amount){
+		log.add(new LoggedEvent("Received msgThisIsAHoldUp from BankCustomer"));
+		this.bc = bc;
+		tasks.add(new Task("robBank", amount, -1));
 		stateChanged();
 	}
 	
@@ -208,6 +216,18 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
+	public void msgHereIsMoney(double amount){
+		log.add(new LoggedEvent("Received msgHereIsMoney from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("robBank")){
+				t.amount = amount;
+				t.ts = taskState.completed;
+				stateChanged();
+				return;
+			}
+		}
+	}
+	
 	/**
 	 * Received from the bank customer when it is leaving the bank
 	 * 
@@ -265,6 +285,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				case "deposit": depositMade(t); return true;
 				case "withdraw": withdrawMade(t); return true;
 				case "getLoan": loanMade(t); return true;
+				case "robBank": bankRobbed(t); return true;
 				}
 			}
 		}
@@ -276,6 +297,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				case "deposit": deposit(t); return true;
 				case "withdraw": withdraw(t); return true;
 				case "getLoan": getLoan(t); return true;
+				case "robBank": robbery(t); return true;
 				}
 			}
 		}
@@ -388,6 +410,25 @@ public class BankTellerRole extends Role implements BankTeller {
 		tasks.remove(t);
 	}
 	
+	private void robbery(Task t){
+		if(cowardice == 0)
+			cowardice = (int)(Math.random() * (100 - 1) + 1);
+		if(cowardice > 30){
+			bd.msgGiveAllMoney(this, t.amount);
+			t.ts = taskState.waiting;
+		}
+		else{
+			bc.msgCallingCops();
+			tasks.remove(t);
+		}
+		cowardice = 0;
+	}
+	
+	private void bankRobbed(Task t){
+		bc.msgHereIsMoney(t.amount);
+		tasks.remove(t);
+	}
+	
 	/**
 	 * Sends a message to the host telling them that the teller
 	 * is back to work
@@ -422,7 +463,8 @@ public class BankTellerRole extends Role implements BankTeller {
 	private void goOffWork(){
 		endOfDay = false;
 		goToLocation("Outside");
-		gui.setPresent(false);
+		if(gui!=null)
+			gui.setPresent(false);
 		getPerson().msgGoOffWork(this, 0.00);
 		s = state.haveDestination;
 	}

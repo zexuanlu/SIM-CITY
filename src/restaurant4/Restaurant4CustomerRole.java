@@ -280,7 +280,7 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 			leaveTable();
 			return;
 		}
-		else if(!menu.contains("Salad") && money < 5.99){
+		else if(!menu.contains("Scallops") && money < 7.99){
 			leaveTable();
 			return;
 		}

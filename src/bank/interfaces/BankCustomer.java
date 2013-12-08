@@ -24,4 +24,8 @@ public interface BankCustomer {
 	public void msgLoanGranted(double money, double debt);
 	
 	public void msgRequestFailed(String type);
+	
+	public void msgCallingCops();
+
+	public void msgHereIsMoney(double amount);
 }
