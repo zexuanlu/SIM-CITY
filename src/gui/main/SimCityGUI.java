@@ -149,14 +149,14 @@ public class SimCityGUI extends JFrame {
 	public BusStopAgent busstop7 = new BusStopAgent("Stop7");
 	public BusStopAgent busstop8 = new BusStopAgent("Stop8");
 
-	public BusStopGui bs1gui = new BusStopGui(busstop1, 30, 190);	
-	public BusStopGui bs2gui = new BusStopGui(busstop2, 700, 190);
-	public BusStopGui bs3gui = new BusStopGui(busstop3, 700, 260);
-	public BusStopGui bs4gui = new BusStopGui(busstop4, 30, 260);
-	public BusStopGui bs5gui = new BusStopGui(busstop5, 350, 30);
-	public BusStopGui bs6gui = new BusStopGui(busstop6, 420, 30);
-	public BusStopGui bs7gui = new BusStopGui(busstop7, 420, 420);
-	public BusStopGui bs8gui = new BusStopGui(busstop8, 350, 420);	
+	public BusStopGui bs1gui = new BusStopGui(busstop1, 30, 170);	
+	public BusStopGui bs2gui = new BusStopGui(busstop2, 700, 170);
+	public BusStopGui bs3gui = new BusStopGui(busstop3, 700, 280);
+	public BusStopGui bs4gui = new BusStopGui(busstop4, 30, 280);
+	public BusStopGui bs5gui = new BusStopGui(busstop5, 330, 30);
+	public BusStopGui bs6gui = new BusStopGui(busstop6, 440, 30);
+	public BusStopGui bs7gui = new BusStopGui(busstop7, 440, 420);
+	public BusStopGui bs8gui = new BusStopGui(busstop8, 330, 420);	
 	public MarketTruckAgent truck;
 
 	public SimCityGUI() {
@@ -178,22 +178,22 @@ public class SimCityGUI extends JFrame {
 		// First quadrant locations
 
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-				new Position(105, 190), LocationType.Bank);
+				new Position(60, 110), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(175, 190), LocationType.Market);
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(245, 190), LocationType.Restaurant1);
-		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(315, 190), LocationType.Restaurant2);
-		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(350, 85), LocationType.Restaurant3);
+				new Position(130, 110), LocationType.Market);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(200, 110), LocationType.Restaurant1);
+		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(270, 110), LocationType.Restaurant2);
+		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(270, 40), LocationType.Restaurant3);
 		
 		// Second quadrant locations
 		Bank bank2 = new Bank("Bank 2", new TimeCard(), bankhostrole, 
-		                new Position(640, 130), LocationType.Bank);
+		                new Position(660, 110), LocationType.Bank);
 		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
-		                new Position(430, 130), LocationType.Market);
+		                new Position(450, 110), LocationType.Market);
 		// FIX HOST ROLES
-		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
-		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(570, 130), LocationType.Restaurant2);
-		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(430, 60), LocationType.Restaurant3);		
+		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(520, 110), LocationType.Restaurant1);
+		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(590, 110), LocationType.Restaurant2);
+		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(450, 40), LocationType.Restaurant3);		
 		
 		// Third quadrant locations
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
@@ -211,41 +211,41 @@ public class SimCityGUI extends JFrame {
 		// Fourth quadrant locations
 		// First apartment complex
 		Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
-				new Position(70, 260), 5, LocationType.Apartment);
+				new Position(20, 290), 5, LocationType.Apartment);
 		Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
-				new Position(70, 260), 6, LocationType.Apartment);
+				new Position(20, 290), 6, LocationType.Apartment);
 		Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
-				new Position(70, 260), 7, LocationType.Apartment);
+				new Position(20, 290), 7, LocationType.Apartment);
 		Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
-				new Position(70, 260), 8, LocationType.Apartment);
+				new Position(20, 290), 8, LocationType.Apartment);
 		Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
-				new Position(70, 260), 9, LocationType.Apartment);
+				new Position(20, 290), 9, LocationType.Apartment);
 		Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
-				new Position(70, 260), 10, LocationType.Apartment);
+				new Position(20, 290), 10, LocationType.Apartment);
 		Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
-				new Position(70, 260), 11, LocationType.Apartment);
+				new Position(20, 290), 11, LocationType.Apartment);
 		Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
-				new Position(70, 260), 12, LocationType.Apartment);
+				new Position(20, 290), 12, LocationType.Apartment);
 		Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
-				new Position(70, 260), 13, LocationType.Apartment);
+				new Position(20, 290), 13, LocationType.Apartment);
 		Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
-				new Position(70, 260), 14, LocationType.Apartment);
+				new Position(20, 290), 14, LocationType.Apartment);
 		Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
-				new Position(70, 260), 15, LocationType.Apartment);
+				new Position(20, 290), 15, LocationType.Apartment);
 		Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
-				new Position(70, 260), 16, LocationType.Apartment);
+				new Position(20, 290), 16, LocationType.Apartment);
 		Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
-				new Position(70, 260), 17, LocationType.Apartment);
+				new Position(20, 290), 17, LocationType.Apartment);
 		Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
-				new Position(70, 260), 18, LocationType.Apartment);
+				new Position(20, 290), 18, LocationType.Apartment);
 		Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
-				new Position(70, 260), 19, LocationType.Apartment);
+				new Position(20, 290), 19, LocationType.Apartment);
 		Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
-				new Position(70, 260), 20, LocationType.Apartment);
+				new Position(20, 290), 20, LocationType.Apartment);
 		
 		// Second apartment complex
 		Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
-				new Position(150, 260), 21, LocationType.Apartment);
+				new Position(100, 290), 21, LocationType.Apartment);
 		
 		
 		rest1.setCashier(cashier1);
@@ -517,7 +517,7 @@ public class SimCityGUI extends JFrame {
 
 //		for (int i=1; i<6; i++){
 		int x = 100; 
-		int y = 100; 
+		int y = 330; 
 		for (int i=0; i<22; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);

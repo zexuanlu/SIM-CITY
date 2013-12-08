@@ -61,27 +61,27 @@ public class CarAgent extends Agent {
      
      public void msgatDestination(){
  		person.Position p = null;
- 		if(myGui.yPos > 200 && myGui.yPos < 260){
+ 		if(myGui.yPos > 180 && myGui.yPos < 280){
  			System.err.println(myPerson.getName()+" on horizontal road");
  			//on the horizontal road
  			if(destinationY > currentPosition.getY()){
  				//above
- 				p = new person.Position(myGui.xPos, 190);
+ 				p = new person.Position(myGui.xPos, 170);
  			}
  			else if(destinationY < currentPosition.getY()){
  				//below
- 				p = new person.Position(myGui.xPos, 260);
+ 				p = new person.Position(myGui.xPos, 280);
  			}
  		}
  		else { //on vertical road
  			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
  			if(destinationX > currentPosition.getX()){
  				//to the right 
- 				p = new person.Position(420, myGui.yPos);
+ 				p = new person.Position(440, myGui.yPos);
  			}
  			else if(destinationX < currentPosition.getX()){
  				//to the left
- 				p = new person.Position(350, myGui.yPos);
+ 				p = new person.Position(330, myGui.yPos);
  			}
  		}
  		System.err.println(myPerson.getName()+" getting off at: ("+p.getX()+" , "+p.getY()+")");

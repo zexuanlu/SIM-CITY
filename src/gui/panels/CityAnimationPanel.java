@@ -98,17 +98,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         
         enum state {none, bank1, market1, bank2, market2, restaurant1, restaurant4, house1, house2, house3, house4, restaurant2, restaurant3, restaurant5, restaurant6, apartment1, apartment2, apartment3, apartment4, casino, house5}
         //Buttons for buildings
-        Rectangle2D bank = new Rectangle2D.Double(80, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D market = new Rectangle2D.Double(150, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D restaurant1 = new Rectangle2D.Double(220, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D restaurant2 = new Rectangle2D.Double(290, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D restaurant3 = new Rectangle2D.Double(290, 60, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D bank = new Rectangle2D.Double(60, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D market = new Rectangle2D.Double(130, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D restaurant1 = new Rectangle2D.Double(200, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D restaurant2 = new Rectangle2D.Double(270, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D restaurant3 = new Rectangle2D.Double(270, 40, BUILDINGSIZE, BUILDINGSIZE);
 
-        Rectangle2D house1 = new Rectangle2D.Double(430, 270, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D house2 = new Rectangle2D.Double(430, 350, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D house3 = new Rectangle2D.Double(500, 270, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D house4 = new Rectangle2D.Double(570, 270, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D house5 = new Rectangle2D.Double(640, 270, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D house1 = new Rectangle2D.Double(450, 290, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D house2 = new Rectangle2D.Double(450, 370, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D house3 = new Rectangle2D.Double(520, 290, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D house4 = new Rectangle2D.Double(590, 290, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D house5 = new Rectangle2D.Double(660, 290, BUILDINGSIZE, BUILDINGSIZE);
         
         private List<Rectangle2D> apartmentComplex1Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
         private List<Rectangle2D> apartmentComplex2Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
@@ -116,16 +116,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         private List<Rectangle2D> apartmentComplex4Components = Collections.synchronizedList(new ArrayList<Rectangle2D>());
         
         // First apartment complex
-        Rectangle2D apartmentComplex1 = new Rectangle2D.Double(40, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
-        Rectangle2D apartmentComplex2 = new Rectangle2D.Double(120, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
-        Rectangle2D apartmentComplex3 = new Rectangle2D.Double(200, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
-        Rectangle2D apartmentComplex4 = new Rectangle2D.Double(280, 270, BUILDINGSIZE+10, BUILDINGSIZE+10);
-        Rectangle2D casino = new Rectangle2D.Double(280, 350, BUILDINGSIZE+10, BUILDINGSIZE+10);
-        Rectangle2D bank2 = new Rectangle2D.Double(640, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D market2 = new Rectangle2D.Double(430, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D restaurant4 = new Rectangle2D.Double(500, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D restaurant5 = new Rectangle2D.Double(570, 130, BUILDINGSIZE, BUILDINGSIZE);
-        Rectangle2D restaurant6 = new Rectangle2D.Double(430, 60, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D apartmentComplex1 = new Rectangle2D.Double(20, 290, BUILDINGSIZE+10, BUILDINGSIZE+10);
+        Rectangle2D apartmentComplex2 = new Rectangle2D.Double(100, 290, BUILDINGSIZE+10, BUILDINGSIZE+10);
+        Rectangle2D apartmentComplex3 = new Rectangle2D.Double(180, 290, BUILDINGSIZE+10, BUILDINGSIZE+10);
+        Rectangle2D apartmentComplex4 = new Rectangle2D.Double(260, 290, BUILDINGSIZE+10, BUILDINGSIZE+10);
+        Rectangle2D casino = new Rectangle2D.Double(260, 370, BUILDINGSIZE+10, BUILDINGSIZE+10);
+       
+        Rectangle2D bank2 = new Rectangle2D.Double(660, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D market2 = new Rectangle2D.Double(450, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D restaurant4 = new Rectangle2D.Double(520, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D restaurant5 = new Rectangle2D.Double(590, 110, BUILDINGSIZE, BUILDINGSIZE);
+        Rectangle2D restaurant6 = new Rectangle2D.Double(450, 40, BUILDINGSIZE, BUILDINGSIZE);
         
         public CityAnimationPanel() {
                 //PANEL SETUP
@@ -153,7 +154,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 homes.add(house5Panel);
                 
                 // Creating the apartment animation panel
-                for (int i = 5; i < 25; ++i) {
+                for (int i = 5; i < 5; ++i) {
                         apartments.add(new ApartmentAnimationPanel(i));
                 }
                 
@@ -310,15 +311,15 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 
         // Draw out the sidewalks 
         g2.setColor(Color.WHITE);
-        g2.fillRect(350, 0, 10, 480);
-        g2.fillRect(0, 190, 740, 10);
-        g2.fillRect(420, 0, 10, 480);
-        g2.fillRect(0, 260, 740, 10);
+        g2.fillRect(330, 0, 10, 480);
+        g2.fillRect(0, 170, 740, 10);
+        g2.fillRect(440, 0, 10, 480);
+        g2.fillRect(0, 280, 740, 10);
         
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
-        g2.fillRect(340, 0, 100, 480);
-        g2.fillRect(0, 180, 740, 100);
+        g2.fillRect(340, 0, 100, 480); //vertical
+        g2.fillRect(0, 180, 740, 100); //horizontal
         
         g2.drawImage(b, 80, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(b, 640, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
