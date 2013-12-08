@@ -104,7 +104,7 @@ public class SimCityGUI extends JFrame {
         
         public MarketEmployeeGui meg = new MarketEmployeeGui(marketemployeerole);
         
-        public WaiterGui wg = new WaiterGui(waiter1, null);
+        public WaiterGui wg = new WaiterGui(waiter1);
         public CookGui cg = new CookGui(cook1, null);
         
         public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);

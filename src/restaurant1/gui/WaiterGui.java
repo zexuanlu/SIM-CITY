@@ -11,7 +11,7 @@ import java.awt.*;
 
 import person.PersonAgent;
 
-public class Restaurant1WaiterGui implements Gui {
+public class WaiterGui implements Gui {
 	
 
     private Restaurant1Waiter agent = null;
@@ -35,11 +35,11 @@ public class Restaurant1WaiterGui implements Gui {
     public static final int x1Table = 300;
     public static final int y1Table = 150;
     
-    public Restaurant1WaiterGui(Restaurant1WaiterRole agent) {
+    public WaiterGui(Restaurant1WaiterRole agent) {
         this.agent = agent;
     }
     
-    public Restaurant1WaiterGui(Restaurant1SDWaiterRole agent) {
+    public WaiterGui(Restaurant1SDWaiterRole agent) {
         this.agent = agent;
     }
     

@@ -11,7 +11,7 @@ import restaurant1.Restaurant1CookRole;
 import restaurant1.Restaurant1WaiterRole;
 import utilities.Gui;
 
-public class Restaurant1CookGui implements Gui{
+public class CookGui implements Gui{
 
 	private Restaurant1CookRole cook = null;
 	private boolean plating = false;
@@ -33,7 +33,7 @@ public class Restaurant1CookGui implements Gui{
 	private boolean cooking = false;
 	private boolean refrigerator = false;
 	
-	public Restaurant1CookGui(Restaurant1CookRole cook, Restaurant1AnimationPanel gui){
+	public CookGui(Restaurant1CookRole cook, Restaurant1AnimationPanel gui){
 		this.cook = cook;
 		this.gui = gui;
 	}

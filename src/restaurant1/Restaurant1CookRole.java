@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketCashier;
-import restaurant1.gui.Restaurant1CookGui;
+import restaurant1.gui.CookGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Cook;
 import restaurant1.interfaces.Restaurant1Waiter;
@@ -20,7 +20,7 @@ import market.Food;
 //Add case in scheduler to tell markettruck to go back
 
 public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
-	public Restaurant1CookGui cookGui = null;
+	public CookGui cookGui = null;
 	private Restaurant1Cashier cashier;
 	private MarketTruck truck;
 	private MarketCashier marketCashier;

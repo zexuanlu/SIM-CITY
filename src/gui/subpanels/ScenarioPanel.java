@@ -412,11 +412,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		 * RESTAURANT GUI CREATION AND INITIALIZATION
 		 */
 		// First Restaurant: FIRST SHIFT
-		Restaurant1WaiterGui r1sharedwg1 = new Restaurant1WaiterGui(rest1SDWaiter);
+		WaiterGui r1sharedwg1 = new WaiterGui(rest1SDWaiter);
 		r1sharedwg1.isPresent = false;
 		rest1SDWaiter.setGui(r1sharedwg1);
 		
-		Restaurant1WaiterGui r1wg1 = new Restaurant1WaiterGui(rest1Waiter);
+		WaiterGui r1wg1 = new WaiterGui(rest1Waiter);
 		r1wg1.isPresent = false;
 		rest1Waiter.setGui(r1wg1);
 		

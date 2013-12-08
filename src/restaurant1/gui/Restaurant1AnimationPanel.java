@@ -94,11 +94,11 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
         guis.add(gui);
     }
 
-    public void addGui(Restaurant1WaiterGui gui) {
+    public void addGui(WaiterGui gui) {
         guis.add(gui);
     }
     
-    public void addGui(Restaurant1CookGui gui){
+    public void addGui(CookGui gui){
     	guis.add(gui);
     }
 
