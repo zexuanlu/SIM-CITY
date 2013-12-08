@@ -428,6 +428,20 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         }
         g2.drawLine(380, 290, 380, 480);
         g2.drawLine(400, 290, 400, 480);
+        
+        g2.setColor(Color.WHITE);
+        for(int i = 180; i < 270; i+=10){
+        	if(i == 230)
+        		i--;
+        	g2.fillRect(330, i+3, 10, 5);
+        	g2.fillRect(440, i+3, 10, 5);
+        }
+        for(int i = 340; i < 430; i+=10){
+        	if(i == 390)
+        		i--;
+        	g2.fillRect(i+3, 170, 5, 10);
+        	g2.fillRect(i+3, 280, 5, 10);
+        }
         //Update the position of the guis in the various buildings
         for(Gui gui : marketPanel.guis){
                 gui.updatePosition();
