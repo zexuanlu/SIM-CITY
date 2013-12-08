@@ -305,33 +305,48 @@ public class SimCityGUI extends JFrame {
 			for (int y=0;y<30;y++){  //Create dead position
 				grid[36][23].release();
 			}
+			for (int y = 0;y<30;y++){
+				grid[35][10].release();
+			}
+			for (int y = 0;y<30;y++){
+				grid[35][12].release();
+			}
+			for (int y = 0; y<30;y++){
+				grid[19][13].release();
+			}
+			for (int y = 0; y<30;y++){
+				grid[19][17].release();
+			}
 			
-			for (int x=0;x<18;x++){
-				for (int y = 0; y<10; y++){
+			for (int y = 0; y<30;y++){
+				grid[4][11].release();
+			}
+			for (int x=0;x<17;x++){
+				for (int y = 0; y<9; y++){
 					grid[x][y].acquire();
 				}
 				
-				for (int y = 13; y<gridY;y++){
+				for (int y = 14; y<gridY;y++){
 					grid[x][y].acquire();
 				}
 			}
 			
-			for (int x=21; x<gridX;x++){
-				for (int y=0;y<10;y++){
+			for (int x=22; x<gridX;x++){
+				for (int y=0;y<9;y++){
 					grid[x][y].acquire();
 				}
-				for (int y=13;y<gridY;y++){
+				for (int y=14;y<gridY;y++){
 					grid[x][y].acquire();
 				}
 				
 				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
-					for (int y = 10; y<13; y++){
+					for (int y = 9; y<14; y++){
 						grid[0][y].release(); 
 					}
 				}				
 				
 				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
-					for (int y = 10; y<13; y++){
+					for (int y = 9; y<14; y++){
 						grid[1][y].release(); 
 					}
 				}		
@@ -516,7 +531,7 @@ public class SimCityGUI extends JFrame {
 			//p.setcitygui(this);
 		}
 		
-		for (int i=5;i<22;i++){
+		for (int i=4;i<22;i++){
 			people.get(i).msgAddMoney(-200);
 		}
 		

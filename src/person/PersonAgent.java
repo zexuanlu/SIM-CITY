@@ -892,10 +892,8 @@ public class PersonAgent extends Agent implements Person{
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
-
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
+			print("gotoposition from person");
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
@@ -989,7 +987,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 4000000.00){
+		if (this.wallet.getOnHand() >= 400.00){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}

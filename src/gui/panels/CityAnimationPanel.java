@@ -153,7 +153,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 		homes.add(house5Panel);
 		
 		// Creating the apartment animation panel
-		for (int i = 5; i < 25; ++i) {
+		for (int i = 5; i < 5; ++i) {
 			apartments.add(new ApartmentAnimationPanel(i));
 		}
 		
@@ -317,8 +317,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         
         //draw out the roads
         g2.setColor(Color.LIGHT_GRAY);
-        g2.fillRect(360, 0, 60, 480);
-        g2.fillRect(0, 200, 740, 60);
+        g2.fillRect(340, 0, 100, 480);
+        g2.fillRect(0, 180, 740, 100);
         
 //        g2.drawImage(b, 80, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
 //        g2.drawImage(b, 640, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
