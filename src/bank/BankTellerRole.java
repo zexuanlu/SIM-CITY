@@ -115,6 +115,13 @@ public class BankTellerRole extends Role implements BankTeller {
 		stateChanged();
 	}
 	
+	public void msgThisIsAHoldup(BankCustomer bc, double amount){
+		log.add(new LoggedEvent("Received msgThisIsAHoldUp from BankCustomer"));
+		this.bc = bc;
+		tasks.add(new Task("robBank", amount, -1));
+		stateChanged();
+	}
+	
 	/**
 	 * Received from the bank database when it has created an account for a customer
 	 * 
@@ -208,6 +215,18 @@ public class BankTellerRole extends Role implements BankTeller {
 		}
 	}
 	
+	public void msgHereIsMoney(double amount){
+		log.add(new LoggedEvent("Received msgHereIsMoney from BankDatabase"));
+		for(Task t : tasks){
+			if(t.type.equals("robBank")){
+				t.amount = amount;
+				t.ts = taskState.completed;
+				stateChanged();
+				return;
+			}
+		}
+	}
+	
 	/**
 	 * Received from the bank customer when it is leaving the bank
 	 * 
@@ -265,6 +284,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				case "deposit": depositMade(t); return true;
 				case "withdraw": withdrawMade(t); return true;
 				case "getLoan": loanMade(t); return true;
+				case "robBank": bankRobbed(t); return true;
 				}
 			}
 		}
@@ -276,6 +296,7 @@ public class BankTellerRole extends Role implements BankTeller {
 				case "deposit": deposit(t); return true;
 				case "withdraw": withdraw(t); return true;
 				case "getLoan": getLoan(t); return true;
+				case "robBank": robbery(t); return true;
 				}
 			}
 		}
@@ -385,6 +406,23 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	private void loanMade(Task t){
 		bc.msgLoanGranted(t.amount, t.balance);
+		tasks.remove(t);
+	}
+	
+	private void robbery(Task t){
+		int cowardice = (int)(Math.random() * (100 - 1) + 1);
+		if(cowardice > 30){
+			bd.msgGiveAllMoney(this, t.amount);
+			t.ts = taskState.waiting;
+		}
+		else{
+			bc.msgCallingCops();
+			tasks.remove(t);
+		}
+	}
+	
+	private void bankRobbed(Task t){
+		bc.msgHereIsMoney(t.amount);
 		tasks.remove(t);
 	}
 	

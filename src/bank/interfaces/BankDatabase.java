@@ -16,5 +16,7 @@ public interface BankDatabase {
 	public void msgDepositMoney(BankCustomer bc, double money, int accountNumber, BankTeller bt);
 
 	public void msgWithdrawMoney(BankCustomer bc, double money, int accountNumber, BankTeller bt);
+
+	public void msgGiveAllMoney(BankTeller bt, double amount);
 }
 

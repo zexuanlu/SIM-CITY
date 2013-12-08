@@ -403,6 +403,31 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         else if(s == state.casino){
                 g2.drawString("Casino", (int)casino.getX()+15, (int)casino.getY()+40);
         }
+        g2.setColor(Color.YELLOW);
+        for(int i = 0; i < 330; i += 20){
+        	g2.drawLine(i, 200, i+10, 200);
+        	g2.drawLine(i, 260, i+10, 260);
+        }
+        g2.drawLine(0, 220, 330, 220);
+        g2.drawLine(0, 240, 330, 240);
+        for(int i = 450; i < 1280; i += 20){
+        	g2.drawLine(i, 200, i+10, 200);
+        	g2.drawLine(i, 260, i+10, 260);
+        }
+        g2.drawLine(450, 220, 1280, 220);
+        g2.drawLine(450, 240, 1280, 240);
+        for(int i = 0; i < 170; i +=20){
+        	g2.drawLine(360, i, 360, i+10);
+        	g2.drawLine(420, i, 420, i+10);
+        }
+        g2.drawLine(380, 0, 380, 170);
+        g2.drawLine(400, 0, 400, 170);
+        for(int i = 290; i < 480; i +=20){
+        	g2.drawLine(360, i, 360, i+10);
+        	g2.drawLine(420, i, 420, i+10);
+        }
+        g2.drawLine(380, 290, 380, 480);
+        g2.drawLine(400, 290, 400, 480);
         //Update the position of the guis in the various buildings
         for(Gui gui : marketPanel.guis){
                 gui.updatePosition();
@@ -440,7 +465,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(JPanel p : apartments){
                 p.repaint();
         }
-        
         synchronized(guis){
                 for(Gui gui : guis) {
                         gui.updatePosition();
@@ -532,34 +556,34 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 //FIX - Need to check open/closed status of the particular location use it
                    if (me.getButton() == 3 && bank.contains(me.getX(), me.getY())){
                            radialButton temp;
-                           if(!locations.get("Bank 1").isClosed())
-                                   temp = new radialButton(new Ellipse2D.Double((int)bank.getX()-10, (int)bank.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Bank 1"));
+                           if(!locations.get("Banco Popular").isClosed())
+                                   temp = new radialButton(new Ellipse2D.Double((int)bank.getX()-10, (int)bank.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Banco Popular"));
                            else
-                                   temp = new radialButton(new Ellipse2D.Double((int)bank.getX()-10, (int)bank.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Bank 1"));
+                                   temp = new radialButton(new Ellipse2D.Double((int)bank.getX()-10, (int)bank.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Banco Popular"));
                            buttons.add(temp);
                    }                   
                    else if (me.getButton() == 3 && bank2.contains(me.getX(), me.getY())){
                            radialButton temp;
-                           if(!locations.get("Bank 2").isClosed())
-                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Bank 2"));
+                           if(!locations.get("Banco Popular 2").isClosed())
+                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Banco Popular 2"));
                            else
-                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Bank 2"));
+                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Banco Popular2"));
                            buttons.add(temp);
                    }
                    else if (me.getButton() == 3 && market.contains(me.getX(), me.getY())){
                            radialButton temp;
-                           if(!locations.get("Market 1").isClosed())
-                                   temp = new radialButton(new Ellipse2D.Double((int)market.getX()-10, (int)market.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Market 1"));
+                           if(!locations.get("Pokemart").isClosed())
+                                   temp = new radialButton(new Ellipse2D.Double((int)market.getX()-10, (int)market.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Pokemart 1"));
                            else
-                                   temp = new radialButton(new Ellipse2D.Double((int)market.getX()-10, (int)market.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Market 1"));
+                                   temp = new radialButton(new Ellipse2D.Double((int)market.getX()-10, (int)market.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Pokemart 1"));
                            buttons.add(temp);
                    }
                    else if (me.getButton() == 3 && market2.contains(me.getX(), me.getY())){
                            radialButton temp;
-                           if(!locations.get("Market 2").isClosed())
-                                   temp = new radialButton(new Ellipse2D.Double((int)market2.getX()-10, (int)market2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Market 2"));
+                           if(!locations.get("Pokemart 2").isClosed())
+                                   temp = new radialButton(new Ellipse2D.Double((int)market2.getX()-10, (int)market2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Pokemart 2"));
                            else
-                                   temp = new radialButton(new Ellipse2D.Double((int)market2.getX()-10, (int)market2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Market 2"));
+                                   temp = new radialButton(new Ellipse2D.Double((int)market2.getX()-10, (int)market2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Pokemart 2"));
                            buttons.add(temp);
                    }
                    else if (me.getButton() == 3 && restaurant1.contains(me.getX(), me.getY())){
@@ -633,8 +657,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                         buttons.get(0).location.setClosed(!buttons.get(0).location.isClosed());
                 }
                 else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
-                                System.out.println("Emptying stock of Restaurant");
-                                ((Restaurant)buttons.get(3).location).getCook().msgEmptyStock();
+                        ((Restaurant)buttons.get(3).location).getCook().msgEmptyStock();
                 }
                 buttons.clear();
         }

@@ -66,6 +66,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public void msgGoToBank(String task, double amount){
 		log.add(new LoggedEvent("Received msgGoToBank from Person"));
 		tasks.add(new Task(task, amount));
+		if(task.equals("robBank"))
+			accountNumber = 0;
 		s = state.needTeller;
 		stateChanged();
 	}
@@ -148,6 +150,19 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	public void msgCallingCops(){
+		log.add(new LoggedEvent("Received msgCallingCops from BankTeller"));
+		this.s = state.runAway;
+		stateChanged();
+	}
+	
+	public void msgHereIsMoney(double amount){
+		log.add(new LoggedEvent("Received msgHereIsMoney from BankTeller"));
+		this.s = state.runAway;
+		person.msgAddMoney(amount);
+		stateChanged();
+	}
+	
 	/**
 	 * Received from the host when the customer needs to go to a new location
 	 * 
@@ -165,6 +180,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @return false if the scheduler failed to pick an action
 	 */
 	public boolean pickAndExecuteAnAction(){
+		if(s == state.runAway){
+			escape();
+			return true;
+		}
 		//If the customer has not gotten a teller
 		if(s == state.needTeller){
 			informHost();
@@ -243,6 +262,10 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			Do("Requesting loan");
 			bt.msgINeedLoan(this, t.amount, accountNumber);
 		}
+		if(t.type.equals("robBank")){
+			Do("Robbing bank");
+			bt.msgThisIsAHoldup(this, t.amount);
+		}
 		tasks.remove(t);
 		s = state.waiting;
 	}
@@ -277,6 +300,12 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 	}
 	
+	
+	private void escape(){
+		goToLocation("Outside");
+		bt.msgLeavingBank(this);
+		person.msgBanished();
+	}
 	//Utilities
 	
 	/**
@@ -306,7 +335,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	}
 	
 	//The various states of the customer
-	public enum state {needTeller, waiting, haveTeller, atTeller, none}
+	public enum state {needTeller, waiting, haveTeller, atTeller, none, runAway}
 	
 	public String getRoleName(){
 		return roleName;

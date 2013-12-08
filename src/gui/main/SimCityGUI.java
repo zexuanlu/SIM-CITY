@@ -186,9 +186,9 @@ public class SimCityGUI extends JFrame {
 		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(350, 85), LocationType.Restaurant3);
 		
 		// Second quadrant locations
-		Bank bank2 = new Bank("Bank 2", new TimeCard(), bankhostrole, 
+		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
 		                new Position(640, 130), LocationType.Bank);
-		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
+		Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
 		                new Position(430, 130), LocationType.Market);
 		// FIX HOST ROLES
 		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);

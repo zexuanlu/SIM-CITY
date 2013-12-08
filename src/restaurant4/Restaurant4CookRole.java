@@ -45,14 +45,6 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		cookTimes.put("Scallops", new MyFood(3*baseCookingTime, "Scallops", 10, 4));
 		cookTimes.put("Lobster", new MyFood(5*baseCookingTime, "Lobster", 5, 2));
 		cookTimes.put("Crab", new MyFood(4*baseCookingTime, "Crab", 5, 2));
-	
-		timer.schedule(new TimerTask() {
-			public void run() {
-				checkStand = true;
-				stateChanged();
-			}
-		},
-			5000);
 	}
 
 	public String getName() {

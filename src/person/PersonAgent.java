@@ -286,6 +286,9 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 
+	public void msgBanished(){
+		
+	}
 	/* Scheduler */
 
 	@Override

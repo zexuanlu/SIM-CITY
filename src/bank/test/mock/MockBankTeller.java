@@ -48,6 +48,10 @@ public class MockBankTeller extends Mock implements BankTeller {
 	public void msgWithdrawDone(double balance, double money, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgWithdrawDone from BankDatabase. The new balance is " + balance + " and the amount withdrawn is " + money));
 	}
+	
+	public void msgThisIsAHoldup(BankCustomer bc, double amount){
+		log.add(new LoggedEvent("Received msgThisIsAHoldup from BankCustomer"));
+	}
 
 	public void msgLoanGranted(double money, double debt, BankCustomer bc) {
 		log.add(new LoggedEvent("Received msgLoanGranted from BankDatabase"));
@@ -57,8 +61,11 @@ public class MockBankTeller extends Mock implements BankTeller {
 		log.add(new LoggedEvent("Received msgRequestFailed from BankDatabase"));
 	}
 
-	@Override
 	public void msgWorkDayOver() {
 		log.add(new LoggedEvent("Received msgWorkDayOver from Bank Host"));		
+	}
+
+	public void msgHereIsMoney(double amount) {
+		log.add(new LoggedEvent("Received msgHereIsMoney from BankDatabase"));
 	}
 }

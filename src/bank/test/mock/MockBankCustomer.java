@@ -22,7 +22,6 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 		
 	}
 
-	@Override
 	public void msgGoToBank(String type, double money){
 		log.add(new LoggedEvent("Received msgGoToBank from person with type " + type + " and amount "+ money));
 	}
@@ -51,9 +50,15 @@ public class MockBankCustomer extends Mock implements BankCustomer {
 		log.add(new LoggedEvent("Received msgRequestFailed from BankTeller"));
 	}
 
-	@Override
 	public void msgNewLocation(String location) {
 		log.add(new LoggedEvent("Received msgNewLocation from BankHost"));
 	}
 	
+	public void msgCallingCops(){
+		log.add(new LoggedEvent("Received msgCallingCops from BankTeller"));
+	}
+
+	public void msgHereIsMoney(double amount) {
+		log.add(new LoggedEvent("Received msgHereIsMoney from BankTeller"));
+	}
 }
