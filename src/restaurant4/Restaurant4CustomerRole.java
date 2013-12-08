@@ -24,7 +24,7 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 	private int tableNum = 0;
 	private String choice;
 	Timer timer = new Timer();
-	private Restaurant4CustomerGui customerGui;
+	public Restaurant4CustomerGui customerGui;
 	private Restaurant4Menu menu;
 
 	Semaphore movement = new Semaphore(0, true);
@@ -280,7 +280,7 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 			leaveTable();
 			return;
 		}
-		else if(!menu.contains("Salad") && money < 5.99){
+		else if(!menu.contains("Scallops") && money < 7.99){
 			leaveTable();
 			return;
 		}

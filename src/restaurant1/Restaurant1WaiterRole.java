@@ -370,7 +370,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	public void Docalltoeat(mycustomer customer){
 		waiterGui.bringFoodDone();
 		customer.s = state.starteating;
-		customer.c.msgordercooked();
+		customer.c.msgordercooked(cashier);
 		Do("Please compute the check");
 		cashier.msgCheckthePrice(this, customer.c, customer.choice);
 	}

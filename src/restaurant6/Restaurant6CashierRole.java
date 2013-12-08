@@ -7,7 +7,6 @@ import java.util.*;
 
 import person.interfaces.Person;
 import market.Food;
-import market.interfaces.MarketCashier;
 import restaurant6.Restaurant6Check.CheckState;
 import restaurant6.interfaces.Restaurant6Cashier;
 import restaurant6.interfaces.Restaurant6Customer;
@@ -48,14 +47,14 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	
 	// Inner class for markets to hold invoices
 	public static class MyMarket {
-		public MarketCashier market;
-		public double money;
+		public Restaurant6Market market;
+		public Restaurant6Invoice invoice;
 		public enum MarketState {Paid, NeedToPay}
 		public MarketState state;
 		
-		MyMarket(MarketCashier m, double mn) {
+		MyMarket(Restaurant6Market m, Restaurant6Invoice in) {
 			market = m;
-			money = mn;
+			invoice = in;
 			state = MarketState.NeedToPay;
 		}
 	}
@@ -126,12 +125,12 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	}
 	
 	// Here there will be a message from the market detailing list of items that the cook ordered
-	public void msgPleasepaytheBill(MarketCashier m, double mn) {
+	public void msgInvoice(Restaurant6Market m, Restaurant6Invoice in) {
 		// Checks the list of orders from the market against the reference list created earlier
 		
 		// If it matches, then pay the market
 		
-		markets.add(new MyMarket(m, mn));
+		markets.add(new MyMarket(m, in));
 		stateChanged();
 	}
 
@@ -249,22 +248,46 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	// Pays the market
 	private void payMarket(MyMarket m) {
 		DecimalFormat df = new DecimalFormat("###.##");
-		
+		// If the cashier can't fulfill the payment to the market
+		if (restaurantMoney < m.invoice.getTotal()) {
+			final MyMarket temp = m;
+			
+			print("Getting loan from bank..");
+			
+			atBank.schedule(new TimerTask() {
+				public void run() {
+					print("Got loan!");
+					restaurantMoney = 1000;
+					temp.market.msgHereIsThePayment(temp.invoice.getTotal(), temp.invoice);
+					
+					restaurantMoney -= temp.invoice.getTotal();
+
+					print("My money is now $" + (int)restaurantMoney);
+					stateChanged();
+				}
+			},
+			2000);
+		}
 		// Cashier has enough money to pay for the cook's order
-		m.market.msgBillFromTheAir(m.money);
-		print("Can pay the market in full. Paid $" + m.money);
-		log.add(new LoggedEvent("Can pay the market in full. Paid $" + m.money));
-		
-		restaurantMoney -= m.money;
-		
-		log.add(new LoggedEvent("My money is now $" + df.format(restaurantMoney)));
-		print("My money is now $" + df.format(restaurantMoney));
+		else {
+			m.market.msgHereIsThePayment(m.invoice.getTotal(), m.invoice);
+			print("Can pay the market in full. Paid $" + m.invoice.getTotal());
+			log.add(new LoggedEvent("Can pay the market in full. Paid $" + m.invoice.getTotal()));
+			
+			restaurantMoney -= m.invoice.getTotal();
+			
+			log.add(new LoggedEvent("My money is now $" + df.format(restaurantMoney)));
+			print("My money is now $" + df.format(restaurantMoney));
+		}
 		markets.remove(m);		
 	}
 
+<<<<<<< HEAD
 	// Returns the name of the role
 	public String getRoleName() {
 		return "Restaurant 6 Cashier";
 	}
+=======
+>>>>>>> cc9f589c01f4c18623ff6cbdecdab1a0cac12033
 }
 

@@ -6,34 +6,45 @@ import java.awt.Graphics2D;
 import person.PersonAgent;
 import person.Position;
 import utilities.Gui;
+import utilities.TrafficLightAgent;
 
 public class PersonGui implements Gui{
+	
 	private PersonAgent agent = null;
-
-	public int xPos = -20, yPos = -20;//default player position
-	public int xDestination = -20, yDestination = -20;//default start position
+	private TrafficLightAgent light = null;
+	public int xPos, yPos;//default player position
+	public int xDestination, yDestination;//default start position
 	private boolean arrived; 
 	public boolean isPresent;
+	public boolean atLight;
 
-	public PersonGui(PersonAgent agent) {
+	public PersonGui(PersonAgent agent, int posx, int posy) {
+		xPos = posx; 
+		yPos = posy; 
+		xDestination = xPos; 
+		yDestination = yPos; 
 		this.agent = agent;
 		arrived = false;
 		isPresent = true;
 	}
-
+	public PersonGui(PersonAgent agent, TrafficLightAgent tlight){
+		light = tlight;
+		this.agent = agent;
+		arrived = false;
+		isPresent = false;
+		atLight = false;
+	}
 	public void updatePosition() {
-		if (xPos < xDestination){ 
-			xPos++; 
-		}
-		else if (xPos > xDestination){ 
-			xPos--; 
-		}
-		if (yPos < yDestination){ 
-			yPos++; 
-		}
-		else if (yPos > yDestination){ 
-			yPos--; 
-		}
+    	if (xPos < xDestination && (yPos == 170 || yPos == 280))
+            xPos++;
+        else if (xPos > xDestination && (yPos == 170 || yPos == 280))
+            xPos--;
+
+        if (yPos < yDestination && (xPos == 330 || xPos == 440))
+            yPos++;
+        else if (yPos > yDestination && (xPos == 330 || xPos == 440))
+            yPos--;
+		
 		if(yPos == yDestination && xPos == xDestination && !arrived){
 			arrived = true;
 			agent.msgAtDest(new Position(yPos, xPos));
@@ -67,7 +78,9 @@ public class PersonGui implements Gui{
 		yPos = y; 
 		arrived = false; 
 	}
-	
+	public void cross(){
+		light.msgCheckLight(this.agent);
+	}
 	public int getX(){return xPos;}
 	public int getY(){return yPos;}
 	public void setStart(int x, int y){

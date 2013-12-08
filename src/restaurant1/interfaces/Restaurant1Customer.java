@@ -23,7 +23,7 @@ public void msgReorder(String choice);
 
 public void msgwhatyouwant();
 
-public void msgordercooked();
+public void msgordercooked(Restaurant1Cashier ca);
 	
 	public void msgHereisYourBill(int bill);
 

@@ -146,7 +146,11 @@ public class BankHostRole extends Role implements BankHost {
 			mt.bt.msgWorkDayOver();
 		}
 		endOfDay = false;
-		getPerson().msgGoOffWork(this, 500.00);
+		goToLocation("Outside");
+		if(gui!=null)
+			gui.setPresent(false);
+		getPerson().msgGoOffWork(this, 0.00);
+		atDesk = false;
 	}
 	
 	/**

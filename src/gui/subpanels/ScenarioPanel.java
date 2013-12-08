@@ -420,7 +420,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		r1wg1.isPresent = false;
 		rest1Waiter.setGui(r1wg1);
 		
-		Restaurant1CookGui r1cg1 = new Restaurant1CookGui(rest1Cook, null);
+		CookGui r1cg1 = new CookGui(rest1Cook, null);
 		r1cg1.isPresent = false;
 		rest1Cook.setGui(r1cg1);
 		
@@ -604,7 +604,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			people.get(j).startThread();
 		}
 		
-		clock.bankTimeCard = bank.getTimeCard();
+//		clock.bankTimeCard = bank.getTimeCard();
 		clock.timeCards.add(market.getTimeCard());
 		clock.timeCards.add(market2.getTimeCard());
 		clock.timeCards.add(rest1.getTimeCard());

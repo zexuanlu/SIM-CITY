@@ -28,11 +28,13 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public String name;
 	boolean opening = false;
 	public boolean sendTruckBack = false;
+	public boolean checkStand = false;
 	public int count = 0;
 	public Map<String, MyFood> food = new HashMap<String, MyFood>();
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	private Semaphore AR = new Semaphore(0,true);
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
+
 
 	public Restaurant1CookRole(String name, Person pa) {
 		super(pa);
@@ -42,6 +44,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4, 10));
 		food.put("Pizza", new MyFood("Pizza", 4000, 6, 2, 5, 10));
 		food.put("Salad", new MyFood("Salad", 3000, 6, 2, 8, 10));
+
 	}
 
 	public class MyFood{
@@ -60,15 +63,15 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			this.capacity = capacity;
 		}
 	}
-	
-	public void setGui(Restaurant1CookGui cookGui){
+
+	public void setGui(CookGui cookGui){
 		this.cookGui = cookGui;
 	}
-	
+
 	public void setCashier(Restaurant1Cashier c){
 		cashier = c;
 	}
-	
+
 	public void setRevStand(Restaurant1RevolvingStand rev){
 		this.revStand = rev;
 	}
@@ -76,11 +79,11 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public void setMarketCashier(MarketCashier c){
 		this.marketCashier = c;
 	}
-	
+
 	public Restaurant1RevolvingStand getRevStand(){
 		return this.revStand;
 	}
-	
+
 	Timer timer = new Timer();
 
 	public void msghereisorder(Restaurant1Waiter w, String choice, int table){
@@ -91,17 +94,17 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public void msgAddedOrderToRevolvingStand(){
 		stateChanged();
 	}
-	
+
 	public void msgordercooked(Order order){
 		order.s = Order.state.cooked;
 		stateChanged();
 	}
-	
+
 	public void msgEmptyStock(){
 		for (String key : food.keySet()){
 			MyFood f = food.get(key);
-			 f.amount = 0;
-			 foodlist.add(new Food(f.type, f.capacity-f.amount));
+			f.amount = 0;
+			foodlist.add(new Food(f.type, f.capacity-f.amount));
 		}
 		opening = true;
 		stateChanged();
@@ -132,9 +135,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			return true;
 		}
 		if(sendTruckBack == true) {
-			System.out.println(sendTruckBack);
-			truck.msgGoBack();
-			sendTruckBack = false;
+			TruckBack();
 			return true;
 		}
 		if(order.size() <= 3 && !revStand.isEmpty()) {
@@ -200,12 +201,12 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		time);
 
 	}
-	
+
 	public void EmptyStock(){
 		for (String key : food.keySet()){
 			MyFood f = food.get(key);
-			 f.amount = 0;
-			 foodlist.add(new Food(f.type, f.capacity-f.amount));
+			f.amount = 0;
+			foodlist.add(new Food(f.type, f.capacity-f.amount));
 		}
 		Orderfoodislow();
 	}
@@ -217,12 +218,19 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		marketCashier.MsgIwantFood(this, cashier, foodlist, 1);
 		foodlist.clear();
 	}
- 
+
 	public void TakeOrderFromStand() {
-		Order o = revStand.removeOrder();
-		order.add(o);
+		//		checkStand = false;
+		Order o = null;
+		o = revStand.removeOrder();
+		System.out.println(o.choice);
+		if(o != null){
+			order.add(o);
+			System.out.println(""+order.size());
+		}
+
 	}
-	
+
 	public void Timerdone(Order order){
 		order.s = Order.state.readytotake;
 		cookGui.hidefood();
@@ -241,6 +249,11 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 
 	public String getRoleName(){
 		return roleName;
+	}
+
+	public void TruckBack(){
+		truck.msgGoBack();
+		sendTruckBack = false;
 	}
 
 }

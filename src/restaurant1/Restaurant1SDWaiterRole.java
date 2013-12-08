@@ -341,7 +341,8 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			revStand.insertOrder(new Order(this, customer.choice, customer.table));	
 			cook.msgAddedOrderToRevolvingStand();
 			System.err.println("Added order to revolving stand");
-			waiterGui.DoGotoCHomePosition(tablenum);
+			//waiterGui.DoGotoCHomePosition(tablenum);
+			waiterGui.DoLeaveCustomer();
 		}
 
 		public void Dogotocook(mycustomer customer){
@@ -376,7 +377,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void Docalltoeat(mycustomer customer){
 			waiterGui.bringFoodDone();
 			customer.s = state.starteating;
-			customer.c.msgordercooked();
+			customer.c.msgordercooked(cashier);
 			Do("Please compute the check");
 			cashier.msgCheckthePrice(this, customer.c, customer.choice);
 		}

@@ -1,6 +1,8 @@
 package simcity;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+
+
 //import person.Position;
 import simcity.astar.AStarNode;
 import person.PersonAgent; 
@@ -22,10 +24,12 @@ import simcity.gui.CarGui;
 
 //Break this sequence and you will screw up his disappearing/reappearing
 public class CarAgent extends Agent {
+	 boolean crashed = false; 
 	 Position currentPosition;
      Position originalPosition;
      AStarTraversal aStar;
      int scale = 20;
+     String name; 
      int heightofStreet = 20;
      public CarGui myGui;
      private Semaphore atSlot = new Semaphore(0,true);
@@ -39,6 +43,7 @@ public class CarAgent extends Agent {
      public CarAgent(AStarTraversal a, PersonAgent mp){
              aStar = a;
              myPerson = mp;
+             name = myPerson.toString(); 
 
      }
      
@@ -46,8 +51,8 @@ public class CarAgent extends Agent {
              myGui = c;
              System.out.println("Cargui location is " +myGui.xPos/scale + " " + myGui.yPos/scale);
              currentPosition = new Position(myGui.xPos/scale, myGui.yPos/scale);
-     currentPosition.moveInto(aStar.getGrid());
-     originalPosition = currentPosition;
+             currentPosition.moveInto(aStar.getGrid());
+             originalPosition = currentPosition;
      }
      
      public void msgatSlot(){
@@ -55,8 +60,33 @@ public class CarAgent extends Agent {
      }
      
      public void msgatDestination(){
-    	 myPerson.msgAtDest(new person.Position(myGui.xPos, myGui.yPos),this);
-     }
+ 		person.Position p = null;
+ 		if(myGui.yPos > 180 && myGui.yPos < 280){
+ 			System.err.println(myPerson.getName()+" on horizontal road");
+ 			//on the horizontal road
+ 			if(destinationY > currentPosition.getY()){
+ 				//above
+ 				p = new person.Position(myGui.xPos, 170);
+ 			}
+ 			else if(destinationY < currentPosition.getY()){
+ 				//below
+ 				p = new person.Position(myGui.xPos, 280);
+ 			}
+ 		}
+ 		else { //on vertical road
+ 			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
+ 			if(destinationX > currentPosition.getX()){
+ 				//to the right 
+ 				p = new person.Position(440, myGui.yPos);
+ 			}
+ 			else if(destinationX < currentPosition.getX()){
+ 				//to the left
+ 				p = new person.Position(330, myGui.yPos);
+ 			}
+ 		}
+ 		System.err.println(myPerson.getName()+" getting off at: ("+p.getX()+" , "+p.getY()+")");
+ 		myPerson.msgAtDest(p, this);//(new person.Position(myGui.xPos, myGui.yPos),this);
+ 	}
 
      
      public void setatPosition(int originx, int originy){
@@ -75,6 +105,12 @@ public class CarAgent extends Agent {
      }
      
      public void gotoPosition(int originx, int originy, int x, int y){
+    	 print ("gotoposition");
+    	 
+    	 if ((originx/scale == x/scale) && (originy/scale == y/scale)){
+    		 msgatDestination();
+    		 return; 
+    	 }
     	 
          currentPosition.release(aStar.getGrid());
          currentPosition = new Position(originx/scale, originy/scale);
@@ -88,8 +124,6 @@ public class CarAgent extends Agent {
          numy = numy*scale;
  
          myGui.atPosition(numx, numy);
-    	 
-    	 
     	 
              destinationX = x;
              destinationY = y;
@@ -133,15 +167,22 @@ public class CarAgent extends Agent {
       gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
 
       //Did not get lock. Lets make n attempts.
-      while (!gotPermit && attempts < 3) {
+      while (!gotPermit && attempts < 5) {
              //System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
 
+    	  print ("HIT HERE and sleeping");
              //Wait for 1sec and try again to get lock.
-             try { Thread.sleep(1000); }
+             try { Thread.sleep(2000); }
+             
              catch (Exception e){}
 
              gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
              attempts ++;
+             
+             crashed = true; 
+             System.out.println("CRASHED");
+             myGui.Collide();
+             break; 
       }
 
       //Did not get lock after trying n attempts. So recalculating path.
@@ -182,7 +223,12 @@ public class CarAgent extends Agent {
          }
          return false;
  }
-     
+
+ 
+ 
+ public String toString(){
+	 return name;
+ }
 }
 
 

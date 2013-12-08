@@ -124,7 +124,8 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		stateChanged();
 	}
 
-	public void msgordercooked(){
+	public void msgordercooked(Restaurant1Cashier ca){
+		cashier = ca;
 		event = AgentEvent.fooddilivered;
 		stateChanged();
 	}

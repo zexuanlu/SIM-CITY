@@ -12,7 +12,6 @@ public class SimWorldClock {
 	private Timer clock = new Timer();
 	public List<PersonAgent> people;
 	public List<TimeCard> timeCards;
-	public TimeCard bankTimeCard;
 	private int currentHour;
 	public int endOfDay;
 
@@ -39,9 +38,6 @@ public class SimWorldClock {
 			for(TimeCard timeCard : timeCards){
 				timeCard.msgEndOfDay();
 			}
-		}
-		if(currentHour == 23){
-			bankTimeCard.msgEndOfDay();
 		}
 		if(currentHour != 24){
 			currentHour++;

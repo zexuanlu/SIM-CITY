@@ -2,8 +2,10 @@ package restaurant4;
 
 import agent.Role;
 import restaurant4.gui.Restaurant4CookGui;
+import restaurant4.shareddata.*;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import market.Food;
 import restaurant4.interfaces.*;
@@ -14,22 +16,26 @@ import person.interfaces.Person;
 /**
  * Restaurant Cook Agent
  * 
- * Receives orders from a waiter, cooks them, and gives them to the waiter again
+ * Receives cookOrders from a waiter, cooks them, and gives them to the waiter again
  */
 public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	private static final int baseCookingTime = 1000;
-	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-	//This contains the unfilled orders from a market so that he may reorder them
-	private List<List<Food>> marketOrders = Collections.synchronizedList(new ArrayList<List<Food>>());
-	private List<Double> checkOrders = Collections.synchronizedList(new ArrayList<Double>());
+	private List<cookOrder> cookOrders = Collections.synchronizedList(new ArrayList<cookOrder>());
+	//This contains the unfilled cookOrders from a market so that he may recookOrder them
+	private List<List<Food>> marketcookOrders = Collections.synchronizedList(new ArrayList<List<Food>>());
+	private List<Double> checkcookOrders = Collections.synchronizedList(new ArrayList<Double>());
 	public MarketCashier mc;
 	public Restaurant4Cashier rc;
+	public MarketTruck truck;
 	private String name;
-	private Restaurant4CookGui gui;
+	public Restaurant4RevolvingStand stand;
+	private boolean sendTruckBack = false;
+	private boolean checkStand = false;
+	public Restaurant4CookGui gui;
 	private int GrillNum = 0;
 	private Map<String, MyFood> cookTimes = Collections.synchronizedMap(new HashMap<String, MyFood>());
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
-	boolean needToOrder = false;
+	boolean needTocookOrder = false;
 	Timer timer = new Timer();
 
 	public Restaurant4CookRole(String name, Person pa) {
@@ -48,21 +54,21 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	// Messages
 
 	/** 
-	 * Receives this message from a waiter when an order comes in
+	 * Receives this message from a waiter when an cookOrder comes in
 	 * 
 	 * @param food the food item to be cooked
-	 * @param w the waiter delivering the order
-	 * @param table the table number that the order goes to
+	 * @param w the waiter delivering the cookOrder
+	 * @param table the table number that the cookOrder goes to
 	 */
 	public void msgMakeFood(String food, Restaurant4WaiterRole w, int table) {
 		GrillNum++;
-		orders.add(new Order(food, w, table, GrillNum));
+		cookOrders.add(new cookOrder(food, w, table, GrillNum));
 		stateChanged();
 	}
 
 	public void msgGettingFood(String food, int table){
-		synchronized(orders){
-			for(Order o : orders){
+		synchronized(cookOrders){
+			for(cookOrder o : cookOrders){
 				if(o.type.equals(food) && o.table == table){
 					o.s = state.finished;
 					stateChanged();
@@ -72,11 +78,11 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		}
 	}
 	/**
-	 * Recieves this message from a timer when an order is done
+	 * Recieves this message from a timer when an cookOrder is done
 	 * 
-	 * @param o the order that was completed
+	 * @param o the cookOrder that was completed
 	 */
-	public void msgFoodDone(Order o){
+	public void msgFoodDone(cookOrder o){
 		o.s = state.done;
 		stateChanged();
 	}
@@ -91,49 +97,67 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 			 f.amount = 0;
 			 foodlist.add(new Food(f.type, f.capacity-f.amount));
 		}
-		needToOrder = true;
+		needTocookOrder = true;
 		stateChanged();
 	}
 	
 	public void msgHereisYourFood(MarketTruck truck, List<Food> food){
-		
+		this.truck = truck;
+		for(Entry<String, MyFood> entry : cookTimes.entrySet()){
+			for(Food f : food){
+				if(f.choice.equals(entry.getKey())){
+					entry.getValue().amount = f.amount;
+				}
+			}
+		}		
+		sendTruckBack = true;
+		stateChanged();
 	}
 
 	public void msgCheckBill(double price){
-		checkOrders.add(price);
+		checkcookOrders.add(price);
 		stateChanged();
 	}
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		//If the cook needs to order
-		if(needToOrder){
-			orderFoodThatIsLow();
+		
+		if(sendTruckBack){
+			sendTruckBack();
 			return true;
 		}
-		//Checks for any orders that are finished cooking
-		for(Order o : orders){
+		//If the cook needs to cookOrder
+		if(needTocookOrder){
+			cookOrderFoodThatIsLow();
+			return true;
+		}
+		//Checks for any cookOrders that are finished cooking
+		for(cookOrder o : cookOrders){
 			if(o.s == state.done){
 				plateIt(o);
 				return true;
 			}
 		}
-		//Checks for any orders that haven't started cooking
-		for(Order o : orders){
+		if(checkStand){
+			checkStand();
+			return true;
+		}
+		//Checks for any cookOrders that haven't started cooking
+		for(cookOrder o : cookOrders){
 			if(o.s == state.pending){
 				cookIt(o);
 				return true;
 			}
 		}
-		for(Order o : orders){
+		for(cookOrder o : cookOrders){
 			if(o.s == state.finished){
 				gui.removeFood(o.type, o.table);
-				orders.remove(o);
+				cookOrders.remove(o);
 				return true;
 			}
 		}
-		if(!checkOrders.isEmpty()){
+		if(!checkcookOrders.isEmpty()){
 			checkBill();
 			return true;
 		}
@@ -142,14 +166,14 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 
 	// Actions
 	/**
-	 * Sets a timer for the order, and starts cooking it
+	 * Sets a timer for the cookOrder, and starts cooking it
 	 * 
-	 * @param o the order to be cooked
+	 * @param o the cookOrder to be cooked
 	 */
-	private void cookIt(Order o){
+	private void cookIt(cookOrder o){
 		if(cookTimes.get(o.type).amount == 0){
 			o.waiter.msgOutOfItem(o.type, o.table);
-			orders.remove(o);
+			cookOrders.remove(o);
 			return;
 		}
 		if(GrillNum > 3)
@@ -157,39 +181,60 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		DoCooking(o);
 		MyFood f = cookTimes.get(o.type);
 		f.amount --;
-		if(f.s == orderState.notOrdered && f.amount <= f.low){
+		if(f.s == cookOrderState.notcookOrdered && f.amount <= f.low){
 			foodlist.add(new Food(f.type, f.capacity-f.amount));
-			f.s = orderState.ordered;
-			orderFoodThatIsLow();
+			f.s = cookOrderState.cookOrdered;
+			cookOrderFoodThatIsLow();
 		}
 		o.s = state.cooking;
 		timer.schedule(new doneCooking(o), cookTimes.get(o.type).time);
 	}
 
 	/**
-	 * Plates the order, and messages the waiter who ordered it
+	 * Plates the cookOrder, and messages the waiter who cookOrdered it
 	 * 
-	 * @param o the order to be plated
+	 * @param o the cookOrder to be plated
 	 */
-	private void plateIt(Order o){
+	private void plateIt(cookOrder o){
 		DoPlating(o);
 		o.s = state.sent;
 		o.waiter.msgOrderReady(o.table, o.type, "Grill " + o.grillNum);
 	}
 	
 	/**
-	 * Cycles through the inventory, and orders any items that haven't been ordered that are low
+	 * Cycles through the inventory, and cookOrders any items that haven't been cookOrdered that are low
 	 */
-	private void orderFoodThatIsLow(){
-		needToOrder = false;
-		marketOrders.add(foodlist);
+	private void cookOrderFoodThatIsLow(){
+		needTocookOrder = false;
+		marketcookOrders.add(foodlist);
 		mc.MsgIwantFood(this, rc, foodlist, 4);	
 	}
 	
+	private void checkStand(){
+		checkStand = false;
+		cookOrder o = new cookOrder(stand.removeOrder());
+		if(o != null){
+		cookOrders.add(o);
+		}
+		
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkStand = true;
+				stateChanged();
+			}
+		},
+			5000);
+	}
+	
+	private void sendTruckBack(){
+		truck.msgGoBack();
+		sendTruckBack = false;
+	}
+	
 	private void checkBill(){
-		double price = checkOrders.get(0);
+		double price = checkcookOrders.get(0);
 		double compare = 0;
-		List<Food> marketList = marketOrders.get(0);
+		List<Food> marketList = marketcookOrders.get(0);
 		for(int i = 0; i < marketList.size(); i++){
 			switch(marketList.get(i).choice){
 				case "Shrimp": compare+=8.99; break;
@@ -206,12 +251,12 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	
 	// The animation DoXYZ() routines
 	
-	private void DoCooking(Order o){
+	private void DoCooking(cookOrder o){
 		print("Cooking "+ o.type);
 		gui.DoCookFood(o.type, o.grillNum, o.table);
 	}
 
-	private void DoPlating(Order o){
+	private void DoPlating(cookOrder o){
 		print("Plating " + o.type);
 		gui.DoPrepFood(o.type, o.table);
 	}
@@ -222,25 +267,33 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		gui = cg;
 	}
 	/**
-	 * The order class
+	 * The cookOrder class
 	 * 
 	 * Contains a waiter, a type, a table and a current state
 	 */
-	private class Order {
-		Restaurant4WaiterRole waiter;
+	private class cookOrder {
+		Restaurant4AbstractWaiter waiter;
 		String type;
 		int table;
 		int grillNum;
 		state s;
-		Order(String choice, Restaurant4WaiterRole w, int tableNum, int grillNum){
+		cookOrder(String choice, Restaurant4AbstractWaiter w, int tableNum, int grillNum){
 			waiter = w;
 			type = choice;
 			table = tableNum;
 			this.grillNum = grillNum;
 			s = state.pending;
 		}
+		cookOrder(Order o){
+			this.type = o.choice;
+			this.waiter = o.w;
+			GrillNum++;
+			this.grillNum = GrillNum;
+			this.table = o.table;
+			s = state.pending;			
+		}
 	}
-	//The states for the orders
+	//The states for the cookOrders
 	enum state {pending, cooking, done, sent, finished}
 	
 	/**
@@ -254,26 +307,26 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		int amount;
 		int capacity;
 		int low;
-		orderState s;
+		cookOrderState s;
 		MyFood(int time, String type, int capacity, int low){
 			this.time = time;
 			this.type = type;
 			this.amount = capacity;
 			this.capacity = capacity;
 			this.low = low;
-			s = orderState.notOrdered;
+			s = cookOrderState.notcookOrdered;
 		}
 	}
-	enum orderState {ordered, notOrdered, none}
-	//This class is used so that the Order can be temporarily held by the timer
+	enum cookOrderState {cookOrdered, notcookOrdered, none}
+	//This class is used so that the cookOrder can be temporarily held by the timer
 	//May be unnecessary but is used currently and works
 	private class doneCooking extends TimerTask {
-		private final Order order;
-		doneCooking(Order o){
-			order = o;
+		private final cookOrder cookOrder;
+		doneCooking(cookOrder o){
+			cookOrder = o;
 		}
 		public void run(){
-			msgFoodDone(order);
+			msgFoodDone(cookOrder);
 		}
 	}
 	@Override

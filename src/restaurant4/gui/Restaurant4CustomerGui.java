@@ -15,9 +15,7 @@ import java.util.Map;
 public class Restaurant4CustomerGui implements Gui{
 
 	private Restaurant4CustomerRole agent = null;
-	private boolean isPresent = true;
-
-	Restaurant4AnimationPanel gui;
+	public boolean isPresent = true;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -35,23 +33,22 @@ public class Restaurant4CustomerGui implements Gui{
 	public static final int xTable = 50;
 	public static final int yTable = 200;
 
-	public Restaurant4CustomerGui(Restaurant4CustomerRole c, Restaurant4AnimationPanel gui){ //HostAgent m) {
+	public Restaurant4CustomerGui(Restaurant4CustomerRole c){ //HostAgent m) {
 		agent = c;
-        locations.put("Cashier", new Position(100, -20));
+        locations.put("Cashier", new Position(150, -20));
         locations.put("Host", new Position(-20, -20));
-        locations.put("Table 1", new Position(70, 200));
-        locations.put("Table 2", new Position(170, 200));
-        locations.put("Table 3", new Position(270, 200));
-        locations.put("Customer 1", new Position(60, 36));
-        locations.put("Customer 2", new Position(81, 36));
-        locations.put("Customer 3", new Position(102, 36));
-        locations.put("Customer 4", new Position(123, 36));
-        locations.put("Customer 5", new Position(144, 36));
+        locations.put("Table 1", new Position(120, 300));
+        locations.put("Table 2", new Position(220, 300));
+        locations.put("Table 3", new Position(320, 300));
+        locations.put("Customer 1", new Position(110, 136));
+        locations.put("Customer 2", new Position(131, 136));
+        locations.put("Customer 3", new Position(152, 136));
+        locations.put("Customer 4", new Position(173, 136));
+        locations.put("Customer 5", new Position(194, 136));
 		xPos = -20;
 		yPos = -20;
 		xDestination = -20;
 		yDestination = -20;
-		this.gui = gui;
 	}
 
 	public void updatePosition() {

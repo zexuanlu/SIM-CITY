@@ -34,6 +34,15 @@ import restaurant1.gui.Restaurant1CookGui;
 import restaurant1.gui.Restaurant1CustomerGui;
 import restaurant1.gui.Restaurant1WaiterGui;
 import restaurant1.interfaces.Restaurant1Host;
+import restaurant4.Restaurant4CashierRole;
+import restaurant4.Restaurant4CookRole;
+import restaurant4.Restaurant4CustomerRole;
+import restaurant4.Restaurant4HostRole;
+import restaurant4.Restaurant4SDWaiterRole;
+import restaurant4.Restaurant4WaiterRole;
+import restaurant4.gui.Restaurant4CustomerGui;
+import restaurant4.gui.Restaurant4WaiterGui;
+import restaurant4.interfaces.Restaurant4Host;
 import simcity.CarAgent;
 import simcity.gui.CarGui; 
 import simcity.PassengerRole;
@@ -51,7 +60,7 @@ public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
 	private boolean atHome = false;
-	
+
 	private String name;
 	public int hunger; // tracks hunger level
 	public enum HomeType {Apartment, Home}
@@ -66,7 +75,7 @@ public class PersonAgent extends Agent implements Person{
 	public Wallet wallet;
 	private int currentTime; 
 
-	public Position currentLocation = new Position(0, 0); 
+	public Position currentLocation; 
 	public Position dest = new Position(50, 50);
 	public CityMap cityMap;
 
@@ -157,7 +166,14 @@ public class PersonAgent extends Agent implements Person{
 	public CityMap getMap() {
 		return cityMap;
 	}
-
+	public boolean active(){
+		for (MyRole r : roles){
+			if(r.isActive){
+				return true;
+			}
+		}
+		return false;
+	}
 	public void addRole(MyRole r){ roles.add(r); }
 
 	public void addRole(Role r, String type){
@@ -180,6 +196,13 @@ public class PersonAgent extends Agent implements Person{
 	public void msgAtHome(){
 		print("Back home");
 	}
+
+	public void setGui(PersonGui pg){
+		gui = pg; 
+		currentLocation = new Position(pg.xPos, pg.yPos);
+
+	}
+
 	public void msgAddEvent(SimEvent e){
 		toDo.add(e);
 		print("Message add event received");
@@ -250,7 +273,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(!testMode){
-		gui.setPresent(true);
+			gui.setPresent(true);
 		}
 		stateChanged();
 	}
@@ -262,13 +285,14 @@ public class PersonAgent extends Agent implements Person{
 				role.setActive(true);
 			}
 		}
+		gui.setPresent(false);
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
 		print("Received the message go off work");
 		wallet.setOnHand(pay);
 		if(!testMode){
-		gui.isPresent = true;
+			gui.isPresent = true;
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
@@ -278,523 +302,689 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 
+	public void msgBanished(){
+		
+	}
 	/* Scheduler */
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		for(MyRole r : roles){
+			if(r.isActive){
+				boolean b;
+				b =  r.role.pickAndExecuteAnAction();
+				return b;
+			}
+		}
 
-//			for(SimEvent nextEvent : toDo){
-//				if(nextEvent.importance == EventImportance.EmergencyEvent){
-//					goToLocation(nextEvent.location);
-//					goToAndDoEvent(nextEvent);
-//					return true;
-//				}
-//			}
-			//If the person is at home, this event will break him out for events such as work
-//			if(atHome){
-//				for(SimEvent nextEvent : toDo){
-//					if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
-//						print("Activating a recurring event");
-//						for(MyRole mr : roles){
-//							if(mr.type.equals("Home Owner")){
-//								mr.setActive(false);
-//								((HomeOwnerRole)mr.role).DoGoToFrontDoor();
-//							}
-//							else if(mr.type.equals("Apt Tenant")){
-//								mr.setActive(false);
-//								((ApartmentTenantRole)mr.role).DoGoToFrontDoor();
-//							}
-//						}
-//						gui.setPresent(true);
-//						goToLocation(nextEvent.location);
-//						goToAndDoEvent(nextEvent);
-//						atHome = false;
-//						return true;
-//					}
-//				}
-//			}
-			for(MyRole r : roles){
-				if(r.isActive){
-					//print("Executing rule in role "+ r.role);
-					boolean b;
-					b =  r.role.pickAndExecuteAnAction();
-					//Do("" + b + " "+ r.role);
-					return b;
-				}
-			}	
-				
-				for(SimEvent nextEvent : toDo){
-					//print("Priority is " + nextEvent.importance + " Time = " + currentTime + " : " + nextEvent.startTime)
-					if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
-						print("Activating a recurring event");
-						goToLocation(nextEvent.location);
-						goToAndDoEvent(nextEvent);
-						return true;
-					}
-				}
-				for(SimEvent nextEvent : toDo){
-					if(nextEvent.importance == EventImportance.OneTimeEvent){
-						goToLocation(nextEvent.location);
-						goToAndDoEvent(nextEvent);
-						return true;
-					}
-				}
-				return checkVitals();
+		for(SimEvent nextEvent : toDo){
+			//print("Priority is " + nextEvent.importance + " Time = " + currentTime + " : " + nextEvent.startTime);
+			if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
+				print("Activating a recurring event");
+				goToLocation(nextEvent.location);
+				goToAndDoEvent(nextEvent);
+				return true;
+			}
+		}
+
+		for(SimEvent nextEvent : toDo){
+			if(nextEvent.importance == EventImportance.OneTimeEvent){
+				if(!atHome)
+					goToLocation(nextEvent.location);
+				goToAndDoEvent(nextEvent);
+				return true;
+			}
+		}
+		return checkVitals();
 	}
 
 	/* Actions */
 	private void goToAndDoEvent(SimEvent e){		
-////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
-			if(e.location.type == LocationType.Restaurant){
-				Restaurant rest = (Restaurant)e.location;
-				if(e.type == EventType.CustomerEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Rest 1 Customer")){
-							((Restaurant1CustomerRole)mr.role).customerGui.setPresent(true);
-							((Restaurant1CustomerRole)mr.role).gotHungry();
-							mr.setActive(true);
-							gui.setPresent(false);
-							toDo.remove(e);
-							return;
-						}
+		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
+		if(e.location.type == LocationType.Restaurant1){
+			Restaurant rest = (Restaurant)e.location;
+			if(e.type == EventType.CustomerEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 1 Customer")){
+						((Restaurant1CustomerRole)mr.role).customerGui.setPresent(true);
+						((Restaurant1CustomerRole)mr.role).gotHungry();
+						mr.setActive(true);
+						gui.setPresent(false);
+						toDo.remove(e);
+						return;
 					}
-					print("Customer not found");
-					Restaurant1CustomerRole cRole = new Restaurant1CustomerRole(this.name, this);
-					MyRole newRole = new MyRole(cRole, "Rest 1 Customer");
-					newRole.setActive(true);
-					roles.add(newRole);
-					Restaurant1CustomerGui cg = new Restaurant1CustomerGui(cRole, null);
-					cg.isPresent = true;
-					cRole.setGui(cg);
-					cap.rest1Panel.addGui(cg);
-					cRole.setHost(((Restaurant1Host)rest.getHost()));
-					cRole.gotHungry();
-					gui.setPresent(false);
-					toDo.remove(e);
 				}
-				
-				else if(e.type == EventType.HostEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Rest 1 Host")){          
-							rest.getTimeCard().msgBackToWork(this, mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							mr.setActive(true);
-							gui.setPresent(false);
-							return;
-						}
-					}
-					MyRole newRole = new MyRole(((Restaurant1HostRole)rest.getHost()), "Rest 1 Host");
-					newRole.setActive(true);
-					roles.add(newRole);
-					rest.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
-				}
-				
-				else if(e.type == EventType.WaiterEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Rest 1 Waiter")){  
-							((Restaurant1WaiterRole)mr.role).waiterGui.setPresent(true);
-							rest.getTimeCard().msgBackToWork(this, mr.role); 
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							mr.setActive(true);
-							gui.setPresent(false);
-							return;
-						}
-					}
-					Restaurant1WaiterRole wRole = new Restaurant1WaiterRole(this.name, this); 
-					MyRole newRole = new MyRole(wRole, "Rest 1 Waiter");
-					newRole.setActive(true);
-					roles.add(newRole);
-					Restaurant1WaiterGui wg = new Restaurant1WaiterGui((Restaurant1WaiterRole)newRole.role);
-					wg.isPresent = true;
-					cap.rest1Panel.addGui(wg);
-					rest.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
-				}
-				
-				else if(e.type == EventType.SDWaiterEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Rest 1 SDWaiter")){
+				print("Customer not found");
+				Restaurant1CustomerRole cRole = new Restaurant1CustomerRole(this.name, this);
+				MyRole newRole = new MyRole(cRole, "Rest 1 Customer");
+				newRole.setActive(true);
+				roles.add(newRole);
+				CustomerGui cg = new CustomerGui(cRole, null);
+				cg.isPresent = true;
+				cRole.setGui(cg);
+				cap.rest1Panel.addGui(cg);
+				cRole.setHost(((Restaurant1Host)rest.getHost()));
+				cRole.gotHungry();
+				gui.setPresent(false);
+				toDo.remove(e);
+			}
 
+			else if(e.type == EventType.HostEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 1 Host")){          
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
 						}
-						else {
-							((Restaurant1SDWaiterRole)mr.role).waiterGui.isPresent = true;
-							rest.getTimeCard().msgBackToWork(this, mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							mr.setActive(true);
-							gui.setPresent(false);
-							return;
+						catch(InterruptedException ie){
+							ie.printStackTrace();
 						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
 					}
-					Restaurant1SDWaiterRole sdRole = new Restaurant1SDWaiterRole(this.name, this);
-					MyRole newRole = new MyRole(sdRole, "Rest 1 SDWaiter");
-					newRole.setActive(true);
-					roles.add(newRole);
-					Restaurant1WaiterGui wg = new Restaurant1WaiterGui((Restaurant1SDWaiterRole)newRole.role);
-					wg.isPresent = true;
-					cap.rest1Panel.addGui(wg);
-					rest.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
 				}
-				
-				else if(e.type == EventType.CookEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Rest 1 Cook")){                                                       
-							rest.getTimeCard().msgBackToWork(this, mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							mr.setActive(true);
-							((Restaurant1CookRole)mr.role).cookGui.setPresent(true);
-							gui.setPresent(false);
-							return;
-						}
-					} 
-					MyRole newRole = new MyRole(((Restaurant1CookRole)rest.getCook()), "Rest 1 Cook");//FIX
-					newRole.setActive(true);
-					roles.add(newRole);
-					((Restaurant1CookRole)newRole.role).cookGui.setPresent(true);
-					rest.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
+				MyRole newRole = new MyRole(((Restaurant1HostRole)rest.getHost()), "Rest 1 Host");
+				newRole.setActive(true);
+				roles.add(newRole);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
 				}
-				
-				else if(e.type == EventType.CashierEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Rest 1 Cashier")){                                                       
-							rest.getTimeCard().msgBackToWork(this, (Restaurant1CashierRole)mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							mr.setActive(true);
-							gui.setPresent(false);
-							return;
-						}
-					}
-					MyRole newRole = new MyRole(((Restaurant1CashierRole)rest.getCashier()), "Rest 1 Cashier");//FIX
-					newRole.setActive(true);
-					roles.add(newRole);
-					rest.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
+				catch(InterruptedException ie){
+					ie.printStackTrace();
 				}
+				gui.setPresent(false);
+				return;
 			}
-			
-////////////////////////// BANK EVENTS /////////////////////////////////////////////////
-			
-			if(e.location.type == LocationType.Bank){ //if our event happens at a bank
-				Bank bank = (Bank)e.location;
-				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
-					for(MyRole mr : roles){
-						if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 200.00);//FIX - Should be fixed at some point to reflect a percent
-							mr.setActive(true);
-							gui.setPresent(false);
-							((BankCustomerRole)mr.role).gui.setPresent(true);
-							toDo.remove(e);
-							return;
+
+			else if(e.type == EventType.WaiterEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 1 Waiter")){  
+						((Restaurant1WaiterRole)mr.role).waiterGui.setPresent(true);
+						rest.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
 						}
-					}
-					BankCustomerRole bcr = new BankCustomerRole(this, this.name);
-					MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
-					bcr.bh = bank.getHost();
-					newRole.setActive(true); //set it active
-					roles.add(newRole); 
-					BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
-					((BankCustomerRole)newRole.role).setGui(bcg);
-					cap.bankPanel.addGui(bcg);
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 200.00); //FIX - Should be fixed at some point to reflect a percent
-					gui.setPresent(false);
-					toDo.remove(e); //remove the event from the queue
-					return;
-				}
-				
-				else if(e.type == EventType.TellerEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Bank Teller")){ 
-							gui.setPresent(false);
-							bank.getTimeCard().msgBackToWork(this, mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							((BankTellerRole)mr.role).gui.setPresent(true);
-							mr.setActive(true);
-							return;
+						catch(InterruptedException ie){
+							ie.printStackTrace();
 						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
 					}
-					BankTellerRole btr = new BankTellerRole(this, this.name);
-					MyRole newRole = new MyRole(btr, "Bank Teller");
-					bank.getHost().addTeller(btr);
-					bank.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					newRole.setActive(true);
-					roles.add(newRole);
-					BankTellerGui btg = new BankTellerGui(btr);
-					btr.setGui(btg);
-					btr.gui.setPresent(true);
-					cap.bankPanel.addGui(btg);
-					gui.setPresent(false);
-					return;
 				}
-				
-				else if(e.type == EventType.HostEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Bank Host")){
-							bank.getTimeCard().msgBackToWork(this, mr.role); 
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							((BankHostRole)mr.role).gui.setPresent(true);
-							gui.setPresent(false);
-							mr.setActive(true);
-							return;
-						}
-					}
-					MyRole newRole = new MyRole(bank.getHost(), "Bank Host");
-					newRole.setActive(true);
-					roles.add(newRole);
-					bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					((BankHostRole)newRole.role).gui.setPresent(true);
-					gui.setPresent(false);
-					return;
+				Restaurant1WaiterRole wRole = new Restaurant1WaiterRole(this.name, this); 
+				MyRole newRole = new MyRole(wRole, "Rest 1 Waiter");
+				newRole.setActive(true);
+				roles.add(newRole);
+				WaiterGui wg = new WaiterGui((Restaurant1WaiterRole)newRole.role, null);
+				wg.isPresent = true;
+				cap.rest1Panel.addGui(wg);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
 				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
 			}
-			
-////////////////////////// MARKET EVENTS /////////////////////////////////////////////////
-			
-			else if(e.location.type == LocationType.Market){
-				Market market = (Market)e.location;
-				
-				if(e.type == EventType.CustomerEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Market Customer")){
-							((MarketCustomerRole)mr.role).msgHello(wallet.getOnHand(), shoppingBag);
-							mr.setActive(true);
-							gui.setPresent(true);
-							((MarketCustomerRole)mr.role).customerGui.setPresent(true);
-							toDo.remove(e);
-							return;
+
+			else if(e.type == EventType.SDWaiterEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 1 SDWaiter")){
+					}
+					else {
+						((Restaurant1SDWaiterRole)mr.role).waiterGui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
 						}
-					}
-					MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
-					MyRole newRole = new MyRole(mcr, "Market Customer");
-					mcr.setCashier(market.getCashier());
-					newRole.setActive(true);
-					roles.add(newRole);
-					MarketCustomerGui mcg = new MarketCustomerGui((MarketCustomerRole)newRole.role);
-					((MarketCustomerRole)newRole.role).setGui(mcg);
-					cap.marketPanel.addGui(mcg);
-					mcg.setPresent(true);
-					((MarketCustomerRole)newRole.role).msgHello(wallet.getOnHand(), shoppingBag);
-					gui.setPresent(false);
-					toDo.remove(e);
-					return;
-				}
-				
-				else if(e.type == EventType.EmployeeEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Market Employee")){
-							market.getTimeCard().msgBackToWork(this, mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							((MarketEmployeeRole)mr.role).employeeGui.setPresent(true);
-							mr.setActive(true);
-							gui.setPresent(false);
-							return;
+						catch(InterruptedException ie){
+							ie.printStackTrace();
 						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
 					}
-					MarketEmployeeRole mer = new MarketEmployeeRole(this, this.name);
-					MyRole newRole = new MyRole(mer, "Market Employee");
-					newRole.setActive(true);
-					roles.add(newRole);
-					
-					//Need to add a gui or not? FIX
-		
-					market.getTimeCard().msgBackToWork(this, newRole.role );
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
 				}
-				
-				else if(e.type == EventType.CashierEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Market Cashier")){
-							market.getTimeCard().msgBackToWork(this, mr.role);
-							try{
-								wait.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							mr.setActive(true);
-							gui.setPresent(false);
-							return;
-						}
-					}
-					MyRole newRole = new MyRole(market.getCashier(), "Market Cashier");
-					newRole.setActive(true);
-					roles.add(newRole);
-					market.getTimeCard().msgBackToWork(this, newRole.role);
-					try{
-						wait.acquire();
-					}
-					catch(InterruptedException ie){
-						ie.printStackTrace();
-					}
-					gui.setPresent(false);
-					return;
+				Restaurant1SDWaiterRole sdRole = new Restaurant1SDWaiterRole(this.name, this);
+				MyRole newRole = new MyRole(sdRole, "Rest 1 SDWaiter");
+				newRole.setActive(true);
+				roles.add(newRole);
+				WaiterGui wg = new WaiterGui((Restaurant1SDWaiterRole)newRole.role, null);
+				wg.isPresent = true;
+				cap.rest1Panel.addGui(wg);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
 				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
 			}
-			
-/////////////////////// HOME EVENTS /////////////////////////////////////////////////////////////////
-			
-			else if(e.location.type == LocationType.Home){
-				atHome = true;
-				if(e.type == EventType.HomeOwnerEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Home Owner")){
-							mr.setActive(true);
-							((HomeOwnerRole)mr.role).homeGui.isPresent = true;
-							((HomeOwnerRole)mr.role).updateVitals(hunger, currentTime);
-							gui.setPresent(false);
-							toDo.remove(e);
-							return;
+
+			else if(e.type == EventType.CookEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 1 Cook")){                                                       
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
 						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						((Restaurant1CookRole)mr.role).cookGui.setPresent(true);
+						gui.setPresent(false);
+						return;
 					}
-					HomeOwnerRole hr = new HomeOwnerRole(this, this.name, homeNumber);
-					MyRole newRole = new MyRole(hr, "Home Owner");
-					newRole.setActive(true);
-					roles.add(newRole);
-					HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
-					hog.setPresent(true);
-					((HomeOwnerRole)newRole.role).setGui(hog);
-					cap.getHouseGui(homeNumber).addGui(hog);
-					((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime);
-					gui.setPresent(false);
-					toDo.remove(e);
-					return;
+				} 
+				MyRole newRole = new MyRole(((Restaurant1CookRole)rest.getCook()), "Rest 1 Cook");//FIX
+				newRole.setActive(true);
+				roles.add(newRole);
+				((Restaurant1CookRole)newRole.role).cookGui.setPresent(true);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
 				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
 			}
-			else if(e.location.type == LocationType.Apartment){
-				atHome = true;
-				if(e.type == EventType.AptTenantEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Apt Tenant")){
-							mr.setActive(true);
-							if(((ApartmentTenantRole)mr.role).aptGui != null)
-								((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
-							((ApartmentTenantRole)mr.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
-							gui.setPresent(false);
-							toDo.remove(e);
-							return;
+
+			else if(e.type == EventType.CashierEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 1 Cashier")){                                                       
+						rest.getTimeCard().msgBackToWork(this, (Restaurant1CashierRole)mr.role);
+						try{
+							wait.acquire();
 						}
-					}
-					ApartmentTenantRole tr = new ApartmentTenantRole(this.name, homeNumber, this);
-					MyRole newRole = new MyRole(tr, "Apt Tenant");
-					newRole.setActive(true);
-					roles.add(newRole);
-					// FIX - Should we create a gui here? Or not?
-					((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
-					gui.setPresent(false);
-					toDo.remove(e);
-				}
-				else if(e.type == EventType.LandlordEvent){
-					for(MyRole mr : roles){
-						if(mr.type.equals("Apt Landlord")){
-							mr.setActive(true);
-							gui.setPresent(false);
-							toDo.remove(e);
-							return;
+						catch(InterruptedException ie){
+							ie.printStackTrace();
 						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
 					}
-					ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, homeNumber, this);
-					MyRole newRole = new MyRole(llr, "Apt Landlord");
-					newRole.setActive(true);
-					roles.add(newRole);
-					gui.setPresent(false);
-					toDo.remove(e);
-					return;
 				}
+				MyRole newRole = new MyRole(((Restaurant1CashierRole)rest.getCashier()), "Rest 1 Cashier");//FIX
+				newRole.setActive(true);
+				roles.add(newRole);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+		}
+////////////////////////////////REST 4 EVENTS//////////////////////////////////////////////////////
+		else if(e.location.type == LocationType.Restaurant4){
+			Restaurant rest = (Restaurant)e.location;
+			if(e.type == EventType.CustomerEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 4 Customer")){
+						((Restaurant4CustomerRole)mr.role).customerGui.setPresent(true);
+						((Restaurant4CustomerRole)mr.role).gotHungry();
+						mr.setActive(true);
+						gui.setPresent(false);
+						toDo.remove(e);
+						return;
+					}
+				}
+				print("Customer not found");
+				Restaurant4CustomerRole cRole = new Restaurant4CustomerRole(this.name, this);
+				MyRole newRole = new MyRole(cRole, "Rest 4 Customer");
+				newRole.setActive(true);
+				roles.add(newRole);
+				Restaurant4CustomerGui cg = new Restaurant4CustomerGui(cRole);
+				cg.isPresent = true;
+				cRole.setGui(cg);
+				cap.rest4Panel.addGui(cg);
+				cRole.setHost(((Restaurant4HostRole)rest.getHost()));
+				cRole.gotHungry();
+				gui.setPresent(false);
+				toDo.remove(e);
+			}
+
+			else if(e.type == EventType.HostEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 4 Host")){          
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				MyRole newRole = new MyRole(((Restaurant4HostRole)rest.getHost()), "Rest 4 Host");
+				newRole.setActive(true);
+				roles.add(newRole);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+
+			else if(e.type == EventType.WaiterEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 4 Waiter")){  
+						((Restaurant4WaiterRole)mr.role).gui.setPresent(true);
+						rest.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				Restaurant4WaiterRole wRole = new Restaurant4WaiterRole(this.name, this); 
+				MyRole newRole = new MyRole(wRole, "Rest 4 Waiter");
+				newRole.setActive(true);
+				roles.add(newRole);
+				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4WaiterRole)newRole.role, 0, 0);
+				wg.isPresent = true;
+				cap.rest4Panel.addGui(wg);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+
+			else if(e.type == EventType.SDWaiterEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 4 SDWaiter")){
+
+					}
+					else {
+						((Restaurant4SDWaiterRole)mr.role).gui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				Restaurant4SDWaiterRole sdRole = new Restaurant4SDWaiterRole(this.name, this);
+				MyRole newRole = new MyRole(sdRole, "Rest 4 SDWaiter");
+				newRole.setActive(true);
+				roles.add(newRole);
+				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4SDWaiterRole)newRole.role, 0, 0);
+				wg.isPresent = true;
+				cap.rest4Panel.addGui(wg);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+
+			else if(e.type == EventType.CookEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 4 Cook")){                                                       
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						((Restaurant4CookRole)mr.role).gui.setPresent(true);
+						gui.setPresent(false);
+						return;
+					}
+				} 
+				MyRole newRole = new MyRole(((Restaurant4CookRole)rest.getCook()), "Rest 4 Cook");//FIX
+				newRole.setActive(true);
+				roles.add(newRole);
+				((Restaurant4CookRole)newRole.role).gui.setPresent(true);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+
+			else if(e.type == EventType.CashierEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 4 Cashier")){                                                       
+						rest.getTimeCard().msgBackToWork(this, (Restaurant4CashierRole)mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				MyRole newRole = new MyRole(((Restaurant4CashierRole)rest.getCashier()), "Rest 4 Cashier");//FIX
+				newRole.setActive(true);
+				roles.add(newRole);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+		}
+		////////////////////////// BANK EVENTS /////////////////////////////////////////////////
+
+		if(e.location.type == LocationType.Bank){ //if our event happens at a bank
+			Bank bank = (Bank)e.location;
+			if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
+				for(MyRole mr : roles){
+					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
+						if(e.directive.equals("deposit"))
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+						else if(e.directive.equals("withdraw"))
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
+						mr.setActive(true);
+						gui.setPresent(false);
+						((BankCustomerRole)mr.role).gui.setPresent(true);
+						toDo.remove(e);
+						return;
+					}
+				}
+				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
+				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
+				bcr.bh = bank.getHost();
+				newRole.setActive(true); //set it active
+				roles.add(newRole); 
+				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
+				((BankCustomerRole)newRole.role).setGui(bcg);
+				cap.bankPanel.addGui(bcg);
+				if(e.directive.equals("deposit"))
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+				else if(e.directive.equals("withdraw"))
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
+				gui.setPresent(false);
+				toDo.remove(e); //remove the event from the queue
+				return;
+			}
+
+			else if(e.type == EventType.TellerEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Bank Teller")){ 
+						gui.setPresent(false);
+						bank.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						((BankTellerRole)mr.role).gui.setPresent(true);
+						mr.setActive(true);
+						return;
+					}
+				}
+				BankTellerRole btr = new BankTellerRole(this, this.name);
+				MyRole newRole = new MyRole(btr, "Bank Teller");
+				bank.getHost().addTeller(btr);
+				bank.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				newRole.setActive(true);
+				roles.add(newRole);
+				BankTellerGui btg = new BankTellerGui(btr);
+				btr.setGui(btg);
+				btr.gui.setPresent(true);
+				cap.bankPanel.addGui(btg);
+				gui.setPresent(false);
+				return;
+			}
+
+			else if(e.type == EventType.HostEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Bank Host")){
+						print("Messaging the Time Card!");
+						bank.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						((BankHostRole)mr.role).gui.setPresent(true);
+						gui.setPresent(false);
+						mr.setActive(true);
+						return;
+					}
+				}
+				MyRole newRole = new MyRole(bank.getHost(), "Bank Host");
+				newRole.setActive(true);
+				roles.add(newRole);
+				bank.getTimeCard().msgBackToWork(this, (BankHostRole)newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				((BankHostRole)newRole.role).gui.setPresent(true);
+				gui.setPresent(false);
+				return;
+			}
+		}
+
+		////////////////////////// MARKET EVENTS /////////////////////////////////////////////////
+
+		else if(e.location.type == LocationType.Market){
+			Market market = (Market)e.location;
+
+			if(e.type == EventType.CustomerEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Market Customer")){
+						((MarketCustomerRole)mr.role).msgHello(wallet.getOnHand(), shoppingBag);
+						mr.setActive(true);
+						gui.setPresent(true);
+						((MarketCustomerRole)mr.role).customerGui.setPresent(true);
+						toDo.remove(e);
+						return;
+					}
+				}
+				MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
+				MyRole newRole = new MyRole(mcr, "Market Customer");
+				mcr.setCashier(market.getCashier());
+				newRole.setActive(true);
+				roles.add(newRole);
+				MarketCustomerGui mcg = new MarketCustomerGui((MarketCustomerRole)newRole.role);
+				((MarketCustomerRole)newRole.role).setGui(mcg);
+				cap.marketPanel.addGui(mcg);
+				mcg.setPresent(true);
+				((MarketCustomerRole)newRole.role).msgHello(wallet.getOnHand(), shoppingBag);
+				gui.setPresent(false);
+				toDo.remove(e);
+				return;
+			}
+
+			else if(e.type == EventType.EmployeeEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Market Employee")){
+						market.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						((MarketEmployeeRole)mr.role).employeeGui.setPresent(true);
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				MarketEmployeeRole mer = new MarketEmployeeRole(this, this.name);
+				MyRole newRole = new MyRole(mer, "Market Employee");
+				newRole.setActive(true);
+				roles.add(newRole);
+
+				//Need to add a gui or not? FIX
+
+				market.getTimeCard().msgBackToWork(this, newRole.role );
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+
+			else if(e.type == EventType.CashierEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Market Cashier")){
+						market.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				MyRole newRole = new MyRole(market.getCashier(), "Market Cashier");
+				newRole.setActive(true);
+				roles.add(newRole);
+				market.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+		}
+
+		/////////////////////// HOME EVENTS /////////////////////////////////////////////////////////////////
+
+		else if(e.location.type == LocationType.Home){
+			atHome = true;
+			if(e.type == EventType.HomeOwnerEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Home Owner")){
+						mr.setActive(true);
+						((HomeOwnerRole)mr.role).homeGui.isPresent = true;
+						((HomeOwnerRole)mr.role).updateVitals(hunger, currentTime);
+						gui.setPresent(false);
+						toDo.remove(e);
+						return;
+					}
+				}
+				HomeOwnerRole hr = new HomeOwnerRole(this, this.name, homeNumber);
+				MyRole newRole = new MyRole(hr, "Home Owner");
+				newRole.setActive(true);
+				roles.add(newRole);
+				HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
+				hog.setPresent(true);
+				((HomeOwnerRole)newRole.role).setGui(hog);
+				cap.getHouseGui(homeNumber).addGui(hog);
+				((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime);
+				gui.setPresent(false);
+				toDo.remove(e);
+				return;
+			}
+		}
+		else if(e.location.type == LocationType.Apartment){
+			atHome = true;
+			if(e.type == EventType.AptTenantEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Apt Tenant")){
+						mr.setActive(true);
+						if(((ApartmentTenantRole)mr.role).aptGui != null)
+							((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
+						((ApartmentTenantRole)mr.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
+						gui.setPresent(false);
+						toDo.remove(e);
+						return;
+					}
+				}
+				ApartmentTenantRole tr = new ApartmentTenantRole(this.name, homeNumber, this);
+				MyRole newRole = new MyRole(tr, "Apt Tenant");
+				newRole.setActive(true);
+				roles.add(newRole);
+				/// FIX - Should we create a gui here? Or not?
+				((ApartmentTenantRole)newRole.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level	
+				gui.setPresent(false);
+				toDo.remove(e);
+			}
+			else if(e.type == EventType.LandlordEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Apt Landlord")){
+						mr.setActive(true);
+						gui.setPresent(false);
+						toDo.remove(e);
+						return;
+					}
+				}
+				ApartmentLandlordRole llr = new ApartmentLandlordRole(this.name, homeNumber, this);
+				MyRole newRole = new MyRole(llr, "Apt Landlord");
+				newRole.setActive(true);
+				roles.add(newRole);
+				gui.setPresent(false);
+				toDo.remove(e);
+				return;
+			}
 		}
 	}
 
@@ -822,7 +1012,7 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
-		if(!addedAnEvent && !containsEvent("Go home")){
+		if(!addedAnEvent && !containsEvent("Go home") && !cityMap.ateOutLast){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
@@ -833,66 +1023,62 @@ public class PersonAgent extends Agent implements Person{
 			toDo.add(goHome);
 			addedAnEvent = true;
 		}
+		else{
+			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
+			addedAnEvent = true;	
+		}
 		return addedAnEvent;
 		//buy a car
 		//rob the bank
 		//etc
 	}
-	
+
 	private void goToLocation(Location loc){
 		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
-//			//make a PassengerRole and start it
+			//			//make a PassengerRole and start it
 			PassengerRole pRole = new PassengerRole(this.name, this);
-//			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
-				MyRole newRole = new MyRole(pRole, "Passenger");
-				newRole.setActive(true);
-				roles.add(newRole);
-				if(!testMode){
-					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
-					((PassengerRole)newRole.role).setGui(pg);
-					cap.addGui(pg);
-				}
-				((PassengerRole)newRole.role).setCityMap(cityMap);
-				((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
-				//lizhi added this testing:
-				gui.xDestination = loc.position.getX();
-				gui.yDestination = loc.position.getY();
-
-				((PassengerRole)newRole.role).gotoBus();
-				gui.setPresent(false);
-				
-				while(newRole.isActive){
-					while(newRole.role.pickAndExecuteAnAction()){}
-					try{
-						stateChange.acquire();
-					}
-					catch(InterruptedException e){
-						e.printStackTrace();
-					}
-				}
-//			}
-//			else{ //if we already have a PassengerRole, use it
-//				((PassengerRole)getRoleOfType(pRole).role).setDestination(loc.name);
-//				((PassengerRole)getRoleOfType(pRole).role).gotoBus();
-//				getRoleOfType(pRole).setActive(true);
-//				gui.setPresent(false);
-//			}
-		}
-//		else{
-			print("Going to location");
-			DoGoTo(loc); 
+			//			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
+			MyRole newRole = new MyRole(pRole, "Passenger");
+			newRole.setActive(true);
+			roles.add(newRole);
 			if(!testMode){
-				going.drainPermits();
-				try {
-					going.acquire();
-				} 
-				catch (InterruptedException e1) {
-					e1.printStackTrace();
+				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
+				((PassengerRole)newRole.role).setGui(pg);
+				cap.addGui(pg);
+			}
+			((PassengerRole)newRole.role).setCityMap(cityMap);
+			((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
+			//lizhi added this testing:
+			gui.xDestination = loc.position.getX();
+			gui.yDestination = loc.position.getY();
+
+			((PassengerRole)newRole.role).gotoBus();
+			gui.setPresent(false);
+
+			while(newRole.isActive){
+				while(newRole.role.pickAndExecuteAnAction()){}
+				try{
+					stateChange.acquire();
+				}
+				catch(InterruptedException e){
+					e.printStackTrace();
 				}
 			}
-//		}
+		}
+		print("Going to location");
+		DoGoTo(loc); 
+		if(!testMode){
+			going.drainPermits();
+			try {
+				going.acquire();
+			} 
+			catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+		print("Arrived at Destination");
+		//		}
 	}
-
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
 
@@ -914,13 +1100,11 @@ public class PersonAgent extends Agent implements Person{
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
-			print("My Location: "+currentLocation.getX()+ " , "+ currentLocation.getY()+ "   Position x: "+ p.getX() +" y: "+p.getY());
-			//car.setatPosition(p.getX(), p.getY());
-
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print("My Location: "+loc.position.getX()+ " , "+ loc.position.getY()+ "   Position x: "+ l.getX() +" y: "+l.getY());
+			print ("origin position "+p.getX() + " " + p.getY());
+			print("goingto position " + l.getX() + " " + l.getY());
+			print("gotoposition from person");
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
-			// car.gotoPosition(500,250);
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}
@@ -1013,34 +1197,37 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 400.00){
+		if (this.wallet.getOnHand() >= 40000000.00){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
 	}
-	
+
 	public Wallet getWallet() {
 		return wallet;
 	}
-	
-	 public MyRole getActiveRole(){
-         for(MyRole role : roles){
-             if(role.isActive){
-            	 return role;
-             }
-         }
-         return null;
-	 }
- 
-	 public String getActiveRoleName(){
-		 String none = "No Active Role";
-         for(MyRole role : roles){
-             if(role.isActive){
-                 return role.role.getRoleName();
-             }
-         }
-         return none;
-	 }
+
+	public MyRole getActiveRole(){
+		for(MyRole role : roles){
+			if(role.isActive){
+				return role;
+			}
+		}
+		return null;
+	}
+
+	public String toString(){
+		return name;
+	}
+	public String getActiveRoleName(){
+		String none = "No Active Role";
+		for(MyRole role : roles){
+			if(role.isActive){
+				return role.role.getRoleName();
+			}
+		}
+		return none;
+	}
 
 	public void setHungerLevel(int i) {
 		hunger = i;		
