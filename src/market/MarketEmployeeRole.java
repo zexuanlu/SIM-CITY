@@ -147,7 +147,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		rest.truck.gotoPosition(rest.cook, rest.order, CityMap.get(rest.restNum).x, CityMap.get(rest.restNum).y);
+		rest.truck.gotoPosition(rest.cook, rest.order, CityMap.get(rest.restNum).x, CityMap.get(rest.restNum).y, rest.restNum);
 		myrest.remove(rest);
 	}
 
