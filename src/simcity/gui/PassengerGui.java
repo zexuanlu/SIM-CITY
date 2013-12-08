@@ -37,25 +37,25 @@ public class PassengerGui implements Gui {
     }
     
     public void updatePosition() {
-//    	if (xPos < xDestination && (yPos == 170 || yPos == 280))
-//            xPos++;
-//        else if (xPos > xDestination && (yPos == 170 || yPos == 280))
-//            xPos--;
-//
-//        if (yPos < yDestination && (xPos == 330 || xPos == 440))
-//            yPos++;
-//        else if (yPos > yDestination && (xPos == 330 || xPos == 440))
-//            yPos--;
-    	
-    	if (xPos < xDestination)
-			xPos++;
-		else if (xPos > xDestination)
-			xPos--;
+    	if (xPos < xDestination && (yPos == 170 || yPos == 280))
+            xPos++;
+        else if (xPos > xDestination && (yPos == 170 || yPos == 280))
+            xPos--;
 
-		if (yPos < yDestination)
-			yPos++;
-		else if (yPos > yDestination)
-			yPos--;
+        if (yPos < yDestination && (xPos == 330 || xPos == 440))
+            yPos++;
+        else if (yPos > yDestination && (xPos == 330 || xPos == 440))
+            yPos--;
+//    	
+//    	if (xPos < xDestination)
+//			xPos++;
+//		else if (xPos > xDestination)
+//			xPos--;
+//
+//		if (yPos < yDestination)
+//			yPos++;
+//		else if (yPos > yDestination)
+//			yPos--;
     	
         
         if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
