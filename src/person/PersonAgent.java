@@ -166,7 +166,14 @@ public class PersonAgent extends Agent implements Person{
 	public CityMap getMap() {
 		return cityMap;
 	}
-
+	public boolean active(){
+		for (MyRole r : roles){
+			if(r.isActive){
+				return true;
+			}
+		}
+		return false;
+	}
 	public void addRole(MyRole r){ roles.add(r); }
 
 	public void addRole(Role r, String type){

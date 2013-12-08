@@ -42,10 +42,10 @@ public class CityMapTest extends TestCase{
 		super.setUp();	
 		locs = new ArrayList<Location>();
 		bank = new Bank("Bank", new BankHostRole(person, "Host"), new Position(10, 10), LocationType.Bank);
-		cr = new Restaurant("Chinese", new Restaurant1HostRole("ChineseHost", person), new Position(20, 20), LocationType.Restaurant);
+		cr = new Restaurant("Chinese", new Restaurant1HostRole("ChineseHost", person), new Position(20, 20), LocationType.Restaurant1);
 		market = new Market("MarketA", new Position(30, 30), LocationType.Market);
-		ir = new Restaurant("Italian", new Restaurant1HostRole("ItalianHost", person), new Position(40, 40), LocationType.Restaurant);
-		fr = new Restaurant("Fancy", new Restaurant1HostRole("FancyHost", person), new Position(40, 55), LocationType.Restaurant);
+		ir = new Restaurant("Italian", new Restaurant1HostRole("ItalianHost", person), new Position(40, 40), LocationType.Restaurant1);
+		fr = new Restaurant("Fancy", new Restaurant1HostRole("FancyHost", person), new Position(40, 55), LocationType.Restaurant1);
 
 		locs.add(bank);
 		locs.add(cr);
@@ -64,16 +64,16 @@ public class CityMapTest extends TestCase{
 				person.cityMap.chooseByName("Chinese").getName() == "Chinese");
 		//the method call should return...
 		assertTrue("Calling chooseByLocation for a restaurant from the origin (0, 0) should return chinese, it does not instead: "
-				+ person.cityMap.chooseByLocation(0,0,100, LocationType.Restaurant).getName(), 
-				person.cityMap.chooseByLocation(0,0,100, LocationType.Restaurant).getName() == "Chinese");
+				+ person.cityMap.chooseByLocation(0,0,100, LocationType.Restaurant1).getName(), 
+				person.cityMap.chooseByLocation(0,0,100, LocationType.Restaurant1).getName() == "Chinese");
 		assertTrue("Calling chooseByLocation for a restaurant from (30, 35) should return italian it does not", 
-				person.cityMap.chooseByLocation(30,35,100, LocationType.Restaurant).getName() == "Italian");
+				person.cityMap.chooseByLocation(30,35,100, LocationType.Restaurant1).getName() == "Italian");
 		assertTrue("Calling chooseByLocation for any location from (0, 60) w/ search radius of 1 should return nothing, but it did", 
-				person.cityMap.chooseByLocation(0,60,1, LocationType.Restaurant) == null);
+				person.cityMap.chooseByLocation(0,60,1, LocationType.Restaurant1) == null);
 		assertTrue("Calling chooseByType for bank should return bank, it does not", 
 				person.cityMap.chooseByType(LocationType.Bank).getName() == "Bank");
 		assertTrue("Calling chooseByType for a restaurant should return one of the three restaurants at random, it does not", 
-				person.cityMap.chooseByType(LocationType.Restaurant).getType() == LocationType.Restaurant);
+				person.cityMap.chooseByType(LocationType.Restaurant1).getType() == LocationType.Restaurant1);
 		assertTrue("Calling chooseByType for a market should return marketA, it does not", 
 				person.cityMap.chooseByType(LocationType.Market).getName() == "MarketA");
 	}

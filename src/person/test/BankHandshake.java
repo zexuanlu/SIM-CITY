@@ -40,11 +40,11 @@ public class BankHandshake extends TestCase{
 		super.setUp();	
 		host = new MockBankHost("Gil");
 		bank = new Bank("Bank", host, p, LocationType.Bank);
-		goToBank = new SimEvent(bank, 1, 9, EventType.CustomerEvent);
+		goToBank = new SimEvent(bank, 1, EventType.CustomerEvent);
 		locs.add(bank);
 		CityMap cm = new CityMap(locs);
 		person = new PersonAgent("Grant", cm, 0);
-		PersonGui pgui = new PersonGui(person);
+		PersonGui pgui = new PersonGui(person, null);
 		person.gui = pgui;
 		person.testMode = true;
 	}
