@@ -149,14 +149,14 @@ public class SimCityGUI extends JFrame {
 	public BusStopAgent busstop7 = new BusStopAgent("Stop7");
 	public BusStopAgent busstop8 = new BusStopAgent("Stop8");
 
-	public BusStopGui bs1gui = new BusStopGui(busstop1, 30, 190);	
-	public BusStopGui bs2gui = new BusStopGui(busstop2, 700, 190);
-	public BusStopGui bs3gui = new BusStopGui(busstop3, 700, 260);
-	public BusStopGui bs4gui = new BusStopGui(busstop4, 30, 260);
-	public BusStopGui bs5gui = new BusStopGui(busstop5, 350, 30);
-	public BusStopGui bs6gui = new BusStopGui(busstop6, 420, 30);
-	public BusStopGui bs7gui = new BusStopGui(busstop7, 420, 420);
-	public BusStopGui bs8gui = new BusStopGui(busstop8, 350, 420);	
+	public BusStopGui bs1gui = new BusStopGui(busstop1, 30, 170);	
+	public BusStopGui bs2gui = new BusStopGui(busstop2, 700, 170);
+	public BusStopGui bs3gui = new BusStopGui(busstop3, 700, 280);
+	public BusStopGui bs4gui = new BusStopGui(busstop4, 30, 280);
+	public BusStopGui bs5gui = new BusStopGui(busstop5, 330, 30);
+	public BusStopGui bs6gui = new BusStopGui(busstop6, 440, 30);
+	public BusStopGui bs7gui = new BusStopGui(busstop7, 440, 420);
+	public BusStopGui bs8gui = new BusStopGui(busstop8, 330, 420);	
 	public MarketTruckAgent truck;
 
 	public SimCityGUI() {
@@ -178,12 +178,12 @@ public class SimCityGUI extends JFrame {
 		// First quadrant locations
 
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-				new Position(105, 190), LocationType.Bank);
+				new Position(60, 170), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-				new Position(175, 190), LocationType.Market);
-		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(245, 190), LocationType.Restaurant1);
-		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(315, 190), LocationType.Restaurant2);
-		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(350, 85), LocationType.Restaurant3);
+				new Position(130, 170), LocationType.Market);
+		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
+		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
+		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
 		
 		// Second quadrant locations
 		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
@@ -191,61 +191,61 @@ public class SimCityGUI extends JFrame {
 		Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
 		                new Position(430, 130), LocationType.Market);
 		// FIX HOST ROLES
-		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
-		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(570, 130), LocationType.Restaurant2);
-		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(430, 60), LocationType.Restaurant3);		
+		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(520, 170), LocationType.Restaurant1);
+		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(590, 170), LocationType.Restaurant2);
+		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(440, 40), LocationType.Restaurant3);		
 		
 		// Third quadrant locations
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
-				new Position(455, 260), 1, LocationType.Home);
+				new Position(440, 290), 1, LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
-				new Position(420, 375), 2, LocationType.Home);
+				new Position(440, 370), 2, LocationType.Home);
 		Home home3 = new Home("Home 3", homeOwnerRole3, 
-				new Position(525, 260), 3, LocationType.Home);
+				new Position(520, 280), 3, LocationType.Home);
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
-				new Position(595, 260), 4, LocationType.Home);
+				new Position(590, 280), 4, LocationType.Home);
 		// FIX
 		Home home5 = new Home("Home 5", homeOwnerRole4, 
-				new Position(665, 260), 4, LocationType.Home);
+				new Position(660, 280), 4, LocationType.Home);
 		
 		// Fourth quadrant locations
 		// First apartment complex
 		Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
-				new Position(70, 260), 5, LocationType.Apartment);
+				new Position(20, 280), 5, LocationType.Apartment);
 		Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
-				new Position(70, 260), 6, LocationType.Apartment);
+				new Position(20, 280), 6, LocationType.Apartment);
 		Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
-				new Position(70, 260), 7, LocationType.Apartment);
+				new Position(20, 280), 7, LocationType.Apartment);
 		Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
-				new Position(70, 260), 8, LocationType.Apartment);
+				new Position(20, 280), 8, LocationType.Apartment);
 		Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
-				new Position(70, 260), 9, LocationType.Apartment);
+				new Position(20, 280), 9, LocationType.Apartment);
 		Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
-				new Position(70, 260), 10, LocationType.Apartment);
+				new Position(20, 280), 10, LocationType.Apartment);
 		Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
-				new Position(70, 260), 11, LocationType.Apartment);
+				new Position(20, 280), 11, LocationType.Apartment);
 		Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
-				new Position(70, 260), 12, LocationType.Apartment);
+				new Position(20, 280), 12, LocationType.Apartment);
 		Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
-				new Position(70, 260), 13, LocationType.Apartment);
+				new Position(20, 280), 13, LocationType.Apartment);
 		Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
-				new Position(70, 260), 14, LocationType.Apartment);
+				new Position(20, 280), 14, LocationType.Apartment);
 		Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
-				new Position(70, 260), 15, LocationType.Apartment);
+				new Position(20, 280), 15, LocationType.Apartment);
 		Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
-				new Position(70, 260), 16, LocationType.Apartment);
+				new Position(20, 280), 16, LocationType.Apartment);
 		Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
-				new Position(70, 260), 17, LocationType.Apartment);
+				new Position(20, 280), 17, LocationType.Apartment);
 		Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
-				new Position(70, 260), 18, LocationType.Apartment);
+				new Position(20, 280), 18, LocationType.Apartment);
 		Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
-				new Position(70, 260), 19, LocationType.Apartment);
+				new Position(20, 280), 19, LocationType.Apartment);
 		Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
-				new Position(70, 260), 20, LocationType.Apartment);
+				new Position(20, 280), 20, LocationType.Apartment);
 		
 		// Second apartment complex
 		Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
-				new Position(150, 260), 21, LocationType.Apartment);
+				new Position(100, 280), 21, LocationType.Apartment);
 		
 		
 		rest1.setCashier(cashier1);
@@ -309,39 +309,54 @@ public class SimCityGUI extends JFrame {
 				grid[i][j]=new Semaphore(1,true);
 		//build the animation areas
 		try {
-			for (int y=0;y<30;y++){  //Create dead position
-				grid[36][23].release();
+//			for (int y=0;y<30;y++){  //Create dead position
+//				grid[36][23].release();
+//			}
+//			for (int y = 0;y<30;y++){
+//				grid[35][10].release();
+//			}
+//			for (int y = 0;y<30;y++){
+//				grid[35][12].release();
+//			}
+//			for (int y = 0; y<30;y++){
+//				grid[19][13].release();
+//			}
+//			for (int y = 0; y<30;y++){
+//				grid[19][17].release();
+//			}
+//			
+//			for (int y = 0; y<30;y++){
+//				grid[4][11].release();
+//			}
+			for (int x=0;x<17;x++){
+				for (int y = 0; y<9; y++){
+					grid[x][y].acquire();
+				}
+				
+				for (int y = 14; y<gridY;y++){
+					grid[x][y].acquire();
+				}
 			}
 			
-			for (int x=0;x<18;x++){
-				for (int y = 0; y<10; y++){
+			for (int x=22; x<gridX;x++){
+				for (int y=0;y<9;y++){
+					grid[x][y].acquire();
+				}
+				for (int y=14;y<gridY;y++){
 					grid[x][y].acquire();
 				}
 				
-				for (int y = 13; y<gridY;y++){
-					grid[x][y].acquire();
-				}
-			}
-			
-			for (int x=21; x<gridX;x++){
-				for (int y=0;y<10;y++){
-					grid[x][y].acquire();
-				}
-				for (int y=13;y<gridY;y++){
-					grid[x][y].acquire();
-				}
-				
-				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
-					for (int y = 10; y<13; y++){
-						grid[0][y].release(); 
-					}
-				}				
-				
-				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
-					for (int y = 10; y<13; y++){
-						grid[1][y].release(); 
-					}
-				}		
+//				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
+//					for (int y = 9; y<14; y++){
+//						grid[0][y].release(); 
+//					}
+//				}				
+//				
+//				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
+//					for (int y = 9; y<14; y++){
+//						grid[1][y].release(); 
+					//}
+				//}		
 			}
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
@@ -502,10 +517,10 @@ public class SimCityGUI extends JFrame {
 
 //		for (int i=1; i<6; i++){
 		int x = 100; 
-		int y = 100; 
+		int y = 330; 
 		for (int i=0; i<22; i++){
 			aStarTraversal = new AStarTraversal(grid);
-			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
+			PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
 			PersonGui pgui = new PersonGui(p, x, y);
 			x = x+50; 
 			p.setGui(pgui);
@@ -523,7 +538,7 @@ public class SimCityGUI extends JFrame {
 			//p.setcitygui(this);
 		}
 		
-		for (int i=5;i<22;i++){
+		for (int i=4;i<22;i++){
 			people.get(i).msgAddMoney(-200);
 		}
 		

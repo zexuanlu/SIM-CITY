@@ -1,33 +1,38 @@
 package market;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import person.Restaurant;
 import market.gui.*;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketTruck;
-import simcity.CarAgent.CarState;
-import simcity.astar.AStarNode;
-import simcity.astar.AStarTraversal;
-import simcity.astar.Position;
 import agent.Agent; 
-import simcity.gui.CarGui; 
 import utilities.restaurant.RestaurantCook;
-import restaurant1.Restaurant1CookRole;
 
 
 public class MarketTruckAgent extends Agent implements MarketTruck{
 	private MarketCustomerRole agent = null;
 	private int xDestination = 140, yDestination = 240;
+	private int restnum;
 	RestaurantCook cook;
 	List<Food> foodlist;
 	MarketCashier cashier;
 	MarketTruckGui myGui;
 	private Semaphore atDes = new Semaphore(0,true);
+	private List<myRestaurant> restaurant = new ArrayList<myRestaurant>();
 	
 	public enum state {collecting, sending, readytoback, back};
 	public state s;
 
-
+	private class myRestaurant{
+		Restaurant r;
+		int number;
+		
+		myRestaurant(Restaurant r, int number){
+			this.r = r;
+			this.number = number;
+		}
+	}
 	
 	public void setCashier(MarketCashier cashier){
 		this.cashier = cashier;
@@ -39,11 +44,16 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 
 	
-	public void gotoPosition(RestaurantCook c, List<Food> food, int dx, int dy){
+	public void setRestaurant(Restaurant rest, int number){
+		restaurant.add(new myRestaurant(rest,number));
+	}
+	
+	public void gotoPosition(RestaurantCook c, List<Food> food, int dx, int dy, int restaurantnum){
 		
 	
 		this.cook = c;
 		foodlist = food;
+		restnum = restaurantnum;
 		s= state.collecting;
 		stateChanged();	
 	}
@@ -81,7 +91,26 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	cook.msgHereisYourFood(this, foodlist);
+    	for(myRestaurant rest: restaurant){
+    		if(rest.number == restnum){
+    			if(rest.r.isClosed()){
+    				myGui.GoBack();
+    		      	try {
+    	    			atDes.acquire();
+    	    		} catch (InterruptedException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    				cashier.msgDevliveryFail(this, cook, foodlist, rest.r, rest.number);
+    				return;
+    			}
+    			else{
+    		    	cook.msgHereisYourFood(this, foodlist);
+    		    	return;
+    			}
+    		}
+    	}
+
     }
     	
     public void Goback(){

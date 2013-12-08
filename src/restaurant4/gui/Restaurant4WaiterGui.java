@@ -21,12 +21,13 @@ public class Restaurant4WaiterGui implements Gui {
     private boolean atDestination = true;
 	private Map<String, Position> locations = new HashMap<String, Position>();
     private String choice;
-
+    public boolean isPresent;
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
     public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, int x, int y) {
-        this.agent = agent;
+        this.agent = agent;;
+        this.isPresent = false;
         locations.put("Home", new Position(x, y));
         locations.put("Cashier", new Position(150, -20));
         locations.put("Host", new Position(-20, -20));
@@ -77,7 +78,7 @@ public class Restaurant4WaiterGui implements Gui {
     }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
     public void carryFood(String food){
@@ -113,7 +114,8 @@ public class Restaurant4WaiterGui implements Gui {
     		agent.msgWantToBreak();
     	}
     }
-
+    public void setPresent(boolean present){ isPresent = present; }
+    
 	public void GoToLocation(String string) {
 		Position p = locations.get(string);
 		xDestination = p.getX();

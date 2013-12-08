@@ -17,7 +17,7 @@ public class CarGui implements Gui {
         int deadpositionX = 720;
         int deadpositionY = 460;
         public boolean isPresent;
-        
+        boolean collided = false; 
         List<Dimension> moves = new ArrayList<Dimension>();
         boolean NorthSouth;
         boolean EastWest;
@@ -42,9 +42,16 @@ public class CarGui implements Gui {
         
         
         public void draw(Graphics2D g) {
-                
+        	
+
+            g.setColor(Color.RED);
+
+        	if (collided ){
+        		g.setColor(Color.BLACK);
+        	}
+        	
+            
                 if (!deadpos){
-                        g.setColor(Color.RED);
                         if (EastWest){
                                 g.fillRect(xPos, yPos, 20, 20);
                         }
@@ -57,6 +64,12 @@ public class CarGui implements Gui {
         public boolean isPresent() {
         return true;
     }
+        
+        public void Collide(){
+        	xDestination = xPos; 
+        	yDestination = yPos; 
+        	collided = true; 
+        }
     
         
     public void updatePosition() {
