@@ -520,7 +520,7 @@ public class SimCityGUI extends JFrame {
 		int y = 330; 
 		for (int i=0; i<22; i++){
 			aStarTraversal = new AStarTraversal(grid);
-			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
+			PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
 			PersonGui pgui = new PersonGui(p, x, y);
 			x = x+50; 
 			p.setGui(pgui);
