@@ -156,5 +156,10 @@ public class PersonMock extends Mock implements Person {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void msgBanished() {
+		log.add(new LoggedEvent("Received msgBanished from BankCustomer"));
+		
+	}
 
 }

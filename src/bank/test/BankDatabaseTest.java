@@ -56,6 +56,7 @@ public class BankDatabaseTest extends TestCase {
 		
 		bd.addAccount(bc, 100.00, 123);
 		assertEquals("Bank Database should have 1 account in it. It doesn't.", bd.accounts.size(), 1);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000100.0);
 		
 		bd.msgDepositMoney(bc, 50.00, 123, bt);
 		assertEquals("Bank Database should have 1 request in it. It doesn't.", bd.requests.size(),1);
@@ -72,6 +73,7 @@ public class BankDatabaseTest extends TestCase {
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgDepositDone"));
 		assertEquals("Bank Database should have 0 requests in it. It doesn't.", bd.requests.size(), 0);
 		assertEquals("Bank Database should have 1 account in it. It doesn't.", bd.accounts.size(), 1);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000150.0);
 		
 		assertFalse("The scheduler should return false. It didn't", bd.pickAndExecuteAnAction());
 	}
@@ -82,6 +84,7 @@ public class BankDatabaseTest extends TestCase {
 		
 		bd.addAccount(bc, 100.00, 123);
 		assertEquals("Bank Database should have 1 account in it. It doesn't.", bd.accounts.size(), 1);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000100.0);
 		
 		bd.msgWithdrawMoney(bc, 50.00, 123, bt);
 		assertEquals("Bank Database should have 1 request in it. It doesn't.", bd.requests.size(),1);
@@ -97,6 +100,7 @@ public class BankDatabaseTest extends TestCase {
 		assertTrue("Bank Teller should have logged \"Received msgWithdrawDone\" but didn't. His log reads instead: " 
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgWithdrawDone"));
 		assertEquals("Bank Database should have 0 requests in it. It doesn't.", bd.requests.size(), 0);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000050.0);
 	
 		assertFalse("The scheduler should return false. It didn't", bd.pickAndExecuteAnAction());
 	}
@@ -107,6 +111,7 @@ public class BankDatabaseTest extends TestCase {
 		
 		bd.addAccount(bc, 100.00, 123);
 		assertEquals("Bank Database should have 1 account in it. It doesn't.", bd.accounts.size(), 1);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000100.0);
 		
 		bd.msgLoanPlease(bc, 50.00, 123, bt);
 		assertEquals("Bank Database should have 1 request in it. It doesn't.", bd.requests.size(),1);
@@ -122,6 +127,7 @@ public class BankDatabaseTest extends TestCase {
 		assertTrue("Bank Teller should have logged \"Received msgLoanGranted\" but didn't. His log reads instead: " 
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLoanGranted"));
 		assertEquals("Bank Database should have 0 requests in it. It doesn't.", bd.requests.size(), 0);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000050.0);
 	
 		assertFalse("The scheduler should return false. It didn't", bd.pickAndExecuteAnAction());
 	}
@@ -132,6 +138,7 @@ public class BankDatabaseTest extends TestCase {
 		
 		bd.addAccount(bc, 100.00, 123);
 		assertEquals("Bank Database should have 1 account in it. It doesn't.", bd.accounts.size(), 1);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000100.0);
 		
 		bd.msgLoanPlease(bc, 500.00, 123, bt);
 		assertEquals("Bank Database should have 1 request in it. It doesn't.", bd.requests.size(),1);
@@ -147,8 +154,37 @@ public class BankDatabaseTest extends TestCase {
 		assertTrue("Bank Teller should have logged \"Received msgLoanFailed\" but didn't. His log reads instead: " 
 				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgLoanFailed"));
 		assertEquals("Bank Database should have 0 requests in it. It doesn't.", bd.requests.size(), 0);
+		assertEquals("The total money should not have changed. It didn't", bd.totalMoney, 1000100.0);
 	
 		assertFalse("The scheduler should return false. It didn't", bd.pickAndExecuteAnAction());
+	}
+	
+	public void testRobbery(){
+		assertEquals("Bank Database should have 0 accounts in it. It doesn't.", bd.accounts.size(), 0);
+		assertEquals("Bank Database should have 0 requests in it. It doesn't.", bd.requests.size(), 0);
+		
+		bd.addAccount(bc, 100.00, 123);
+		assertEquals("Bank Database should have 1 account in it. It doesn't.", bd.accounts.size(), 1);
+		assertEquals("The total money should have increased accordingly. It didn't", bd.totalMoney, 1000100.0);
+		
+		bd.msgGiveAllMoney(bt, 10000.00);
+		assertEquals("Bank Database should have 1 request in it. It doesn't.", bd.requests.size(),1);
+		assertTrue("Bank Database should have logged \"Received msgGiveAllMoney\" but didn't. His log reads instead: " 
+				+ bd.log.getLastLoggedEvent().toString(), bd.log.containsString("Received msgGiveAllMoney"));
+		assertEquals("The type of the request should be robbery. It isn't.", bd.requests.get(0).type, "robbery");
+		assertEquals("The amount of the request should be 10000.0. It isn't.", bd.requests.get(0).amount, 10000.0);
+		assertEquals("The accountNumber of the request should be null. It isn't.", bd.requests.get(0).a, null);
+		assertEquals("The bank teller of the request should be right. It isn't.", bd.requests.get(0).bt, bt);
+		assertEquals("The bank customer of the request should be null. It isn't.", bd.requests.get(0).bc, null);
+		
+		assertTrue("The scheduler should return true. It didn't.", bd.pickAndExecuteAnAction());
+		assertTrue("Bank Teller should have logged \"Received msgHereIsMoney\" but didn't. His log reads instead: " 
+				+ bt.log.getLastLoggedEvent().toString(), bt.log.containsString("Received msgHereIsMoney"));
+		assertEquals("Bank Database should have 0 requests in it. It doesn't.", bd.requests.size(), 0);
+		assertEquals("The total money should not have changed. It didn't", bd.totalMoney, 990100.0);
+	
+		assertFalse("The scheduler should return false. It didn't", bd.pickAndExecuteAnAction());
+
 	}
 	
 	public void testMassAccount(){

@@ -27,22 +27,17 @@ public class BankTellerGui implements Gui{
 
 	public BankTellerGui(BankTellerRole t){//, BankAnimationPanel gui){ //HostAgent m) {
 		bt = t;
-		xPos = 640;
-		yPos = 250;
-		xDestination = 640;
-		yDestination = 250;
+		xPos = 240;
+		yPos = 400;
+		xDestination = 240;
+		yDestination = 400;
 		//this.gui = gui;
-		locations.put("Teller1", new Position(40, 380));
-		locations.put("Teller2", new Position(100, 380));
-		locations.put("Teller3", new Position(160, 380));
-		locations.put("Teller4", new Position(220, 380));
-		locations.put("Teller5", new Position(280, 380));
-		locations.put("Teller6", new Position(340, 380));
-		locations.put("Teller7", new Position(400, 380));
-		locations.put("Teller8", new Position(460, 380));
-		locations.put("Teller9", new Position(520, 380));
-		locations.put("Teller10", new Position(580, 380));
-		locations.put("Outside", new Position(640, 250));
+		locations.put("Teller1", new Position(80, 380));
+		locations.put("Teller2", new Position(160, 380));
+		locations.put("Teller3", new Position(240, 380));
+		locations.put("Teller4", new Position(320, 380));
+		locations.put("Teller5", new Position(400, 380));
+		locations.put("Outside", new Position(240, 400));
 		//gui.addGui(this);
 	}
 

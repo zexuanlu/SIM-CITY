@@ -22,8 +22,8 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
     private final int WINDOWY = 480;
     static final int TIMERCOUNT = 20;
     static final int TABLEDIST = 100;
-    static final int TABLEX = 50;
-    static final int TABLEY = 200;
+    static final int TABLEX = 100;
+    static final int TABLEY = 300;
     static final int TABLEDIM = 50;
 
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
@@ -59,26 +59,26 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
 
         //Customer Waiting Area
         g2.setColor(Color.GRAY);
-        g2.fillRect(38, 14, 298, 24);
+        g2.fillRect(88, 114, 298, 24);
         
         //Waiter Home Area
         g2.setColor(Color.LIGHT_GRAY);
-        g2.fillRect(0, 10, 24, 234);
+        g2.fillRect(50, 110, 24, 234);
         
         //Grills
         g2.setColor(Color.CYAN);
-        g2.fillRect(410, 38, 24, 234);
+        g2.fillRect(460, 138, 24, 234);
         
         //Plating Area
         g2.setColor(Color.YELLOW);
-        g2.fillRect(355, 38, 24, 234);
+        g2.fillRect(405, 138, 24, 234);
         
         //Text for Areas
         g2.setColor(Color.BLACK);
-        g2.drawString("Customer Waiting Area", 120, 10);
-        g2.drawString("Waiters", 0, 10);
-        g2.drawString("Plating", 350, 284);
-        g2.drawString("Cooking", 394, 284);
+        g2.drawString("Customer Waiting Area", 170, 110);
+        g2.drawString("Waiters", 50, 110);
+        g2.drawString("Plating", 400, 384);
+        g2.drawString("Cooking", 444, 384);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

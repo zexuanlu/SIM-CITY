@@ -147,7 +147,8 @@ public class BankHostRole extends Role implements BankHost {
 		}
 		endOfDay = false;
 		goToLocation("Outside");
-		gui.setPresent(false);
+		if(gui!=null)
+			gui.setPresent(false);
 		getPerson().msgGoOffWork(this, 0.00);
 		atDesk = false;
 	}

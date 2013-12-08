@@ -302,6 +302,9 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 
+	public void msgBanished(){
+		
+	}
 	/* Scheduler */
 
 	@Override
@@ -546,7 +549,7 @@ public class PersonAgent extends Agent implements Person{
 				MyRole newRole = new MyRole(cRole, "Rest 4 Customer");
 				newRole.setActive(true);
 				roles.add(newRole);
-				Restaurant4CustomerGui cg = new Restaurant4CustomerGui(cRole, null);
+				Restaurant4CustomerGui cg = new Restaurant4CustomerGui(cRole);
 				cg.isPresent = true;
 				cRole.setGui(cg);
 				cap.rest4Panel.addGui(cg);
@@ -605,7 +608,7 @@ public class PersonAgent extends Agent implements Person{
 				MyRole newRole = new MyRole(wRole, "Rest 4 Waiter");
 				newRole.setActive(true);
 				roles.add(newRole);
-				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4WaiterRole)newRole.role, null, 0, 0);
+				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4WaiterRole)newRole.role, 0, 0);
 				wg.isPresent = true;
 				cap.rest4Panel.addGui(wg);
 				rest.getTimeCard().msgBackToWork(this, newRole.role);
@@ -642,7 +645,7 @@ public class PersonAgent extends Agent implements Person{
 				MyRole newRole = new MyRole(sdRole, "Rest 4 SDWaiter");
 				newRole.setActive(true);
 				roles.add(newRole);
-				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4SDWaiterRole)newRole.role, null, 0, 0);
+				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4SDWaiterRole)newRole.role, 0, 0);
 				wg.isPresent = true;
 				cap.rest4Panel.addGui(wg);
 				rest.getTimeCard().msgBackToWork(this, newRole.role);

@@ -25,4 +25,8 @@ public class MockBankDatabase extends Mock implements BankDatabase {
 	public void msgWithdrawMoney(BankCustomer bc, double money, int accountNumber, BankTeller bt){
 		log.add(new LoggedEvent("Received msgWithdrawMoney from BankTeller. The account number is " + accountNumber + " and the amount is " + money));
 	}
+
+	public void msgGiveAllMoney(BankTeller bt, double amount) {
+		log.add(new LoggedEvent("Received msgGiveAllMoney from BankTeller"));
+	}
 }

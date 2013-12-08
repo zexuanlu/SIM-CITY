@@ -11,10 +11,10 @@ public class Restaurant4Menu {
 	public List<MenuItem> options = new ArrayList<MenuItem>();
 	
 	Restaurant4Menu(){
-		options.add(new MenuItem(15.99, "Steak"));
-		options.add(new MenuItem(10.99, "Chicken"));
-		options.add(new MenuItem(5.99, "Salad"));
-		options.add(new MenuItem(8.99, "Pizza"));
+		options.add(new MenuItem(8.99, "Shrimp"));
+		options.add(new MenuItem(7.99, "Scallops"));
+		options.add(new MenuItem(14.99, "Lobster"));
+		options.add(new MenuItem(13.99, "Crab"));
 	}
 	
 	public void remove(String item){

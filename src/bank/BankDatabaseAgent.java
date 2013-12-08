@@ -20,6 +20,8 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	public EventLog log;//Used for testing
 	public Map<Integer,Account> accounts;//A map of all of the accounts mapped to the account numbers
 	public List<Request> requests = new ArrayList<Request>();//A list of requests from the tellers
+	public Double totalMoney;
+	Timer timer = new Timer();
 	
 	/**
 	 * The constructor for the bank database, which initializes the map
@@ -27,6 +29,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	public BankDatabaseAgent(){
 		accounts = new HashMap<Integer, Account>();
 		log = new EventLog();
+		totalMoney = 1000000.00;
 	}
 	
 	//Messages
@@ -83,7 +86,12 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		log.add(new LoggedEvent("Received msgLoanPlease from BankTeller"));
 		stateChanged();
 	}
-	
+
+	public void msgGiveAllMoney(BankTeller bt, double amount) {
+		requests.add(new Request("robbery", null, amount, bt, null));
+		log.add(new LoggedEvent("Received msgGiveAllMoney from BankTeller"));
+		stateChanged();
+	}
 	/**
 	 * The scheduler for the bank database
 	 * 
@@ -140,6 +148,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 						r.a.debt = 0;
 					}
 				}
+				totalMoney += r.amount;
 				r.bt.msgDepositDone(r.a.balance, r.bc);
 				requests.remove(r);
 			}
@@ -156,9 +165,11 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			if(r.a.owner == r.bc){
 				if(r.a.balance > r.amount){
 					r.a.balance -= r.amount;
+					totalMoney -= r.amount;
 				}
 				else{
 					r.amount = r.a.balance;
+					totalMoney -= r.amount;
 					r.a.balance = 0;
 				}
 				Do("Completed withdrawal of " + r.amount);
@@ -176,12 +187,26 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		if(r.type.equals("getLoan")){
 			if(r.a.debt == 0 && r.a.balance > r.amount/4){
 				r.a.debt = r.amount;
+				totalMoney -= r.amount;
 				r.bt.msgLoanGranted(r.amount, r.a.debt, r.bc);
 			}
 			else{
 				r.bt.msgRequestFailed(r.bc, "getLoan");
 			}
 			requests.remove(r);
+		}
+		if(r.type.equals("robbery")){
+			totalMoney -= r.amount;
+			r.bt.msgHereIsMoney(r.amount);
+			requests.remove(r);
+		}
+		if(totalMoney < 10000.0){
+			timer.schedule(new TimerTask() {
+				public void run() {
+					totalMoney = 1000000.0;
+				}
+			},
+				10000);
 		}
 }
 	
@@ -242,5 +267,6 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	//Used for testing
 	public void addAccount(BankCustomer owner, double balance, int accountNumber){
 		accounts.put(accountNumber, new Account(owner, balance, accountNumber));
+		totalMoney += balance;
 	}
 }
