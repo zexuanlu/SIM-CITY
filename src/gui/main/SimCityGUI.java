@@ -925,6 +925,7 @@ public class SimCityGUI extends JFrame {
 		simclock = new SimWorldClock(8,people);
 		
 		cityCtrlPanel.scenarioPanel.setCityAnim(cityAnimPanel);
+		cityCtrlPanel.scenarioPanel.setSimCityGUI(this);
 		cityCtrlPanel.scenarioPanel.setClock(simclock);
 //		simclock.bankTimeCard = bank.getTimeCard();
 //		simclock.timeCards.add(market.getTimeCard());
