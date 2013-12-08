@@ -197,16 +197,16 @@ public class SimCityGUI extends JFrame {
 		
 		// Third quadrant locations
 		Home home1 = new Home("Home 1", homeOwnerRole1, 
-				new Position(455, 260), 1, LocationType.Home);
+				new Position(450, 290), 1, LocationType.Home);
 		Home home2 = new Home("Home 2", homeOwnerRole2, 
-				new Position(420, 375), 2, LocationType.Home);
+				new Position(450, 370), 2, LocationType.Home);
 		Home home3 = new Home("Home 3", homeOwnerRole3, 
-				new Position(525, 260), 3, LocationType.Home);
+				new Position(520, 290), 3, LocationType.Home);
 		Home home4 = new Home("Home 4", homeOwnerRole4, 
-				new Position(595, 260), 4, LocationType.Home);
+				new Position(590, 290), 4, LocationType.Home);
 		// FIX
 		Home home5 = new Home("Home 5", homeOwnerRole4, 
-				new Position(665, 260), 4, LocationType.Home);
+				new Position(660, 290), 4, LocationType.Home);
 		
 		// Fourth quadrant locations
 		// First apartment complex
