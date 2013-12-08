@@ -503,19 +503,63 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		/**
 		 * ADDING EVENTS TO EACH PERSON
 		 */
+		SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
+		SimEvent teller2GoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
+		SimEvent tellerGoToBank2 = new SimEvent(bank2, 8, EventType.TellerEvent);
+		SimEvent teller2GoToBank2 = new SimEvent(bank, 8, EventType.TellerEvent);
+		SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
+		SimEvent hostGoToBank2 = new SimEvent(bank2, 8, EventType.HostEvent);
+		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
+		SimEvent cashierGoToMarket2 = new SimEvent(market2, 8, EventType.CashierEvent);
+		SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
+		SimEvent employeeGoToMarket2 = new SimEvent(market2, 8, EventType.EmployeeEvent);
 		SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
 		SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
 		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.WaiterEvent);
 		SimEvent sdWaiterGoToRestaurant2 = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
-		SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
-		SimEvent tellerGoToBank2 = new SimEvent(bank2, 8, EventType.TellerEvent);
-		SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
-		SimEvent hostGoToBank2 = new SimEvent(bank2, 8, EventType.HostEvent);
-		SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
-		SimEvent employeeGoToMarket2 = new SimEvent(market2, 8, EventType.EmployeeEvent);
-		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
-		SimEvent cashierGoToMarket2 = new SimEvent(market2, 8, EventType.CashierEvent);
+		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.WaiterEvent);
+		
+		people.get(0).msgAddEvent(tellerGoToBank);
+		people.get(1).msgAddEvent(teller2GoToBank);
+		people.get(2).msgAddEvent(tellerGoToBank2);
+		people.get(3).msgAddEvent(teller2GoToBank2);
+		people.get(4).msgAddEvent(hostGoToBank);
+		people.get(5).msgAddEvent(hostGoToBank2);
+		people.get(6).msgAddEvent(cashierGoToMarket);
+		people.get(7).msgAddEvent(cashierGoToMarket2);
+		people.get(8).msgAddEvent(employeeGoToMarket);
+		people.get(9).msgAddEvent(employeeGoToMarket2);
+		people.get(10).msgAddEvent(hostGoToRestaurant);
+		people.get(11).msgAddEvent(cookGoToRestaurant);
+		people.get(12).msgAddEvent(cashierGoToRestaurant);
+		people.get(13).msgAddEvent(sdWaiterGoToRestaurant2);
+		people.get(14).msgAddEvent(waiterGoToRestaurant);
+		/*people.get(15).msgAddEvent(hostGoToBank);
+		people.get(16).msgAddEvent(hostGoToBank);
+		people.get(17).msgAddEvent(hostGoToBank);
+		people.get(18).msgAddEvent(tellerGoToBank);
+		people.get(19).msgAddEvent(teller2GoToBank);
+		people.get(20).msgAddEvent(tellerGoToBank2);
+		people.get(21).msgAddEvent(teller2GoToBank2);
+		people.get(22).msgAddEvent(hostGoToBank);
+		people.get(23).msgAddEvent(hostGoToBank);
+		people.get(24).msgAddEvent(hostGoToBank);
+		people.get(25).msgAddEvent(hostGoToBank);
+		people.get(26).msgAddEvent(hostGoToBank);
+		people.get(27).msgAddEvent(tellerGoToBank);
+		people.get(28).msgAddEvent(teller2GoToBank);
+		people.get(29).msgAddEvent(tellerGoToBank2);
+		people.get(30).msgAddEvent(teller2GoToBank2);
+		people.get(31).msgAddEvent(hostGoToBank);
+		people.get(32).msgAddEvent(hostGoToBank);
+		people.get(33).msgAddEvent(hostGoToBank);
+		people.get(34).msgAddEvent(hostGoToBank);
+		people.get(35).msgAddEvent(hostGoToBank);*/
+		
+		for (PersonAgent p : people) {
+			p.setMap(locations);
+			p.startThread();
+		}
 	}
 	
 }
