@@ -35,9 +35,9 @@ public class PersonGui implements Gui{
 		atLight = false;
 	}
 	public void updatePosition() {
-    	if (xPos < xDestination && (yPos == 200 || yPos == 260))
+    	if (xPos < xDestination && (yPos == 190 || yPos == 260))
             xPos++;
-        else if (xPos > xDestination && (yPos == 200 || yPos == 260))
+        else if (xPos > xDestination && (yPos == 190 || yPos == 260))
             xPos--;
 
         if (yPos < yDestination && (xPos == 350 || xPos == 420))
