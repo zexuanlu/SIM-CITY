@@ -341,7 +341,8 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			revStand.insertOrder(new Order(this, customer.choice, customer.table));	
 			cook.msgAddedOrderToRevolvingStand();
 			System.err.println("Added order to revolving stand");
-			waiterGui.DoGotoCHomePosition(tablenum);
+			//waiterGui.DoGotoCHomePosition(tablenum);
+			waiterGui.DoLeaveCustomer();
 		}
 
 		public void Dogotocook(mycustomer customer){

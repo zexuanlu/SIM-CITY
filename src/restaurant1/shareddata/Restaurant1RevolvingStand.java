@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class Restaurant1RevolvingStand extends Object{
 
-	private final int N = 5;
+	private final int N = 3;
 	private int count = 0;
 	public Vector<Order> orders;
 	
@@ -22,6 +22,7 @@ public class Restaurant1RevolvingStand extends Object{
 		}
 		
 		orders.add(o);
+		count ++;
 		if(count == 1) {
 			System.out.println("\tNot Empty, notify");
 			notify();                               // Not empty, notify a 
@@ -34,15 +35,17 @@ public class Restaurant1RevolvingStand extends Object{
 		if(count == 0){
 			return null;
 		}
+		else{
 		data = remove_item();
 		count --;
+		System.out.println(""+count);
 		if(count == N-1){ 
 			System.out.println("\tNot full, notify");
 			notify();                               // Not full, notify a 
 			// waiting producer
 		}
 		return data;
-		
+		}
 	}
 	
 	synchronized public boolean isEmpty(){
@@ -52,6 +55,7 @@ public class Restaurant1RevolvingStand extends Object{
 	synchronized private Order remove_item(){
 		Order data = (Order) orders.firstElement();
 		orders.removeElementAt(0);
+		System.out.println(""+orders.size());
 		return data;
 	}
 
