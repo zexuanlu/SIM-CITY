@@ -25,7 +25,7 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	public MarketCashier mc;
 	public Restaurant4Cashier rc;
 	private String name;
-	private Restaurant4CookGui gui;
+	public Restaurant4CookGui gui;
 	private int GrillNum = 0;
 	private Map<String, MyFood> cookTimes = Collections.synchronizedMap(new HashMap<String, MyFood>());
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
