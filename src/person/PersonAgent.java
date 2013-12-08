@@ -311,7 +311,8 @@ public class PersonAgent extends Agent implements Person{
 			
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					goToLocation(nextEvent.location);
+					if(!atHome)
+						goToLocation(nextEvent.location);
 					goToAndDoEvent(nextEvent);
 					return true;
 				}
