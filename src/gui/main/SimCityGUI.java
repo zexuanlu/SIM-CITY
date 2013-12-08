@@ -176,6 +176,7 @@ public class SimCityGUI extends JFrame {
 		}
 		
 		// First quadrant locations
+
 		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(80, 190), LocationType.Bank);
 		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
@@ -185,10 +186,10 @@ public class SimCityGUI extends JFrame {
 		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(350, 60), LocationType.Restaurant3);
 		
 		// Second quadrant locations
-		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
-				new Position(640, 130), LocationType.Bank);
-		Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
-				new Position(430, 130), LocationType.Market);
+		Bank bank2 = new Bank("Bank 2", new TimeCard(), bankhostrole, 
+		                new Position(640, 130), LocationType.Bank);
+		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
+		                new Position(430, 130), LocationType.Market);
 		// FIX HOST ROLES
 		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
 		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(570, 130), LocationType.Restaurant2);
@@ -253,7 +254,9 @@ public class SimCityGUI extends JFrame {
 		rest4.setCook(cook4);
 		
 		locations.add(bank);
+		locations.add(bank2);
 		locations.add(market);
+		locations.add(market2);
 		locations.add(home1);
 		locations.add(home2);
 		locations.add(home3);
@@ -276,7 +279,11 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt16);
 		locations.add(apt17);
 		locations.add(rest1);
+		locations.add(rest2);
+		locations.add(rest3);
 		locations.add(rest4);
+		locations.add(rest5);
+		locations.add(rest6);
 		
 		for(Location location : locations){
 			cityAnimPanel.addLocation(location);
