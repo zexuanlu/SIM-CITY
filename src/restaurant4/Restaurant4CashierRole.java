@@ -24,10 +24,10 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	public Restaurant4CashierRole(String name, Person pa) {
 		super(pa);
 		this.name = name;
-		foodPrices.put("Steak", 15.99);
-		foodPrices.put("Chicken", 10.99);
-		foodPrices.put("Salad", 5.99);
-		foodPrices.put("Pizza", 8.99);
+		foodPrices.put("Shrimp", 8.99);
+		foodPrices.put("Scallops", 7.99);
+		foodPrices.put("Lobster", 14.99);
+		foodPrices.put("Crab", 13.99);
 	}
 
 	public String getName() {

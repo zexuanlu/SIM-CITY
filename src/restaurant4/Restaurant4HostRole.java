@@ -99,6 +99,7 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 			}
 		}
 	}
+	
 	/**
 	 * Receives this message from a waiter when a customer has left
 	 * 
@@ -218,9 +219,8 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 	private void positionCustomer(MyCustomer customer){
 		if(customerNum > 14)
 			customerNum = 1;
-//		customer.xPos = 19 + 21*customerNum;
-//		customer.yPos = 16;
-//		customer.customer.getGui().DoGoToPos(19 + 21*customerNum, 16);
+		
+		((Restaurant4CustomerRole)customer.customer).getGui().DoGoToLocation("Customer " + customerNum);
 		customer.s = custState.positioned;
 	}
 	

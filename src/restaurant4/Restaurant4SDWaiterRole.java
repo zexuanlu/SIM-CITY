@@ -1,6 +1,8 @@
 package restaurant4;
 
 import person.interfaces.Person;
+import restaurant4.shareddata.Order;
+import restaurant4.shareddata.Restaurant4RevolvingStand;
 
 /**
  * Restaurant Waiter Agent
@@ -11,6 +13,7 @@ import person.interfaces.Person;
  */
 public class Restaurant4SDWaiterRole extends Restaurant4AbstractWaiter{
 
+	public Restaurant4RevolvingStand stand = null;
 	public Restaurant4SDWaiterRole(String name, Person pa) {
 		super(pa);
 		this.name = name;
@@ -29,7 +32,7 @@ public class Restaurant4SDWaiterRole extends Restaurant4AbstractWaiter{
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//FIX Add item to the shared data rack
+		stand.insertOrder(new Order(this, customer.choice, customer.table));
 		customer.s = state.sitting;
 		gui.GoToLocation("Home");
 	}

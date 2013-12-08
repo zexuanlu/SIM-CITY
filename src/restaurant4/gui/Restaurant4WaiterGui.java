@@ -1,6 +1,6 @@
 package restaurant4.gui;
 
-import restaurant4.Restaurant4WaiterRole;
+import restaurant4.Restaurant4AbstractWaiter;
 import simcity.astar.Position;
 import utilities.Gui;
 
@@ -14,8 +14,7 @@ import java.util.Map;
  */
 public class Restaurant4WaiterGui implements Gui {
 
-    private Restaurant4WaiterRole agent = null;
-    Restaurant4AnimationPanel gui;
+    private Restaurant4AbstractWaiter agent = null;
     private boolean tired = false;
     private GUIstate s = GUIstate.None;
     public enum GUIstate {None, CarryingFood}
@@ -26,24 +25,23 @@ public class Restaurant4WaiterGui implements Gui {
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
-    public Restaurant4WaiterGui(Restaurant4WaiterRole agent, Restaurant4AnimationPanel gui, int x, int y) {
+    public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, int x, int y) {
         this.agent = agent;
-        this.gui = gui;
         locations.put("Home", new Position(x, y));
-        locations.put("Cashier", new Position(100, -20));
+        locations.put("Cashier", new Position(150, -20));
         locations.put("Host", new Position(-20, -20));
-        locations.put("Cook", new Position(335, 150));
-        locations.put("Table 1", new Position(70, 200));
-        locations.put("Table 2", new Position(170, 200));
-        locations.put("Table 3", new Position(270, 200));
-        locations.put("Grill 1", new Position(335, 22));
-        locations.put("Grill 2", new Position(335, 42));
-        locations.put("Grill 3", new Position(335, 62));
-        locations.put("Customer 1", new Position(60, 36));
-        locations.put("Customer 2", new Position(81, 36));
-        locations.put("Customer 3", new Position(102, 36));
-        locations.put("Customer 4", new Position(123, 36));
-        locations.put("Customer 5", new Position(144, 36));
+        locations.put("Cook", new Position(385, 250));
+        locations.put("Table 1", new Position(120, 300));
+        locations.put("Table 2", new Position(220, 300));
+        locations.put("Table 3", new Position(320, 300));
+        locations.put("Grill 1", new Position(385, 122));
+        locations.put("Grill 2", new Position(385, 142));
+        locations.put("Grill 3", new Position(385, 162));
+        locations.put("Customer 1", new Position(110, 136));
+        locations.put("Customer 2", new Position(131, 136));
+        locations.put("Customer 3", new Position(152, 136));
+        locations.put("Customer 4", new Position(173, 136));
+        locations.put("Customer 5", new Position(194, 136));
         xDestination = x;
         yDestination = y;
     }
