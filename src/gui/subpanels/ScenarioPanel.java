@@ -295,7 +295,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
-			PersonGui pgui = new PersonGui(p);
+			//FIX
+			PersonGui pgui = new PersonGui(p, null);
 			p.gui = pgui;
 			p.homeNumber = i;
 			people.add(p);
@@ -472,7 +473,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
                         new Position(60, 170), LocationType.Bank);
         Market market = new Market("Pokemart", (MarketCashierRole)roles.get(6), new TimeCard(), 
                         new Position(130, 170), LocationType.Market);
-        Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(200, 170), LocationType.Restaurant);
+        Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
 //        Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(270, 170), LocationType.Restaurant);
         //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
         

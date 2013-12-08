@@ -714,6 +714,9 @@ public class SimCityGUI extends JFrame {
                 
                 // Sets the sim world clock to the interaction panel's so events can be created with correct start time
                 cityCtrlPanel.interactPanel.setClock(simclock);
+                cityCtrlPanel.scenarioPanel.setCityAnim(cityAnimPanel);
+        		cityCtrlPanel.scenarioPanel.setSimCityGUI(this);
+        		cityCtrlPanel.scenarioPanel.setClock(simclock);
         }
 
         public CarAgent createCar(PersonAgent p){
