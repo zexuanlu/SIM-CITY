@@ -33,6 +33,7 @@ public class BankHostGui implements Gui{
 		yDestination = -20;
 		//this.gui = gui;
 		locations.put("Host", new Position(320,120));
+		locations.put("Outside", new Position(340, 120));
 		//gui.addGui(this);
 	}
 

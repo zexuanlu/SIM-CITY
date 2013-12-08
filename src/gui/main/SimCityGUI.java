@@ -680,7 +680,7 @@ public class SimCityGUI extends JFrame {
 		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
-		simclock.bankTimeCard = bank.getTimeCard();
+		simclock.timeCards.add(bank.getTimeCard());
 		simclock.timeCards.add(market.getTimeCard());
 		simclock.timeCards.add(rest1.getTimeCard());
 		for (PersonAgent p: people){

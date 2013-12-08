@@ -262,6 +262,7 @@ public class PersonAgent extends Agent implements Person{
 				role.setActive(true);
 			}
 		}
+		gui.setPresent(false);
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
@@ -603,6 +604,7 @@ public class PersonAgent extends Agent implements Person{
 				else if(e.type == EventType.HostEvent){
 					for(MyRole mr : roles){
 						if(mr.type.equals("Bank Host")){
+							print("Messaging the Time Card!");
 							bank.getTimeCard().msgBackToWork(this, mr.role); 
 							try{
 								wait.acquire();
@@ -841,36 +843,37 @@ public class PersonAgent extends Agent implements Person{
 	}
 	
 	private void goToLocation(Location loc){
-		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
-//			//make a PassengerRole and start it
-			PassengerRole pRole = new PassengerRole(this.name, this);
-//			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
-				MyRole newRole = new MyRole(pRole, "Passenger");
-				newRole.setActive(true);
-				roles.add(newRole);
-				if(!testMode){
-					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
-					((PassengerRole)newRole.role).setGui(pg);
-					cap.addGui(pg);
-				}
-				((PassengerRole)newRole.role).setCityMap(cityMap);
-				((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
-				//lizhi added this testing:
-				gui.xDestination = loc.position.getX();
-				gui.yDestination = loc.position.getY();
-
-				((PassengerRole)newRole.role).gotoBus();
-				gui.setPresent(false);
-				
-				while(newRole.isActive){
-					while(newRole.role.pickAndExecuteAnAction()){}
-					try{
-						stateChange.acquire();
-					}
-					catch(InterruptedException e){
-						e.printStackTrace();
-					}
-				}
+//		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
+////			//make a PassengerRole and start it
+//			PassengerRole pRole = new PassengerRole(this.name, this);
+////			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
+//				MyRole newRole = new MyRole(pRole, "Passenger");
+//				newRole.setActive(true);
+//				roles.add(newRole);
+//				if(!testMode){
+//					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
+//					((PassengerRole)newRole.role).setGui(pg);
+//					cap.addGui(pg);
+//				}
+//				((PassengerRole)newRole.role).setCityMap(cityMap);
+//				((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
+//				//lizhi added this testing:
+//				gui.xDestination = loc.position.getX();
+//				gui.yDestination = loc.position.getY();
+//
+//				((PassengerRole)newRole.role).gotoBus();
+//				gui.setPresent(false);
+//				
+//				while(newRole.isActive){
+//					while(newRole.role.pickAndExecuteAnAction()){}
+//					try{
+//						stateChange.acquire();
+//					}
+//					catch(InterruptedException e){
+//						e.printStackTrace();
+//					}
+//				}
+//				roles.remove(newRole);
 //			}
 //			else{ //if we already have a PassengerRole, use it
 //				((PassengerRole)getRoleOfType(pRole).role).setDestination(loc.name);
@@ -878,8 +881,9 @@ public class PersonAgent extends Agent implements Person{
 //				getRoleOfType(pRole).setActive(true);
 //				gui.setPresent(false);
 //			}
-		}
+//		}
 //		else{
+		gui.setPresent(true);
 			print("Going to location");
 			DoGoTo(loc); 
 			if(!testMode){
@@ -891,6 +895,7 @@ public class PersonAgent extends Agent implements Person{
 					e1.printStackTrace();
 				}
 			}
+			print("Arrived at Destination");
 //		}
 	}
 
@@ -1014,7 +1019,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 400.00){
+		if (this.wallet.getOnHand() >= 4000000.00){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
@@ -1033,6 +1038,9 @@ public class PersonAgent extends Agent implements Person{
          return null;
 	 }
  
+	 public String toString(){
+		 return name;
+	 }
 	 public String getActiveRoleName(){
 		 String none = "No Active Role";
          for(MyRole role : roles){

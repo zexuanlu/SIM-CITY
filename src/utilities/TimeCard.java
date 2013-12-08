@@ -57,9 +57,10 @@ public class TimeCard extends Agent {
 	
 	private void endOfDay(){
 		for(Role r : roles){
+			if(r.getPerson().toString().equals("Person 1") || r.getPerson().toString().equals("Person 3") || r.getPerson().toString().equals("Person 4"))
 			r.msgEndOfDay();
 		}
-		roles.clear();
+		endOfDay = false;
 	}
 	
 	private void goBackToWork(MyRole role){
