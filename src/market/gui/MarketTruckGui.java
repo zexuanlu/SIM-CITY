@@ -35,7 +35,7 @@ public class MarketTruckGui implements Gui {
 	private Image i = t.getImage();
 
 	public MarketTruckGui(MarketTruckAgent c, BuildingAnimationPanel buildPanel){
-		myTruck = c;
+		this.myTruck = c;
 		this.buildPanel = buildPanel;
 	}
 
