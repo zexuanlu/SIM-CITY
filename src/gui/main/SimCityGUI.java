@@ -176,18 +176,18 @@ public class SimCityGUI extends JFrame {
 		}
 		
 		// First quadrant locations
-		Bank bank = new Bank("Bank 1", new TimeCard(), bankhostrole, 
+		Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
 				new Position(80, 130), LocationType.Bank);
-		Market market = new Market("Market 1", marketcashierrole, new TimeCard(), 
+		Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
 				new Position(150, 130), LocationType.Market);
 		Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(220, 130), LocationType.Restaurant1);
 		Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(290, 130), LocationType.Restaurant2);
 		Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(290, 60), LocationType.Restaurant3);
 		
 		// Second quadrant locations
-		Bank bank2 = new Bank("Bank 2", new TimeCard(), bankhostrole, 
+		Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
 				new Position(640, 130), LocationType.Bank);
-		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
+		Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
 				new Position(430, 130), LocationType.Market);
 		// FIX HOST ROLES
 		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(500, 130), LocationType.Restaurant1);
@@ -253,9 +253,7 @@ public class SimCityGUI extends JFrame {
 		rest4.setCook(cook4);
 		
 		locations.add(bank);
-		locations.add(bank2);
 		locations.add(market);
-		locations.add(market2);
 		locations.add(home1);
 		locations.add(home2);
 		locations.add(home3);
@@ -278,11 +276,7 @@ public class SimCityGUI extends JFrame {
 		locations.add(apt16);
 		locations.add(apt17);
 		locations.add(rest1);
-		locations.add(rest2);
-		locations.add(rest3);
 		locations.add(rest4);
-		locations.add(rest5);
-		locations.add(rest6);
 		
 		for(Location location : locations){
 			cityAnimPanel.addLocation(location);
@@ -412,7 +406,7 @@ public class SimCityGUI extends JFrame {
 		
 
 		truck = new MarketTruckAgent();
-		MarketTruckGui truckGui = new MarketTruckGui(truck);
+		MarketTruckGui truckGui = new MarketTruckGui(truck, bldngAnimPanel);
 		truck.setGui(truckGui);
 		truck.startThread();
 		cityAnimPanel.addGui(truckGui);
@@ -636,7 +630,8 @@ public class SimCityGUI extends JFrame {
 		SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
 		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
 		SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
-		
+
+
 		bankhostrole.addTeller(banktellerrole1);
 		bankhostrole.addTeller(banktellerrole2);
 		banktellerrole1.bh = bankhostrole;
@@ -687,7 +682,7 @@ public class SimCityGUI extends JFrame {
 		marketcashierrole.addTruck(truck);
 		/*Create the SimWorldClock with the starting time and the list of people*/
 		simclock = new SimWorldClock(8,people);
-		simclock.bankTimeCard = bank.getTimeCard();
+		simclock.timeCards.add(bank.getTimeCard());
 		simclock.timeCards.add(market.getTimeCard());
 		simclock.timeCards.add(rest1.getTimeCard());
 		for (PersonAgent p: people){

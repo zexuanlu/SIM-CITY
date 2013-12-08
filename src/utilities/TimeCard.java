@@ -59,7 +59,7 @@ public class TimeCard extends Agent {
 		for(Role r : roles){
 			r.msgEndOfDay();
 		}
-		roles.clear();
+		endOfDay = false;
 	}
 	
 	private void goBackToWork(MyRole role){

@@ -421,7 +421,10 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	private void goOffWork(){
 		endOfDay = false;
-		getPerson().msgGoOffWork(this, 500.00);
+		goToLocation("Outside");
+		gui.setPresent(false);
+		getPerson().msgGoOffWork(this, 0.00);
+		s = state.haveDestination;
 	}
 	
 	//Utilities
