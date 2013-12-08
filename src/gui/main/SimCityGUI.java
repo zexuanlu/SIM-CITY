@@ -134,6 +134,7 @@ public class SimCityGUI extends JFrame {
 
 	///////////////////////////////////////////////////////////INITIALIZATION CODE FOR BUSSES	
 
+	public Semaphore[][]origgrid = new Semaphore[gridX][gridY];
 	public Semaphore[][] grid = new Semaphore[gridX][gridY];
 	public BusRole bus = new BusRole("BusRole");
 	public BusRole bus2 = new BusRole("BusRole2");
@@ -305,12 +306,15 @@ public class SimCityGUI extends JFrame {
 		cityAnimPanel.setBuildPanel(bldngAnimPanel);
 
 		for (int i=0; i<gridX ; i++)
-			for (int j = 0; j<gridY; j++)
+			for (int j = 0; j<gridY; j++){
 				grid[i][j]=new Semaphore(1,true);
+				origgrid[i][j]= new Semaphore(1,true);
+			}
 		//build the animation areas
 		try {
 			for (int y=0;y<30;y++){  //Create dead position
 				grid[36][23].release();
+				origgrid[36][23].release();
 			}
 			for (int y=0;y<30;y++){
 				grid[3][11].release();
@@ -319,18 +323,22 @@ public class SimCityGUI extends JFrame {
 			for (int x=0;x<17;x++){
 				for (int y = 0; y<9; y++){
 					grid[x][y].acquire();
+					origgrid[x][y].acquire();
 				}
 				
 				for (int y = 14; y<gridY;y++){
 					grid[x][y].acquire();
+					origgrid[x][y].acquire();
 				}
 			}
 			
 			for (int x=22; x<gridX;x++){
 				for (int y=0;y<9;y++){
+					origgrid[x][y].acquire();
 					grid[x][y].acquire();
 				}
 				for (int y=14;y<gridY;y++){
+					origgrid[x][y].acquire();
 					grid[x][y].acquire();
 				}	
 			}
@@ -343,10 +351,12 @@ public class SimCityGUI extends JFrame {
 		bgui2 = new BusGui(bus2,380,00);
 		bus.setGui(bgui);
 		AStarTraversal aStarTraversal = new AStarTraversal(grid);
+		aStarTraversal.originalgrid = origgrid; 
 		bus.setAStar(aStarTraversal);
 
 		bus2.setGui(bgui2);
 		aStarTraversal = new AStarTraversal(grid);
+		aStarTraversal.originalgrid = origgrid; 
 		bus2.setAStar(aStarTraversal);
 
 		busstop1.setGui(bs1gui);
@@ -514,7 +524,7 @@ public class SimCityGUI extends JFrame {
 			//p.setcitygui(this);
 		}
 		
-		for (int i=4;i<22;i++){
+		for (int i=5;i<22;i++){
 			people.get(i).msgAddMoney(-200);
 		}
 		
@@ -694,6 +704,7 @@ public class SimCityGUI extends JFrame {
 
 	public CarAgent createCar(PersonAgent p){
 		AStarTraversal aStarTraversal = new AStarTraversal(grid);
+		aStarTraversal.originalgrid = origgrid; 
         CarAgent caragent = new CarAgent(aStarTraversal, p);
         CarGui cgui = new CarGui(caragent,600,400);
         caragent.setGui(cgui);

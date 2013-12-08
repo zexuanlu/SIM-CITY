@@ -40,12 +40,12 @@ public abstract class GraphTraversal
 		    //Console.pause();
 		    Node first = nodes.poll(); 
 		    if (first.goalTest(endingState)){
-			//printMessage("Path Found.", first); 
+			printMessage("Path Found.", first); 
 			return first;
 		    }else{
 			queueFn(nodes, expandFunc(first)); 
 		    }		
-		}
+		  }
 	    }
 	}
 

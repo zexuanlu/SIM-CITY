@@ -309,7 +309,7 @@ public class BusRole extends Agent implements Bus {
 		public void setAStar(	AStarTraversal as ){
 			aStar = as; 
 			currentPosition = new Position(busgui.xPos/scale, busgui.yPos/scale);
-	        currentPosition.moveInto(aStar.getGrid());
+	        currentPosition.moveInto(aStar.getOrigGrid());
 	        originalPosition = currentPosition;
 		}
 		
@@ -335,7 +335,7 @@ public class BusRole extends Agent implements Bus {
 
 		    //Try and get lock for the next step.
 		    int attempts    = 1;
-		    gotPermit       = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
+		    gotPermit       = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 
 		    //Did not get lock. Lets make n attempts.
 		    while (!gotPermit && attempts < 3) {
@@ -345,7 +345,7 @@ public class BusRole extends Agent implements Bus {
 			try { Thread.sleep(1000); }
 			catch (Exception e){}
 
-			gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
+			gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 			attempts ++;
 		    }
 
@@ -362,7 +362,7 @@ public class BusRole extends Agent implements Bus {
 
 		    //Got the required lock. Lets move.
 		    //System.out.println("[Gaut] " + guiWaiter.getName() + " got permit for " + tmpPath.toString());
-		    currentPosition.release(aStar.getGrid());
+		    currentPosition.release(aStar.getOrigGrid());
 		    currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
 		    busgui.moveto(currentPosition.getX(), currentPosition.getY());
 			try {

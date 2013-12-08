@@ -5,10 +5,14 @@ import java.util.concurrent.*;
 public class AStarTraversal extends GraphTraversal
 {
     private Semaphore[][] grid;
+    public Semaphore[][] originalgrid; 
+    private Semaphore[][] use; 
 
+	public boolean crashed; 
     public AStarTraversal(Semaphore[][] grid){
 	super();
 	this.grid = grid; 
+	use = grid; 
 	
 	//grid = new Object[1000][2000];
 	nodes = new PriorityQueue<Node>(6, new Comparator<Node>()
@@ -57,10 +61,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
@@ -86,7 +90,7 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
 					if (inPath(next,path) || (!next.open(grid)) ) continue;  
@@ -116,10 +120,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || (!next.open(grid)) ) continue;  
+					if (inPath(next,path) || (!next.open(use)) ) continue;  
 
 					AStarNode nodeTemp = new AStarNode(next);
 
@@ -142,22 +146,24 @@ public class AStarTraversal extends GraphTraversal
 	
 	else if (y==11){ //check down or up only
 			int i=0; 
-			for (int j = -1; j<=2;j++){
+			for (int j = -1; j<2;j++){
 				if (j!=0){
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
 			                        node.getDistTravelled()+pos.distance(next));
 					//update approximate total distance to destination
 					//note that we are computing the straight-line
-					//heuristic on the fly right here from next to endingState
+					//heuristic on the fly right here from next to endingState 
+					
+					
 					nodeTemp.setApproxTotalDist(
 						nodeTemp.getDistTravelled() + next.distance((Position)endingState));	
 					//update internal path
@@ -176,10 +182,10 @@ public class AStarTraversal extends GraphTraversal
 				//create the potential next position
 				int nextX=x+i;
 				int nextY=y+j;
-				if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+				if ((nextX+1>use.length || nextY+1>use[0].length) ||
 				      (nextX<0 || nextY<0)) continue;
 				Position next = new Position(nextX,nextY);
-				if (inPath(next,path) || !next.open(grid) ) continue;
+				if (inPath(next,path) || !next.open(use) ) continue;
 				AStarNode nodeTemp = new AStarNode(next);
 
 				nodeTemp.setDistTravelled(
@@ -204,10 +210,10 @@ public class AStarTraversal extends GraphTraversal
 				//create the potential next position
 				int nextX=x+i;
 				int nextY=y+j;
-				if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+				if ((nextX+1>use.length || nextY+1>use[0].length) ||
 				      (nextX<0 || nextY<0)) continue;
 				Position next = new Position(nextX,nextY);
-				if (inPath(next,path) || !next.open(grid) ) continue;
+				if (inPath(next,path) || !next.open(use) ) continue;
 				AStarNode nodeTemp = new AStarNode(next);
 
 				nodeTemp.setDistTravelled(
@@ -233,10 +239,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
@@ -262,10 +268,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
@@ -292,10 +298,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
@@ -319,10 +325,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
@@ -348,10 +354,10 @@ public class AStarTraversal extends GraphTraversal
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
-					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || !next.open(grid) ) continue;
+					if (inPath(next,path) || !next.open(use) ) continue;
 					AStarNode nodeTemp = new AStarNode(next);
 
 					nodeTemp.setDistTravelled(
@@ -370,17 +376,19 @@ public class AStarTraversal extends GraphTraversal
 		}
 	}
 	
-		
+	use = grid; 	
 	return expandedNodes;
     }//end expandFunc
     
+    public void crashed(){
+    	use = originalgrid; 
+    }
     
     
     private boolean inPath (Position pos, List<Position> path){
 	for (Position n:path) {if (pos.equals(n)) return true;};
 	return false;
     }
-    
     
     public void printCurrentList() {
 	PriorityQueue<Node> pq = new PriorityQueue<Node>(nodes);
@@ -398,4 +406,5 @@ public class AStarTraversal extends GraphTraversal
 	}
     }
     public Semaphore[][] getGrid(){return grid;}
+    public Semaphore[][] getOrigGrid(){return originalgrid;} 
 }

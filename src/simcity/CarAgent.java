@@ -51,7 +51,7 @@ public class CarAgent extends Agent {
              myGui = c;
              System.out.println("Cargui location is " +myGui.xPos/scale + " " + myGui.yPos/scale);
              currentPosition = new Position(myGui.xPos/scale, myGui.yPos/scale);
-             currentPosition.moveInto(aStar.getGrid());
+             currentPosition.moveInto(aStar.getOrigGrid());
              originalPosition = currentPosition;
      }
      
@@ -90,9 +90,9 @@ public class CarAgent extends Agent {
 
      
      public void setatPosition(int originx, int originy){
-      currentPosition.release(aStar.getGrid());
+      currentPosition.release(aStar.getOrigGrid());
              currentPosition = new Position(originx/scale, originy/scale);
-     currentPosition.moveInto(aStar.getGrid());
+     currentPosition.moveInto(aStar.getOrigGrid());
      originalPosition = currentPosition;
      
      		int numx = originx/scale;
@@ -112,9 +112,9 @@ public class CarAgent extends Agent {
     		 return; 
     	 }
     	 
-         currentPosition.release(aStar.getGrid());
+         currentPosition.release(aStar.getOrigGrid());
          currentPosition = new Position(originx/scale, originy/scale);
-         currentPosition.moveInto(aStar.getGrid());
+         currentPosition.moveInto(aStar.getOrigGrid());
          originalPosition = currentPosition;
  
          int numx = originx/scale;
@@ -164,7 +164,7 @@ public class CarAgent extends Agent {
 
       //Try and get lock for the next step.
       int attempts = 1;
-      gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
+      gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 
       //Did not get lock. Lets make n attempts.
       while (!gotPermit && attempts < 5) {
@@ -176,11 +176,12 @@ public class CarAgent extends Agent {
              
              catch (Exception e){}
 
-             gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getGrid());
+             gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
              attempts ++;
              
              crashed = true; 
              System.out.println("CRASHED");
+             aStar.crashed();
              myGui.Collide();
              break; 
       }
@@ -198,7 +199,7 @@ public class CarAgent extends Agent {
 
       //Got the required lock. Lets move.
       //System.out.println("[Gaut] " + guiWaiter.getName() + " got permit for " + tmpPath.toString());
-      currentPosition.release(aStar.getGrid());
+      currentPosition.release(aStar.getOrigGrid());
       currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
       myGui.moveto(currentPosition.getX(), currentPosition.getY());
              try {
@@ -210,9 +211,9 @@ public class CarAgent extends Agent {
  }
  
  public void deadPos(int x, int y){
-      currentPosition.release(aStar.getGrid());
+      currentPosition.release(aStar.getOrigGrid());
       currentPosition = new Position(x/scale, y/scale);
-     currentPosition.moveInto(aStar.getGrid());
+     currentPosition.moveInto(aStar.getOrigGrid());
      originalPosition = currentPosition;
  }
  
