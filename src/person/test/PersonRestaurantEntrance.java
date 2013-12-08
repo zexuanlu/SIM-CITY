@@ -38,23 +38,23 @@ public class PersonRestaurantEntrance extends TestCase{
 		PersonAgent dummyPerson = new PersonAgent();
 		person.setName("Grant");
 		host = new MockHostRole("Grant");
-		rest = new Restaurant("Restaurant", new Restaurant1HostRole("DUMMY", dummyPerson), p, LocationType.Restaurant);
-		goToRestaurant = new SimEvent(rest, 1, 9, EventType.CustomerEvent);
+		rest = new Restaurant("Restaurant", new Restaurant1HostRole("DUMMY", dummyPerson), p, LocationType.Restaurant1);
+		goToRestaurant = new SimEvent(rest, 1, EventType.CustomerEvent);
 		person.testMode = true;
 	}	
 	@Test
 	public void testEntrance() {
 		//Pre : Check event queue and activeRole
 		
-		assertTrue("The person we are testing (person) should have no events at creation, it does", person.toDo.peek() == null);
+		assertTrue("The person we are testing (person) should have no events at creation, it does", person.toDo.isEmpty());
 		assertTrue("person should have no active roles at creation, activeRole is true", !person.active());
 		
 		person.msgNewHour(9); 
 		assertTrue("person's time should be 9, it is not", person.getTime() == 9);
 		
 		//Add the goToRestaurant event
-		person.toDo.offer(goToRestaurant);
-		assertTrue("person's toDo should now contain goToRestaurant, it does not", person.toDo.peek() == goToRestaurant);
+		person.toDo.add(goToRestaurant);
+		assertTrue("person's toDo should now contain goToRestaurant, it does not", person.toDo.get(0) == goToRestaurant);
 		assertTrue("person's scheduler should return true because we have added one event to his queue", person.pickAndExecuteAnAction());
 		
 		//Check customer role creation is correct
