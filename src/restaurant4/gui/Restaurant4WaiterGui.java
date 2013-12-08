@@ -1,5 +1,6 @@
 package restaurant4.gui;
 
+import restaurant4.Restaurant4AbstractWaiter;
 import restaurant4.Restaurant4WaiterRole;
 import simcity.astar.Position;
 import utilities.Gui;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public class Restaurant4WaiterGui implements Gui {
 
-    private Restaurant4WaiterRole agent = null;
+    private Restaurant4AbstractWaiter agent = null;
     Restaurant4AnimationPanel gui;
     private boolean tired = false;
     private GUIstate s = GUIstate.None;
@@ -22,13 +23,14 @@ public class Restaurant4WaiterGui implements Gui {
     private boolean atDestination = true;
 	private Map<String, Position> locations = new HashMap<String, Position>();
     private String choice;
-
+    public boolean isPresent;
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
-    public Restaurant4WaiterGui(Restaurant4WaiterRole agent, Restaurant4AnimationPanel gui, int x, int y) {
+    public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, Restaurant4AnimationPanel gui, int x, int y) {
         this.agent = agent;
         this.gui = gui;
+        this.isPresent = false;
         locations.put("Home", new Position(x, y));
         locations.put("Cashier", new Position(100, -20));
         locations.put("Host", new Position(-20, -20));
@@ -79,7 +81,7 @@ public class Restaurant4WaiterGui implements Gui {
     }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
     public void carryFood(String food){
@@ -115,7 +117,8 @@ public class Restaurant4WaiterGui implements Gui {
     		agent.msgWantToBreak();
     	}
     }
-
+    public void setPresent(boolean present){ isPresent = present; }
+    
 	public void GoToLocation(String string) {
 		Position p = locations.get(string);
 		xDestination = p.getX();

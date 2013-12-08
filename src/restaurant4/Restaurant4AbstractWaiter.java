@@ -17,7 +17,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	protected Restaurant4CashierRole cashier = null;
 	protected String name;
 	protected Restaurant4Menu menu;
-	protected Restaurant4WaiterGui gui;
+	public Restaurant4WaiterGui gui;
 	protected breakState bs;
 	protected Semaphore movement;
 	protected Semaphore ordering;

@@ -15,7 +15,7 @@ import java.util.Map;
 public class Restaurant4CustomerGui implements Gui{
 
 	private Restaurant4CustomerRole agent = null;
-	private boolean isPresent = true;
+	public boolean isPresent = true;
 
 	Restaurant4AnimationPanel gui;
 
