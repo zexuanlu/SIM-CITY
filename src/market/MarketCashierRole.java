@@ -1,6 +1,7 @@
 package market;
 
 import agent.*;
+import person.Restaurant;
 import person.interfaces.*;
 import utilities.restaurant.RestaurantCashier;
 import utilities.restaurant.RestaurantCook;
@@ -15,6 +16,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public List<MarketTruck> truck = new ArrayList<MarketTruck>();
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
+	public List<PendingOrder> pendingPrder = new ArrayList<PendingOrder>();
 	public Map<String, Double> price = new HashMap<String, Double>();
 	public Map<String, Integer> inventory = new HashMap<String, Integer>();
 	public List<PendingOrder> pendingOrder = new ArrayList<PendingOrder>();
@@ -81,12 +83,16 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public enum state1{ordering, ordered};
 	
 	public class PendingOrder{
+		Restaurant r;
 		RestaurantCook ck;
 		List<Food> order;
+		int restnum;
 		
-		public PendingOrder(RestaurantCook ck, List<Food> order){
+		public PendingOrder(RestaurantCook ck, List<Food> order, Restaurant r, int restnum){
 			this.ck = ck;
 			this.order = order;
+			this.r = r;
+			this.restnum = restnum;
 		}
 	}
 
@@ -154,9 +160,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		stateChanged();
 	}
 	
-	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food){
+	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food, Restaurant r, int restnum){
 		truck.add(t);
-		pendingOrder.add(new PendingOrder(cook, food));
+		pendingOrder.add(new PendingOrder(cook, food, r, restnum));
 		stateChanged();
 	}
 
@@ -173,6 +179,16 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			} 
 		}
 
+		if(!truck.isEmpty()){
+			if(!pendingOrder.isEmpty()){
+				for(PendingOrder po: pendingOrder){
+					if(!po.r.isClosed()){
+						SendPendingOrder(po);
+				return true;
+					}
+				}
+			}
+		}
 		
 		for(Mycustomer customer: mycustomer){
 			if(customer.s == state.ordering){
@@ -302,6 +318,20 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			}
 		}
 		return bill;
+	}
+	
+	public void SendPendingOrder(PendingOrder po){
+		int s = employeeCount;
+		MarketTruck t = truck.get(0);
+		if(employeeCount < (employee.size() - 1)){
+			employeeCount++;
+		}
+		else{
+			employeeCount = 0;
+		}
+		employee.get(s).msgCollectTheDilivery(po.ck, po.order, t, po.restnum);
+		truck.remove(t);
+		pendingOrder.remove(po);
 	}
 
 	public void workDayOver(){

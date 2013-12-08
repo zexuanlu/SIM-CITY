@@ -2,8 +2,10 @@ package market.test.mock;
 
 import java.util.List;
 
+import person.Restaurant;
 import restaurant1.Restaurant1CookRole;
 import restaurant1.interfaces.Restaurant1Cashier;
+import utilities.restaurant.RestaurantCashier;
 import utilities.restaurant.RestaurantCook;
 import market.MarketCashierRole;
 import market.Food;
@@ -56,19 +58,21 @@ public class MockCashier extends Mock implements MarketCashier{
 
 
 	@Override
-	public void msgBillFromTheAir(Restaurant1Cashier ca, double money) {
+	public void MsgIwantFood(RestaurantCook cook, RestaurantCashier ca,
+			List<Food> food, int number) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void MsgIwantFood(RestaurantCook cook, Restaurant1Cashier ca, List<Food> food, int number) {
+	public void msgBillFromTheAir(double money) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food) {
+	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook,
+			List<Food> food, Restaurant r, int restnum) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -2,6 +2,7 @@ package market.interfaces;
 
 import java.util.List;
 
+import person.Restaurant;
 import market.*;
 import utilities.restaurant.RestaurantCashier;
 import utilities.restaurant.RestaurantCook;
@@ -23,6 +24,6 @@ public interface MarketCashier {
 	
 	public void msgTruckBack(MarketTruck t);
 	
-	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food);
+	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food, Restaurant r, int restnum);
 	
 }

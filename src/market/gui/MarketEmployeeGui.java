@@ -14,7 +14,7 @@ public class MarketEmployeeGui implements Gui{
     private int xDestination = 400, yDestination = 180;//default start position
     private int distance= 20;
     private int xTable = 180, yTable = 180;
-    private int xTruck = 620, yTruck = 180;
+    private int xTruck = 530, yTruck = 180;
     private int xSteak =300, ySteak = 140;
     private int xChicken = 400, yChicken = 140;
     private int xCar = 500, yCar = 140;
@@ -134,7 +134,7 @@ public class MarketEmployeeGui implements Gui{
 	}
 	
 	public void DoSendToTruck(){
-		xDestination = 620;
+		xDestination = 530;
 		yDestination = 180;
 		sendFood = true;
 	}
