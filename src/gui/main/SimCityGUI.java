@@ -191,7 +191,7 @@ public class SimCityGUI extends JFrame {
 		Market market2 = new Market("Market 2", marketcashierrole, new TimeCard(), 
 		                new Position(450, 170), LocationType.Market);
 		// FIX HOST ROLES
-		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(520, 170), LocationType.Restaurant1);
+		Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
 		Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(590, 170), LocationType.Restaurant2);
 		Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(440, 40), LocationType.Restaurant3);		
 		
