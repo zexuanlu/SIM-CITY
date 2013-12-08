@@ -52,18 +52,18 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 	public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
 	public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
 	
-	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
-	public Image m1 = img.getImage();
-	public ImageIcon img1 = new ImageIcon(this.getClass().getResource("image/bank.png"));
-	public Image b = img1.getImage();
-	public ImageIcon img2 = new ImageIcon(this.getClass().getResource("image/house1.png"));
-	public Image h1 = img2.getImage();
-	public ImageIcon img3 = new ImageIcon(this.getClass().getResource("image/market2.png"));
-	public Image m2 = img3.getImage();
-	public ImageIcon img4 = new ImageIcon(this.getClass().getResource("image/house2.png"));
-	public Image h2 = img4.getImage();
-	public ImageIcon img5 = new ImageIcon(this.getClass().getResource("image/house3.png"));
-	public Image h3 = img5.getImage();
+//	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
+//	public Image m1 = img.getImage();
+//	public ImageIcon img1 = new ImageIcon(this.getClass().getResource("image/bank.png"));
+//	public Image b = img1.getImage();
+//	public ImageIcon img2 = new ImageIcon(this.getClass().getResource("image/house1.png"));
+//	public Image h1 = img2.getImage();
+//	public ImageIcon img3 = new ImageIcon(this.getClass().getResource("image/market2.png"));
+//	public Image m2 = img3.getImage();
+//	public ImageIcon img4 = new ImageIcon(this.getClass().getResource("image/house2.png"));
+//	public Image h2 = img4.getImage();
+//	public ImageIcon img5 = new ImageIcon(this.getClass().getResource("image/house3.png"));
+//	public Image h3 = img5.getImage();
 	
 	public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
 	public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
@@ -263,13 +263,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fillRect(360, 0, 60, 480);
         g2.fillRect(0, 200, 740, 60);
         
-        g2.drawImage(b, 80, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(b, 640, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m1, 150, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m2, 430, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h1, 430, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h2, 430, 350, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h3, 500, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(b, 80, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(b, 640, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(m1, 150, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(m2, 430, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(h1, 430, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(h2, 430, 350, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+//        g2.drawImage(h3, 500, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         
         //Hover Text
     	g2.setColor(Color.BLACK);

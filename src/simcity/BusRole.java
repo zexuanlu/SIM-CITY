@@ -204,9 +204,11 @@ public class BusRole extends Agent implements Bus {
 		public void announceStop(){
 			busState = BusState.stopped; 
 
-			for (myPassenger mp: passengers){
-				mp.p.msgNowAtStop(currentStop);
-				print ("Announcing Bus now at stop");
+			synchronized (passengers){
+				for (myPassenger mp: passengers){
+					mp.p.msgNowAtStop(currentStop);
+					print ("Announcing Bus now at stop");
+				}
 			}
 			
 			timer.schedule(new TimerTask() {
@@ -219,8 +221,8 @@ public class BusRole extends Agent implements Bus {
 		
 		public void leaveStop() {
 			busState = BusState.moving; 
-			print("Bus leaving stop");
 			currentbusstop.msgBusLeaving(this);
+			print("Bus leaving stop");
 			stateChanged();
 			
 			//AM I SWIMMING IN DANGEROUS WATERS?

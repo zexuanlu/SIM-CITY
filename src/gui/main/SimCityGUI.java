@@ -329,6 +329,12 @@ public class SimCityGUI extends JFrame {
 						grid[0][y].release(); 
 					}
 				}				
+				
+				for (int z = 0; z<20; z++){ //after creation needs this area to be able to navigate 
+					for (int y = 10; y<13; y++){
+						grid[1][y].release(); 
+					}
+				}		
 			}
 		}catch (Exception e) {
 			System.out.println("Unexpected exception caught in during setup:"+ e);
@@ -436,7 +442,7 @@ public class SimCityGUI extends JFrame {
 		// Loops through the apartment guis to add them to their animation panels
 		for (ApartmentTenantGui aptGui : aptGuis) {
 			aptGui.isPresent = false;
-			cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+			//cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
 		}
 		
 		// Loops through apartment tenant roles and sets to respective GUI
@@ -466,10 +472,10 @@ public class SimCityGUI extends JFrame {
 		busstop8.startThread();
 
 		bus.setBusMap(citymap);
-		bus.addtoRoute(busstop1.name);
-		bus.addtoRoute(busstop2.name);
-		bus.addtoRoute(busstop3.name);
 		bus.addtoRoute(busstop4.name);
+		bus.addtoRoute(busstop3.name);
+		bus.addtoRoute(busstop2.name);
+		bus.addtoRoute(busstop1.name);
 		bus.startThread();
 		bus.msgStartBus();
 
@@ -482,18 +488,20 @@ public class SimCityGUI extends JFrame {
 		bus2.msgStartBus();
 
 		////////////////////////////////////////////////////////////////////////////////////INITIALIZATION FOR PEOPLE AND ROLES
-
 		/*
 		 * Adds the people with a given house number. This is for homes. Any dynamically added person will
 		 * be added as an apartment tenant.
 		 */
 
 //		for (int i=1; i<6; i++){
+		int x = 100; 
+		int y = 100; 
 		for (int i=0; i<22; i++){
 			aStarTraversal = new AStarTraversal(grid);
 			PersonAgent p = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
-			PersonGui pgui = new PersonGui(p);
-			p.gui = pgui;
+			PersonGui pgui = new PersonGui(p, x, y);
+			x = x+20; 
+			p.setGui(pgui);
 			System.out.println(""+i);
 			if(i < 21){
 				p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
@@ -697,8 +705,8 @@ public class SimCityGUI extends JFrame {
 	}
 	
 	public void addPerson(PersonAgent p) {
-		PersonGui pgui = new PersonGui(p);
-		p.gui = pgui;
+		PersonGui pgui = new PersonGui(p,100,100);
+		p.setGui(pgui);
 		p.setAnimationPanel(cityAnimPanel);
 		people.add(p);
 		peoplegui.add(pgui);

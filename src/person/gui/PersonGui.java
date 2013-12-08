@@ -10,12 +10,16 @@ import utilities.Gui;
 public class PersonGui implements Gui{
 	private PersonAgent agent = null;
 
-	public int xPos = -20, yPos = -20;//default player position
-	public int xDestination = 20, yDestination = 20;//default start position
+	public int xPos, yPos;//default player position
+	public int xDestination, yDestination;//default start position
 	private boolean arrived; 
 	public boolean isPresent;
 
-	public PersonGui(PersonAgent agent) {
+	public PersonGui(PersonAgent agent, int posx, int posy) {
+		xPos = posx; 
+		yPos = posy; 
+		xDestination = xPos; 
+		yDestination = yPos; 
 		this.agent = agent;
 		arrived = false;
 		isPresent = true;
