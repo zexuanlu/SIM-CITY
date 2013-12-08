@@ -27,7 +27,7 @@ public class SimWorldClock {
 			public void run() {
 				updateWorldClock();
 			}
-		}, 0, 3000); // one minute per hour 
+		}, 0, 6000); // one minute per hour 
 	}
 	private void updateWorldClock(){
 		System.out.println("Time is now " + currentHour );
