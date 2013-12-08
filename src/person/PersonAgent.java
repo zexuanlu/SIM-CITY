@@ -543,7 +543,10 @@ public class PersonAgent extends Agent implements Person{
 				if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
 					for(MyRole mr : roles){
 						if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 200.00);//FIX - Should be fixed at some point to reflect a percent
+							if(e.directive.equals("deposit"))
+								((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+							else if(e.directive.equals("withdraw"))
+								((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
 							mr.setActive(true);
 							gui.setPresent(false);
 							((BankCustomerRole)mr.role).gui.setPresent(true);
@@ -559,7 +562,10 @@ public class PersonAgent extends Agent implements Person{
 					BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 					((BankCustomerRole)newRole.role).setGui(bcg);
 					cap.bankPanel.addGui(bcg);
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 200.00); //FIX - Should be fixed at some point to reflect a percent
+					if(e.directive.equals("deposit"))
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+					else if(e.directive.equals("withdraw"))
+						((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 					gui.setPresent(false);
 					toDo.remove(e); //remove the event from the queue
 					return;
