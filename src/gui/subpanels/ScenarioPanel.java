@@ -291,7 +291,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
 		
 		for (int i = 1; i <= 35; ++i) {
-			PersonAgent p = new PersonAgent("Person " + i);
+			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
 			PersonGui pgui = new PersonGui(p);
 			p.gui = pgui;
 			p.homeNumber = i;
@@ -320,6 +320,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		 * BANK INITIALIZATION OF EMPLOYEES
 		 */
 		BankDatabaseAgent bankdatabase = new BankDatabaseAgent();
+		bankdatabase.startThread();
 		
 		/**
 		 * RESTAURANT EMPLOYEE INITIALIZATION
@@ -358,10 +359,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		Restaurant6CashierRole rest6Cashier = new Restaurant6CashierRole("Cashier 6 Shift 1", people.get(32));
 		Restaurant6SDWaiterRole rest6SDWaiter = new Restaurant6SDWaiterRole("Shared Data Waiter 6 Shift 1", people.get(33));
 		Restaurant6WaiterRole rest6Waiter = new Restaurant6WaiterRole("Waiter 6 Shift 1", people.get(34));
-
-		for (PersonAgent p : people) {
-			System.err.println(p.getName());
-		}
 		
 		/** 
 		 * GUI CREATION AND INITIALIZATION
@@ -498,26 +495,24 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			cityAnimPanel.addLocation(l);
 		}
 		
-		cityMap = new CityMap(locations);
-        
 		/**
 		 * ADDING EVENTS TO EACH PERSON
 		 */
-		SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
-		SimEvent teller2GoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
-		SimEvent tellerGoToBank2 = new SimEvent(bank2, 8, EventType.TellerEvent);
-		SimEvent teller2GoToBank2 = new SimEvent(bank, 8, EventType.TellerEvent);
-		SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
-		SimEvent hostGoToBank2 = new SimEvent(bank2, 8, EventType.HostEvent);
-		SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
-		SimEvent cashierGoToMarket2 = new SimEvent(market2, 8, EventType.CashierEvent);
-		SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
-		SimEvent employeeGoToMarket2 = new SimEvent(market2, 8, EventType.EmployeeEvent);
-		SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
-		SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
-		SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
-		SimEvent sdWaiterGoToRestaurant2 = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
-		SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.WaiterEvent);
+		SimEvent tellerGoToBank = new SimEvent("Go to work", bank, EventType.TellerEvent);
+		SimEvent teller2GoToBank = new SimEvent("Go to work", bank, EventType.TellerEvent);
+		SimEvent tellerGoToBank2 = new SimEvent("Go to work", bank2, EventType.TellerEvent);
+		SimEvent teller2GoToBank2 = new SimEvent("Go to work", bank2, EventType.TellerEvent);
+		SimEvent hostGoToBank = new SimEvent("Go to work", bank, EventType.HostEvent);
+		SimEvent hostGoToBank2 = new SimEvent("Go to work", bank2, EventType.HostEvent);
+		SimEvent cashierGoToMarket = new SimEvent("Go to work", market, EventType.CashierEvent);
+		SimEvent cashierGoToMarket2 = new SimEvent("Go to work", market2, EventType.CashierEvent);
+		SimEvent employeeGoToMarket = new SimEvent("Go to work", market, EventType.EmployeeEvent);
+		SimEvent employeeGoToMarket2 = new SimEvent("Go to work", market2, EventType.EmployeeEvent);
+		SimEvent hostGoToRestaurant = new SimEvent("Go to work", rest1, EventType.HostEvent);
+		SimEvent cookGoToRestaurant = new SimEvent("Go to work", rest1, EventType.CookEvent);
+		SimEvent cashierGoToRestaurant = new SimEvent("Go to work", rest1,EventType.CashierEvent);
+		SimEvent sdWaiterGoToRestaurant2 = new SimEvent("Go to work", rest1, EventType.SDWaiterEvent);
+		SimEvent waiterGoToRestaurant = new SimEvent("Go to work", rest1, EventType.WaiterEvent);
 		
 		people.get(0).msgAddEvent(tellerGoToBank);
 		people.get(1).msgAddEvent(teller2GoToBank);
@@ -556,10 +551,25 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(34).msgAddEvent(hostGoToBank);
 		people.get(35).msgAddEvent(hostGoToBank);*/
 		
-		for (PersonAgent p : people) {
-			p.setMap(locations);
-			p.startThread();
+//		for (PersonAgent p : people) {
+//			p.populateCityMap(locations);
+//			p.startThread();
+//		}
+		
+		//FIX.. FOR TESTING PURPOSES
+		for (int j = 0; j < 14; ++j) {
+			people.get(j).populateCityMap(locations);
+			people.get(j).startThread();
 		}
+		
+		clock.bankTimeCard = bank.getTimeCard();
+		clock.timeCards.add(market.getTimeCard());
+		clock.timeCards.add(market2.getTimeCard());
+		clock.timeCards.add(rest1.getTimeCard());
+		clock.timeCards.add(rest2.getTimeCard());
+		clock.timeCards.add(rest4.getTimeCard());
+		clock.timeCards.add(rest5.getTimeCard());
+		clock.timeCards.add(rest6.getTimeCard());
 	}
 	
 }

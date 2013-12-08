@@ -11,7 +11,7 @@ public class PersonGui implements Gui{
 	private PersonAgent agent = null;
 
 	public int xPos = -20, yPos = -20;//default player position
-	public int xDestination = 20, yDestination = 20;//default start position
+	public int xDestination = -20, yDestination = -20;//default start position
 	private boolean arrived; 
 	public boolean isPresent;
 

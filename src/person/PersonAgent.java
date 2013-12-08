@@ -321,25 +321,24 @@ public class PersonAgent extends Agent implements Person{
 					//Do("" + b + " "+ r.role);
 					return b;
 				}
-			}
-			
-			for(SimEvent nextEvent : toDo){
-				//print("Priority is " + nextEvent.importance + " Time = " + currentTime + " : " + nextEvent.startTime);
-				if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
-					print("Activating a recurring event");
-					goToLocation(nextEvent.location);
-					goToAndDoEvent(nextEvent);
-					return true;
+			}	
+				
+				for(SimEvent nextEvent : toDo){
+					//print("Priority is " + nextEvent.importance + " Time = " + currentTime + " : " + nextEvent.startTime)
+					if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
+						print("Activating a recurring event");
+						goToLocation(nextEvent.location);
+						goToAndDoEvent(nextEvent);
+						return true;
+					}
 				}
-			}
-			
-			for(SimEvent nextEvent : toDo){
-				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					goToLocation(nextEvent.location);
-					goToAndDoEvent(nextEvent);
-					return true;
+				for(SimEvent nextEvent : toDo){
+					if(nextEvent.importance == EventImportance.OneTimeEvent){
+						goToLocation(nextEvent.location);
+						goToAndDoEvent(nextEvent);
+						return true;
+					}
 				}
-			}
 				return checkVitals();
 	}
 
