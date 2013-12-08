@@ -208,7 +208,15 @@ public class CityMap {
 	public Location chooseRandom(LocationType type) {
 		Random chooser = new Random();
 		int i = chooser.nextInt(map.size());
-		return map.get(i);
+		
+		Location l = map.get(i);
+		if(l.type == type){
+			return l;
+		}
+		else {
+			l = chooseRandom(type);
+			return l;
+		}
 	}
 	public Location chooseByLocation(int yourX, int yourY, int searchRadius, LocationType type){
 		Map<Double, Location> locationsNearMe = new HashMap<Double, Location>();
