@@ -28,11 +28,13 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public String name;
 	boolean opening = false;
 	public boolean sendTruckBack = false;
+	public boolean checkStand = false;
 	public int count = 0;
 	public Map<String, MyFood> food = new HashMap<String, MyFood>();
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	private Semaphore AR = new Semaphore(0,true);
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
+	
 
 	public Restaurant1CookRole(String name, Person pa) {
 		super(pa);
@@ -42,6 +44,14 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		food.put("Chicken", new MyFood("Chicken", 3500, 6, 2, 4, 10));
 		food.put("Pizza", new MyFood("Pizza", 4000, 6, 2, 5, 10));
 		food.put("Salad", new MyFood("Salad", 3000, 6, 2, 8, 10));
+		
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkStand = true;
+				stateChanged();
+			}
+		},
+			5000);
 	}
 
 	public class MyFood{
@@ -132,12 +142,10 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			return true;
 		}
 		if(sendTruckBack == true) {
-			System.out.println(sendTruckBack);
-			truck.msgGoBack();
-			sendTruckBack = false;
+			TruckBack();
 			return true;
 		}
-		if(order.size() <= 3 && !revStand.isEmpty()) {
+		if(checkStand) {
 			TakeOrderFromStand();
 			return true;
 		}
@@ -219,8 +227,19 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	}
  
 	public void TakeOrderFromStand() {
+		checkStand = false;
 		Order o = revStand.removeOrder();
+		if(o != null){
 		order.add(o);
+		}
+		
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkStand = true;
+				stateChanged();
+			}
+		},
+			5000);
 	}
 	
 	public void Timerdone(Order order){
@@ -243,5 +262,10 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		return roleName;
 	}
 
+	public void TruckBack(){
+		truck.msgGoBack();
+		sendTruckBack = false;
+	}
+	
 }
 
