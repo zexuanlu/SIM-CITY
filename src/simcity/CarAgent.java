@@ -107,6 +107,10 @@ public class CarAgent extends Agent {
      public void gotoPosition(int originx, int originy, int x, int y){
     	 print ("gotoposition");
     	 
+    	 if ((originx/scale == x/scale) && (originy/scale == y/scale)){
+    		 msgatDestination();
+    		 return; 
+    	 }
     	 
          currentPosition.release(aStar.getGrid());
          currentPosition = new Position(originx/scale, originy/scale);
