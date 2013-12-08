@@ -1,11 +1,12 @@
 package restaurant2;
 
-import restaurant2.gui.CustomerGui;
+import restaurant2.gui.Restaurant2CustomerGui;
 import restaurant2.interfaces.Cashier;
 import restaurant2.interfaces.Customer;
 import restaurant2.interfaces.Market;
 import restaurant2.interfaces.Waiter;
 import restaurant2.Restaurant2CookRole.MarketState;
+import utilities.restaurant.RestaurantCashier;
 import agent.Agent;
 import agent.Role;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import market.interfaces.MarketCashier;
 import person.interfaces.Person;
 
 /**
@@ -41,7 +43,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public Restaurant2CashierRole(String name, int w, Person p){
+	public Restaurant2CashierRole(String name, Person p){
 		super(p);
 		prices.put("Steak", 20);
 		prices.put("Hamburger", 8);
@@ -50,7 +52,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		prices.put("Salad", 5);
 		prices.put("Pound Cake", 2);
 
-		wallet = w;
+		wallet = 800;
 	}
 
 	// Messages
@@ -316,6 +318,8 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 			hasPayed = tf;
 		}
 	}
+	
+	//FIX
 	@Override
 	public void msgPayment(Customer c, Check check) {
 		// TODO Auto-generated method stub
@@ -326,6 +330,12 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	public String getRoleName() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void msgPleasepaytheBill(MarketCashier c, double bills) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

@@ -31,7 +31,7 @@ import restaurant1.Restaurant1HostRole;
 import restaurant1.Restaurant1SDWaiterRole;
 import restaurant1.Restaurant1WaiterRole;
 import restaurant1.gui.CookGui;
-import restaurant1.gui.CustomerGui;
+import restaurant1.gui.Restaurant1CustomerGui;
 import restaurant1.gui.WaiterGui;
 import restaurant1.interfaces.Restaurant1Host;
 import restaurant4.Restaurant4CashierRole;
@@ -309,7 +309,6 @@ public class PersonAgent extends Agent implements Person{
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
-
 		for(MyRole r : roles){
 			if(r.isActive){
 				boolean b;
@@ -436,7 +435,6 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.SDWaiterEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 SDWaiter")){
-
 					}
 					else {
 						((Restaurant1SDWaiterRole)mr.role).waiterGui.isPresent = true;

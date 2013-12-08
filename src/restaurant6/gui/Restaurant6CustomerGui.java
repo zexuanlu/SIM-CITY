@@ -7,6 +7,9 @@ import restaurant6.Restaurant6WaiterRole;
 import utilities.Gui;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -20,7 +23,6 @@ public class Restaurant6CustomerGui implements Gui{
 	private boolean hasOrdered = false;
 	Random waitingSpotGenerator = new Random(); // To determine random amount of money
 
-	private Restaurant6HostRole host = new Restaurant6HostRole("Sarah");
 	//RestaurantGui gui;
 
 	private int xPos, yPos;
@@ -31,6 +33,9 @@ public class Restaurant6CustomerGui implements Gui{
 
 	public int tableXPos = 50;
 	public int tableYPos = 50;
+	
+	private final static int NTABLES = 3;
+	private Collection<Restaurant6Table> tables;
 	
 	private final int pickUpX = 10;
 	private final int pickUpY = 250;
@@ -45,6 +50,23 @@ public class Restaurant6CustomerGui implements Gui{
 		xDestination = -40;
 		yDestination = -40;
 		//this.gui = gui;
+		
+		int x = 200;
+        int y = 50;
+        
+        // Makes some tables
+        tables = Collections.synchronizedList(new ArrayList<Restaurant6Table>(NTABLES));
+        
+        for (int ix = 1; ix <= NTABLES; ix++) {
+                tables.add(new Restaurant6Table(ix));//how you add to a collections
+        }
+        
+        // Sets table position for each table
+        for (Restaurant6Table table: tables) {
+            table.setXPos(x);
+            table.setYPos(y);
+            x = x + 200;
+        }
 	}
 
 	// Generate random waiting spot
@@ -148,7 +170,7 @@ public class Restaurant6CustomerGui implements Gui{
 	}
 
 	public void DoGoToSeat(int seatnumber) {
-		for (Restaurant6Table t : host.tables) {
+		for (Restaurant6Table t : tables) {
 				if (t.getTableNum() == seatnumber) {
 					xDestination = t.getXPos();
 					yDestination = t.getYPos();

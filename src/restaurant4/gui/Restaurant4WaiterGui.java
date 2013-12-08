@@ -1,6 +1,10 @@
 package restaurant4.gui;
 
 import restaurant4.Restaurant4AbstractWaiter;
+<<<<<<< HEAD
+import restaurant4.Restaurant4WaiterRole;
+=======
+>>>>>>> cc9f589c01f4c18623ff6cbdecdab1a0cac12033
 import simcity.astar.Position;
 import utilities.Gui;
 
@@ -15,6 +19,10 @@ import java.util.Map;
 public class Restaurant4WaiterGui implements Gui {
 
     private Restaurant4AbstractWaiter agent = null;
+<<<<<<< HEAD
+    Restaurant4AnimationPanel gui;
+=======
+>>>>>>> cc9f589c01f4c18623ff6cbdecdab1a0cac12033
     private boolean tired = false;
     private GUIstate s = GUIstate.None;
     public enum GUIstate {None, CarryingFood}
@@ -25,9 +33,15 @@ public class Restaurant4WaiterGui implements Gui {
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
+<<<<<<< HEAD
+    public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, Restaurant4AnimationPanel gui, int x, int y) {
+        this.agent = agent;
+        this.gui = gui;
+=======
     public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, int x, int y) {
         this.agent = agent;;
         this.isPresent = false;
+>>>>>>> cc9f589c01f4c18623ff6cbdecdab1a0cac12033
         locations.put("Home", new Position(x, y));
         locations.put("Cashier", new Position(150, -20));
         locations.put("Host", new Position(-20, -20));

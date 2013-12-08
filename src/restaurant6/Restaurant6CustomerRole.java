@@ -4,6 +4,7 @@ import restaurant6.gui.Restaurant6CustomerGui;
 import restaurant6.interfaces.Restaurant6Customer;
 import restaurant6.interfaces.Restaurant6Waiter;
 import agent.Agent;
+import agent.Role;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -12,10 +13,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import person.interfaces.Person;
+
 /**
  * Restaurant customer agent.
  */
-public class Restaurant6CustomerRole extends Agent implements Restaurant6Customer {
+public class Restaurant6CustomerRole extends Role implements Restaurant6Customer {
 	
 	private String name;
 	private int hungerLevel = 5;        // Determines length of meal
@@ -70,8 +73,8 @@ public class Restaurant6CustomerRole extends Agent implements Restaurant6Custome
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public Restaurant6CustomerRole(String custName, double custMoney, String choice, boolean stay, boolean stayFull, String info) {
-		super();
+	public Restaurant6CustomerRole(String custName, double custMoney, String choice, boolean stay, boolean stayFull, String info, Person p) {
+		super(p);
 		
 		debt = 0;
 		haveDebt = false;
@@ -84,8 +87,8 @@ public class Restaurant6CustomerRole extends Agent implements Restaurant6Custome
 		information = info;
 	}
 	
-	public Restaurant6CustomerRole(String custName, String info) {
-		super();
+	public Restaurant6CustomerRole(String custName, String info, Person p) {
+		super(p);
 		
 		debt = 0;
 		haveDebt = false;
@@ -93,6 +96,20 @@ public class Restaurant6CustomerRole extends Agent implements Restaurant6Custome
 		name = custName;
 		information = info;
 		myMoney = generateMoney(100,1);
+		myChoice = generateChoice();
+		stayCannotAfford = generateStay();
+		stayRestFull = generateStay();
+	}
+	
+	public Restaurant6CustomerRole(String custName, Person p) {
+		super(p);
+		
+		debt = 0;
+		haveDebt = false;
+		
+		name = custName;
+		information = null;
+		myMoney = p.getWallet().getOnHand();
 		myChoice = generateChoice();
 		stayCannotAfford = generateStay();
 		stayRestFull = generateStay();
@@ -296,7 +313,7 @@ public class Restaurant6CustomerRole extends Agent implements Restaurant6Custome
 	/** 
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		//	CustomerAgent is a finite state machine	
 		if (state == AgentState.DoingNothing && event == AgentEvent.gotHungry) {
 			state = AgentState.WaitingInRestaurant;
@@ -605,6 +622,11 @@ public class Restaurant6CustomerRole extends Agent implements Restaurant6Custome
 
 	public Restaurant6CustomerGui getGui() {
 		return customerGui;
+	}
+
+	// Gets role name
+	public String getRoleName() {
+		return "Restaurant 6 Customer";
 	}
 }
 

@@ -1,5 +1,7 @@
 package restaurant6.interfaces;
 
-public interface Restaurant6Cook {
+import utilities.restaurant.RestaurantCook;
+
+public interface Restaurant6Cook extends RestaurantCook {
 
 }

@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.*;
 
+import utilities.Gui;
 
-public class FoodGui5 implements Gui5 {
+
+public class FoodGui5 implements Gui {
 	
 	public enum State {steak, chicken, salad, pizza};
 	private State Food; 

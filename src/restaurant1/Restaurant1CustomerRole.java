@@ -1,6 +1,6 @@
 package restaurant1;
 
-import restaurant1.gui.CustomerGui;
+import restaurant1.gui.Restaurant1CustomerGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Host;
@@ -23,7 +23,7 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	private String name;
 	private int hungerLevel = 5;        // determines length of meal
 	Timer timer = new Timer();
-	public CustomerGui customerGui;
+	public Restaurant1CustomerGui customerGui;
 	private Restaurant1Waiter waiter;
 	private int location = 0;
 	private int orderingtime = 4000;
@@ -349,11 +349,11 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		return "customer " + getName();
 	}
 
-	public void setGui(CustomerGui g) {
+	public void setGui(Restaurant1CustomerGui g) {
 		customerGui = g;
 	}
 
-	public CustomerGui getGui() {
+	public Restaurant1CustomerGui getGui() {
 		return customerGui;
 	}
 	

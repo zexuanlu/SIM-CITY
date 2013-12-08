@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 
+import person.interfaces.Person;
 import restaurant6.Restaurant6Order.OrderState;
 import restaurant6.interfaces.Restaurant6Waiter;
 
@@ -15,8 +16,8 @@ public class Restaurant6SDWaiterRole extends Restaurant6AbstractWaiterRole imple
 	// Collection of tables
     public Collection<Restaurant6Table> tables;
 	
-	public Restaurant6SDWaiterRole(String name) {
-		super(name);
+	public Restaurant6SDWaiterRole(String name, Person p) {
+		super(name, p);
 
 		this.name = name;
 		int x = 200;
@@ -42,7 +43,7 @@ public class Restaurant6SDWaiterRole extends Restaurant6AbstractWaiterRole imple
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {			
+	public boolean pickAndExecuteAnAction() {			
 		if (waiterState == MyWaiterState.Working) {
 			try {
 				if (!waiterChecks.isEmpty()) {
@@ -148,5 +149,10 @@ public class Restaurant6SDWaiterRole extends Restaurant6AbstractWaiterRole imple
 		customer.setState(MyCustomer.CustState.WaitingForFood);
 		revolvingStand.insert(customer.order);
 		waiterGui.DoGoToHomePosition(); // GUI leaves cook
+	}
+
+	// Gets person's role name
+	public String getRoleName() {
+		return "Restaurant 6 Shared Data Waiter";
 	}
 }

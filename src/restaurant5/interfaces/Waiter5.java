@@ -1,7 +1,8 @@
 package restaurant5.interfaces;
-import restaurant.RestaurantWaiter; 
+ 
 import restaurant5.Check5; 
 import restaurant5.CustomerAgent5;
+import utilities.restaurant.RestaurantWaiter;
 
 public interface Waiter5 extends RestaurantWaiter {
 	public abstract void msgHereisCheck(Check5 check);

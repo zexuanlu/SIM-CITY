@@ -4,6 +4,7 @@ package restaurant2.gui;
 import restaurant2.Restaurant2CustomerRole;
 import restaurant2.Restaurant2HostRole;
 import restaurant2.interfaces.Waiter;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.Random;
@@ -11,7 +12,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class WaiterGui implements Gui {
+public class Restaurant2WaiterGui implements Gui {
 
 	private Waiter agent = null;
 
@@ -35,7 +36,7 @@ public class WaiterGui implements Gui {
 	private int skin; 
 	private String text = " "; 
 	
-	public WaiterGui(Waiter agent, ImageIcon icon) {
+	public Restaurant2WaiterGui(Waiter agent) {
 		//excuse the worthless icon param for now, will be useful when graphics are required
 		this.agent = agent;
 		//this.icon = icon;

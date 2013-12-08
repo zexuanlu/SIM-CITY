@@ -4,12 +4,13 @@ package restaurant2.gui;
 import restaurant2.Restaurant2CookRole;
 import restaurant2.Restaurant2CustomerRole;
 import restaurant2.Restaurant2HostRole;
+import utilities.Gui;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CookGui implements Gui {
+public class Restaurant2CookGui implements Gui {
 
     private Restaurant2CookRole agent = null;
     
@@ -28,7 +29,7 @@ public class CookGui implements Gui {
     private boolean arrivedAtHome;
 	private String orderText = " "; 
     
-    public CookGui(Restaurant2CookRole agent) {
+    public Restaurant2CookGui(Restaurant2CookRole agent) {
         this.agent = agent;
         grillLabels.put(1, "1");
         grillLabels.put(2, "2");

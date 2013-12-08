@@ -2,6 +2,8 @@ package restaurant2.gui;
 
 import javax.swing.*;
 
+import utilities.Gui;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,17 +73,17 @@ public class Restaurant2AnimationPanel extends JPanel implements ActionListener 
         }
     }
 
-    public void addGui(CustomerGui gui) {
+    public void addGui(Restaurant2CustomerGui gui) {
         guis.add(gui);
     }
 
-    public void addGui(HostGui gui) {
+    public void addGui(Restaurant2HostGui gui) {
         guis.add(gui);
     }
-    public void addGui(WaiterGui gui){
+    public void addGui(Restaurant2WaiterGui gui){
     	guis.add(gui);
     }
-    public void addGui(CookGui gui)
+    public void addGui(Restaurant2CookGui gui)
     {
     	guis.add(gui);
     }

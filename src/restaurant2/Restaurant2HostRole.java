@@ -2,9 +2,10 @@ package restaurant2;
 
 import agent.Agent;
 import agent.Role;
-import restaurant2.gui.HostGui;
+import restaurant2.gui.Restaurant2HostGui;
 import restaurant2.interfaces.Customer;
 import restaurant2.interfaces.Waiter;
+import utilities.restaurant.RestaurantHost;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -18,7 +19,7 @@ import person.interfaces.Person;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class Restaurant2HostRole extends Role {
+public class Restaurant2HostRole extends Role implements RestaurantHost {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -33,7 +34,7 @@ public class Restaurant2HostRole extends Role {
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
 
-	public HostGui hostGui = new HostGui(this);
+	public Restaurant2HostGui hostGui = new Restaurant2HostGui(this);
 
 	public Restaurant2HostRole(String name, Person p) {
 		super(p);
@@ -219,11 +220,11 @@ public class Restaurant2HostRole extends Role {
 	}
 	//utilities
 
-	public void setGui(HostGui gui) {
+	public void setGui(Restaurant2HostGui gui) {
 		hostGui = gui;
 	}
 
-	public HostGui getGui() {
+	public Restaurant2HostGui getGui() {
 		return hostGui;
 	}
 	private class MyCustomer{

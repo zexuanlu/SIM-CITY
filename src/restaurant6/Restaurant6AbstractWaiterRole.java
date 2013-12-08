@@ -9,13 +9,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import person.interfaces.Person;
 import agent.Agent;
+import agent.Role;
 import restaurant6.Restaurant6Order;
 import restaurant6.Restaurant6Order.OrderState;
 import restaurant6.gui.Restaurant6WaiterGui;
 import restaurant6.interfaces.*;
 
-public abstract class Restaurant6AbstractWaiterRole extends Agent implements Restaurant6Waiter {
+public abstract class Restaurant6AbstractWaiterRole extends Role implements Restaurant6Waiter {
 
 	protected List<MyCustomer> waiterCustomers = Collections.synchronizedList(new ArrayList<MyCustomer>());
     
@@ -73,8 +75,8 @@ public abstract class Restaurant6AbstractWaiterRole extends Agent implements Res
     
     public Restaurant6WaiterGui waiterGui = null;
 
-    public Restaurant6AbstractWaiterRole (String name) {
-        super();
+    public Restaurant6AbstractWaiterRole (String name, Person p) {
+        super(p);
 
         this.name = name;
         int x = 200;
@@ -341,7 +343,7 @@ public abstract class Restaurant6AbstractWaiterRole extends Agent implements Res
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	protected boolean pickAndExecuteAnAction() {			
+	public boolean pickAndExecuteAnAction() {			
 		try {
             if (waiterState == MyWaiterState.RequestBreak) {
                 askHostForBreak();

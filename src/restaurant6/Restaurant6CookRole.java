@@ -1,11 +1,14 @@
 package restaurant6;
 
 import agent.Agent;   
+import agent.Role;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import person.interfaces.Person;
 import market.Food;
+import market.interfaces.MarketTruck;
 import restaurant6.Restaurant6Order.OrderState;
 import restaurant6.gui.Restaurant6CookGui;
 import restaurant6.gui.Restaurant6CookGui.GuiState;
@@ -18,7 +21,7 @@ import restaurant6.test.mock.LoggedEvent;
  * Restaurant Cook Agent
  */
 
-public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
+public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	// Timer to cook food
 	Timer cookTimer = new Timer(); 
 	
@@ -111,8 +114,8 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	private final int saladAmount = 3;
 
 	// CookAgent constructor
-	public Restaurant6CookRole(String name) {
-		super();
+	public Restaurant6CookRole(String name, Person p) {
+		super(p);
 		cookName = name;
 		
 		// Set cook state to bored so that he can check inventory if no customer is there
@@ -132,13 +135,6 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		foods.put("Steak", new Restaurant6Food("Steak", steakTime, steakAmount));
 		foods.put("Salad", new Restaurant6Food("Salad", saladTime, saladAmount));
 		foods.put("Pizza", new Restaurant6Food("Pizza", pizzaTime, pizzaAmount));
-		
-		// Initializes check stand timer
-		standTimer.schedule(new TimerTask() {
-			public void run() {
-				msgCheckStand();
-			}
-		}, 1000); 
 	}
 	
 	// Sets the gui for the cook
@@ -156,11 +152,11 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		markets.add(m);
 	}
 
-	// Messages
+	// Messages	
 	// Message telling cook to check the revolving stand
 	public void msgCheckStand() {
 		print("I have to go check the revolving stand for orders!");
-		log.add(new LoggedEvent("I have to go check the revolving stand for orders!"));
+		log.add(new LoggedEvent("I have to go check the revolving stand for orders!"));		
 		checkingStand = true;
 		stateChanged();
 	}
@@ -208,6 +204,16 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 	public void msgCheckInventory() {
 		state = CookState.Bored;
 		stateChanged();
+	}
+
+	public void msgHereisYourFood(MarketTruck t, List<Food> fList) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void msgEmptyStock() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	// Message to receive order from waiter
@@ -555,6 +561,11 @@ public class Restaurant6CookRole extends Agent implements Restaurant6Cook {
 		}
 		
 		cookOrders.remove(o);
+	}
+
+	// Returns role name
+	public String getRoleName() {
+		return "Restaurant 6 Cook";
 	}
 
 }

@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import person.interfaces.Person;
-import restaurant2.gui.WaiterGui;
+import restaurant2.gui.Restaurant2WaiterGui;
 import restaurant2.interfaces.Customer;
 import restaurant2.interfaces.Waiter;
 import agent.Agent;
@@ -38,7 +38,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 	public Semaphore serving = new Semaphore(0, true);
 	public Semaphore onBreakSleep = new Semaphore(0, true);
 	private boolean active = false;
-	public WaiterGui waiterGui = null;
+	public Restaurant2WaiterGui waiterGui = null;
 	protected Restaurant2HostRole host;
 	protected Restaurant2CookRole cook;
 	protected Restaurant2CashierRole cashier;
@@ -108,11 +108,11 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 			}
 		}
 	}
-	public void setGui(WaiterGui gui) {
+	public void setGui(Restaurant2WaiterGui gui) {
 		waiterGui = gui;
 	}
 
-	public WaiterGui getGui() {
+	public Restaurant2WaiterGui getGui() {
 		return waiterGui;
 	}
 	
