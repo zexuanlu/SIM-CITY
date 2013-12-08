@@ -47,16 +47,6 @@ public class PassengerGui implements Gui {
         else if (yPos > yDestination && (xPos == 330 || xPos == 440))
             yPos--;
     	
-    	/*if (xPos < xDestination)
-			xPos++;
-		else if (xPos > xDestination)
-			xPos--;
-
-		if (yPos < yDestination)
-			yPos++;
-		else if (yPos > yDestination)
-			yPos--;*/
-    	
         
         if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
         	System.out.println("Bus Gui msg at bus stop");
