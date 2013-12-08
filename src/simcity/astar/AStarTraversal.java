@@ -50,7 +50,7 @@ public class AStarTraversal extends GraphTraversal
 	//this next pair of loops will create all the possible moves
 	//from pos.
 	//in the square they can move however the hell they want 
-	if ((y>=10 && y<=12) && (x>=18 && x<=20)){
+	if ((y>=9 && y<=13) && (x>=17 && x<=21)){
 		for (int i=-1;i<2;i++){
 			for (int j = -1; j<2;j++){
 				if ((j==0)|| (i==0 && j!=0)){
@@ -79,7 +79,7 @@ public class AStarTraversal extends GraphTraversal
 		}
 		
 	}
-	if (y==10){
+	if (y==9){ //left and down
 		for(int i = -1; i < 1; i++) {//increment for x direction
 		    for (int j = 0; j <= 1; j++) {//increment for y direction
 			    if (true){
@@ -109,9 +109,40 @@ public class AStarTraversal extends GraphTraversal
 		}	
 	}
 	
+	if (y==10){
+		for(int i = -1; i < 1; i++) {//increment for x direction
+		    for (int j = -1; j <= 2; j++) {//increment for y direction
+			    if (true){
+					//create the potential next position
+					int nextX=x+i;
+					int nextY=y+j;
+					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					      (nextX<0 || nextY<0)) continue;
+					Position next = new Position(nextX,nextY);
+					if (inPath(next,path) || (!next.open(grid)) ) continue;  
+
+					AStarNode nodeTemp = new AStarNode(next);
+
+					nodeTemp.setDistTravelled(
+			                        node.getDistTravelled()+pos.distance(next));
+					//update approximate total distance to destination
+					//note that we are computing the straight-line
+					//heuristic on the fly right here from next to endingState
+					nodeTemp.setApproxTotalDist(
+					nodeTemp.getDistTravelled() + next.distance((Position)endingState));	
+					//update internal path
+					nodeTemp.updatePath(path);
+					expandedNodes.add(nodeTemp);
+								    //them directly to nodelist 
+				}
+			}
+		}	
+	}
+	
+	
 	else if (y==11){ //check down or up only
 			int i=0; 
-			for (int j = -1; j<=1;j++){
+			for (int j = -1; j<=2;j++){
 				if (j!=0){
 					//create the potential next position
 					int nextX=x+i;
@@ -138,7 +169,35 @@ public class AStarTraversal extends GraphTraversal
 		}
 	
 	
-	else if (y==12){//only check right or up
+	else if (y==12){//only check right or up & down
+	for (int i=0;i<2;i++){
+		for (int j = -1; j<2;j++){
+			if ((j==0)|| (i==0 && j!=0)){
+				//create the potential next position
+				int nextX=x+i;
+				int nextY=y+j;
+				if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+				      (nextX<0 || nextY<0)) continue;
+				Position next = new Position(nextX,nextY);
+				if (inPath(next,path) || !next.open(grid) ) continue;
+				AStarNode nodeTemp = new AStarNode(next);
+
+				nodeTemp.setDistTravelled(
+		                        node.getDistTravelled()+pos.distance(next));
+				//update approximate total distance to destination
+				//note that we are computing the straight-line
+				//heuristic on the fly right here from next to endingState
+				nodeTemp.setApproxTotalDist(
+					nodeTemp.getDistTravelled() + next.distance((Position)endingState));	
+				//update internal path
+				nodeTemp.updatePath(path);
+				expandedNodes.add(nodeTemp);//could have just added
+							    //them directly to nodelist 
+			}
+		}}}
+	
+	
+	else if (y==13){//only check right or up
 	for (int i=0;i<2;i++){
 		for (int j = -1; j<1;j++){
 			if ((j==0)|| (i==0 && j!=0)){
@@ -166,7 +225,8 @@ public class AStarTraversal extends GraphTraversal
 		}}}
 	
 	
-	else if (x == 18){ //only check the right and down
+	
+	else if (x==17){ //only check the right and down
 		for (int i=0;i<2;i++){
 			for (int j = 0; j<2;j++){
 				if ((j==0)|| (i==0 && j!=0)){
@@ -195,6 +255,36 @@ public class AStarTraversal extends GraphTraversal
 		}
 	}
 	
+	else if (x==18){ //only check the right and down
+		for (int i=-1;i<2;i++){
+			for (int j = 0; j<2;j++){
+				if ((j==0)|| (i==0 && j!=0)){
+					//create the potential next position
+					int nextX=x+i;
+					int nextY=y+j;
+					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					      (nextX<0 || nextY<0)) continue;
+					Position next = new Position(nextX,nextY);
+					if (inPath(next,path) || !next.open(grid) ) continue;
+					AStarNode nodeTemp = new AStarNode(next);
+
+					nodeTemp.setDistTravelled(
+			                        node.getDistTravelled()+pos.distance(next));
+					//update approximate total distance to destination
+					//note that we are computing the straight-line
+					//heuristic on the fly right here from next to endingState
+					nodeTemp.setApproxTotalDist(
+						nodeTemp.getDistTravelled() + next.distance((Position)endingState));	
+					//update internal path
+					nodeTemp.updatePath(path);
+					expandedNodes.add(nodeTemp);//could have just added
+								    //them directly to nodelist 
+				}
+			}
+		}
+	}
+	
+	
 	
 	else if (x==19){ //only check left and right
 		int j = 0; 
@@ -222,7 +312,36 @@ public class AStarTraversal extends GraphTraversal
 				}
 	}
 	
-	else if (x == 20){ //only check up and left	
+	else if (x == 20 ){ //only check up and left	
+		for (int i=-1;i<2;i++){
+			for (int j = -1; j<1;j++){
+				if ((j==0)|| (i==0 && j!=0)){
+					//create the potential next position
+					int nextX=x+i;
+					int nextY=y+j;
+					if ((nextX+1>grid.length || nextY+1>grid[0].length) ||
+					      (nextX<0 || nextY<0)) continue;
+					Position next = new Position(nextX,nextY);
+					if (inPath(next,path) || !next.open(grid) ) continue;
+					AStarNode nodeTemp = new AStarNode(next);
+
+					nodeTemp.setDistTravelled(
+			                        node.getDistTravelled()+pos.distance(next));
+					//update approximate total distance to destination
+					//note that we are computing the straight-line
+					//heuristic on the fly right here from next to endingState
+					nodeTemp.setApproxTotalDist(
+						nodeTemp.getDistTravelled() + next.distance((Position)endingState));	
+					//update internal path
+					nodeTemp.updatePath(path);
+					expandedNodes.add(nodeTemp);//could have just added
+								    //them directly to nodelist 
+				}
+			}
+		}
+	}
+	
+	else if (x == 21 ){ //only check up and left	
 		for (int i=-1;i<1;i++){
 			for (int j = -1; j<1;j++){
 				if ((j==0)|| (i==0 && j!=0)){
