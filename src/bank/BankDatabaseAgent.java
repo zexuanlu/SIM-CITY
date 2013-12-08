@@ -267,5 +267,6 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	//Used for testing
 	public void addAccount(BankCustomer owner, double balance, int accountNumber){
 		accounts.put(accountNumber, new Account(owner, balance, accountNumber));
+		totalMoney += balance;
 	}
 }

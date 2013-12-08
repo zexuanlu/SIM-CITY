@@ -304,6 +304,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void escape(){
 		goToLocation("Outside");
 		bt.msgLeavingBank(this);
+		s = state.none;
 		person.msgBanished();
 	}
 	//Utilities
