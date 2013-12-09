@@ -1298,7 +1298,9 @@ public class PersonAgent extends Agent implements Person{
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
 			//FIX
+
 			System.err.println(currentLocation.getX());
+
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
 			print ("origin position "+p.getX() + " " + p.getY());
@@ -1397,7 +1399,9 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 		// FIX?
-		if (this.wallet.getOnHand() >= 1000.00){
+
+		if (this.wallet.getOnHand() >= 400.00){
+
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
