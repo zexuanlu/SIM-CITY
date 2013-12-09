@@ -1,11 +1,14 @@
 package restaurant3;
 
 import agent.Agent;
+import agent.Role;
 import restaurant3.interfaces.Cashier;
 import restaurant3.interfaces.Waiter;
 
 import java.util.*;
 import java.util.Map.Entry;
+
+import person.interfaces.Person;
 
 public class Restaurant3CashierRole extends Agent implements Cashier {
 
@@ -83,7 +86,7 @@ public class Restaurant3CashierRole extends Agent implements Cashier {
 	}
 
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		if(!bills.isEmpty()){
 			synchronized(bills){
 				
@@ -124,6 +127,10 @@ public class Restaurant3CashierRole extends Agent implements Cashier {
 		print(name + ": calculating and sending change for table " + b.tableNum);
 		b.wtr.msgHereIsChangeReceipt(b.tableNum, (b.payment - b.amount));
 		bills.remove(b);
+	}
+
+	public String getRoleName() {
+		return "Restaurant 3 Cashier";
 	}
 
 }
