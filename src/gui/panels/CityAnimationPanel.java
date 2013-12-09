@@ -18,6 +18,7 @@ import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant1.gui.Restaurant1AnimationPanel;
 import restaurant2.gui.Restaurant2AnimationPanel;
+import restaurant3.gui.Restaurant3AnimationPanel;
 import restaurant4.gui.Restaurant4AnimationPanel;
 import restaurant5.gui.Restaurant5AnimationPanel;
 import restaurant6.gui.Restaurant6AnimationPanel;
@@ -56,7 +57,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public MarketAnimationPanel marketPanel2 = new MarketAnimationPanel();
     public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
     public Restaurant2AnimationPanel rest2Panel = new Restaurant2AnimationPanel();
-    //public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); FIX
+    public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); 
     public Restaurant4AnimationPanel rest4Panel = new Restaurant4AnimationPanel();
     public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
     public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
@@ -163,7 +164,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 panels.add(marketPanel);
                 panels.add(marketPanel2);
                 panels.add(rest1Panel);
+                panels.add(rest2Panel);
+                panels.add(rest3Panel);
                 panels.add(rest4Panel);
+                panels.add(rest5Panel);
+                panels.add(rest6Panel);
                 
             setSize(WIDTH, HEIGHT);
         setVisible(true);
@@ -211,7 +216,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                            BuildPanel.repaint();
                            BuildPanel.add(rest2Panel);
                    }
-                   //FIX - add in restaurant 3
+                   else if(me.getButton() == 1 && restaurant3.contains(me.getX(), me.getY())){
+                       if(BuildPanel.getComponentCount() > 0)
+                                       BuildPanel.remove(BuildPanel.getComponent(0));                           
+                       BuildPanel.repaint();
+                       BuildPanel.add(rest3Panel);
+                   }                  
                    else if(me.getButton() == 1 && restaurant4.contains(me.getX(), me.getY())){
                            if(BuildPanel.getComponentCount() > 0)
                                            BuildPanel.remove(BuildPanel.getComponent(0));                           

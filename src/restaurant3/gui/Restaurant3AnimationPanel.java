@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Restaurant3AnimationPanel extends JPanel implements ActionListener {
 
 	//Dimensions
-	static final int WIDTH = 640;
+	static final int WIDTH = 530;
 	static final int HEIGHT = 480;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
 	
