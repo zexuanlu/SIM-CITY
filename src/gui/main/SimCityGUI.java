@@ -1,6 +1,7 @@
 package gui.main;
 
 import gui.panels.*;
+import utilities.TrafficLightAgent; 
 
 import javax.swing.*;
 
@@ -81,7 +82,7 @@ public class SimCityGUI extends JFrame {
 
         // List of apartment tenant roles
         private List<ApartmentTenantRole> aptTenants;
-        
+        public TrafficLightAgent trafficlightagent = new TrafficLightAgent(); 
         // List of apartment tenant GUIs
         private List<ApartmentTenantGui> aptGuis;
         
@@ -162,6 +163,8 @@ public class SimCityGUI extends JFrame {
 
         public SimCityGUI() {
                 
+        		trafficlightagent.startThread();
+        	
                 // List of apartment tenant roles
                 aptTenants = new ArrayList<ApartmentTenantRole>();
                 
@@ -481,6 +484,7 @@ public class SimCityGUI extends JFrame {
                 bus.addtoRoute(busstop3.name);
                 bus.addtoRoute(busstop2.name);
                 bus.addtoRoute(busstop1.name);
+                bus.setTrafficLightAgent(trafficlightagent);
                 bus.startThread();
                 bus.msgStartBus();
 
@@ -489,6 +493,7 @@ public class SimCityGUI extends JFrame {
                 bus2.addtoRoute(busstop8.name);
                 bus2.addtoRoute(busstop7.name);
                 bus2.addtoRoute(busstop6.name);
+                bus2.setTrafficLightAgent(trafficlightagent);
                 bus2.startThread();
                 bus2.msgStartBus();
 
@@ -693,7 +698,7 @@ public class SimCityGUI extends JFrame {
                 simclock.timeCards.add(rest1.getTimeCard());
                 for (PersonAgent p: people){
                         p.setcitygui(this);
-                        p.startThread();
+                      //  p.startThread();
                 }
                 
                 // Sets the sim world clock to the interaction panel's so events can be created with correct start time
@@ -732,7 +737,7 @@ public class SimCityGUI extends JFrame {
     		AStarTraversal aStarTraversal = new AStarTraversal(grid);
 
     		PersonAgent p  = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
-            PersonGui pgui = new PersonGui(p,100,100);
+            PersonGui pgui = new PersonGui(p,-20, -20);
             p.setGui(pgui);
             p.setAnimationPanel(cityAnimPanel);
             cityAnimPanel.addGui(pgui);
@@ -748,7 +753,7 @@ public class SimCityGUI extends JFrame {
             caragent.gotoPosition(720, 180, 100, 180);
             
         	p  = new PersonAgent("Crash dummy2", citymap, aStarTraversal, 500.00);
-        	pgui = new PersonGui(p,100,100);
+        	pgui = new PersonGui(p,-20,-20);
             p.setGui(pgui);
             p.setAnimationPanel(cityAnimPanel);
             cityAnimPanel.addGui(pgui);

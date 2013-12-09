@@ -1,5 +1,8 @@
 package simcity;
 import java.util.*;
+
+import utilities.TrafficLightAgent;
+
 import java.awt.Dimension;
 import java.util.concurrent.Semaphore;
 
@@ -24,8 +27,10 @@ public class BusRole extends Agent implements Bus {
 	Position originalPosition;
 	AStarTraversal aStar; 
 	
+	private Semaphore greenLight = new Semaphore(0,true);
 	private Semaphore atStop = new Semaphore(0,true);
 	private Semaphore atSlot = new Semaphore(0,true);
+	private TrafficLightAgent trafficlightagent; 
 	
 	private BusGui busgui; 
 	public CityMap citymap = null; 
@@ -39,6 +44,7 @@ public class BusRole extends Agent implements Bus {
 			p = pass; 
 		}
 	}
+	
 	
 	public enum PersonState {
 		waiting, paying, paid, seated, leaving
@@ -69,6 +75,11 @@ public class BusRole extends Agent implements Bus {
 		stateChanged();
 	}
 
+	public void msgLightGreen(){
+		print("GREEN LIGHT RELEASED");
+		greenLight.release();
+	}
+	
 	
 	public void msgCanIComeOnBus(Passenger p){
 		if (busState != BusState.moving){
@@ -356,8 +367,8 @@ public class BusRole extends Agent implements Bus {
 		    	/////////////ADDED
 		    	path.clear();
 		    	aStarNode=null; //added later
-			guiMoveFromCurrentPositionTo(to);
-			break;
+		    	guiMoveFromCurrentPositionTo(to);
+		    	break;
 		    }
 
 		    //Got the required lock. Lets move.
@@ -365,6 +376,52 @@ public class BusRole extends Agent implements Bus {
 		    currentPosition.release(aStar.getOrigGrid());
 		    currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
 		    busgui.moveto(currentPosition.getX(), currentPosition.getY());
+		    
+		    
+		    
+		    if (currentPosition.getX()==16 && (currentPosition.getY()==12 || currentPosition.getY()==13)){
+		    	trafficlightagent.msgCheckLight(this,  busgui.xPos, busgui.yPos);
+		    	try {
+					greenLight.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	
+	    	}
+	    
+		    else if (currentPosition.getX()==22 && (currentPosition.getY()==9 || currentPosition.getY()==10)){
+		    	trafficlightagent.msgCheckLight(this,  busgui.xPos, busgui.yPos);
+		    	try {
+					greenLight.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    else if (currentPosition.getY()==8 && (currentPosition.getX()==17 || currentPosition.getX()==18)){
+		    	trafficlightagent.msgCheckLight(this,  busgui.xPos, busgui.yPos);
+		    	try {
+					greenLight.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    else if (currentPosition.getY()==14 && (currentPosition.getX()==20 || currentPosition.getX()==21)){
+		    	trafficlightagent.msgCheckLight(this,  busgui.xPos, busgui.yPos);
+		    	try {
+					greenLight.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    
+		    
+		    
+		    
+		    
 			try {
 				atSlot.acquire();
 			} catch (InterruptedException e) {
@@ -375,6 +432,10 @@ public class BusRole extends Agent implements Bus {
 		
 	    private void GoToBusStop(int x, int y){
 	    	guiMoveFromCurrentPositionTo(new Position((x/scale),(y/scale)));
+	    }
+	    
+	    public void setTrafficLightAgent(TrafficLightAgent tla){
+	    	trafficlightagent = tla; 
 	    }
 	    
 		

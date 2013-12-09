@@ -11,7 +11,7 @@ import agent.Agent;
 public class TrafficLightAgent extends Agent {    
 
 	public List<MyCar> myCar = new ArrayList<MyCar>();
-	public List<MyBus> myBus = new ArrayList<MyBus>();
+	public List<MyBus> myBus = Collections.synchronizedList(new ArrayList<MyBus>());
 	public List<MyTruck> myTruck = new ArrayList<MyTruck>();
 	public List<MyPeople> myPeople = new ArrayList<MyPeople>();
 
@@ -20,13 +20,22 @@ public class TrafficLightAgent extends Agent {
 	private boolean Plight = false;
 	
 	private int lightCount = 0;
+	 Timer timer = new Timer();
 
 	////////////////////////////////////////////////////remember synchronized list!!!!!!!!!!!!!!!!!!!!
 	
 	public TrafficLightAgent(){
-		 Timer timer = new Timer();
-		 timer.scheduleAtFixedRate(new RemindTask(), 0, 
-			        1 * 1000); //subsequent rate
+	//	 timer.scheduleAtFixedRate(new RemindTask(), 0, 
+		//	        1 * 1000); //subsequent rate
+		 
+		 
+			timer.schedule(new TimerTask() {
+				public void run() {
+					RemindTask();
+				}
+			},
+				2000);//
+		 
 	}
 	
 	public class MyCar {
@@ -67,23 +76,23 @@ public class TrafficLightAgent extends Agent {
 		}
 	}
 
-	enum state {leftright, updown}
+	enum state {leftright, updown, done}
 
 	public void msgCheckLight(CarAgent c, int x, int y){
-		if (x<= 1 && x >= 3){
+		if (x<= 440 && x >= 340){
 			myCar.add(new MyCar(c, state.updown));
 		}
-		else if (y<= 1 && y >= 3){
+		else if (y<= 280 && y >= 180){
 			myCar.add(new MyCar(c, state.leftright));
 		}
 		stateChanged();
 	}
 
 	public void msgCheckLight(Bus bus, int x, int y){
-		if (x<= 1 && x >= 3 ){
+		if (x<= 440 && x >= 340 ){
 			myBus.add(new MyBus(bus, state.updown));
 		}
-		else if (y<= 1 && y >= 3 ){
+		else if (y<= 280 && y >= 180 ){
 			myBus.add(new MyBus(bus, state.leftright));
 		}
 		stateChanged();
@@ -110,13 +119,13 @@ public class TrafficLightAgent extends Agent {
 
 	protected boolean pickAndExecuteAnAction() {
 
-		if(Hlight){
-			GoHorizontal();
-			return true;
-		}
-
 		if(Vlight){
 			GoVertical();
+			return true;
+		}
+		
+		if(Hlight){
+			GoHorizontal();
 			return true;
 		}
 
@@ -128,19 +137,24 @@ public class TrafficLightAgent extends Agent {
 	}
 
 	private void GoHorizontal(){
-
 		for(MyTruck t: myTruck){
 			if(t.s == state.leftright){
 				//message truck
 				myTruck.remove(t);
 			}
 		}
+		
+		synchronized(myBus){
 		for(MyBus bus: myBus){
 			if(bus.s == state.leftright){
-				//message bus
-				myBus.remove(bus);
+				bus.bus.msgLightGreen();
+				bus.s = state.done; 
+			//	myBus.remove(bus);
+			}
 			}
 		}
+		
+		
 		for(MyCar car: myCar){
 			if(car.s == state.leftright){
 				//message car
@@ -151,18 +165,21 @@ public class TrafficLightAgent extends Agent {
 
 	}
 
-	private void GoVertical(){
-
+	private void GoVertical(){	
 		for(MyTruck t: myTruck){
 			if(t.s == state.updown){
 				//message truck
 				myTruck.remove(t);
 			}
 		}
-		for(MyBus bus: myBus){
-			if(bus.s == state.updown){
-				//message bus
-				myBus.remove(bus);
+		synchronized(myBus){
+			for(MyBus bus: myBus){
+				if(bus.s == state.updown){
+					bus.bus.msgLightGreen();
+					bus.s = state.done; 
+
+//					myBus.remove(bus);
+				}
 			}
 		}
 		for(MyCar car: myCar){
@@ -181,9 +198,16 @@ public class TrafficLightAgent extends Agent {
 		}
 	}
 	
-	class RemindTask extends TimerTask{
-
-		public void run() {
+		public void RemindTask() {
+			System.out.println("TrafficLightAgent remind task "+ lightCount);
+		
+			Hlight = false;
+			Vlight= false;
+			Plight = false;
+			
+			try { Thread.sleep(3000); }
+			catch (Exception e){}
+			
 			int s = lightCount;
 			if(lightCount < 2){
 				lightCount ++;
@@ -191,24 +215,35 @@ public class TrafficLightAgent extends Agent {
 			else{
 				lightCount = 0;
 			}
-			if(s == 0){
+			if(lightCount == 0){ //horizontal
 				Hlight = true;
 				Vlight = false;
 				Plight = false;
 			}
-			else if(s == 1){
+			else if(lightCount == 1){ //person
 				Hlight = false;
 				Vlight = false;
 				Plight = true;
 			}
-			else if(s == 2){
-				Hlight = true;
-				Vlight = false;
+			else if(lightCount == 2){ //vertical
+				Hlight = false;
+				Vlight = true;
 				Plight = false;
 			}
+
+
+			
+			
+			timer.schedule(new TimerTask() {
+				public void run() {
+					RemindTask();
+				}
+			},
+				8000);//
+			
+			stateChanged();
 			
 		}
 		
 	}
 
-}
