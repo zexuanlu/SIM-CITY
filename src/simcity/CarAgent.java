@@ -27,7 +27,7 @@ import utilities.TrafficLightAgent;
 
 //Break this sequence and you will screw up his disappearing/reappearing
 public class CarAgent extends Agent {
-	private TrafficLightAgent trafficlightagent; 
+	 private TrafficLightAgent trafficlightagent; 
 	 public int percentCrash = 20; 
 	 boolean crashed = false; 
 	 Position currentPosition;
