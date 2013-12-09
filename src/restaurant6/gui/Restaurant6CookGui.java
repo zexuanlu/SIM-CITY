@@ -9,15 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Restaurant6CookGui implements Gui {
-
+	
     private Restaurant6CookRole agent = null;
 //    RestaurantGui gui;
 
-    private int xPos = 320, yPos = 120; // Default cook position
-    private int xDestination = 320, yDestination = 120; // Default start position
+    private int xPos = 400, yPos = 40; // Default cook position
+    private int xDestination = 400, yDestination = 40; // Default start position
     
-    private int homeX = 320;
-    private int homeY = 120;
+    private int homeX = 420;
+    private int homeY = 60;
     
     private static class MyGrill {
     	private int grillXPos;
@@ -90,10 +90,10 @@ public class Restaurant6CookGui implements Gui {
     	cookGuiState = GuiState.DoingNothing;
     	
     	synchronized(grills) {
-    		grills.put("Chicken", new MyGrill(400, 150));
-    		grills.put("Steak", new MyGrill(440, 150));
-    		grills.put("Pizza", new MyGrill(480, 150));
-    		grills.put("Salad", new MyGrill(520, 150));
+    		grills.put("Chicken", new MyGrill(450, 110));
+    		grills.put("Steak", new MyGrill(450, 150));
+    		grills.put("Pizza", new MyGrill(450, 190));
+    		grills.put("Salad", new MyGrill(450, 230));
     	}
     }
     
@@ -109,7 +109,7 @@ public class Restaurant6CookGui implements Gui {
         else if (yPos > yDestination)
             yPos--;
         
-        if ((xPos == 560 && yPos == 150) && (cookGuiState == GuiState.DoingNothing || cookGuiState == GuiState.WaitingForFoodToCook)) {
+        if ((xPos == 450 && yPos == 270) && (cookGuiState == GuiState.DoingNothing || cookGuiState == GuiState.WaitingForFoodToCook)) {
         	agent.msgAtFridge();
         }
         
@@ -164,13 +164,13 @@ public class Restaurant6CookGui implements Gui {
     
     public void DoGoToFridge(String c) {
     	choice = c;
-    	xDestination = 560;
-    	yDestination = 150;
+    	xDestination = 450;
+    	yDestination = 270;
     }
     
     public void DoGoToPlatingArea() {
-    	xDestination = 330;
-    	yDestination = 150;
+    	xDestination = 450;
+    	yDestination = 40;
     }
     
     public void DoGoToHome() {

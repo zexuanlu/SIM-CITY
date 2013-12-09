@@ -32,7 +32,7 @@ public class Restaurant6WaiterGui implements Gui {
     
     // Pickup spot
     private final int pickUpX = 30;
-    private final int pickUpY = 250;
+    private final int pickUpY = 150;
     
     public void msgRequestedBreak() {
     	requestedBreak = true;
@@ -72,8 +72,8 @@ public class Restaurant6WaiterGui implements Gui {
     	isDelivering = p;
     }
     
-    public final int tableXPos = 50;
-    public final int tableYPos = 50;
+    public final int tableXPos = 30;
+    public final int tableYPos = 360;
 
     public Restaurant6WaiterGui(Restaurant6AbstractWaiterRole w, int x, int y) { //, RestaurantGui gui, int x, int y) {
     	agent = w;
@@ -194,14 +194,14 @@ public class Restaurant6WaiterGui implements Gui {
     }
     
     public void DoGoToCook() {
-    	xDestination = 300;
-        yDestination = 120;
+    	xDestination = 480;
+        yDestination = 40;
         command = Command.GoingToCook;
     }
     
     public void DoGoToPlate() {
-    	xDestination = 300;
-    	yDestination = 150;
+    	xDestination = 450;
+    	yDestination = 40;
     	command = Command.GoingToPlate;
     }
     

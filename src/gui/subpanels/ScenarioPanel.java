@@ -607,7 +607,13 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			people.get(j).startThread();
 		}
 		
-//		clock.bankTimeCard = bank.getTimeCard();
+		// Starts the thread of each timecard
+		bank.getTimeCard().startThread();
+		market.getTimeCard().startThread();
+		market2.getTimeCard().startThread();
+		rest1.getTimeCard().startThread();
+		
+		clock.timeCards.add(bank.getTimeCard());
 		clock.timeCards.add(market.getTimeCard());
 		clock.timeCards.add(market2.getTimeCard());
 		clock.timeCards.add(rest1.getTimeCard());
