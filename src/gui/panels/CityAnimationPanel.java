@@ -49,37 +49,37 @@ import java.util.Map;
 
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
-        private BuildingAnimationPanel BuildPanel;
-        public BankAnimationPanel bankPanel = new BankAnimationPanel();
-        public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
-        public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
-        public MarketAnimationPanel marketPanel2 = new MarketAnimationPanel();
-        public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
-        public Restaurant2AnimationPanel rest2Panel = new Restaurant2AnimationPanel();
-        //public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); FIX
-        public Restaurant4AnimationPanel rest4Panel = new Restaurant4AnimationPanel();
-        public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
-        public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
-        
-        public ImageIcon img = new ImageIcon("src/image/market1.png");
-        public Image m1 = img.getImage();
-        public ImageIcon img1 = new ImageIcon("src/image/bank.png");
-        public Image b = img1.getImage();
-        public ImageIcon img2 = new ImageIcon("src/image/house1.png");
-        public Image h1 = img2.getImage();
-        public ImageIcon img3 = new ImageIcon("src/image/market2.png");
-        public Image m2 = img3.getImage();
-        public ImageIcon img4 = new ImageIcon("src/image/house2.png");
-        public Image h2 = img4.getImage();
-        public ImageIcon img5 = new ImageIcon("src/image/house3.png");
-        public Image h3 = img5.getImage();
-        
-        public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
-        public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
-        public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
-        public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
-        public HouseAnimationPanel house5Panel = new HouseAnimationPanel(5);
-        private List<JPanel> panels = new ArrayList<JPanel>();
+    private BuildingAnimationPanel BuildPanel;
+    public BankAnimationPanel bankPanel = new BankAnimationPanel();
+    public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
+    public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
+    public MarketAnimationPanel marketPanel2 = new MarketAnimationPanel();
+    public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
+    public Restaurant2AnimationPanel rest2Panel = new Restaurant2AnimationPanel();
+    //public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); FIX
+    public Restaurant4AnimationPanel rest4Panel = new Restaurant4AnimationPanel();
+    public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
+    public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
+    
+    public ImageIcon img = new ImageIcon("src/image/market1.png");
+    public Image m1 = img.getImage();
+    public ImageIcon img1 = new ImageIcon("src/image/bank.png");
+    public Image b = img1.getImage();
+    public ImageIcon img2 = new ImageIcon("src/image/house1.png");
+    public Image h1 = img2.getImage();
+    public ImageIcon img3 = new ImageIcon("src/image/market2.png");
+    public Image m2 = img3.getImage();
+    public ImageIcon img4 = new ImageIcon("src/image/house2.png");
+    public Image h2 = img4.getImage();
+    public ImageIcon img5 = new ImageIcon("src/image/house3.png");
+    public Image h3 = img5.getImage();
+    
+    public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
+    public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
+    public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
+    public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
+    public HouseAnimationPanel house5Panel = new HouseAnimationPanel(5);
+    private List<JPanel> panels = new ArrayList<JPanel>();
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
@@ -136,12 +136,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 
                 // Adding apartment buildings to the animation panel
                 for (int j = 0; j < 70; j = j + 20) {
-                        for (int k = 0; k < 70; k = k + 20) {
-                                apartmentComplex1Components.add(new Rectangle2D.Double((int)apartmentComplex1.getX()+k, (int)apartmentComplex1.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                                apartmentComplex2Components.add(new Rectangle2D.Double((int)apartmentComplex2.getX()+k, (int)apartmentComplex2.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                                apartmentComplex3Components.add(new Rectangle2D.Double((int)apartmentComplex3.getX()+k, (int)apartmentComplex3.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                                apartmentComplex4Components.add(new Rectangle2D.Double((int)apartmentComplex4.getX()+k, (int)apartmentComplex4.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                        }
+                    for (int k = 0; k < 70; k = k + 20) {
+                        apartmentComplex1Components.add(new Rectangle2D.Double((int)apartmentComplex1.getX()+k, (int)apartmentComplex1.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                        apartmentComplex2Components.add(new Rectangle2D.Double((int)apartmentComplex2.getX()+k, (int)apartmentComplex2.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                        apartmentComplex3Components.add(new Rectangle2D.Double((int)apartmentComplex3.getX()+k, (int)apartmentComplex3.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                        apartmentComplex4Components.add(new Rectangle2D.Double((int)apartmentComplex4.getX()+k, (int)apartmentComplex4.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                    }
                 }
                 
                 //Panel size initiations
