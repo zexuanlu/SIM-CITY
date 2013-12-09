@@ -6,12 +6,12 @@ import restaurant2.Restaurant2CustomerRole.AgentEvent;
 import restaurant2.Restaurant2CustomerRole.AgentState;
 
 
-public interface Customer {
+public interface Restaurant2Customer {
 	//EventLog log = new EventLog();
 	
 	public abstract void gotHungry();
 
-	public abstract void msgSitAtTable(Waiter waiter, int tableNum, Menu menu);
+	public abstract void msgSitAtTable(Restaurant2Waiter waiter, int tableNum, Menu menu);
 	
 	public abstract void msgYouHaveToWait();
 	

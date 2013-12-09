@@ -14,17 +14,19 @@ public class Restaurant2AnimationPanel extends JPanel implements ActionListener 
 
     private final int WINDOWX = 540;
     private final int WINDOWY = 480;
-    private final int tablex = 250;
-    private final int tabley = 100;
-    private final int tablex2 = 350;
-    private final int tabley2 = 100;
+    private final int tablex = 50;
+    private final int tabley = 400;
+    private final int tablex2 = 150;
+    private final int tabley2 = 400;
     private final int tablex3 = 250;
-    private final int tabley3 = 200;
+    private final int tabley3 = 400;
     private final int tablex4 = 350;
-    private final int tabley4 = 200;
+    private final int tabley4 = 400;
     private final int tableW = 50;
-    private final int CookStationx = 550;
+    private final int CookStationx = 350;
     private final int CookStationy = 30;
+    private final int GrillStationx = 450;
+    private final int GrillStationy = 30;
     private Image bufferImage;
     private Dimension bufferSize;
 
@@ -57,8 +59,9 @@ public class Restaurant2AnimationPanel extends JPanel implements ActionListener 
         g2.fillRect(tablex2, tabley2, tableW, tableW);
         g2.fillRect(tablex3, tabley3, tableW, tableW);
         g2.fillRect(tablex4, tabley4, tableW, tableW);
+        g2.setColor(Color.GRAY);
         g2.fillRect(CookStationx, CookStationy, 25, 133);
-        g2.fillRect(650, 30, 25, 133);
+        g2.fillRect(GrillStationx, GrillStationy, 25, 133);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

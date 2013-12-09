@@ -15,11 +15,11 @@ public class MarketEmployeeGui implements Gui{
     private int distance= 20;
     private int xTable = 180, yTable = 180;
     private int xTruck = 530, yTruck = 180;
-    private int xSteak =300, ySteak = 140;
-    private int xChicken = 400, yChicken = 140;
-    private int xCar = 500, yCar = 140;
-    private int xPizza = 300, yPizza = 240;
-    private int xSalad = 400, ySalad = 240;
+    private int xSteak =250, ySteak = 140;
+    private int xChicken = 270, yChicken = 140;
+    private int xCar = 290, yCar = 140;
+    private int xPizza = 310, yPizza = 140;
+    private int xSalad = 330, ySalad = 140;
     private boolean takeFood = false;
     private boolean sendFood = false;
 	public boolean isPresent;
@@ -105,24 +105,24 @@ public class MarketEmployeeGui implements Gui{
 	
 	public void DoCollectFood(String type){
 		if(type == "Steak"){
-			xDestination = 300;
+			xDestination = 250;
 			yDestination = 140;
 		}
 		if(type == "Chicken"){
-			xDestination = 400;
+			xDestination = 270;
 			yDestination = 140;
 		}
 		if(type == "Car"){
-			xDestination = 500;
+			xDestination = 290;
 			yDestination = 140;
 		}
 		if(type == "Pizza"){
-			xDestination = 300;
-			yDestination = 240;
+			xDestination = 310;
+			yDestination = 140;
 		}
 		if(type == "Salad"){
-			xDestination = 400;
-			yDestination = 240;
+			xDestination = 330;
+			yDestination = 140;
 		}
 		takeFood = true;
 	}

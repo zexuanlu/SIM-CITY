@@ -1,10 +1,10 @@
 package restaurant2;
 
 import restaurant2.gui.Restaurant2CustomerGui;
-import restaurant2.interfaces.Cashier;
-import restaurant2.interfaces.Customer;
-import restaurant2.interfaces.Market;
-import restaurant2.interfaces.Waiter;
+import restaurant2.interfaces.Restaurant2Cashier;
+import restaurant2.interfaces.Restaurant2Customer;
+import restaurant2.interfaces.Restaurant2Market;
+import restaurant2.interfaces.Restaurant2Waiter;
 import restaurant2.Restaurant2CookRole.MarketState;
 import utilities.restaurant.RestaurantCashier;
 import agent.Agent;
@@ -24,7 +24,7 @@ import person.interfaces.Person;
 /**
  * Restaurant customer agent.
  */
-public class Restaurant2CashierRole extends Role implements Cashier{
+public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 
 	// agent correspondents
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
@@ -56,7 +56,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	}
 
 	// Messages
-	public void msgComputeCheck(String orderString, Waiter waiter, Customer customer){
+	public void msgComputeCheck(String orderString, Restaurant2Waiter waiter, Restaurant2Customer customer){
 		Check check = new Check(orderString);
 		print("This check equates to "+check.getCheck());
 		MyWaiter mw = new MyWaiter(waiter, check, customer);
@@ -67,7 +67,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		bills.add(bill);
 		stateChanged();
 	}
-	public void msgCheckFromMarket(Market m, Check check){
+	public void msgCheckFromMarket(Restaurant2Market m, Check check){
 		MyMarket mm = new MyMarket(m, check);
 		markets.add(mm);
 		Bill bill = new Bill(m, check);
@@ -75,7 +75,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 
 		stateChanged();
 	}
-	public void msgPayment(Customer c, int check){
+	public void msgPayment(Restaurant2Customer c, int check){
 		for(MyCustomer mc : customers){
 			if(mc.getCustomer() == c){
 				print(c+" has paid for his/her meal");
@@ -204,20 +204,20 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		markets.remove(mm);
 	}
 	public class Bill{
-		public Customer customer;
-		public Waiter waiter;
-		public Market market;
+		public Restaurant2Customer customer;
+		public Restaurant2Waiter waiter;
+		public Restaurant2Market market;
 		public Check check;
 		public BillState state;
 		public int remaining;
-		Bill(Customer c, Waiter w, Check chk){
+		Bill(Restaurant2Customer c, Restaurant2Waiter w, Check chk){
 			customer = c;
 			waiter = w;
 			check = chk;
 
 			state = BillState.Pending;
 		}
-		Bill(Market m, Check chk){
+		Bill(Restaurant2Market m, Check chk){
 			market = m;
 			check = chk;
 
@@ -226,17 +226,17 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 		void setState(BillState bs){
 			state = bs;
 		}
-		Waiter getWaiter(){
+		Restaurant2Waiter getWaiter(){
 			return waiter;
 		}
 		public boolean checkBill(){
 			//ggg
 			return true;
 		}
-		public Customer getCustomer(){
+		public Restaurant2Customer getCustomer(){
 			return customer;
 		}
-		public Market getMarket(){
+		public Restaurant2Market getMarket(){
 			return market;
 		}
 		public Check getCheck(){
@@ -248,28 +248,28 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	}
 	public class MyMarket {
 
-		private Market market;
+		private Restaurant2Market market;
 		public MarketState state;
 		public Check check;
 
-		MyMarket(Market m, Check c){
+		MyMarket(Restaurant2Market m, Check c){
 			market = m;
 			state = MarketState.Unpaid;
 			check = c;
 		}
-		public Market getMarket(){
+		public Restaurant2Market getMarket(){
 			return market;
 		}
 
 	}
 	public class MyWaiter {
 
-		private Waiter waiter;
-		private Customer customer;
+		private Restaurant2Waiter waiter;
+		private Restaurant2Customer customer;
 		private Check check;
 		private boolean hasCheck;
 
-		MyWaiter(Waiter waiter, Check check, Customer customer)
+		MyWaiter(Restaurant2Waiter waiter, Check check, Restaurant2Customer customer)
 		{
 			System.out.println(check.getCheck());
 			this.waiter = waiter;
@@ -277,10 +277,10 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 			this.customer = customer;
 			hasCheck = false;
 		}
-		public Waiter getWaiter(){
+		public Restaurant2Waiter getWaiter(){
 			return waiter;
 		}
-		public Customer getCustomer(){
+		public Restaurant2Customer getCustomer(){
 			return customer;
 		}
 		public Check getCheck(){
@@ -296,16 +296,16 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	}
 	public class MyCustomer {
 
-		private Customer customer;
+		private Restaurant2Customer customer;
 		private Check checkToPay;
 		private boolean hasPayed;
 
-		MyCustomer (Customer customer, Check ctp){
+		MyCustomer (Restaurant2Customer customer, Check ctp){
 			this.customer = customer;
 			this.checkToPay = ctp;
 			hasPayed = false;
 		}
-		public Customer getCustomer(){
+		public Restaurant2Customer getCustomer(){
 			return customer;
 		}
 		public Check getCheck(){
@@ -321,7 +321,7 @@ public class Restaurant2CashierRole extends Role implements Cashier{
 	
 	//FIX
 	@Override
-	public void msgPayment(Customer c, Check check) {
+	public void msgPayment(Restaurant2Customer c, Check check) {
 		// TODO Auto-generated method stub
 
 	}

@@ -352,12 +352,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(14).addRole(rest1Waiter, "Waiter 1 Shift 1");
 		
 //		// Second restaurant's employees: FIRST SHIFT
-//		Restaurant2HostRole rest2Host = new Restaurant2HostRole("Host 2 Shift 1", people.get(15));
-//		Restaurant2CookRole rest2Cook = new Restaurant2CookRole("Cook 2 Shift 1", people.get(16));
-//		Restaurant2CashierRole rest2Cashier = new Restaurant2CashierRole("Cashier 2 Shift 1", people.get(17));
-//		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
-//		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
-//		
+		Restaurant2HostRole rest2Host = new Restaurant2HostRole("Host 2 Shift 1", people.get(15));
+		Restaurant2CookRole rest2Cook = new Restaurant2CookRole("Cook 2 Shift 1", people.get(16));
+		Restaurant2CashierRole rest2Cashier = new Restaurant2CashierRole("Cashier 2 Shift 1", people.get(17));
+		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
+		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
+		
 //		// Fourth restaurant's employees: FIRST SHIFT 
 //		Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", people.get(20));
 //		Restaurant4CookRole rest4Cook = new Restaurant4CookRole("Cook 4 Shift 1", people.get(21));
@@ -427,15 +427,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		r1cg1.isPresent = false;
 		rest1Cook.setGui(r1cg1);
 		
-////		// Second Restaurant: FIRST SHIFT
-////		Restaurant2WaiterGui r2sharedwg1 = new Restaurant2WaiterGui(rest2SDWaiter);
-////		rest2SDWaiter.setGui(r2sharedwg1);
-////		
-////		Restaurant2WaiterGui r2wg1 = new Restaurant2WaiterGui(rest2Waiter);
-////		rest2Waiter.setGui(r2wg1);
-////		
-////		Restaurant2CookGui r2cg1 = new Restaurant2CookGui(rest2Cook);
-////		rest2Cook.setGui(r2cg1);
+////	// Second Restaurant: FIRST SHIFT
+		Restaurant2WaiterGui r2sharedwg1 = new Restaurant2WaiterGui(rest2SDWaiter);
+		rest2SDWaiter.setGui(r2sharedwg1);
+		
+		Restaurant2WaiterGui r2wg1 = new Restaurant2WaiterGui(rest2Waiter);
+		rest2Waiter.setGui(r2wg1);
+		
+		Restaurant2CookGui r2cg1 = new Restaurant2CookGui(rest2Cook);
+		rest2Cook.setGui(r2cg1);
 ////		
 ////		// Fourth Restaurant: FIRST SHIFT
 ////		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, null, -20, -20);
@@ -476,7 +476,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Market market = new Market("Pokemart", (MarketCashierRole)roles.get(6), new TimeCard(), 
                         new Position(130, 170), LocationType.Market);
         Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
-//        Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(270, 170), LocationType.Restaurant);
+        Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
         //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
         
         // Second quadrant locations
@@ -505,7 +505,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		locations.add(market);
 		locations.add(market2);
 		locations.add(rest1);
-//		locations.add(rest2);
+		locations.add(rest2);
 //		locations.add(rest4);
 //		locations.add(rest5);
 //		locations.add(rest6);

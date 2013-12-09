@@ -413,8 +413,8 @@ public class SimCityGUI extends JFrame {
                  */
                 
 
-                truck = new MarketTruckAgent();
-                MarketTruckGui truckGui = new MarketTruckGui(truck, bldngAnimPanel);
+                truck = new MarketTruckAgent(1);
+                MarketTruckGui truckGui = new MarketTruckGui(truck, bldngAnimPanel,1);
                 truck.setGui(truckGui);
                 truck.startThread();
                 cityAnimPanel.addGui(truckGui);
