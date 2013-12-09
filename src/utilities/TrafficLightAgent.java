@@ -10,10 +10,10 @@ import agent.Agent;
 
 public class TrafficLightAgent extends Agent {    
 
-	public List<MyCar> myCar = new ArrayList<MyCar>();
+	public List<MyCar> myCar = Collections.synchronizedList(new ArrayList<MyCar>());
 	public List<MyBus> myBus = Collections.synchronizedList(new ArrayList<MyBus>());
-	public List<MyTruck> myTruck = new ArrayList<MyTruck>();
-	public List<MyPeople> myPeople = new ArrayList<MyPeople>();
+	public List<MyTruck> myTruck = Collections.synchronizedList(new ArrayList<MyTruck>());
+	public List<MyPeople> myPeople = Collections.synchronizedList(new ArrayList<MyPeople>());
 
 	private boolean Hlight = false;
 	private boolean Vlight = true;

@@ -42,4 +42,10 @@ public class MockBusRole extends Mock implements Bus{
 		}
 		return false; 
 	}
+
+	@Override
+	public void msgLightGreen() {
+		// TODO Auto-generated method stub
+		
+	}
 }

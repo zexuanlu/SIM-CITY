@@ -6,7 +6,7 @@ import person.interfaces.Person;
 
 public class Restaurant2SDWaiterRole extends Restaurant2AbstractWaiterRole{
 
-	Restaurant2RevolvingStand revolver = new Restaurant2RevolvingStand();
+	public Restaurant2RevolvingStand revolver;
 
 	public Restaurant2SDWaiterRole(String name, Person p) {
 		super(name, p);

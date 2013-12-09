@@ -1,6 +1,7 @@
 package simcity.gui;
 
-import simcity.BusRole; 
+import simcity.BusRole.myPassenger;
+import simcity.*;
 import simcity.astar.*; 
 import utilities.Gui;
 
@@ -8,6 +9,8 @@ import java.util.*;
 import java.awt.*; 
 import java.util.List; 
 import java.awt.Graphics2D;
+
+import person.PersonAgent;
 
 public class BusGui implements Gui {
 	int scale = 20; 
@@ -43,6 +46,9 @@ public class BusGui implements Gui {
 		}
 		else if (NorthSouth){
 			g.fillRect(xPos, yPos, 20, 20);
+		}
+		for(int i = 0; i < myBus.passengers.size(); i++){
+			g.drawString(((PersonAgent)((PassengerRole)myBus.passengers.get(i).p).person).getName(), xPos-15, yPos-(10*i));
 		}
     }
 	

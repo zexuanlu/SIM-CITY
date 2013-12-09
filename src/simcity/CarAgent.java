@@ -31,6 +31,7 @@ public class CarAgent extends Agent {
 	int WIDTHTOTAL = 740; 
 	int HEIGHTTOTAL = 480; 
 	private TrafficLightAgent trafficlightagent; 
+
 	 public int percentCrash = 20; 
 	 boolean crashed = false; 
 	 Position currentPosition;
@@ -48,7 +49,7 @@ public class CarAgent extends Agent {
      
      int destinationX;
      int destinationY;
-     PersonAgent myPerson; 
+     public PersonAgent myPerson; 
      public CarAgent(AStarTraversal a, PersonAgent mp){
              aStar = a;
              myPerson = mp;
