@@ -47,7 +47,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 	private int nTables = Restaurant3HostRole.NTABLES;
 	
 	//Animation utilities
-	Timer animTimer = new Timer(5, this);
+	//Timer animTimer = new Timer(5, this);
 	private List<Gui> guis = new ArrayList<Gui>();
 	
 	public Restaurant3AnimationPanel() {
@@ -57,7 +57,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 		this.setMinimumSize(size);
 		
 		//Start timer for animation
-		animTimer.start();
+		//animTimer.start();
 	}
 
 	@Override

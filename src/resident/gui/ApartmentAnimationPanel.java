@@ -41,8 +41,8 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         
         this.setBorder(BorderFactory.createTitledBorder("Apartment " + aptNum));
  
-    	Timer timer = new Timer(8, this);
-    	timer.start();
+ //   	Timer timer = new Timer(8, this);
+  //  	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
