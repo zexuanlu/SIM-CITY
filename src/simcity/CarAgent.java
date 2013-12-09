@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 
+
+
 //import person.Position;
 import simcity.astar.AStarNode;
 import person.PersonAgent; 
@@ -10,6 +12,7 @@ import simcity.astar.AStarTraversal;
 import simcity.astar.Position;
 import agent.Agent; 
 import simcity.gui.CarGui; 
+import utilities.TrafficLightAgent;
 
 //CAR AGENT HAS NO TEST SINCE NO WAY TO TEST IT WITHOUT GUI
 
@@ -24,6 +27,8 @@ import simcity.gui.CarGui;
 
 //Break this sequence and you will screw up his disappearing/reappearing
 public class CarAgent extends Agent {
+	private TrafficLightAgent trafficlightagent; 
+	 public int percentCrash = 30; 
 	 boolean crashed = false; 
 	 Position currentPosition;
      Position originalPosition;
@@ -32,6 +37,7 @@ public class CarAgent extends Agent {
      String name; 
      int heightofStreet = 20;
      public CarGui myGui;
+ 	private Semaphore greenLight = new Semaphore(0,true);
      private Semaphore atSlot = new Semaphore(0,true);
      
      public enum CarState {goTo, moving, arrived}
@@ -58,6 +64,13 @@ public class CarAgent extends Agent {
      public void msgatSlot(){
              atSlot.release();
      }
+     
+     
+ 	public void msgLightGreen(){
+		print("GREEN LIGHT RELEASED");
+		greenLight.release();
+	}
+	
      
      public void msgatDestination(){
  		person.Position p = null;
@@ -170,23 +183,28 @@ public class CarAgent extends Agent {
       while (!gotPermit && attempts < 10) {
              //System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
 
-             //Wait for 1sec and try again to get lock.
-          System.out.println("CRASHED");
-          crashed = true; 
-          myGui.Collide();
-          myPerson.crashed();
+             //Wait for 1sec and try again to get lock.          
+          double chancecrash = Math.random() % 100;
+          
+          if (chancecrash <= percentCrash){  
+        	  crashed = true; 
+              myGui.Collide();
+              myPerson.crashed();
 
-             try { Thread.sleep(1000); }
-             
-             catch (Exception e){}
+                 try { Thread.sleep(1000); }
+                 
+                 catch (Exception e){}
 
-//             gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
-             attempts ++;
-             
-             aStar.crashed();
-             crashed = true; 
-             myGui.gotoDeadPos();
-             return; 
+//                 gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
+                 myGui.gotoDeadPos();
+                 return; 	    
+          }
+          else {
+              try { Thread.sleep(1000); } 
+              catch (Exception e){}
+              attempts ++;
+              aStar.crashed();
+          }
       }
 
       //Did not get lock after trying n attempts. So recalculating path.
@@ -205,6 +223,55 @@ public class CarAgent extends Agent {
       currentPosition.release(aStar.getOrigGrid());
       currentPosition = new Position(tmpPath.getX(), tmpPath.getY ());
       myGui.moveto(currentPosition.getX(), currentPosition.getY());
+      
+      
+      
+      
+	    if (currentPosition.getX()==16 && (currentPosition.getY()==12 || currentPosition.getY()==13)){
+	    	trafficlightagent.msgCheckLight(this,  myGui.xPos, myGui.yPos);
+	    	try {
+				greenLight.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	
+  	}
+  
+	    else if (currentPosition.getX()==22 && (currentPosition.getY()==9 || currentPosition.getY()==10)){
+	    	trafficlightagent.msgCheckLight(this,  myGui.xPos, myGui.yPos);
+	    	try {
+				greenLight.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	    else if (currentPosition.getY()==8 && (currentPosition.getX()==17 || currentPosition.getX()==18)){
+	    	trafficlightagent.msgCheckLight(this,  myGui.xPos, myGui.yPos);
+	    	try {
+				greenLight.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	    else if (currentPosition.getY()==14 && (currentPosition.getX()==20 || currentPosition.getX()==21)){
+	    	trafficlightagent.msgCheckLight(this,  myGui.xPos, myGui.yPos);
+	    	try {
+				greenLight.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	    
+	    
+      
+      
+      
+      
+      
              try {
                      atSlot.acquire();
              } catch (InterruptedException e) {
@@ -228,6 +295,9 @@ public class CarAgent extends Agent {
          return false;
  }
 
+ public void setTrafficLightAgent(TrafficLightAgent tla){
+ 	trafficlightagent = tla; 
+ }
  
  
  public String toString(){

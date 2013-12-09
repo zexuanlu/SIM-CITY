@@ -85,6 +85,7 @@ public class TrafficLightAgent extends Agent {
 		else if (y<= 280 && y >= 180){
 			myCar.add(new MyCar(c, state.leftright));
 		}
+		System.out.println("myCar size is "+myCar.size());
 		stateChanged();
 	}
 
@@ -157,8 +158,9 @@ public class TrafficLightAgent extends Agent {
 		
 		for(MyCar car: myCar){
 			if(car.s == state.leftright){
-				//message car
-				myCar.remove(car);
+				car.car.msgLightGreen();
+				car.s = state.done; 
+				//myCar.remove(car);
 			}
 		}
 
@@ -184,8 +186,9 @@ public class TrafficLightAgent extends Agent {
 		}
 		for(MyCar car: myCar){
 			if(car.s == state.updown){
-				//message car
-				myCar.remove(car);
+				car.car.msgLightGreen();
+				car.s = state.done; 				
+				//myCar.remove(car);
 			}
 		}
 
@@ -205,7 +208,7 @@ public class TrafficLightAgent extends Agent {
 			Vlight= false;
 			Plight = false;
 			
-			try { Thread.sleep(3000); }
+			try { Thread.sleep(1000); }
 			catch (Exception e){}
 			
 			int s = lightCount;
@@ -230,16 +233,13 @@ public class TrafficLightAgent extends Agent {
 				Vlight = true;
 				Plight = false;
 			}
-
-
-			
 			
 			timer.schedule(new TimerTask() {
 				public void run() {
 					RemindTask();
 				}
 			},
-				8000);//
+				3000);//
 			
 			stateChanged();
 			
