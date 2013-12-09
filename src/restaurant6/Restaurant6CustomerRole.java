@@ -149,13 +149,13 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 	public String generateChoice() {
 		int r = generator.nextInt(3);
 		if (r == 0)
-			myChoice = "Chicken";
+			myChoice = "Mint Chip Ice Cream";
 		if (r == 1)
-			myChoice = "Steak";
+			myChoice = "Rocky Road Ice Cream";
 		if (r == 2)
-			myChoice = "Salad";
+			myChoice = "Green Tea Ice Cream";
 		if (r == 3)
-			myChoice = "Pizza";
+			myChoice = "Mocha Almond Fudge Ice Cream";
 		return myChoice;
 	}
 	
@@ -181,17 +181,17 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 	// Finds the cheapest item on the menu if the customer can't afford choice
 	private String findCheapestItem(double money) {
 		String temp;
-		if (money >= 15.99) {
-			temp = "Steak";
+		if (money >= 5.99) {
+			temp = "Green Tea Ice Cream";
 		}
-		else if (money >= 10.99) {
-			temp = "Chicken";
+		else if (money >= 4.99) {
+			temp = "Rocky Road Ice Cream";
 		}
-		else if (money >= 8.99) {
-			temp = "Pizza";
+		else if (money >= 3.99) {
+			temp = "Mint Chip Ice Cream";
 		}
 		else {
-			temp = "Salad";
+			temp = "Mocha Almond Fudge Ice Cream";
 		}
 		return temp;
 	}

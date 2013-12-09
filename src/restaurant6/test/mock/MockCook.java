@@ -3,6 +3,7 @@ package restaurant6.test.mock;
 import java.util.List;
 
 import market.Food;
+import market.MarketCashierRole;
 import market.interfaces.MarketTruck;
 import restaurant6.interfaces.Restaurant6Cook;
 
@@ -22,6 +23,11 @@ public class MockCook extends Mock implements Restaurant6Cook{
 	}
 
 	public void msgEmptyStock() {
+		
+	}
+
+	public void setMarketCashier(MarketCashierRole r) {
+		// TODO Auto-generated method stub
 		
 	}
 }

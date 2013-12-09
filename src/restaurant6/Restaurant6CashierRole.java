@@ -84,10 +84,10 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 		super(p);
 		cashierName = name;
 		// Creates map of food choices to food objects
-		prices.put("Chicken", 10.99);
-		prices.put("Steak", 15.99);
-		prices.put("Salad", 5.99);
-		prices.put("Pizza", 8.99);
+		prices.put("Mint Chip Ice Cream", 3.99);
+		prices.put("Rocky Road Ice Cream", 4.99);
+		prices.put("Green Tea Ice Cream", 5.99);
+		prices.put("Mocha Almond Fudge Ice Cream", 2.99);
 		
 		// Sets initial amount of restaurant's money
 		restaurantMoney = 800;
