@@ -256,6 +256,7 @@ public class PersonAgent extends Agent implements Person{
 		print("Received the message AtDest from car");
 		gui.setPresent(true);
 		currentLocation = destination;
+		going.release();
 		dowalkto(destination.getX(),destination.getY());
 	}
 
@@ -1293,7 +1294,7 @@ public class PersonAgent extends Agent implements Person{
 		//}
 		//else{ 
 		if(testMode){ return; }
-		gui.DoGoTo(loc.getPosition()); //}
+		 //}
 		if(car != null){
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
@@ -1302,7 +1303,15 @@ public class PersonAgent extends Agent implements Person{
 			print ("origin position "+p.getX() + " " + p.getY());
 			print("goingto position " + l.getX() + " " + l.getY());
 			print("gotoposition from person");
+			going.drainPermits();
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
+			try {
+				going.acquire();
+			} 
+			catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			gui.DoGoTo(loc.getPosition());
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}
