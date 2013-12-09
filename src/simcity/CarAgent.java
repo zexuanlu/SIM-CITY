@@ -127,7 +127,7 @@ public class CarAgent extends Agent {
     	 
          currentPosition.release(aStar.getOrigGrid());
          currentPosition = new Position(originx/scale, originy/scale);
-         currentPosition.moveInto(aStar.getOrigGrid());
+         //currentPosition.moveInto(aStar.getOrigGrid());
          originalPosition = currentPosition;
  
          int numx = originx/scale;
