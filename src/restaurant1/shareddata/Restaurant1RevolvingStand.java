@@ -14,15 +14,16 @@ public class Restaurant1RevolvingStand extends Object{
 	}
 	
 	synchronized public void insertOrder(Order o){
-		while (count == N) {
-			try{ 
-				System.out.println("\tFull, waiting");
-				wait(5000);                         // Full, wait to add
-			} catch (InterruptedException ex) {};
-		}
+//		while (count == N) {
+//			try{ 
+//				System.out.println("\tFull, waiting");
+//				wait(5000);                         // Full, wait to add
+//			} catch (InterruptedException ex) {};
+//		}
 		
 		orders.add(o);
 		count ++;
+		System.out.println("Item put in stand is "+count);
 		if(count == 1) {
 			System.out.println("\tNot Empty, notify");
 			notify();                               // Not empty, notify a 
@@ -38,12 +39,12 @@ public class Restaurant1RevolvingStand extends Object{
 		else{
 		data = remove_item();
 		count --;
-		System.out.println(""+count);
-		if(count == N-1){ 
-			System.out.println("\tNot full, notify");
-			notify();                               // Not full, notify a 
-			// waiting producer
-		}
+		System.out.println("Item left in stand is "+count);
+//		if(count == N-1){ 
+//			System.out.println("\tNot full, notify");
+//			notify();                               // Not full, notify a 
+//			// waiting producer
+//		}
 		return data;
 		}
 	}

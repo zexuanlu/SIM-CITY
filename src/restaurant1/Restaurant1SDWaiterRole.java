@@ -282,6 +282,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void Seating(Restaurant1Customer c){
 			mycustomer mc = findagent(c);
 			waiterGui.DoGotoCHomePosition(mc.location);
+			atTable.drainPermits();
 			try {
 				atTable.acquire();
 			} catch (InterruptedException e) {
@@ -290,6 +291,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			}
 			DoSeatCustomer(mc, tablenum);
 			mc.c.msgSitAtTable(tablenum, menue);
+			atTable.drainPermits();
 			try {
 				atTable.acquire();
 			} catch (InterruptedException e) {
@@ -313,6 +315,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			customer.s = state.askedtoorder;
 			Do("Coming!");
 			waiterGui.DoGoToTakeOrder(customer.c, customer.table);
+			atTable.drainPermits();
 			try {
 				atTable.acquire();
 			} catch (InterruptedException e) {
@@ -332,6 +335,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void Dotakeordertocook(mycustomer customer){
 			customer.s = state.gotocook;
 			waiterGui.Dogotocook();
+			atTable.drainPermits();
 			try {
 				atCook.acquire();
 			} catch (InterruptedException e) {

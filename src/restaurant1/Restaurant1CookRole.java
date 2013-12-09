@@ -138,7 +138,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			TruckBack();
 			return true;
 		}
-		if(order.size() <= 3 && !revStand.isEmpty()) {
+		if(!revStand.isEmpty()) {
 			TakeOrderFromStand();
 			return true;
 		}
