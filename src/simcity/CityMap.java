@@ -76,7 +76,7 @@ public class CityMap {
 			}
 			else { //bottomleft
 				tempX = Math.abs(x - 340);
-				tempY = Math.abs(y - 180);
+				tempY = Math.abs(y - 280);
 				if (tempX < tempY){ //on vertical road
 					return new Position(340, y);
 				}

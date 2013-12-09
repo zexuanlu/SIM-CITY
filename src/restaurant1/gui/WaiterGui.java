@@ -23,12 +23,12 @@ public class WaiterGui implements Gui {
     private int origin = 40;
     private int chomeposition = 20;
     private int distance= 20;
-	private int xfood = 540;
+	private int xfood = 470;
 	private int yfood = 250;
     private String order = "";
     private String food = "";
     private boolean go = false;
-    private static final int cookX = 520;
+    private static final int cookX = 450;
     private static final int cookY = 230;
     public static final int xTable = 200;
     public static final int yTable = 250;
@@ -107,7 +107,7 @@ public class WaiterGui implements Gui {
         	agent.msgIsback();
         }
         
-        if(xPos == 520 && yPos == 230){
+        if(xPos == 470 && yPos == 230){
 
         	agent.msgAtTable();
         	

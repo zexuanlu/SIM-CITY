@@ -256,7 +256,6 @@ public class PersonAgent extends Agent implements Person{
 		print("Received the message AtDest from car");
 		gui.setPresent(true);
 		currentLocation = destination;
-		going.release();
 		dowalkto(destination.getX(),destination.getY());
 	}
 
@@ -1211,6 +1210,14 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
+		if(wallet.getOnHand() >= 2500 && car == null){
+			Market m = (Market)cityMap.getByType(LocationType.Market);
+			SimEvent buyCar = new SimEvent("Go buy a car", m,EventType.CustomerEvent);
+			if(!containsEvent("Go buy a car")){
+				toDo.add(buyCar);
+				addedAnEvent = true;
+			}
+		}
 		if(!addedAnEvent && !containsEvent("Go home") && !cityMap.ateOutLast){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
@@ -1295,28 +1302,16 @@ public class PersonAgent extends Agent implements Person{
 		//}
 		//else{ 
 		if(testMode){ return; }
-		 //}
+		gui.DoGoTo(loc.getPosition()); //}
 		if(car != null){
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
-			//FIX
-
-			System.err.println(currentLocation.getX());
-
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
 			print ("origin position "+p.getX() + " " + p.getY());
 			print("goingto position " + l.getX() + " " + l.getY());
 			print("gotoposition from person");
-			going.drainPermits();
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
-			try {
-				going.acquire();
-			} 
-			catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			gui.DoGoTo(loc.getPosition());
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}
@@ -1408,10 +1403,8 @@ public class PersonAgent extends Agent implements Person{
 
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
-		// FIX?
 
 		if (this.wallet.getOnHand() >= 400.00){
-
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
