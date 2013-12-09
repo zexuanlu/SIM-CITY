@@ -71,11 +71,11 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
         
         // Drawing the fridge
         g2.setColor(Color.BLUE);
-        g2.fillRect(500, 160, 20, 20);
+        g2.fillRect(430, 160, 20, 20);
         
 		g2.setColor(Color.cyan);
-		g2.fillRect(540, 230, 30, 30);
-		g2.fillRect(540, 130, 30, 30);
+		g2.fillRect(470, 230, 30, 30);
+		g2.fillRect(470, 130, 30, 30);
      
         if(checkx != xc || checky!= yc ){
             g2.setColor(Color.ORANGE);
