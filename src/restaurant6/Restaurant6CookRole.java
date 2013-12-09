@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 
 import person.interfaces.Person;
 import market.Food;
+import market.MarketCashierRole;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketTruck;
 import restaurant6.Restaurant6Order.OrderState;
@@ -38,7 +39,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	private Map<String, Restaurant6Food> foods = new HashMap<String, Restaurant6Food>();
 	
 	// Reference to the revolving stand
-	private Restaurant6RevolvingStand revolvingStand;
+	public Restaurant6RevolvingStand revolvingStand;
 	
 	// Hack to set producer consumer monitor
 	public void setStand(Restaurant6RevolvingStand p) {
@@ -59,7 +60,8 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	private int numNeeded = 1;
 	private final int threshold = 1;
 	
-	private Restaurant6Cashier cashier;
+	public Restaurant6Cashier cashier;
+	public MarketCashier marketCashier;
 	
 	// Hack to establish connection to the cashier
 	public void setCashier(Restaurant6Cashier c) {
@@ -130,6 +132,9 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		
 		orderPlaced = false;
 		checkingStand = false;
+		
+		// Creates revolving stand
+		revolvingStand = new Restaurant6RevolvingStand();
 		
 		// Checks inventory initially
 		msgCheckInventory();
@@ -568,6 +573,11 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	// Returns role name
 	public String getRoleName() {
 		return "Restaurant 6 Cook";
+	}
+
+	@Override
+	public void setMarketCashier(MarketCashierRole r) {
+		marketCashier = r;
 	}
 
 }

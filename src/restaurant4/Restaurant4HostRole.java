@@ -46,7 +46,7 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 		return name;
 	}
 	
-	public void addWaiter(Restaurant4WaiterRole waiter){
+	public void addWaiter(Restaurant4AbstractWaiter waiter){
 		waiters.add(new MyWaiter(waiter));
 		stateChanged();
 	}

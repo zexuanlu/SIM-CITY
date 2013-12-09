@@ -15,6 +15,7 @@ import restaurant1.interfaces.Restaurant1Waiter;
 import restaurant1.shareddata.*;
 import market.interfaces.MarketTruck;
 import market.Food;
+import market.MarketCashierRole;
 
 
 //Add case in scheduler to tell markettruck to go back
@@ -254,6 +255,10 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public void TruckBack(){
 		truck.msgGoBack();
 		sendTruckBack = false;
+	}
+
+	public void setMarketCashier(MarketCashierRole r) {
+		
 	}
 
 }

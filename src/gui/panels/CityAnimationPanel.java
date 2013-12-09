@@ -62,7 +62,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
     public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
     
+<<<<<<< HEAD
+    public ImageIcon img = new ImageIcon("src/gui.panels.image/market1.png");
+=======
     public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
+>>>>>>> 3cb65774d66ed9447b2bcb82edf5669900a48661
     public Image m1 = img.getImage();
     public ImageIcon img1 = new ImageIcon(this.getClass().getResource("image/bank.png"));
     public Image b = img1.getImage();
