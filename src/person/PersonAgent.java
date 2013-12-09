@@ -1195,7 +1195,7 @@ public class PersonAgent extends Agent implements Person{
 		 */
 		boolean addedAnEvent = false;
 
-		Bank b = (Bank)cityMap.getByType(LocationType.Bank);
+		Bank b = cityMap.pickABank(gui.xPos, gui.yPos);//(Bank)cityMap.getByType(LocationType.Bank);
 
 		if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
 			SimEvent needMoney = new SimEvent("withdraw", b, EventType.CustomerEvent);
@@ -1222,7 +1222,7 @@ public class PersonAgent extends Agent implements Person{
 			toDo.add(goHome);
 			addedAnEvent = true;
 		}
-		else{
+		else if(hunger > 3 && !addedAnEvent){
 			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
 			addedAnEvent = true;	
 		}
@@ -1233,6 +1233,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void goToLocation(Location loc){
+		Do(loc.position.toString() + ":" + loc.getName());
 		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
 			//			//make a PassengerRole and start it
 			PassengerRole pRole = new PassengerRole(this.name, this);

@@ -182,7 +182,8 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 			return true;
 		}
 		if ( event == AgentEvent.doneLeaving){
-			//no action
+			person.msgFinishedEvent(this);
+			event = AgentEvent.none;
 			return true;
 		}
 
@@ -327,7 +328,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		event = AgentEvent.abouttoleave;
 		waiter.msgLeavingTable(this);
 		customerGui.DoExitRestaurant();
-		person.msgFinishedEvent(this);
 	}
 
 
