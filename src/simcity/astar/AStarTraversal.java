@@ -93,7 +93,7 @@ public class AStarTraversal extends GraphTraversal
 					if ((nextX+1>use.length || nextY+1>use[0].length) ||
 					      (nextX<0 || nextY<0)) continue;
 					Position next = new Position(nextX,nextY);
-					if (inPath(next,path) || (!next.open(grid)) ) continue;  
+					if (inPath(next,path) || (!next.open(use)) ) continue;  
 
 					AStarNode nodeTemp = new AStarNode(next);
 

@@ -239,7 +239,7 @@ public class TrafficLightAgent extends Agent {
 					RemindTask();
 				}
 			},
-				3000);//
+				2500);//
 			
 			stateChanged();
 			
