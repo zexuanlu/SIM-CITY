@@ -37,7 +37,7 @@ public class BusRole extends Agent implements Bus {
 	
 	Timer timer = new Timer();
 	public List<myPassenger> passengers = Collections.synchronizedList(new ArrayList<myPassenger>()); 
-	private class myPassenger{
+	public class myPassenger{
 		public Passenger p; 
 		public PersonState state;
 		myPassenger(Passenger pass){
@@ -349,13 +349,13 @@ public class BusRole extends Agent implements Bus {
 		    gotPermit       = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 
 		    //Did not get lock. Lets make n attempts.
-		    while (!gotPermit && attempts < 5) {
+		    while (!gotPermit && attempts < 4) {
 			//System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
 
 			//Wait for 1sec and try again to get lock.
 			try { Thread.sleep(1000); }
 			catch (Exception e){}
-
+            aStar.crashed();
 			gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 			attempts ++;
 		    }

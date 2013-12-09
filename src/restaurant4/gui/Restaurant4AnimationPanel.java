@@ -32,8 +32,8 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
  
-    	Timer timer = new Timer(TIMERCOUNT, this );
-    	timer.start();
+   // 	Timer timer = new Timer(TIMERCOUNT, this );
+   // 	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {

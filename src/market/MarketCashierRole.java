@@ -32,16 +32,31 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		super(person);
 		roleName = "Market Cashier";
 		this.person = person;
-		inventory.put("Steak", 999);
-		inventory.put("Car", 999);
-		inventory.put("Pizza", 999);
-		inventory.put("Chicken", 999);
-		inventory.put("Salad", 999);
+		inventory.put("Steak", 2000);
+		inventory.put("Car", 2000);
+		inventory.put("Pizza", 2000);
+		inventory.put("Chicken", 2000);
+		inventory.put("Salad", 2000);
+		inventory.put("Hamburger", 2000);
+		inventory.put("Ribs", 2000);
+		inventory.put("Pound Cake", 2000);
+		inventory.put("Shrimp", 2000);
+		inventory.put("Scallops", 2000);
+		inventory.put("Lobster", 2000);
+		inventory.put("Crab", 2000);
 		price.put("Steak", (double) 2);
 		price.put("Car", (double) 2);
 		price.put("Pizza", (double) 2);
 		price.put("Chicken", (double) 2);
 		price.put("Salad", (double) 2);
+		price.put("Hamburger", (double) 2);
+		price.put("Ribs", (double) 2);
+		price.put("Pound Cake", (double) 2);
+		price.put("Shrimp", (double) 2);
+		price.put("Scallops", (double) 2);
+		price.put("Lobster", (double) 2);
+		price.put("Crab", (double) 2);
+		
 	}
 
 

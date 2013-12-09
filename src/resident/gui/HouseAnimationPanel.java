@@ -42,8 +42,8 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         
         this.setBorder(BorderFactory.createTitledBorder("House " + houseNumber));
  
-    	Timer timer = new Timer(8, this );
-    	timer.start();
+    //	Timer timer = new Timer(8, this );
+    //	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {

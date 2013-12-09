@@ -27,8 +27,8 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(8, this );
-    	timer.start();
+    //	Timer timer = new Timer(8, this );
+    //	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -47,11 +47,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(100, 160, 80, 80);
         
         g2.setColor(Color.green);
-        g2.fillRect(250, 120, 200, 20);
+        g2.fillRect(250, 120, 240, 20);
         
         g2.setColor(Color.green);
-        g2.fillRect(250, 260, 200, 20);
-        
+        g2.fillRect(250, 260, 240, 20);
+
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {

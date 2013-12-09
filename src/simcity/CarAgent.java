@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 
 
 
+
 //import person.Position;
 import simcity.astar.AStarNode;
 import person.PersonAgent; 
@@ -27,8 +28,11 @@ import utilities.TrafficLightAgent;
 
 //Break this sequence and you will screw up his disappearing/reappearing
 public class CarAgent extends Agent {
+	int WIDTHTOTAL = 740; 
+	int HEIGHTTOTAL = 480; 
 	private TrafficLightAgent trafficlightagent; 
-	 public int percentCrash = 30; 
+
+	 public int percentCrash = 20; 
 	 boolean crashed = false; 
 	 Position currentPosition;
      Position originalPosition;
@@ -45,7 +49,7 @@ public class CarAgent extends Agent {
      
      int destinationX;
      int destinationY;
-     PersonAgent myPerson; 
+     public PersonAgent myPerson; 
      public CarAgent(AStarTraversal a, PersonAgent mp){
              aStar = a;
              myPerson = mp;
@@ -72,31 +76,84 @@ public class CarAgent extends Agent {
 	}
 	
      
-     public void msgatDestination(){
- 		person.Position p = null;
- 		if(myGui.yPos > 180 && myGui.yPos < 280){
- 			System.err.println(myPerson.getName()+" on horizontal road");
- 			//on the horizontal road
- 			if(destinationY > currentPosition.getY()){
- 				//above
- 				p = new person.Position(myGui.xPos, 170);
- 			}
- 			else if(destinationY < currentPosition.getY()){
- 				//below
- 				p = new person.Position(myGui.xPos, 280);
- 			}
- 		}
- 		else { //on vertical road
- 			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
- 			if(destinationX > currentPosition.getX()){
- 				//to the right 
- 				p = new person.Position(440, myGui.yPos);
- 			}
- 			else if(destinationX < currentPosition.getX()){
- 				//to the left
- 				p = new person.Position(330, myGui.yPos);
- 			}
- 		}
+     public void msgatDestination(){ 	
+    	person.Position p; 
+    	 
+    	 
+ 		int tempX = 0; 
+		int tempY = 0; 
+
+		//split into quadrants 
+		if (myGui.xPos <= WIDTHTOTAL/2){ //leftside
+			if (myGui.yPos<=HEIGHTTOTAL/2){//topleft
+				tempX = Math.abs(myGui.xPos - 340);
+				tempY = Math.abs(myGui.yPos - 180);
+				if (tempX < tempY){ //on vertical road
+					p =  new person.Position(330, myGui.yPos);
+				}
+				else { //on horizontal road
+					p =  new person.Position(myGui.xPos, 170);
+				}
+			}
+			else { //bottomleft
+				tempX = Math.abs(myGui.xPos - 340);
+				tempY = Math.abs(myGui.yPos - 280);
+				if (tempX < tempY){ //on vertical road
+					p = new person.Position(330, myGui.yPos);
+				}
+				else { //on horizontal road
+					p = new person.Position(myGui.xPos, 280);
+				}
+				
+			}
+		}
+		else {//rightside
+			if (myGui.yPos<=HEIGHTTOTAL/2){//topright
+				tempX = Math.abs(myGui.xPos - 440);
+				tempY = Math.abs(myGui.yPos - 180);
+				if (tempX < tempY){ //on vertical road
+					p = new person.Position(440, myGui.yPos);
+				}
+				else { //on horizontal road
+					p =  new person.Position(myGui.xPos, 170);
+				}
+			}
+			else { //bottomright
+				tempX = Math.abs(myGui.xPos - 440);
+				tempY = Math.abs(myGui.yPos - 280);
+				if (tempX < tempY){ //on vertical road
+					p = new person.Position(440, myGui.yPos);
+				}
+				else { //on horizontal road
+					p = new person.Position(myGui.xPos, 280);
+				}
+			}
+		}
+				
+ 		
+// 		if(myGui.yPos >= 180 && myGui.yPos < 280){
+// 			System.err.println(myPerson.getName()+" on horizontal road");
+// 			//on the horizontal road
+// 			if(destinationY >= currentPosition.getY()){
+// 				//above
+// 				p = new person.Position(myGui.xPos, 170);
+// 			}
+// 			else if(destinationY < currentPosition.getY()){
+// 				//below
+// 				p = new person.Position(myGui.xPos, 280);
+// 			}
+// 		}
+// 		else { //on vertical road
+// 			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
+// 			if(destinationX >= currentPosition.getX()){
+// 				//to the right 
+// 				p = new person.Position(440, myGui.yPos);
+// 			}
+// 			else if(destinationX < currentPosition.getX()){
+// 				//to the left
+// 				p = new person.Position(330, myGui.yPos);
+// 			}
+// 		}
  		System.err.println(myPerson.getName()+" getting off at: ("+p.getX()+" , "+p.getY()+")");
  		myPerson.msgAtDest(p, this);//(new person.Position(myGui.xPos, myGui.yPos),this);
  	}
@@ -127,7 +184,7 @@ public class CarAgent extends Agent {
     	 
          currentPosition.release(aStar.getOrigGrid());
          currentPosition = new Position(originx/scale, originy/scale);
-         currentPosition.moveInto(aStar.getOrigGrid());
+         //currentPosition.moveInto(aStar.getOrigGrid());
          originalPosition = currentPosition;
  
          int numx = originx/scale;
@@ -180,13 +237,13 @@ public class CarAgent extends Agent {
       gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 
       //Did not get lock. Lets make n attempts.
-      while (!gotPermit && attempts < 10) {
+      while (!gotPermit && attempts < 5) {
              //System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
 
              //Wait for 1sec and try again to get lock.          
           double chancecrash = Math.random() % 100;
-          
-          if (chancecrash <= percentCrash){  
+          print ("chancecrash " + chancecrash);
+          if (chancecrash <= percentCrash/100){  
         	  crashed = true; 
               myGui.Collide();
               myPerson.crashed();
@@ -203,10 +260,11 @@ public class CarAgent extends Agent {
               try { Thread.sleep(1000); } 
               catch (Exception e){}
               attempts ++;
+    		  gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
               aStar.crashed();
+              
           }
       }
-
       //Did not get lock after trying n attempts. So recalculating path.
       if (!gotPermit) {
              //System.out.println("[Gaut] " + guiWaiter.getName() + " No Luck even after " + attempts + " attempts! Lets recalculate");
@@ -226,7 +284,7 @@ public class CarAgent extends Agent {
       
       
       
-      
+      if (trafficlightagent != null){
 	    if (currentPosition.getX()==16 && (currentPosition.getY()==12 || currentPosition.getY()==13)){
 	    	trafficlightagent.msgCheckLight(this,  myGui.xPos, myGui.yPos);
 	    	try {
@@ -265,6 +323,7 @@ public class CarAgent extends Agent {
 				e.printStackTrace();
 			}
 	    }
+      }
 	    
 	    
       

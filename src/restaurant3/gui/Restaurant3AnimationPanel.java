@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Restaurant3AnimationPanel extends JPanel implements ActionListener {
 
 	//Dimensions
-	static final int WIDTH = 640;
+	static final int WIDTH = 530;
 	static final int HEIGHT = 480;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
 	
@@ -47,7 +47,11 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 	private int nTables = Restaurant3HostRole.NTABLES;
 	
 	//Animation utilities
+<<<<<<< HEAD
 	Timer animTimer = new Timer(2, this);
+=======
+	//Timer animTimer = new Timer(5, this);
+>>>>>>> 85dcaf8e8c855588ee7166e387385164629518d3
 	private List<Gui> guis = new ArrayList<Gui>();
 	
 	public Restaurant3AnimationPanel() {
@@ -57,7 +61,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 		this.setMinimumSize(size);
 		
 		//Start timer for animation
-		animTimer.start();
+		//animTimer.start();
 	}
 
 	@Override

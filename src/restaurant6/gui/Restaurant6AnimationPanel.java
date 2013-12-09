@@ -62,8 +62,8 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
         
         bufferSize = this.getSize();
  
-    	Timer timer = new Timer(7, this);
-    	timer.start();
+    //	Timer timer = new Timer(7, this);
+    	//timer.start();
     	
     	tables = new ArrayList<Shape>();
     	

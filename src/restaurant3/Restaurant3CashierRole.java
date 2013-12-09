@@ -122,7 +122,7 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 		}
 		if(!bills.isEmpty()){
 			synchronized(bills){
-				
+			
 				//Check for pending bills
 				for(Bill b : bills){
 					if(b.state == bState.pending){
@@ -130,7 +130,7 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 						return true;
 					}
 				}
-				
+			
 				for(Bill b : bills){
 					if(b.state == bState.paid){
 						sendChange(b);
@@ -179,5 +179,4 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 			mb.mCash.msgBillFromTheAir(payment);
 		}
 	}
-
 }

@@ -20,6 +20,13 @@ public class MarketEmployeeGui implements Gui{
     private int xCar = 290, yCar = 140;
     private int xPizza = 310, yPizza = 140;
     private int xSalad = 330, ySalad = 140;
+    private int xHamburger = 350, yHamburger = 140;
+    private int xRibs = 370, yRibs = 140;
+    private int xPoundCake = 390, yPoundCake = 140;
+    private int xShrimp = 410, yShrimp = 140;
+    private int xScallops = 430, yScallops = 140;
+    private int xLobster = 450, yLobster = 140;
+    private int xCrab = 470, yCrab = 140;
     private boolean takeFood = false;
     private boolean sendFood = false;
 	public boolean isPresent;
@@ -67,7 +74,19 @@ public class MarketEmployeeGui implements Gui{
 
         }
         if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xChicken) & (yDestination == yChicken)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
         		& (xDestination == xCar) & (yDestination == yCar)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xHamburger) & (yDestination == yHamburger)) {
         	takeFood = false;
            agent.msgAtTable();
 
@@ -79,12 +98,41 @@ public class MarketEmployeeGui implements Gui{
 
         }
         if (xPos == xDestination &&takeFood&& yPos == yDestination
-        		& (xDestination == xChicken) & (yDestination == yChicken)) {
+        		& (xDestination == xRibs) & (yDestination == yRibs)) {
         	takeFood = false;
            agent.msgAtTable();
 
         }
-        
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xPoundCake) & (yDestination == yPoundCake)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xShrimp) & (yDestination == yShrimp)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xScallops) & (yDestination == yScallops)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xLobster) & (yDestination == yLobster)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
+        if (xPos == xDestination &&takeFood&& yPos == yDestination
+        		& (xDestination == xCrab) & (yDestination == yCrab)) {
+        	takeFood = false;
+           agent.msgAtTable();
+
+        }
         
 	}
 
@@ -122,6 +170,34 @@ public class MarketEmployeeGui implements Gui{
 		}
 		if(type == "Salad"){
 			xDestination = 330;
+			yDestination = 140;
+		}
+		if(type == "Hamburger"){
+			xDestination = 350;
+			yDestination = 140;
+		}
+		if(type == "Ribs"){
+			xDestination = 370;
+			yDestination = 140;
+		}
+		if(type == "Pound Cake"){
+			xDestination = 390;
+			yDestination = 140;
+		}
+		if(type == "Shrimp"){
+			xDestination = 410;
+			yDestination = 140;
+		}
+		if(type == "Scallops"){
+			xDestination = 430;
+			yDestination = 140;
+		}
+		if(type == "Lobster"){
+			xDestination = 450;
+			yDestination = 140;
+		}
+		if(type == "Crab"){
+			xDestination = 470;
 			yDestination = 140;
 		}
 		takeFood = true;

@@ -57,12 +57,66 @@ public class CityMap {
 	}
 
 	public Position getNearestStreet(int x, int y){
-		if (x < WIDTHTOTAL/2){
-			return(new Position(x,Street1));
+		//on horizontal road
+		int tempX = 0; 
+		int tempY = 0; 
+
+		//split into quadrants 
+		if (x <= WIDTHTOTAL/2){ //leftside
+			if (y<=HEIGHTTOTAL/2){//topleft
+				tempX = Math.abs(x - 340);
+				tempY = Math.abs(y - 180);
+				if (tempX < tempY){ //on vertical road
+					return new Position(340, y);
+				}
+				else { //on horizontal road
+					return new Position(x, 180);
+				}
+			}
+			else { //bottomleft
+				tempX = Math.abs(x - 340);
+				tempY = Math.abs(y - 280);
+				if (tempX < tempY){ //on vertical road
+					return new Position(340, y);
+				}
+				else { //on horizontal road
+					return new Position(x, 260);
+				}
+				
+			}
 		}
-		else {
-			return (new Position(Street2,y));
+		else {//rightside
+			if (y<=HEIGHTTOTAL/2){//topright
+				tempX = Math.abs(x - 420);
+				tempY = Math.abs(y - 180);
+				if (tempX < tempY){ //on vertical road
+					return new Position(420, y);
+				}
+				else { //on horizontal road
+					return new Position(x, 180);
+				}
+			}
+			else { //bottomright
+				tempX = Math.abs(x - 440);
+				tempY = Math.abs(y - 280);
+				if (tempX < tempY){ //on vertical road
+					return new Position(420, y);
+				}
+				else { //on horizontal road
+					return new Position(x, 260);
+				}
+			}
 		}
+		
+		
+		
+//		
+//		if (x < WIDTHTOTAL/2){
+//			return(new Position(x,Street1));
+//		}
+//		else {
+//			return (new Position(Street2,y));
+//		}
 	}
 
 	public String getStopName(BusStop b){

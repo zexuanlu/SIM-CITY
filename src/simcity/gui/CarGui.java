@@ -49,7 +49,7 @@ public class CarGui implements Gui {
         	if (collided ){
         		g.setColor(Color.BLACK);
         	}
-        	
+        	g.drawString(myCar.myPerson.getName(), xPos-10, yPos);
             
                 if (!deadpos){
                         if (EastWest){

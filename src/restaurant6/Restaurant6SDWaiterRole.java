@@ -11,7 +11,7 @@ import restaurant6.interfaces.Restaurant6Waiter;
 
 public class Restaurant6SDWaiterRole extends Restaurant6AbstractWaiterRole implements Restaurant6Waiter {
 	
-	private Restaurant6RevolvingStand revolvingStand;
+	public Restaurant6RevolvingStand revolvingStand;
 	
 	// Collection of tables
     public Collection<Restaurant6Table> tables;

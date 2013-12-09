@@ -50,37 +50,37 @@ import java.util.Map;
 
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
-        private BuildingAnimationPanel BuildPanel;
-        public BankAnimationPanel bankPanel = new BankAnimationPanel();
-        public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
-        public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
-        public MarketAnimationPanel marketPanel2 = new MarketAnimationPanel();
-        public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
-        public Restaurant2AnimationPanel rest2Panel = new Restaurant2AnimationPanel();
-        //public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); FIX
-        public Restaurant4AnimationPanel rest4Panel = new Restaurant4AnimationPanel();
-        public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
-        public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
-        
-        public ImageIcon img = new ImageIcon("src/image/market1.png");
-        public Image m1 = img.getImage();
-        public ImageIcon img1 = new ImageIcon("src/image/bank.png");
-        public Image b = img1.getImage();
-        public ImageIcon img2 = new ImageIcon("src/image/house1.png");
-        public Image h1 = img2.getImage();
-        public ImageIcon img3 = new ImageIcon("src/image/market2.png");
-        public Image m2 = img3.getImage();
-        public ImageIcon img4 = new ImageIcon("src/image/house2.png");
-        public Image h2 = img4.getImage();
-        public ImageIcon img5 = new ImageIcon("src/image/house3.png");
-        public Image h3 = img5.getImage();
-        
-        public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
-        public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
-        public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
-        public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
-        public HouseAnimationPanel house5Panel = new HouseAnimationPanel(5);
-        private List<JPanel> panels = new ArrayList<JPanel>();
+    private BuildingAnimationPanel BuildPanel;
+    public BankAnimationPanel bankPanel = new BankAnimationPanel();
+    public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
+    public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
+    public MarketAnimationPanel marketPanel2 = new MarketAnimationPanel();
+    public Restaurant1AnimationPanel rest1Panel = new Restaurant1AnimationPanel();
+    public Restaurant2AnimationPanel rest2Panel = new Restaurant2AnimationPanel();
+    public Restaurant3AnimationPanel rest3Panel = new Restaurant3AnimationPanel(); 
+    public Restaurant4AnimationPanel rest4Panel = new Restaurant4AnimationPanel();
+    public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
+    public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
+    
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
+    public Image m1 = img.getImage();
+    public ImageIcon img1 = new ImageIcon(this.getClass().getResource("image/bank.png"));
+    public Image b = img1.getImage();
+    public ImageIcon img2 = new ImageIcon(this.getClass().getResource("image/house1.png"));
+    public Image h1 = img2.getImage();
+    public ImageIcon img3 = new ImageIcon(this.getClass().getResource("image/market2.png"));
+    public Image m2 = img3.getImage();
+    public ImageIcon img4 = new ImageIcon(this.getClass().getResource("image/house2.png"));
+    public Image h2 = img4.getImage();
+    public ImageIcon img5 = new ImageIcon(this.getClass().getResource("image/house3.png"));
+    public Image h3 = img5.getImage();
+    
+    public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
+    public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
+    public HouseAnimationPanel house3Panel = new HouseAnimationPanel(3);
+    public HouseAnimationPanel house4Panel = new HouseAnimationPanel(4);
+    public HouseAnimationPanel house5Panel = new HouseAnimationPanel(5);
+    private List<JPanel> panels = new ArrayList<JPanel>();
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
@@ -137,12 +137,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 
                 // Adding apartment buildings to the animation panel
                 for (int j = 0; j < 70; j = j + 20) {
-                        for (int k = 0; k < 70; k = k + 20) {
-                                apartmentComplex1Components.add(new Rectangle2D.Double((int)apartmentComplex1.getX()+k, (int)apartmentComplex1.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                                apartmentComplex2Components.add(new Rectangle2D.Double((int)apartmentComplex2.getX()+k, (int)apartmentComplex2.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                                apartmentComplex3Components.add(new Rectangle2D.Double((int)apartmentComplex3.getX()+k, (int)apartmentComplex3.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                                apartmentComplex4Components.add(new Rectangle2D.Double((int)apartmentComplex4.getX()+k, (int)apartmentComplex4.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
-                        }
+                    for (int k = 0; k < 70; k = k + 20) {
+                        apartmentComplex1Components.add(new Rectangle2D.Double((int)apartmentComplex1.getX()+k, (int)apartmentComplex1.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                        apartmentComplex2Components.add(new Rectangle2D.Double((int)apartmentComplex2.getX()+k, (int)apartmentComplex2.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                        apartmentComplex3Components.add(new Rectangle2D.Double((int)apartmentComplex3.getX()+k, (int)apartmentComplex3.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                        apartmentComplex4Components.add(new Rectangle2D.Double((int)apartmentComplex4.getX()+k, (int)apartmentComplex4.getY()+j, APARTMENTSIZE,APARTMENTSIZE));
+                    }
                 }
                 
                 //Panel size initiations
@@ -164,7 +164,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 panels.add(marketPanel);
                 panels.add(marketPanel2);
                 panels.add(rest1Panel);
+                panels.add(rest2Panel);
+                panels.add(rest3Panel);
                 panels.add(rest4Panel);
+                panels.add(rest5Panel);
+                panels.add(rest6Panel);
                 
             setSize(WIDTH, HEIGHT);
         setVisible(true);
@@ -212,7 +216,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                            BuildPanel.repaint();
                            BuildPanel.add(rest2Panel);
                    }
-                   //FIX - add in restaurant 3
+                   else if(me.getButton() == 1 && restaurant3.contains(me.getX(), me.getY())){
+                       if(BuildPanel.getComponentCount() > 0)
+                                       BuildPanel.remove(BuildPanel.getComponent(0));                           
+                       BuildPanel.repaint();
+                       BuildPanel.add(rest3Panel);
+                   }                  
                    else if(me.getButton() == 1 && restaurant4.contains(me.getX(), me.getY())){
                            if(BuildPanel.getComponentCount() > 0)
                                            BuildPanel.remove(BuildPanel.getComponent(0));                           
@@ -322,13 +331,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fillRect(340, 0, 100, 480); //vertical
         g2.fillRect(0, 180, 740, 100); //horizontal
         
-        g2.drawImage(b, 80, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(b, 640, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m1, 150, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m2, 430, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h1, 430, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h2, 430, 350, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h3, 500, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(b, 60, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(b, 660, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(m1, 130, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(m2, 450, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h1, 450, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h2, 450, 370, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h3, 520, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         
         //Hover Text
             g2.setColor(Color.BLACK);

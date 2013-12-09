@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import market.MarketCashierRole;
 import market.interfaces.MarketTruck;
 import person.interfaces.Person;
 
@@ -27,6 +28,8 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	Timer timer = new Timer();
 	Timer clear = new Timer();
 	Timer checkStand = new Timer();
+	public MarketCashierRole marketCashier;
+	public Restaurant2CashierRole cashier;
 	public Restaurant2CookGui cookGui = null;
 	Grill grill = new Grill();
 	public enum OrderState {Uncooked, Cooking, Cooked};
@@ -39,7 +42,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	private Map<String, Integer> cookTimes = new HashMap<String, Integer>();
 	private Map<MyMarket, Check> owed = new HashMap<MyMarket, Check>();
 	private Food inventory = new Food(10,10,10,10,10,10);
-	private Restaurant2RevolvingStand revolver = new Restaurant2RevolvingStand();
+	public Restaurant2RevolvingStand revolver = new Restaurant2RevolvingStand();
 	
 	private Semaphore atGrill = new Semaphore(0, true);
 	private Semaphore atCs = new Semaphore(0, true);
@@ -496,6 +499,11 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	public void msgEmptyStock() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	public void setMarketCashier(MarketCashierRole r) {
+		marketCashier = r;
 	}
 }
 
