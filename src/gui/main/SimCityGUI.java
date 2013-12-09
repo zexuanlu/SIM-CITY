@@ -469,7 +469,7 @@ public class SimCityGUI extends JFrame {
                 bhg.isPresent = false;
                 bankhostrole.setGui(bhg);
                 cityAnimPanel.bankPanel.addGui(bhg);
-        
+
                 busstop1.startThread();
                 busstop2.startThread();
                 busstop3.startThread();

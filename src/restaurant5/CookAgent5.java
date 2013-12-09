@@ -9,6 +9,7 @@ import person.PersonAgent;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import market.MarketCashierRole;
 import market.interfaces.MarketTruck;
 
 /**
@@ -23,6 +24,7 @@ public class CookAgent5 extends Role implements RestaurantCook {
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
 	public RevolvingStand5 revolvingstand; 
+	public MarketCashierRole marketCashier;
 	private Queue<Integer> grillnumber = new LinkedList<Integer>(); 
 	private Queue<Integer> platenumber = new LinkedList<Integer>(); 
 
@@ -93,11 +95,14 @@ public class CookAgent5 extends Role implements RestaurantCook {
 	}
 	private Map<String,Food> foods = new HashMap<String,Food>();
 
+	// Sets cashier
+	public CashierAgent5 cashier;
 	
     public CookAgent5(String name, PersonAgent p) {
 		super(p);
 		myPerson = p; 
 		this.name = name; 
+		revolvingstand = new RevolvingStand5();
 		//type, cookingtimes, low, capacity, amount
 		Food f = new Food("Steak", 8, 2, 50, 50); 
 		foods.put("Steak",f);
@@ -440,6 +445,10 @@ public class CookAgent5 extends Role implements RestaurantCook {
 	public void msgEmptyStock() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setMarketCashier(MarketCashierRole r) {
+		marketCashier = r;
 	}
 	
 }

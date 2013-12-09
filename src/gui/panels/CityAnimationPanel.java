@@ -62,17 +62,21 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
     public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
     
-    public ImageIcon img = new ImageIcon("src/image/market1.png");
+<<<<<<< HEAD
+    public ImageIcon img = new ImageIcon("src/gui.panels.image/market1.png");
+=======
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
+>>>>>>> 3cb65774d66ed9447b2bcb82edf5669900a48661
     public Image m1 = img.getImage();
-    public ImageIcon img1 = new ImageIcon("src/image/bank.png");
+    public ImageIcon img1 = new ImageIcon(this.getClass().getResource("image/bank.png"));
     public Image b = img1.getImage();
-    public ImageIcon img2 = new ImageIcon("src/image/house1.png");
+    public ImageIcon img2 = new ImageIcon(this.getClass().getResource("image/house1.png"));
     public Image h1 = img2.getImage();
-    public ImageIcon img3 = new ImageIcon("src/image/market2.png");
+    public ImageIcon img3 = new ImageIcon(this.getClass().getResource("image/market2.png"));
     public Image m2 = img3.getImage();
-    public ImageIcon img4 = new ImageIcon("src/image/house2.png");
+    public ImageIcon img4 = new ImageIcon(this.getClass().getResource("image/house2.png"));
     public Image h2 = img4.getImage();
-    public ImageIcon img5 = new ImageIcon("src/image/house3.png");
+    public ImageIcon img5 = new ImageIcon(this.getClass().getResource("image/house3.png"));
     public Image h3 = img5.getImage();
     
     public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
@@ -331,13 +335,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fillRect(340, 0, 100, 480); //vertical
         g2.fillRect(0, 180, 740, 100); //horizontal
         
-        g2.drawImage(b, 80, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(b, 640, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m1, 150, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m2, 430, 130, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h1, 430, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h2, 430, 350, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(h3, 500, 270, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(b, 60, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(b, 660, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(m1, 130, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(m2, 450, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h1, 450, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h2, 450, 370, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h3, 520, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         
         //Hover Text
             g2.setColor(Color.BLACK);
