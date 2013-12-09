@@ -698,7 +698,7 @@ public class SimCityGUI extends JFrame {
                 simclock.timeCards.add(rest1.getTimeCard());
                 for (PersonAgent p: people){
                         p.setcitygui(this);
-                      //  p.startThread();
+                       p.startThread();
                 }
                 
                 // Sets the sim world clock to the interaction panel's so events can be created with correct start time
@@ -711,8 +711,9 @@ public class SimCityGUI extends JFrame {
         public CarAgent createCar(PersonAgent p){
                 AStarTraversal aStarTraversal = new AStarTraversal(grid);
         		aStarTraversal.originalgrid = origgrid; 
+        	   CarAgent caragent = new CarAgent(aStarTraversal, p);
+        	   caragent.setTrafficLightAgent(trafficlightagent);
 
-        CarAgent caragent = new CarAgent(aStarTraversal, p);
         CarGui cgui = new CarGui(caragent,720,460);
         caragent.setGui(cgui);
         cityAnimPanel.addGui(cgui);
