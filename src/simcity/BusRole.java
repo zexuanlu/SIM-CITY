@@ -37,7 +37,7 @@ public class BusRole extends Agent implements Bus {
 	
 	Timer timer = new Timer();
 	public List<myPassenger> passengers = Collections.synchronizedList(new ArrayList<myPassenger>()); 
-	private class myPassenger{
+	public class myPassenger{
 		public Passenger p; 
 		public PersonState state;
 		myPassenger(Passenger pass){

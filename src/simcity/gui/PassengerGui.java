@@ -3,6 +3,7 @@ package simcity.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import person.PersonAgent;
 import simcity.PassengerRole; 
 import simcity.gui.BusGui.GuiState;
 import utilities.Gui;
@@ -29,6 +30,7 @@ public class PassengerGui implements Gui {
 		if (guistate != GuiState.onBus){
 	       g.setColor(Color.BLUE);
 	       g.fillRect(xPos,yPos,10,10);
+			g.drawString(((PersonAgent)passenger.person).getName(), xPos-14, yPos-5);
 		}
     }
 	
