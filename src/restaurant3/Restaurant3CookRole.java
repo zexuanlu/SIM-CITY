@@ -7,7 +7,7 @@ import restaurant3.interfaces.Restaurant3Cook;
 import restaurant3.Restaurant3CashierRole;
 import restaurant3.gui.Restaurant3CookGui;
 import market.Food;
-import market.interfaces.MarketCashier;
+import market.MarketCashierRole;
 import market.interfaces.MarketTruck;
 
 import java.util.*;
@@ -21,7 +21,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	
 	//Agent references
 	Restaurant3CashierRole cashier;
-	MarketCashier marketCashier;
+	MarketCashierRole marketCashier;
 	MarketTruck truck;
 	
 	//Boolean for truck
@@ -110,7 +110,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		cashier = c;
 	}
 	
-	public void setMarketCashier(MarketCashier c){
+	public void setMarketCashier(MarketCashierRole c){
 		this.marketCashier = c;
 	}
 
