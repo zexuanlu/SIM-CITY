@@ -10,7 +10,7 @@ import restaurant.interfaces.Market;
  * @author Joseph Boman
  *
  */
-public class MockMarket extends Mock implements Market {
+public class MockMarket extends Mock implements Restaurant2Market {
 
 	/**
 	 * Reference to the Cashier under test that can be set by the unit test.

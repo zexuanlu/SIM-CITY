@@ -11,12 +11,12 @@ import java.util.concurrent.Semaphore;
 
 import person.interfaces.Person;
 import restaurant2.gui.Restaurant2WaiterGui;
-import restaurant2.interfaces.Customer;
-import restaurant2.interfaces.Waiter;
+import restaurant2.interfaces.Restaurant2Customer;
+import restaurant2.interfaces.Restaurant2Waiter;
 import agent.Agent;
 import agent.Role;
 
-public abstract class Restaurant2AbstractWaiterRole extends Role implements Waiter{
+public abstract class Restaurant2AbstractWaiterRole extends Role implements Restaurant2Waiter{
 	static final int NTABLES = 4;
 
 	Timer timer = new Timer();
@@ -29,7 +29,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 	public enum WaiterState {backHome, away, takingOrders, serving, Seating, goingOnBreak, onBreak, returnForNewOrder}; 
 	//private enum WaiterEvent {none, seated, ordersTaken, served};
 	//private WaiterEvent event = WaiterEvent.none;
-	private WaiterState state = WaiterState.backHome;
+	protected WaiterState state = WaiterState.backHome;
 
 	private String name;
 	private Semaphore atTable = new Semaphore(0,true);
@@ -51,19 +51,16 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 	}
 
 	//Utilities
-	public void setHost(Restaurant2HostRole h)
-	{
+	public void setHost(Restaurant2HostRole h){
 		host = h;
 	}
 	public void setCook(Restaurant2CookRole c){
 		cook = c;
 	}
-	public void setCashier(Restaurant2CashierRole cash)
-	{
+	public void setCashier(Restaurant2CashierRole cash){
 		cashier = cash;
 	}
-	public Restaurant2HostRole getHost()
-	{
+	public Restaurant2HostRole getHost(){
 		return host;
 	}
 	public String getMaitreDName() {
@@ -81,29 +78,23 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 			return false;
 
 	}
-	public boolean isActive()
-	{
+	public boolean isActive(){
 		return active;
 	}
 	public Collection getTables() {
 		return tables;
 	}
-	private boolean areThereMoreTasks()
-	{
-		if(MyCustomers.isEmpty())
-		{
+	private boolean areThereMoreTasks(){
+		if(MyCustomers.isEmpty()){
 			return false;
 		}
 		else
 			return true;
 	}
-	private void removeMyCustomer(Customer c)
-	{
-		for(int i=0; i < MyCustomers.size(); i++)
-		{
+	private void removeMyCustomer(Restaurant2Customer c){
+		for(int i=0; i < MyCustomers.size(); i++){
 			MyCustomer mc = MyCustomers.get(i);
-			if(mc.getCustomer() == c)
-			{
+			if(mc.getCustomer() == c){
 				MyCustomers.remove(mc);
 			}
 		}
@@ -117,17 +108,15 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 	}
 	
 	// Messages
-	public void msgBackHome()
-	{
-		if(state!=WaiterState.backHome)
-		{
+	public void msgBackHome(){
+		if(state!=WaiterState.backHome){
 			state = WaiterState.backHome;
 			print("home");
 		}
 		stateChanged();
 	}
 
-	public void msgLeavingTable(Customer cust) {
+	public void msgLeavingTable(Restaurant2Customer cust) {
 		for (Table table : tables) {
 			if (table.getOccupant() == cust) {
 				print(cust + " leaving " + table);
@@ -137,11 +126,9 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		}
 		stateChanged();
 	}
-	public void msgLeavingTableNoOrder(Customer cust) {
-		for(MyCustomer mc : MyCustomers)
-		{
-			if(mc.getCustomer() == cust)
-			{
+	public void msgLeavingTableNoOrder(Restaurant2Customer cust) {
+		for(MyCustomer mc : MyCustomers){
+			if(mc.getCustomer() == cust){
 				mc.changeState("No order");
 			}
 		}
@@ -158,35 +145,27 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		atTable.release();
 		stateChanged();
 	}
-	public void msgAtCook()
-	{
+	public void msgAtCook(){
 		print("At the cook");
 		atCook.release();
-		if(state == WaiterState.serving)
-		{
+		if(state == WaiterState.serving){
 			serving.release();
 		}
 		waiterGui.DoLeaveCustomer();
 		stateChanged();
 	}
-	public void msgReadyToOrder(Customer customer, int table)
-	{
-		for(MyCustomer mc : MyCustomers)
-		{
-			if(mc.getCustomer() == customer)
-			{
+	public void msgReadyToOrder(Restaurant2Customer customer, int table){
+		for(MyCustomer mc : MyCustomers){
+			if(mc.getCustomer() == customer){
 				mc.changeState("readyToOrder");
 			}
 		}
 		stateChanged();
 	}
-	public void msgOrder(Customer customer, String order)
-	{
+	public void msgOrder(Restaurant2Customer customer, String order){
 		//System.out.println("Order from "+customer.getName()+" for "+order);
-		for(MyCustomer mc : MyCustomers)
-		{
-			if(mc.getCustomer() == customer)
-			{
+		for(MyCustomer mc : MyCustomers){
+			if(mc.getCustomer() == customer){
 				mc.setOrder(order);
 				mc.changeState("waitingForFood");
 				waiterGui.changeText(order);
@@ -195,66 +174,54 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		waitForOrder.release();
 		stateChanged();
 	}
-	public void msgFoodReady(String order, Customer customer)
-	{
+	public void msgFoodReady(String order, Restaurant2Customer customer){
 		System.out.println("picked up and order for "+order);
-		for(MyCustomer mc : MyCustomers)
-		{
-			if(mc.getCustomer() == customer)
-			{
+		for(MyCustomer mc : MyCustomers){
+			if(mc.getCustomer() == customer){
 				mc.changeState("toBeServed");
 				toServe.put(mc, order);
 			}
 		}
 		stateChanged();
 	}
-	public void msgOutOfFood(String foodType, Customer customer)
-	{
+	public void msgOutOfFood(String foodType, Restaurant2Customer customer){
 		print("Please tell "+customer+" that we are out of "+foodType);
-		for(MyCustomer mc : MyCustomers)
-		{
-			if(mc.getCustomer() == customer)
-			{
+		for(MyCustomer mc : MyCustomers){
+			if(mc.getCustomer() == customer){
 				mc.changeState("reOrder");
 			}
 		}
 		stateChanged();
 	}
-	public void msgSeatCustomer(Customer customer, Table table)
-	{
+	public void msgSeatCustomer(Restaurant2Customer customer, Table table){
 		MyCustomer mc = new MyCustomer(customer, table.tableNumber);
 		//print("going to table"+table.tableNumber+" with "+customer.getName());
 		tables.add(table);
 		MyCustomers.add(mc);
 		stateChanged();
 	}
-	public void msgGoOnBreak()
-	{
+	public void msgGoOnBreak(){
 		onBreak = true;
 		stateChanged();
 	}
-	public void msgHeresTheCheck(Customer c, Check check)
-	{
+	public void msgHeresTheCheck(Restaurant2Customer c, Check check){
 		print("here's the check for "+c+" for $"+check.getCheck());
-		for(MyCustomer mc : MyCustomers)
-		{
-			if(mc.getCustomer() == c)
-			{
+		for(MyCustomer mc : MyCustomers){
+			if(mc.getCustomer() == c){
 				mc.setCheck(check.getCheck());
 			}
 		}
 		stateChanged();
 	}
 
-	public void returnFromBreak()
-	{
+	public void returnFromBreak(){
 		onBreakSleep.release();
 		state = WaiterState.backHome;
 		stateChanged();
 	}
 
 	//actions
-	private void seatCustomer(MyCustomer customer, int table) {
+	protected void seatCustomer(MyCustomer customer, int table) {
 		state = WaiterState.away;//change the state
 		customer.changeState("beingSeated");
 		Menu menu = new Menu();
@@ -272,8 +239,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 
 		waiterGui.DoLeaveCustomer();
 	}
-	private void leaveForBreak()
-	{
+	protected void leaveForBreak(){
 		print("going on my break");
 		onBreak = false;
 		state = WaiterState.onBreak;
@@ -281,8 +247,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		comeBackFromBreak();
 		waiterGui.DoLeaveCustomer();
 	}
-	private void comeBackFromBreak()
-	{
+	protected void comeBackFromBreak(){
 		int breakTime = 10000;
 		timer.schedule(new TimerTask() {
 
@@ -292,26 +257,22 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		},
 		breakTime);
 	}
-	private void back()
-	{
+	protected void back(){
 		print("on my way back from break");
 		host.msgBreakIsOver(this);
 		waiterGui.changeText(" ");
 	}
-	private void getCheck(MyCustomer mc)
-	{
+	protected void getCheck(MyCustomer mc){
 		print("I'd like the check for "+mc.getCustomer());
 		cashier.msgComputeCheck(mc.getCachedOrder(), this, mc.getCustomer());
 		mc.changeState("waitingForCheck");
 	}
-	private void deliverCheck(MyCustomer mc)
-	{
+	protected void deliverCheck(MyCustomer mc){
 		print("Here is your check "+mc.getCustomer());
 		mc.getCustomer().msgHeresYourCheck(mc.getCheck());
 		mc.changeState("checkDelivered");
 	}
-	private void takeOrder(MyCustomer customer)
-	{
+	protected void takeOrder(MyCustomer customer){
 		DoTakeOrder((Restaurant2CustomerRole) customer.getCustomer(), customer.tableAt());
 		try {
 			atTable.acquire();
@@ -331,8 +292,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		print("order taken!");
 
 	}
-	private void returnForNewOrder(MyCustomer customer)
-	{
+	protected void returnForNewOrder(MyCustomer customer){
 		DoTakeFoodToCustomer(customer.tableAt());
 		try {
 			atTable.acquire();
@@ -346,8 +306,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 	}
 	private void ordersToCook(){};
 	
-	private void serveCustomers(MyCustomer customer)
-	{
+	protected void serveCustomers(MyCustomer customer){
 		state = WaiterState.serving;
 		if(toServe.containsKey(customer))
 		{
@@ -378,13 +337,13 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 	//utilities 
 
 	// The animation routines
-	private void DoSeatCustomer(Restaurant2CustomerRole customer,int table) {
+	protected void DoSeatCustomer(Restaurant2CustomerRole customer,int table) {
 
 		print("Seating " + customer + " at " + table);
 		waiterGui.DoBringToTable(customer, table); 
 	}
 
-	private void DoTakeOrder(Restaurant2CustomerRole customer, int table){
+	protected void DoTakeOrder(Restaurant2CustomerRole customer, int table){
 		print("Heading over to table "+table+" to take "+ customer.getName()+"'s order");
 		waiterGui.DoGoTakeOrder(customer, table);
 	}
@@ -393,7 +352,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		print("Taking orders to le cook");
 		waiterGui.DoTakeToCook();
 	}
-	private void DoTakeFoodToCustomer(int table){
+	protected void DoTakeFoodToCustomer(int table){
 
 		waiterGui.DoTakeFoodToCustomer(table);
 		print("Taking orders to tables");
@@ -402,7 +361,7 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 
 	class MyCustomer {
 
-		private Customer customer;
+		private Restaurant2Customer customer;
 		private int tableAt;
 		private boolean reOrder;
 		private int check;
@@ -410,12 +369,12 @@ public abstract class Restaurant2AbstractWaiterRole extends Role implements Wait
 		private String cachedOrder;//a hack for now
 		private String state = "waitingToBeSeated";
 
-		MyCustomer(Customer customer, int tableAt)
+		MyCustomer(Restaurant2Customer customer, int tableAt)
 		{
 			this.customer = customer;
 			this.tableAt = tableAt;
 		}
-		public Customer getCustomer(){
+		public Restaurant2Customer getCustomer(){
 			return customer;
 		}
 		public int tableAt(){

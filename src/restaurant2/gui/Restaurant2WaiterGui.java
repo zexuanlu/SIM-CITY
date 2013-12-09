@@ -3,7 +3,7 @@ package restaurant2.gui;
 
 import restaurant2.Restaurant2CustomerRole;
 import restaurant2.Restaurant2HostRole;
-import restaurant2.interfaces.Waiter;
+import restaurant2.interfaces.Restaurant2Waiter;
 import utilities.Gui;
 
 import java.awt.*;
@@ -14,29 +14,30 @@ import javax.swing.JLabel;
 
 public class Restaurant2WaiterGui implements Gui {
 
-	private Waiter agent = null;
+	private Restaurant2Waiter agent = null;
 
 	private int xPos = -20, yPos = -20;//default waiter position
-	private int xDestination = -20, yDestination = -20;//default start position
+	private int xDestination = 20, yDestination = 20;//default start position
 
-	public static final int xTable = 250;
-	public static final int yTable = 100;
-	public static final int xTable2 = 350;
-	public static final int yTable2 = 100;
+	public static final int xTable = 50;
+	public static final int yTable = 400;
+	public static final int xTable2 = 150;
+	public static final int yTable2 = 400;
 	public static final int xTable3 = 250;
-	public static final int yTable3 = 200;
+	public static final int yTable3 = 400;
 	public static final int xTable4 = 350;
-	public static final int yTable4 = 200;
-	public static final int xCook = 550;
+	public static final int yTable4 = 400;
+	public static final int xCook = 350;
 	public static final int yCook = 30;
 
 	private boolean arrived = false;
+	private boolean isPresent = false;
 	private ImageIcon icon = new ImageIcon("src/resources/white.jpg");
 	private Image image = icon.getImage();
 	private int skin; 
 	private String text = " "; 
 	
-	public Restaurant2WaiterGui(Waiter agent) {
+	public Restaurant2WaiterGui(Restaurant2Waiter agent) {
 		//excuse the worthless icon param for now, will be useful when graphics are required
 		this.agent = agent;
 		//this.icon = icon;
@@ -119,7 +120,7 @@ public class Restaurant2WaiterGui implements Gui {
 	}
 
 	public boolean isPresent() {
-		return true;
+		return isPresent;
 	}
 
 	public void DoBringToTable(Restaurant2CustomerRole customer, int table) {
@@ -209,5 +210,8 @@ public class Restaurant2WaiterGui implements Gui {
 
 	public int getYPos() {
 		return yPos;
+	}
+	public void setPresent(boolean tf){
+		isPresent = tf;
 	}
 }

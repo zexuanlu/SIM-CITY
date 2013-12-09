@@ -1,7 +1,7 @@
 package restaurant2;
 
 import restaurant2.gui.Restaurant2CustomerGui;
-import restaurant2.interfaces.Market;
+import restaurant2.interfaces.Restaurant2Market;
 import agent.Agent;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MarketAgent extends Agent implements Market{
+public class MarketAgent extends Agent implements Restaurant2Market{
 
 	Timer timer = new Timer();
 

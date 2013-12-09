@@ -3,8 +3,8 @@ package restaurant2;
 import agent.Agent;
 import agent.Role;
 import restaurant2.gui.Restaurant2HostGui;
-import restaurant2.interfaces.Customer;
-import restaurant2.interfaces.Waiter;
+import restaurant2.interfaces.Restaurant2Customer;
+import restaurant2.interfaces.Restaurant2Waiter;
 import utilities.restaurant.RestaurantHost;
 
 import java.util.*;
@@ -62,27 +62,22 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 	public Collection getTables() {
 		return tables;
 	}
-	public void addWaiter(Waiter waiter){
+	public void addWaiter(Restaurant2Waiter waiter){
 		MyWaiter w = new MyWaiter(waiter);
 		waiters.add(w);
 	}
 	// Messages
-	public void msgAvailable(Waiter w)
-	{
-		for(int i=0; i < waiters.size(); i++)
-		{
+	public void msgAvailable(Restaurant2Waiter w){
+		for(int i=0; i < waiters.size(); i++){
 			MyWaiter mw = waiters.get(i);
-			if(mw.getWaiter() == w)
-			{
+			if(mw.getWaiter() == w){
 				mw.available = true;
 			}
 		}
 		stateChanged();
 	}
-	public void msgBackHome()
-	{
-		if(state!=HostState.backHome)
-		{
+	public void msgBackHome(){
+		if(state!=HostState.backHome){
 			state = HostState.backHome;
 			System.out.println("home");
 		}
@@ -92,12 +87,9 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 		waitingCustomers.add(mc);
 		stateChanged();
 	}
-	public void msgTableFree(int tableNumber)
-	{
-		for(Table table: tables)
-		{
-			if(table.tableNumber == tableNumber)
-			{
+	public void msgTableFree(int tableNumber){
+		for(Table table: tables){
+			if(table.tableNumber == tableNumber){
 				table.setUnoccupied();
 			}
 		}
@@ -112,15 +104,11 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 			}
 		}
 	}
-	public void msgWantToBreak(Waiter waiter)
-	{
-		if(waiters.size() > 1)
-		{
+	public void msgWantToBreak(Restaurant2Waiter waiter){
+		if(waiters.size() > 1){
 
-			for(MyWaiter w: waiters)
-			{
-				if(w.getWaiter() == waiter)
-				{
+			for(MyWaiter w: waiters){
+				if(w.getWaiter() == waiter){
 					print("sending "+waiter+" on break");
 					w.sendOnBreak = true;
 					//w.onBreak = true;
@@ -131,13 +119,10 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 			print("only one waiter you may not break!");
 		stateChanged();
 	}
-	public void msgBreakIsOver(Waiter w)
-	{
+	public void msgBreakIsOver(Restaurant2Waiter w){
 		synchronized(waiters){
-			for(MyWaiter mw : waiters)
-			{
-				if(mw.getWaiter() == w)
-				{
+			for(MyWaiter mw : waiters){
+				if(mw.getWaiter() == w){
 					mw.onBreak = false;
 				}
 			}
@@ -194,8 +179,7 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 
 	// Actions
 
-	private void notifyOfWaitTime()
-	{
+	private void notifyOfWaitTime(){
 		for(MyCustomer mc : waitingCustomers)
 		{
 			mc.getCustomer().msgYouHaveToWait();
@@ -205,11 +189,10 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 		waiter.available = false;
 		table.setOccupant(customer.getCustomer());
 		print("waiter "+waiter.getWaiter()+" taking "+customer+" to "+table);
-		waiter.getWaiter().msgSeatCustomer((Customer) customer.getCustomer(), table);//send a message to the selected waiter with the table and customer to seat at the table
+		waiter.getWaiter().msgSeatCustomer((Restaurant2Customer) customer.getCustomer(), table);//send a message to the selected waiter with the table and customer to seat at the table
 		waitingCustomers.remove(customer);
 	}
-	private void sendOnBreak(MyWaiter w)
-	{
+	private void sendOnBreak(MyWaiter w){
 		print("Sending "+w.getWaiter()+" on break");
 		w.sendOnBreak = false;
 		w.onBreak = true;
@@ -229,25 +212,22 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 	}
 	private class MyCustomer{
 		private Restaurant2CustomerRole customer;
-		MyCustomer(Restaurant2CustomerRole customer)
-		{
+		MyCustomer(Restaurant2CustomerRole customer){
 			this.customer = customer;
 		}
-		public Restaurant2CustomerRole getCustomer()
-		{
+		public Restaurant2CustomerRole getCustomer(){
 			return customer;
 		}
 	}
 	private class MyWaiter {
-		private Waiter waiter;
+		private Restaurant2Waiter waiter;
 		private String name;
 		public boolean active = false;
 		public boolean available = false;
 		public boolean sendOnBreak = false;
 		public boolean onBreak;
 
-		MyWaiter(Waiter waiter)
-		{
+		MyWaiter(Restaurant2Waiter waiter){
 			this.waiter = waiter;
 			//this.name = name;
 			active = true;
@@ -255,8 +235,7 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 			onBreak = false;
 			sendOnBreak = false;
 		}
-		public Waiter getWaiter()
-		{
+		public Restaurant2Waiter getWaiter(){
 			return waiter;
 		}
 		public boolean isActive(){
@@ -265,12 +244,10 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 		public boolean isOnBreak(){
 			return onBreak;
 		}
-		public boolean sentOnBreak()
-		{
+		public boolean sentOnBreak(){
 			return sendOnBreak;
 		}
-		public boolean isAvailable()
-		{
+		public boolean isAvailable(){
 			return available;
 		}
 	}

@@ -12,25 +12,22 @@ import javax.swing.JTextField;
 public class Restaurant2CustomerGui implements Gui{
 
 	private Restaurant2CustomerRole agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
-	//RestaurantGui gui;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 
-	public static final int xTable = 250;
-	public static final int yTable = 100;
-    public static final int xTable2 = 350;
-    public static final int yTable2 = 100;
+	public static final int xTable = 50;
+	public static final int yTable = 400;
+    public static final int xTable2 = 150;
+    public static final int yTable2 = 400;
     public static final int xTable3 = 250;
-    public static final int yTable3 = 200;
+    public static final int yTable3 = 400;
     public static final int xTable4 = 350;
-    public static final int yTable4 = 200;
-    public static final int yCookStation = 300;
-    public static final int xCookStation = 500;
+    public static final int yTable4 = 400;
 
     private String text = " ";
 	public Restaurant2CustomerGui(Restaurant2CustomerRole c, int x, int y){

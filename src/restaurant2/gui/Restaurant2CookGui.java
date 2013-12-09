@@ -17,16 +17,17 @@ public class Restaurant2CookGui implements Gui {
     public Map<Integer, String> grillLabels = new HashMap<Integer, String>();//holds grill label text
     public Map<Integer, String> stationLabels = new HashMap<Integer, String>();//holds cook station label text
     
-    private int xPos = 600, yPos = 30;//default waiter position
-    private int xDestination = 600, yDestination = 30;//default start position
+    private int xPos = 400, yPos = 30;//default cook position
+    private int xDestination = 400, yDestination = 30;//default start position
     public static final int xCS = 550; //cook station x position
-    public static final int xGrillPos = 650;
+    public static final int xGrillPos = 450;
     public static final int yGrillPos = 30;
     public static final int yGrillPos2 = 60;
     public static final int yGrillPos3 = 90;
     public static final int yGrillPos4 = 120;
     private boolean arrived;
     private boolean arrivedAtHome;
+    private boolean isPresent = false;
 	private String orderText = " "; 
     
     public Restaurant2CookGui(Restaurant2CookRole agent) {
@@ -101,7 +102,7 @@ public class Restaurant2CookGui implements Gui {
     }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
     public void DoTakeToCookStation(int position, String order) {
@@ -129,7 +130,7 @@ public class Restaurant2CookGui implements Gui {
     }
 
     public void DoLeaveGrill() {
-        xDestination = 600;
+        xDestination = 400;
         yDestination = 30;
         arrived = false;
     }
@@ -159,4 +160,7 @@ public class Restaurant2CookGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+	public void setPresent(boolean tf) {
+		isPresent = tf;
+	}
 }

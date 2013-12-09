@@ -1,8 +1,8 @@
 package restaurant2;
 
 import restaurant2.gui.Restaurant2CookGui;
-import restaurant2.interfaces.Customer;
-import restaurant2.interfaces.Waiter;
+import restaurant2.interfaces.Restaurant2Customer;
+import restaurant2.interfaces.Restaurant2Waiter;
 import restaurant2.Restaurant2Order;
 import utilities.restaurant.RestaurantCook;
 import agent.Role;
@@ -27,12 +27,12 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	Timer timer = new Timer();
 	Timer clear = new Timer();
 	Timer checkStand = new Timer();
-	Restaurant2CookGui cookGui = null;
+	public Restaurant2CookGui cookGui = null;
 	Grill grill = new Grill();
 	public enum OrderState {Uncooked, Cooking, Cooked};
 
 	// agent correspondents
-	public List<Waiter> waiters= new ArrayList<Waiter>();
+	public List<Restaurant2Waiter> waiters= new ArrayList<Restaurant2Waiter>();
 	public List<Restaurant2Order> orders = Collections.synchronizedList(new ArrayList<Restaurant2Order>());
 	public List<Restaurant2Order> readyOrders = new ArrayList<Restaurant2Order>();
 	public List<MyMarket> markets = Collections.synchronizedList(new ArrayList<MyMarket>());
@@ -47,13 +47,14 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	private MyMarket mm1;
 	private MyMarket mm2;
 	private MyMarket mm3;
+	private MyMarket market;
 	public enum MarketState {Idle, OrderedFrom, NeedsPayment};
-
+	
 	/**
-	 * Constructor for CustomerAgent class
+	 * Constructor for CookAgent class
 	 *
 	 * @param name name of the customer
-	 * @param gui  reference to the customergui so the customer can send it messages
+	 * @param gui  reference to the cookgui so the customer can send it messages
 	 */
 	public Restaurant2CookRole(String name, Person p){
 		super(p);
@@ -72,20 +73,20 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		}, 0, 6000);
 	}
 	public void setMarket(MarketAgent a, MarketAgent b, MarketAgent c){
-
-		mm1 = new MyMarket(a, "mm1");
+		market = new MyMarket(a, "market");
+		/*mm1 = new MyMarket(a, "mm1");
 		mm2 = new MyMarket(b, "mm2");
 		mm3 = new MyMarket(c, "mm3");
 		markets.add(mm1);
 		markets.add(mm2);
-		markets.add(mm3);
+		markets.add(mm3);*/
 
 	}
 	public void setGui(Restaurant2CookGui c){
 		cookGui = c;
 	}
 	// Messages
-	public void msgOrderToCook(String orderString, Waiter waiter, Restaurant2CustomerRole customer) {
+	public void msgOrderToCook(String orderString, Restaurant2Waiter waiter, Restaurant2CustomerRole customer) {
 
 		System.out.println("Order for "+orderString+" for "+customer.getName());
 		Restaurant2Order order = new Restaurant2Order(waiter, customer, orderString);
@@ -150,7 +151,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 					return true;
 				}
 				else if(num == 0){
-					order.waiter.msgOutOfFood(order.order, (Customer) order.customer);
+					order.waiter.msgOutOfFood(order.order, (Restaurant2Customer) order.customer);
 					return true;
 				}
 			}
@@ -192,7 +193,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 			e.printStackTrace();
 		}
 		cookGui.changeStationLabel(position, order.getOrderAbbr(order.order));
-		order.getWaiter().msgFoodReady(order.getOrder(), (Customer)order.getCustomer());
+		order.getWaiter().msgFoodReady(order.getOrder(), (Restaurant2Customer)order.getCustomer());
 		readyOrders.remove(order);
 		DoLeaveGrill();
 		clearPosition(position);
@@ -296,13 +297,13 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 
 	}
 	private class MyWaiter {
-		private Waiter waiter;
+		private Restaurant2Waiter waiter;
 
-		MyWaiter(Waiter waiter)
+		MyWaiter(Restaurant2Waiter waiter)
 		{
 			this.waiter = waiter;
 		}
-		public Waiter getWaiter(){
+		public Restaurant2Waiter getWaiter(){
 			return waiter;
 		}
 	}

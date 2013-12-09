@@ -3,19 +3,19 @@ package restaurant2;
 import java.util.HashMap;
 import java.util.Map;
 
-import restaurant2.interfaces.Waiter;
-import restaurant2.interfaces.Customer;
+import restaurant2.interfaces.Restaurant2Waiter;
+import restaurant2.interfaces.Restaurant2Customer;
 import restaurant2.Restaurant2CookRole.OrderState;
 
 public class Restaurant2Order {
 
-	Waiter waiter;
-	Customer customer;
+	Restaurant2Waiter waiter;
+	Restaurant2Customer customer;
 	String order;
 	Map<String, String> Abbr = new HashMap<String, String>();
 	OrderState state;
 	
-	Restaurant2Order (Waiter waiter2, Customer c, String o)
+	Restaurant2Order (Restaurant2Waiter waiter2, Restaurant2Customer c, String o)
 	{
 		Abbr.put("Steak", "ST");
 		Abbr.put("Hamburger", "B");
@@ -31,10 +31,10 @@ public class Restaurant2Order {
 		state = OrderState.Uncooked;
 
 	}
-	Waiter getWaiter(){
+	Restaurant2Waiter getWaiter(){
 		return waiter;
 	}
-	Customer getCustomer(){
+	Restaurant2Customer getCustomer(){
 		return customer;
 	}
 	String getOrder(){

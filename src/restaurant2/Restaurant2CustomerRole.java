@@ -1,8 +1,8 @@
 package restaurant2;
 
 import restaurant2.gui.Restaurant2CustomerGui;
-import restaurant2.interfaces.Customer;
-import restaurant2.interfaces.Waiter;
+import restaurant2.interfaces.Restaurant2Customer;
+import restaurant2.interfaces.Restaurant2Waiter;
 import agent.Agent;
 import agent.Role;
 
@@ -19,7 +19,7 @@ import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 /**
  * Restaurant customer agent.
  */
-public class Restaurant2CustomerRole extends Role implements Customer{
+public class Restaurant2CustomerRole extends Role implements Restaurant2Customer{
 	private String name;
 	Random chooser = new Random();
 	private int hungerLevel = 5;  // determines length of meal
@@ -30,15 +30,15 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	private Semaphore waitForPayment = new Semaphore(0, true);
 	Timer timer = new Timer();
 	Timer thinkTimer = new Timer();
-	private Restaurant2CustomerGui customerGui;
-	private Waiter waiter;
+	public Restaurant2CustomerGui customerGui;
+	private Restaurant2Waiter waiter;
 	// agent correspondents
 	private Restaurant2HostRole host;
 	private Restaurant2CashierRole cashier;
 	private Menu menu;
 	private String mealChoice;
 	//private List<String> restrictions = new ArrayList<String>();
-	//    private boolean isHungry = false; //hack for gui
+	//private boolean isHungry = false; //hack for gui
 	public enum AgentState
 	{DoingNothing, WaitingInRestaurant, MustWait, BeingSeated, Seated, Thinking, readyToOrder, Ordering, NotEnoughMoney, WaitingForFood, Eating, DoneEating, Paying, Leaving};
 	private AgentState state = AgentState.DoingNothing;//The start state
@@ -66,7 +66,7 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	public void setHost(Restaurant2HostRole host) {
 		this.host = host;
 	}
-	public void setWaiter(Waiter waiter){
+	public void setWaiter(Restaurant2Waiter waiter){
 		this.waiter = waiter;
 	}
 	public void setCashier(Restaurant2CashierRole cashier){
@@ -103,7 +103,7 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 		stateChanged();
 	}
 
-	public void msgSitAtTable(Waiter waiter, int tableNum, Menu menu) {
+	public void msgSitAtTable(Restaurant2Waiter waiter, int tableNum, Menu menu) {
 		print("Received msgSitAtTable");
 
 		tableAt = tableNum;
@@ -241,7 +241,7 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	}
 	private void imReadyToOrder(){
 		customerGui.changeText("!");
-		waiter.msgReadyToOrder((Customer) this, tableAt);
+		waiter.msgReadyToOrder((Restaurant2Customer) this, tableAt);
 		event = AgentEvent.ordering;
 		try {
 			waitForWaiter.acquire();
@@ -257,7 +257,7 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	}
 	private void Order(){
 		if(decide()){
-			waiter.msgOrder((Customer) this, mealChoice);
+			waiter.msgOrder((Restaurant2Customer) this, mealChoice);
 			customerGui.changeText(mealChoice+"?");
 		}
 		else{
@@ -338,7 +338,7 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	private void leaveTable() {
 		Do("Leaving.");
 		customerGui.changeText("$");
-		waiter.msgLeavingTable((Customer) this);
+		waiter.msgLeavingTable((Restaurant2Customer) this);
 		customerGui.DoExitRestaurant();
 		try {
 			waitForPayment.acquire();
@@ -351,14 +351,14 @@ public class Restaurant2CustomerRole extends Role implements Customer{
 	{
 		Do("I dont have the money to eat here");
 		customerGui.changeText("$ :(");
-		waiter.msgLeavingTableNoOrder((Customer) this);
+		waiter.msgLeavingTableNoOrder((Restaurant2Customer) this);
 		customerGui.DoExitRestaurant();
 
 	}
 	private void payForMeal()
 	{
 		if(!this.name.equals("flake lord")){
-			cashier.msgPayment((Customer) this, check);
+			cashier.msgPayment((Restaurant2Customer) this, check);
 		}
 		else{
 			cashier.msgPayment(this, 0);
