@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 
 import person.interfaces.Person;
 import market.Food;
+import market.interfaces.MarketCashier;
 import market.interfaces.MarketTruck;
 import restaurant6.Restaurant6Order.OrderState;
 import restaurant6.gui.Restaurant6CookGui;
@@ -16,6 +17,8 @@ import restaurant6.interfaces.Restaurant6Cashier;
 import restaurant6.interfaces.Restaurant6Cook;
 import restaurant6.test.mock.EventLog;
 import restaurant6.test.mock.LoggedEvent;
+import utilities.restaurant.RestaurantCashier;
+import utilities.restaurant.RestaurantCook;
 
 /**
  * Restaurant Cook Agent
@@ -69,12 +72,13 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	private Semaphore atPlatingArea = new Semaphore(0,true);
 	
 	// Creating a list of markets to order from
-	private List<MarketAgent> markets = Collections.synchronizedList(new ArrayList<MarketAgent>(numMarkets));
+	private List<MarketCashier> markets = Collections.synchronizedList(new ArrayList<MarketCashier>(numMarkets));
 	
 	// Creates private inner class of orders to market
 	private static class MarketOrder {
 //		public List<Restaurant6Restock> items = Collections.synchronizedList(new ArrayList<Restaurant6Restock>());
 		public List<Food> items = Collections.synchronizedList(new ArrayList<Food>());
+		public MarketTruck truck;
 		
 		public enum MarketOrderState {None, Partial, Fulfilled}
 		private MarketOrderState state;
@@ -148,7 +152,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	}
 	
 	// Hack to create connection between the market and the cook
-	public void addMarket(MarketAgent m) {
+	public void addMarket(MarketCashier m) {
 		markets.add(m);
 	}
 
@@ -206,11 +210,6 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		stateChanged();
 	}
 
-	public void msgHereisYourFood(MarketTruck t, List<Food> fList) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void msgEmptyStock() {
 		// TODO Auto-generated method stub
 		
@@ -249,11 +248,12 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 //		stateChanged();
 //	}
 	
-	// Message from market with order fulfillment
-	public void msgHereisYourFood(List<Food> order) {
+	// Message from market with order fulfillment	
+	public void msgHereisYourFood(MarketTruck t, List<Food> order) {
 		orderPlaced = false;
 		
 		MarketOrder tempOrder = new MarketOrder(MarketOrder.MarketOrderState.Fulfilled);
+		tempOrder.truck = t;
 		
 		for (Food f : order) {
 			tempOrder.items.add(new Food(f.choice, f.amount));
@@ -387,7 +387,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		}
 		
 		if (!tempOrder.items.isEmpty()) {
-//			markets.get(0).msgOrderFood(tempOrder.items);
+			markets.get(0).MsgIwantFood(this, this.cashier, tempOrder.items, 6);
 			// Tell the cashier what you ordered so they can verify
 			cashier.msgOrderedFood(tempOrder.items);
 			orderPlaced = true;
@@ -407,6 +407,8 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 			print ("My cook inventory of " + food.getChoice() + " is now " + food.getAmount());
 		}
 		
+		// Tell the market truck to go back
+		order.truck.msgGoBack();
 		ordersToMarket.remove(order);
 	}
 	

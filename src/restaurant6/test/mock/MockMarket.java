@@ -2,18 +2,25 @@ package restaurant6.test.mock;
 
 import java.util.List;
 
+import person.Restaurant;
+import market.Food;
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketCustomer;
+import market.interfaces.MarketTruck;
 import restaurant6.Restaurant6Check;
 import restaurant6.Restaurant6Invoice;
 import restaurant6.Restaurant6Restock;
 import restaurant6.interfaces.Restaurant6Cashier;
 import restaurant6.interfaces.Restaurant6Market;
+import utilities.restaurant.RestaurantCashier;
+import utilities.restaurant.RestaurantCook;
 
 /**
  * Mock Market class to test market/cashier interaction
  * @author jenniezhou
  *
  */
-public class MockMarket extends Mock implements Restaurant6Market {
+public class MockMarket extends Mock implements MarketCashier {
 	
 	public EventLog log = new EventLog();
 	int inventory;
@@ -45,8 +52,39 @@ public class MockMarket extends Mock implements Restaurant6Market {
 	/**
 	 * Cashier pays the market
 	 */
-	public void msgHereIsThePayment(double payment, Restaurant6Invoice invoice) {
-		log.add(new LoggedEvent("Received payment of $" + payment + " from cashier."));
+	public void msgBillFromTheAir(double money) {
+		log.add(new LoggedEvent("Received payment of $" + money + " from cashier."));
+	}
+
+	public void msgHereisOrder(MarketCustomer customer, List<Food> food) {
+		
+	}
+
+	public void msgPayment(MarketCustomer customer, double m) {
+		
+	}
+
+	public void msgHereisProduct(MarketCustomer customer, List<Food> order) {
+		
+	}
+
+	public void msgGoToTable(MarketCustomer customer) {
+		
+	}
+
+	public void MsgIwantFood(RestaurantCook cook, RestaurantCashier ca, List<Food> food, int number) {
+		log.add(new LoggedEvent("Received order from cook."));	
+		for (Food r : food) {
+				log.add(new LoggedEvent("Can fulfill the order of " + r.amount + r.choice));
+		}	
+	}
+
+	public void msgTruckBack(MarketTruck t) {
+		
+	}
+
+	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food, Restaurant r, int restnum) {
+		
 	}
 
 }

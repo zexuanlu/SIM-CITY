@@ -46,7 +46,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	}
 	
 	// States for the Apartment Tenant
-	public enum MyState {Sleeping, Awake};
+	public enum MyState {Sleeping, Awake, Cooking};
 	private MyState state;
 	
 	public String getName() {
@@ -58,14 +58,17 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	}
 
 	public static class MyPriority {
+		public enum Type {Hunger, Cleaning, Maintainance, Shop}
+		public Type type;
 		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, GoToMarket, RestockFridge, PayRent, GoToRestaurant, NoFood}
 		public Task task;
 		private double timeDuration;
 		private int levelOfImportance;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>();
 
-		public MyPriority(Task t) {
+		public MyPriority(Task t, Type type) {
 			task = t;
+			this.type = type;
 			
 			// All basic tasks of a resident
 			taskTime.put(Task.NeedToEat, 0);
@@ -132,21 +135,27 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 */
 	public void updateVitals(int hunger, int timer) {
 		if (hunger >= hungerThreshold) {
-			// Add eating to the list of priorities that the resident has
-			toDoList.add(new MyPriority(MyPriority.Task.NeedToEat));
-			
-			// Log that the message has been received
-			log.add(new LoggedEvent("I'm hungry."));
-			
-			print("I'm hungry.");
-			
-			stateChanged();
+			if(state == MyState.Cooking)
+				return;
+			for(MyPriority mp : toDoList){
+				if(mp.type == MyPriority.Type.Hunger)
+					return;
+			 }
 		}
+			// Add eating to the list of priorities that the resident has
+		toDoList.add(new MyPriority(MyPriority.Task.NeedToEat, MyPriority.Type.Hunger));
+			
+		// Log that the message has been received
+		log.add(new LoggedEvent("I'm hungry."));
+		
+		print("I'm hungry.");
+		
+		stateChanged();
 	}
 
 	public void msgFoodDone() {
 		// Add getting cooked food to the list of priorities 
-		toDoList.add(new MyPriority(MyPriority.Task.Eating));
+		toDoList.add(new MyPriority(MyPriority.Task.Eating, MyPriority.Type.Hunger));
 		
 		log.add(new LoggedEvent("My food is ready! I can eat now."));
 		
@@ -157,7 +166,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 
 	public void msgDoneEating() {
 		// Add washing dishes to the list of priorities
-		toDoList.add(new MyPriority(MyPriority.Task.WashDishes));
+		toDoList.add(new MyPriority(MyPriority.Task.WashDishes, MyPriority.Type.Cleaning));
 		
 		log.add(new LoggedEvent("Done eating. I'm going to wash dishes now."));
 		
@@ -186,7 +195,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		print("I just finished going to the market. Time to put all my groceries in the fridge.");
 		
 		// Add restocking fridge to the to do list
-		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge));		
+		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge, MyPriority.Type.Shop));		
 
 		for (Food f : groceries) {
 			myFridge.add(new Food(f.choice, f.amount));
@@ -209,7 +218,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		log.add(new LoggedEvent("It's been a day. Time to pay rent."));
 		print("It's been a day. Time to pay rent.");
 		
-		toDoList.add(new MyPriority(MyPriority.Task.PayRent));
+		toDoList.add(new MyPriority(MyPriority.Task.PayRent, MyPriority.Type.Maintainance));
 		stateChanged();
 	}
 	
@@ -258,7 +267,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			sleep();
 			return true;
 		}
-		if (!toDoList.isEmpty() && state == MyState.Awake) {
+		if (!toDoList.isEmpty() && state != MyState.Sleeping) {
 			for (MyPriority p : toDoList) {
 				if (p.task == MyPriority.Task.PayRent) {
 					payLandlord(p);
@@ -368,12 +377,12 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 
 		if (myFridge.isEmpty()) { // Checks to see if the list is empty
 			// Adds going to the market or restaurant to the list
-			toDoList.add(new MyPriority(MyPriority.Task.NoFood));
+			toDoList.add(new MyPriority(MyPriority.Task.NoFood, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has no food. I must now decide if I should go to the market or go out to eat."));
 			print("My fridge has no food. I must now decide if I should go to the market or go out to eat.");
 		}
 		else { // Cook the food
-			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has food. I can cook now!"));
 			print("My fridge has food. I can cook now!");
 		}	
@@ -383,16 +392,16 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.remove(p);
 
 		if (person.msgCheckWallet() < minRestaurantMoney) { 
-			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket)); 
-			toDoList.add(new MyPriority(MyPriority.Task.Cooking));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket, MyPriority.Type.Hunger)); 
+			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
 			
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough money to go and come home."));
 			
 			print("I'm going to go to the market. I have enough money to go and come home.");
 		}
 		else { 
-			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant));
-			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant, MyPriority.Type.Hunger));
+			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket, MyPriority.Type.Hunger));
 			
 			log.add(new LoggedEvent("I have enough money to go to the restaurant, and go to the market when I have time."));
 			
@@ -406,7 +415,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		DoGoToFrontDoor();
 		
 		if (person.getMap() != null) {
-			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant); //FIX
+			Restaurant location = (Restaurant)person.getMap().chooseByType(LocationType.Restaurant1); //FIX
 
 			// GUI goes to restaurant, lets person agent know that no longer going to be a resident role
 			person.msgAddEvent(new SimEvent("Go to restaurant", location, SimEvent.EventType.CustomerEvent));
@@ -484,8 +493,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	private void washDishes(MyPriority p) {
 		toDoList.remove(p);
 
-		final MyPriority prior = new MyPriority(MyPriority.Task.Washing);
-		final HomeOwnerRole temp = new HomeOwnerRole(this.person, this.name, this.apartmentNumber);
+		final MyPriority prior = new MyPriority(MyPriority.Task.Washing, MyPriority.Type.Cleaning);
 		toDoList.add(prior);
 
 		DoWashDishes();
