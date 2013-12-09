@@ -1305,10 +1305,13 @@ public class PersonAgent extends Agent implements Person{
 		if(car != null){
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
+			
+			//SWITCHES LOCATION WHY
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print ("origin position "+p.getX() + " " + p.getY());
-			print("goingto position " + l.getX() + " " + l.getY());
+			print ("origin position "+ currentLocation.getX() + " " + currentLocation.getY() + " "+p.getX() + " " + p.getY());
+			print("goingto position "+loc.position.getX() + " " + loc.position.getY() + " " + l.getX() + " " + l.getY());
+			
 			print("gotoposition from person");
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
 		}

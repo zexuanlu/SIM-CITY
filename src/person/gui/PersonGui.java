@@ -47,7 +47,7 @@ public class PersonGui implements Gui{
 		
 		if(yPos == yDestination && xPos == xDestination && !arrived){
 			arrived = true;
-			agent.msgAtDest(new Position(yPos, xPos));
+			agent.msgAtDest(new Position(xPos, yPos));
 		}
 	}
 
