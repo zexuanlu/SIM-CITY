@@ -721,6 +721,7 @@ public class SimCityGUI extends JFrame {
                 p.setAnimationPanel(cityAnimPanel);
                 people.add(p);
                 peoplegui.add(pgui);
+                simclock.addPerson(p);
                 cityAnimPanel.addGui(pgui);
         }
 
@@ -731,6 +732,11 @@ public class SimCityGUI extends JFrame {
     		AStarTraversal aStarTraversal = new AStarTraversal(grid);
 
     		PersonAgent p  = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
+            PersonGui pgui = new PersonGui(p,100,100);
+            p.setGui(pgui);
+            p.setAnimationPanel(cityAnimPanel);
+            cityAnimPanel.addGui(pgui);
+            simclock.addPerson(p);
     		p.msgAddMoney(-400);
     		AStarTraversal aStarTrav = new AStarTraversal(grid);
     		aStarTrav.originalgrid = origgrid; 
@@ -742,6 +748,11 @@ public class SimCityGUI extends JFrame {
             caragent.gotoPosition(720, 180, 100, 180);
             
         	p  = new PersonAgent("Crash dummy2", citymap, aStarTraversal, 500.00);
+        	pgui = new PersonGui(p,100,100);
+            p.setGui(pgui);
+            p.setAnimationPanel(cityAnimPanel);
+            cityAnimPanel.addGui(pgui);
+            simclock.addPerson(p);
     		p.msgAddMoney(-400);
     		aStarTrav = new AStarTraversal(grid);
     		aStarTrav.originalgrid = origgrid; 

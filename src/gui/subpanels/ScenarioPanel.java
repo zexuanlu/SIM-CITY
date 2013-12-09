@@ -231,6 +231,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			else if (chosen.getText().trim().equals("Vehicle collision")) {
 				// Here we will run the scenario where all restaurants order from the market
 				//FIX
+				simCityGui.crashcars();
+				
 				System.err.println("Vehicle collision");
 			}
 			else if (chosen.getText().trim().equals("Person Vehicle collision")) {
