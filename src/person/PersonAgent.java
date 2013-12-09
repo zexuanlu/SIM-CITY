@@ -1210,6 +1210,14 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
+		if(wallet.getOnHand() >= 2500 && car == null){
+			Market m = (Market)cityMap.getByType(LocationType.Market);
+			SimEvent buyCar = new SimEvent("Go buy a car", m,EventType.CustomerEvent);
+			if(!containsEvent("Go buy a car")){
+				toDo.add(buyCar);
+				addedAnEvent = true;
+			}
+		}
 		if(!addedAnEvent && !containsEvent("Go home") && !cityMap.ateOutLast){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
