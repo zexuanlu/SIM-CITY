@@ -38,8 +38,8 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
     	setVisible(true);
 		this.setBorder(BorderFactory.createTitledBorder("Bank"));
 		
-    	Timer timer = new Timer(TIMERCOUNT, this );
-    	timer.start();
+//    	Timer timer = new Timer(TIMERCOUNT, this );
+ //   	timer.start();
     }
 
 	public void actionPerformed(ActionEvent e) {
