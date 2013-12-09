@@ -3,7 +3,10 @@ package restaurant3.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import restaurant1.Restaurant1CustomerRole;
 import restaurant3.Restaurant3WaiterRole;
+import restaurant3.interfaces.Restaurant3Waiter;
+import person.PersonAgent;
 
 public class Restaurant3WaiterGui implements Gui {
 	
@@ -11,7 +14,7 @@ public class Restaurant3WaiterGui implements Gui {
 		private int width = 20;
 		private int height = 20;
 
-		Restaurant3WaiterRole agent = null;
+		Restaurant3Waiter agent = null;
 		int home = 0;
 		int xDestination = home;
 		int yDestination = home;
@@ -24,8 +27,12 @@ public class Restaurant3WaiterGui implements Gui {
 		//Positions
 		private int cookPosX = Restaurant3AnimationPanel.oStandX - width;
 		private int cookPosY = Restaurant3AnimationPanel.kitchenY - height;
+		
+		String order = "";
+		String wtrRole = "Restaurant 3 Waiter";
+		String sdwRole = "Restaurant 3 SDWaiter";
 
-	public Restaurant3WaiterGui(Restaurant3WaiterRole w) {
+	public Restaurant3WaiterGui(Restaurant3Waiter w) {
 		agent = w;
 		xPos = xDestination;
 		yPos = yDestination;
@@ -67,12 +74,24 @@ public class Restaurant3WaiterGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.pink);
+		g.drawString(order, xPos, yPos+height+height);
+		if(agent instanceof Restaurant3Waiter){
+			g.drawString(((PersonAgent)((Restaurant3WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+		}
 		g.fillRect(xPos, yPos, width, height);
 	}
 
 	@Override
 	public boolean isPresent() {
 		return isPresent;
+	}
+	
+	public void carryOrder(String o){
+		order = o;
+	}
+	
+	public void deliverOrder(){
+		order = "";
 	}
 	
 	public void setPresent(boolean b){

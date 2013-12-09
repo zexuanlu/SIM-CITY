@@ -18,6 +18,7 @@ import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant1.gui.Restaurant1AnimationPanel;
 import restaurant2.gui.Restaurant2AnimationPanel;
+import restaurant3.gui.Restaurant3AnimationPanel;
 import restaurant4.gui.Restaurant4AnimationPanel;
 import restaurant5.gui.Restaurant5AnimationPanel;
 import restaurant6.gui.Restaurant6AnimationPanel;

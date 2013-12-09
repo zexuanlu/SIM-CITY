@@ -3,6 +3,7 @@ package restaurant3;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import person.PersonAgent;
 import agent.Agent;
 import restaurant3.Restaurant3HostRole;
 import restaurant3.interfaces.*;
@@ -10,44 +11,18 @@ import restaurant3.gui.Restaurant3AnimationPanel;
 import restaurant3.gui.Restaurant3CustomerGui;
 import restaurant3.gui.Restaurant3WaiterGui;
 
-public class Restaurant3WaiterRole extends Agent implements Waiter {
+public class Restaurant3WaiterRole extends Restaurant3AbstractWaiter implements Restaurant3Waiter {
 	//MEMBER DATA
 	String name;
 	private int nTables = Restaurant3HostRole.NTABLES; //REMOVE THIS IF NOT USED
 	
 	//References to agents
 	Restaurant3HostRole host;
-	Cook cook;
-	Cashier cashier;
+	Restaurant3Cook cook;
+	Restaurant3Cashier cashier;
 	
 	//References to GUI stuff
 	Restaurant3WaiterGui waiterGui;
-	
-	//Enums to keep track of customer state
-	public enum cState {idle, beingSeated, seated, orderPlaced, 
-		orderDelivered, awaitingBill, billDelivered, awaitingReceipt, receiptDelivered, leaving};
-		
-	public enum wEvent {none, custNeedSeat, custReadyToOrder, custDecided, custOrderReady,
-		custDoneEating, custBillReady, custPaid, custReceiptReady, custLeaving};
-	
-	//Private class to keep track of customers
-	private class MyCustomer {
-		Customer cust;
-		int tableNum;
-		cState state;
-		wEvent event;
-		String choice;
-		double bill = 0;
-		double payment = 0;
-		double change = 0;
-		
-		MyCustomer(Customer c, int tNum){
-			cust = c;
-			tableNum = tNum;
-			state = cState.idle;
-			event = wEvent.custNeedSeat;
-		}
-	}
 
 	//List to hold customers
 	List<MyCustomer> myCustomers
@@ -64,14 +39,10 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	private Semaphore atCook = new Semaphore(0, true);
 	
 	//CONSTRUCTOR ************************************
-	public Restaurant3WaiterRole(String name, Restaurant3HostRole h, Cook ck, Cashier c) {
-		super();
+	public Restaurant3WaiterRole(String name, PersonAgent pa) {
+		super(pa);
 		this.name = name;
-		
-		//Initialize agent references
-		host = h;
-		cook = ck;
-		cashier = c;
+		roleName = "Restaurant 3 Waiter";
 		
 		//Initialize menu
 		menu.put("Steak", Restaurant3CashierRole.steak);
@@ -86,8 +57,20 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 		return name;
 	}
 	
+	public String getRoleName(){
+		return roleName;
+	}
+	
 	public void setHost(Restaurant3HostRole h){
 		this.host = h;
+	}
+	
+	public void setCook(Restaurant3CookRole ck){
+		this.cook = ck;
+	}
+	
+	public void setCashier(Restaurant3CashierRole c){
+		this.cashier = c;
 	}
 	
 	public void setGui(Restaurant3WaiterGui wg){
@@ -95,14 +78,14 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	}
 
 	@Override
-	public void msgSeatCustomerAtTable(Customer c, int table) {
+	public void msgSeatCustomerAtTable(Restaurant3Customer c, int table) {
 		print(name + ": received request to seat customer " + c.getName());
 		myCustomers.add(new MyCustomer(c, table));
 		stateChanged();
 	}
 
 	@Override
-	public void msgReadyToOrder(Customer c) {
+	public void msgReadyToOrder(Restaurant3Customer c) {
 		print(name + ": customer " + c.getName() + " is ready to order");
 		synchronized(myCustomers){
 			for(MyCustomer cmr : myCustomers){
@@ -115,7 +98,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	}
 
 	@Override
-	public void msgHereIsMyChoice(Customer c, String choice) {
+	public void msgHereIsMyChoice(Restaurant3Customer c, String choice) {
 		print(name + ": " + c.getName() + " is placing order");
 		synchronized(myCustomers){
 			for(MyCustomer cmr : myCustomers){
@@ -129,7 +112,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	}
 
 	@Override
-	public void msgDoneEatingCheckPls(Customer c) {
+	public void msgDoneEatingCheckPls(Restaurant3Customer c) {
 		print(name + ": customer " + c.getName() + " requested check");
 		synchronized (myCustomers) {
 			for(MyCustomer cmr : myCustomers){
@@ -142,7 +125,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	}
 
 	@Override
-	public void msgHereIsMyMoney(Customer c, double money) {
+	public void msgHereIsMyMoney(Restaurant3Customer c, double money) {
 		print(name + ": received payment from customer " + c.getName());
 		synchronized(myCustomers){
 			for(MyCustomer cmr : myCustomers){
@@ -156,7 +139,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	}
 
 	@Override
-	public void msgLeavingTable(Customer c) {
+	public void msgLeavingTable(Restaurant3Customer c) {
 		print(name + ": customer leaving - " + c.getName());
 		synchronized(myCustomers){
 			for(MyCustomer cmr : myCustomers){
@@ -220,7 +203,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 	}
 
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		
 		if(!myCustomers.isEmpty()){
 			synchronized(myCustomers){
@@ -364,6 +347,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
+		waiterGui.carryOrder(c.choice);
 		print(name + ": delivering order for customer " + c.cust.getName());
 		waiterGui.DoTakeFoodToCustomer(c.tableNum);	//GUI CODE
 		atTable.drainPermits();
@@ -373,6 +357,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
+		waiterGui.deliverOrder();
 		c.state = cState.orderDelivered;
 		c.cust.msgHereIsYourFood(c.choice);
 		waiterGui.DoGoToHomePosition();
@@ -410,7 +395,7 @@ public class Restaurant3WaiterRole extends Agent implements Waiter {
 			public void run(){
 				host.msgCustLeavingTable(t);
 			}
-		}, 3000);
+		}, 1000);
 	}
 	
 }

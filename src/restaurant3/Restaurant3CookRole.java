@@ -1,16 +1,31 @@
 package restaurant3;
 
-import agent.Agent;
-import restaurant3.interfaces.Waiter;
-import restaurant3.interfaces.Cook;
+import agent.Role;
+import person.PersonAgent;
+import restaurant3.interfaces.Restaurant3Waiter;
+import restaurant3.interfaces.Restaurant3Cook;
+import restaurant3.Restaurant3CashierRole;
 import restaurant3.gui.Restaurant3CookGui;
+import market.Food;
+import market.interfaces.MarketCashier;
+import market.interfaces.MarketTruck;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.Semaphore;
 
-public class Restaurant3CookRole extends Agent implements Cook{
+public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//MEMBER DATA
 	String name;
+	int marketNum = 1;
+	
+	//Agent references
+	Restaurant3CashierRole cashier;
+	MarketCashier marketCashier;
+	MarketTruck truck;
+	
+	//Boolean for truck
+	boolean sendTruckBack = false;
 	
 	//GUI references
 	Restaurant3CookGui cookGui;
@@ -21,11 +36,11 @@ public class Restaurant3CookRole extends Agent implements Cook{
 	//Private class for order information
 	private class Order{
 		String choice;
-		Waiter wtr;
+		Restaurant3Waiter wtr;
 		int tableNum;
 		oState state;
 		
-		Order(Waiter w, int tNum, String ch){
+		Order(Restaurant3Waiter w, int tNum, String ch){
 			wtr = w;
 			tableNum = tNum;
 			choice = ch;
@@ -34,14 +49,14 @@ public class Restaurant3CookRole extends Agent implements Cook{
 	}
 	
 	//Private class for food information
-	private class Food{
+	private class MyFood{
 		String type;
 		int cookTime;
 		int amount;
 		int max;
 		int numToOrder;
 		
-		Food(String t, int cT, int amt, int mx){
+		MyFood(String t, int cT, int amt, int mx){
 			type = t;
 			cookTime = cT*1000;
 			amount = amt;
@@ -53,7 +68,10 @@ public class Restaurant3CookRole extends Agent implements Cook{
 	List<Order> orders = new ArrayList<Order>();
 	
 	//Food inventory
-	Map<String, Food> food = new HashMap<String, Food>();
+	Map<String, MyFood> foodInventory = new HashMap<String, MyFood>();
+	
+	//Restock list
+	public List<Food> restockList = Collections.synchronizedList(new ArrayList<Food>());
 	
 	//Semaphore for animation
 	private Semaphore atFr = new Semaphore(0, true);
@@ -62,15 +80,17 @@ public class Restaurant3CookRole extends Agent implements Cook{
 	Timer cookTimer = new Timer();
 	
 	//CONSTRUCTOR *****************************************
-	public Restaurant3CookRole(String name) {
-		super();
+	public Restaurant3CookRole(String name, PersonAgent pa) {
+		super(pa);
 		this.name = name;
+		roleName = "Restaurant 3 Cook";
 		
 		//Initialize inventory
-		food.put("Steak", new Food("Steak", 4, 10, 10));
-		food.put("Pizza", new Food("Pizza", 3, 10, 10));
-		food.put("Chicken", new Food("Chicken", 2, 10, 10));
-		food.put("Salad", new Food("Salad", 1, 10, 10));
+		foodInventory.put("Steak", new MyFood("Steak", 4, 10, 10));
+		foodInventory.put("Pizza", new MyFood("Pizza", 3, 10, 10));
+		foodInventory.put("Chicken", new MyFood("Chicken", 2, 10, 10));
+		foodInventory.put("Salad", new MyFood("Salad", 1, 10, 10));
+
 	}
 	
 	//HELPER METHODS **************************************
@@ -78,15 +98,38 @@ public class Restaurant3CookRole extends Agent implements Cook{
 		return name;
 	}
 	
+	public String getRoleName(){
+		return roleName;
+	}
+	
 	public void setGui(Restaurant3CookGui ckg){
 		cookGui = ckg;
+	}
+	
+	public void setCashier(Restaurant3CashierRole c){
+		cashier = c;
+	}
+	
+	public void setMarketCashier(MarketCashier c){
+		this.marketCashier = c;
 	}
 
 	//MESSAGES ********************************************
 	@Override
-	public void msgNewOrder(Waiter w, int table, String choice) {
+	public void msgNewOrder(Restaurant3Waiter w, int table, String choice) {
 		print(name + ": received new order from waiter " + w.getName());
 		orders.add(new Order(w, table,choice));
+		stateChanged();
+	}
+	
+	public void msgHereisYourFood(MarketTruck t, List<Food> fList){
+		print(name + " received stock from market " + marketNum);
+		this.truck = t;
+		for(Food f : fList){
+			foodInventory.get(f.choice).amount += f.amount;
+			print("Stock: " + f.choice + " = " + foodInventory.get(f.choice).amount);
+		}
+		sendTruckBack = true;
 		stateChanged();
 	}
 
@@ -96,28 +139,72 @@ public class Restaurant3CookRole extends Agent implements Cook{
 	
 	//SCHEDULER *****************************************
 	@Override
-	protected boolean pickAndExecuteAnAction() {
-			//Check if an order is pending
-			for(Order o : orders){
-				if(o.state == oState.pending){
-					cookOrder(o);
-					return true;
-				}
-			}	
-			//Check if an order is cooked
-			for(Order o : orders){
-				if(o.state == oState.cooked){
-					sendOrderToTable(o);
-					return true;
-				}
+	public boolean pickAndExecuteAnAction() {
+		//Send truck back
+		if(sendTruckBack == true) {
+			truckBack();
+			return true;
+		}
+		//Check if food needs to be restocked
+		if(!restockList.isEmpty()){
+			restockFood();
+			return true;
+		}
+		//Check if an order is pending
+		for(Order o : orders){
+			if(o.state == oState.pending){
+				cookOrder(o);
+				return true;
 			}
+		}	
+		//Check if an order is cooked
+		for(Order o : orders){
+			if(o.state == oState.cooked){
+				sendOrderToTable(o);
+				return true;
+			}
+		}
 		return false;
 	}
 
 	//ACTIONS *************************************
-	public void cookOrder(final Order o){
+	public void cookOrder(Order o){
 		print(name + " cooking order for table " + o.tableNum);
+		//Check if food needs to be restocked
+		for(Entry<String, MyFood> f : foodInventory.entrySet()){
+			if(f.getKey().equals(o.choice)){
+				f.getValue().amount--;
+				if(f.getValue().amount <= 3){
+					print(name + ": need to restock " + f.getKey());
+					restockList.add(new Food(f.getKey(), (f.getValue().max - f.getValue().amount)));
+				}
+			}
+		}
 		o.state = oState.cooking;
+		DoCooking(o);
+	}
+	
+	public void sendOrderToTable(Order o){
+		print(name + ": order for table " + o.tableNum + " cooked. Sending out.");
+		DoSendOrder();
+		orders.remove(o);
+		o.wtr.msgOrderReady(o.tableNum, o.choice);
+	}
+	
+	public void restockFood(){
+		print(name + ": restocking food");
+		marketCashier.MsgIwantFood(this, cashier, restockList, marketNum);
+		restockList.clear();
+	}
+	
+	public void truckBack(){
+		print(name + ": sending market truck back");
+		truck.msgGoBack();
+		sendTruckBack = false;
+	}
+	
+	//DO METHODS ****************************************
+	public void DoCooking(final Order o){
 		cookGui.DoGoToFridge();	//GUI CODE
 		atFr.drainPermits();
 		try{
@@ -141,11 +228,10 @@ public class Restaurant3CookRole extends Agent implements Cook{
 				o.state = oState.cooked;
 				stateChanged();
 			}
-		}, food.get(o.choice).cookTime);
+		}, foodInventory.get(o.choice).cookTime);
 	}
 	
-	public void sendOrderToTable(Order o){
-		print(name + ": order for table " + o.tableNum + " cooked. Sending out.");
+	public void DoSendOrder(){
 		cookGui.DoGoToOrderStand();	//GUI CODE
 		atFr.drainPermits();
 		try{
@@ -154,7 +240,11 @@ public class Restaurant3CookRole extends Agent implements Cook{
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
-		orders.remove(o);
-		o.wtr.msgOrderReady(o.tableNum, o.choice);
+	}
+
+	@Override
+	public void msgEmptyStock() {
+		// TODO Auto-generated method stub
+		
 	}
 }

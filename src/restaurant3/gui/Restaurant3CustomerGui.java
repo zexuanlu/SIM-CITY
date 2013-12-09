@@ -2,6 +2,9 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import person.PersonAgent;
+import restaurant1.Restaurant1CustomerRole;
 import restaurant3.Restaurant3CustomerRole;
 
 public class Restaurant3CustomerGui implements Gui {
@@ -18,6 +21,8 @@ public class Restaurant3CustomerGui implements Gui {
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 	private boolean isPresent = false;
+	String food;
+	String eating;
 	
 	
 	public Restaurant3CustomerGui(Restaurant3CustomerRole c) {
@@ -25,6 +30,7 @@ public class Restaurant3CustomerGui implements Gui {
 		agent = c;
 		xPos = xDestination;
 		yPos = yDestination;
+		food = "";
 	}
 
 	@Override
@@ -54,6 +60,8 @@ public class Restaurant3CustomerGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.green);
+		g.drawString(food, xPos, yPos+height+height);
+		g.drawString(((PersonAgent)((Restaurant3CustomerRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		g.fillRect(xPos, yPos, width, height);
 	}
 
@@ -68,6 +76,19 @@ public class Restaurant3CustomerGui implements Gui {
 	
 	public void gotHungry(){
 		isPresent = true;
+	}
+	
+	public void ordered(String f){
+		food = (f + "?");
+		eating = f;
+	}
+	
+	public void eatingFood(){
+		food = eating;
+	}
+	
+	public void done(){
+		food = "";
 	}
 	
 	//DO METHODS ***********************************
