@@ -4,11 +4,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import market.Food;
+import resident.test.mock.MockPerson;
 import restaurant6.Restaurant6CashierRole;
 import restaurant6.Restaurant6Invoice;
 import restaurant6.Restaurant6Restock;
 import restaurant6.Restaurant6Check.CheckState;
 import restaurant6.interfaces.Restaurant6Cashier;
+import restaurant6.test.mock.MockCook;
 import restaurant6.test.mock.MockCustomer;
 import restaurant6.test.mock.MockMarket;
 import restaurant6.test.mock.MockWaiter;
@@ -24,8 +27,10 @@ import junit.framework.*;
 public class CashierTest extends TestCase
 {
 	// These are instantiated for each test separately via the setUp() method.
+	MockPerson person;
 	Restaurant6CashierRole cashier;
 	MockWaiter waiter;
+	MockCook cook;
 	MockCustomer customer;
 	MockCustomer customer2;
 	MockMarket market;
@@ -37,7 +42,9 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new Restaurant6CashierRole("Cashier");		
+		person = new MockPerson("Mock Person");
+		cashier = new Restaurant6CashierRole("Cashier", person);
+		cook = new MockCook("Cook");
 		customer = new MockCustomer("Mock Customer");	
 		customer2 = new MockCustomer("Mock Customer 2");
 		waiter = new MockWaiter("Mock Waiter");
@@ -65,12 +72,12 @@ public class CashierTest extends TestCase
 		assertEquals("Market should have 0 logs.", 0, market.log.size());
 		
 		// Adding an order from the cook to the market
-		List<Restaurant6Restock> orders = new ArrayList<Restaurant6Restock>();
-		Restaurant6Restock item = new Restaurant6Restock("Chicken", 1);
+		List<Food> orders = new ArrayList<Food>();
+		Food item = new Food("Chicken", 1);
 		orders.add(item);
 		
 		// Messages the market the ordered inventory
-		market.msgOrderFood(orders);
+		market.MsgIwantFood(null, cashier, orders, 0);
 		
 		// Makes sure that the market has two logs now, which are printed upon receipt of the msgOrderFood message
 		assertEquals("Market should have 2 logs.", 2, market.log.size());
@@ -82,13 +89,13 @@ public class CashierTest extends TestCase
 		assertTrue(market.log.containsString("Can fulfill the order of 1"));
 		
 		// Messages the cashier the invoice from the market
-		cashier.msgInvoice(market, new Restaurant6Invoice(1, 10.99));
+		cashier.msgPleasepaytheBill(market, 10.99);
 		
 		// Makes sure that the cashier has one invoice after receiving the message from the market
 		assertEquals("Cashier should have 1 invoice.", 1, cashier.getMarkets().size());
 		
 		// Checks that the cashier's markets list has the same invoice amount as what was just added
-		assertEquals("Cashier should have an invoice of $10.99", 10.99, cashier.getMarkets().get(0).invoice.getTotal());
+		assertEquals("Cashier should have an invoice of $10.99", 10.99, cashier.getMarkets().get(0).money);
 		
 		// Invokes the cashier's scheduler and executes the action and checks to make sure action was executed
 		assertTrue(cashier.pickAndExecuteAnAction());
@@ -149,7 +156,7 @@ public class CashierTest extends TestCase
 		assertTrue(market.log.getLastLoggedEvent().toString().contains("Cannot fulfill the order, but can fulfill 5"));
 		
 		// Messages the cashier the invoice from the market
-		cashier.msgInvoice(market, new Restaurant6Invoice(1, (5*10.99)));
+		cashier.msgPleasepaytheBill(market, 5*10.99);
 		
 		// Cashier should have 1 invoice in markets list now
 		assertEquals("Cashier should have 1 invoice from market 1.", 1, cashier.getMarkets().size());
@@ -173,7 +180,7 @@ public class CashierTest extends TestCase
 		assertTrue(market2.log.getLastLoggedEvent().toString().contains("Can fulfill the order of 2"));
 		
 		// Messages the cashier the second invoice from the market
-		cashier.msgInvoice(market2, new Restaurant6Invoice(2, (2*10.99)));
+		cashier.msgPleasepaytheBill(market2, 2*10.99);
 		
 		// Makes sure that the cashier has two invoices after receiving the messages from the market
 		assertEquals("Cashier should have 2 invoices.", 2, cashier.getMarkets().size());
@@ -724,13 +731,13 @@ public class CashierTest extends TestCase
 		assertTrue(market.log.containsString("Can fulfill the order of 1"));
 		
 		// Messages the cashier the invoice from the market
-		cashier.msgInvoice(market, new Restaurant6Invoice(1, 8.99));
+		cashier.msgPleasepaytheBill(market, 8.99);
 		
 		// Makes sure that the cashier has one invoice after receiving the message from the market
 		assertEquals("Cashier should have 1 invoice.", 1, cashier.getMarkets().size());
 		
 		// Checks that the cashier's markets list has the same invoice amount as what was just added
-		assertEquals("Cashier should have an invoice of $8.99", 8.99, cashier.getMarkets().get(0).invoice.getTotal());
+		assertEquals("Cashier should have an invoice of $8.99", 8.99, cashier.getMarkets().get(0).money);
 	
 		// Step 2: Waiter asks cashier to compute the check
 		// Precondition: cashier should have $300

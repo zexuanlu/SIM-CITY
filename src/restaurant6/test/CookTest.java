@@ -1,5 +1,6 @@
 package restaurant6.test;
 
+import resident.test.mock.MockPerson;
 import restaurant6.Restaurant6CookRole;
 import restaurant6.Restaurant6Order;
 import restaurant6.test.mock.MockSDWaiter;
@@ -11,6 +12,7 @@ public class CookTest extends TestCase {
 	// These are instantiated for each test separately via the setUp() method.
 	Restaurant6CookRole cook;
 	MockSDWaiter waiter;
+	MockPerson person;
 	Restaurant6RevolvingStand stand;
 	MockWaiter regWaiter;
 	
@@ -20,7 +22,8 @@ public class CookTest extends TestCase {
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cook = new Restaurant6CookRole("Cook");
+		person = new MockPerson("Mock Person");
+		cook = new Restaurant6CookRole("Cook", person);
 		waiter = new MockSDWaiter("Mock Shared Data Waiter");
 		regWaiter = new MockWaiter("Mock Regular Waiter");
 		
