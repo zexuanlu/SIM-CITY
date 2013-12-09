@@ -70,7 +70,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 
 	private String title = " Scenario Person Panel ";
 	private static final int WIDTH = 275;
-	private static final int BUTTONWIDTH = 170;
+	private static final int BUTTONWIDTH = 270;
 	private static final int HEIGHT = 310;
 	private final int f_width = WIDTH;
 	private final int bf_width = BUTTONWIDTH;
@@ -113,11 +113,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	// Run scenario button
 	private JButton run = new JButton("Run");
 	
-	// Scroll pane for the add on scenarios
-	private JScrollPane addOnScenariosToRun;
-	// Scroll pane for the restart scenarios
-	private JScrollPane restartScenarioPane;
-	
 	// Sets city animation panel
 	public void setCityAnim(CityAnimationPanel c) {
 		cityAnimPanel = c;
@@ -128,8 +123,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		cntrlPanel = cp;
 		
-		addOnScenariosToRun = new JScrollPane(addOnPanel);
-		restartScenarioPane = new JScrollPane(restartPanel);
+		// Sets button size
+		Dimension buttonDim = new Dimension(170, 10);
 		
 		// PANEL SETUP
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -165,18 +160,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		restartPanel.setPreferredSize(fpSize);
 		restartPanel.setMaximumSize(fpSize);
 		
-		// Formatting scroll pane
-		Dimension scSize = new Dimension(f_width, f_height);
-	
-		addOnScenariosToRun.setBackground(Color.GRAY);
-		addOnScenariosToRun.setPreferredSize(scSize);
-		addOnScenariosToRun.setMaximumSize(scSize);
-		
-		// Formatting scroll pane	
-		restartScenarioPane.setBackground(Color.GRAY);
-		restartScenarioPane.setPreferredSize(scSize);
-		restartScenarioPane.setMaximumSize(scSize);
-		
 		// Formatting run panel
 		Dimension runSize = new Dimension(f_width, 40);
 		
@@ -198,6 +181,13 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		restartScenarios.add(normThreePeople);
 		restartScenarios.add(normFiftyPeople);
 		
+		robBank.setMaximumSize(buttonDim);
+		carAccident.setMaximumSize(buttonDim);
+		personAccident.setMaximumSize(buttonDim);
+		normOnePerson.setMaximumSize(buttonDim);
+		normThreePeople.setMaximumSize(buttonDim);
+		normFiftyPeople.setMaximumSize(buttonDim);
+		
 		for (JButton b : addOnScenarios) {
 			addOnPanel.add(b);
 			allButtons.add(b);
@@ -208,8 +198,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			allButtons.add(b);
 		}
 		
-		add(addOnScenariosToRun);
-		add(restartScenarioPane);
+		add(addOnPanel);
+		add(restartPanel);
 		add(runPanel);
 	}
 
