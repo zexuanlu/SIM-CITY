@@ -19,13 +19,13 @@ public class CookGui implements Gui{
 	private int xPos = 0;
 	private int yPos = 0;
 	private int distance = 20;
-	private int xfood = 540;
+	private int xfood = 470;
 	private int yfood = 150;
-	private int xRefri = 500;
+	private int xRefri = 450;
 	private int yRefri = 160;
-	private int xDestination = 540;
+	private int xDestination = 470;
 	private int yDestination = 160;
-	private int xPlate = 540;
+	private int xPlate = 470;
 	private int yPlate = 210;
 	private String food = "";
 	private String carryFood = "";
@@ -79,19 +79,19 @@ public class CookGui implements Gui{
 	}
 	
 	public void DoGotoPlatingArea(){
-		xDestination = 540;
+		xDestination = 470;
 		yDestination = 210;
 		plating = true;
 	}
 	
 	public void DoGotoRefri(){
-		xDestination = 500;
+		xDestination = 450;
 		yDestination = 160;
 		refrigerator = true;
 	}
 	
 	public void DoGotoCookingArea(){
-		xDestination = 540;
+		xDestination = 470;
 		yDestination = 160;
 		cooking = true;
 	}
