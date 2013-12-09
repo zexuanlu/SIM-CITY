@@ -12,6 +12,7 @@ public interface Bus {
 	public abstract void msgAtStop();
 	
 	public abstract void msgLeaving(Passenger p);
+	public abstract void msgLightGreen();
 	
 	public void msgHereisList(List<Passenger> sentpassengers);
 

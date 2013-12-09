@@ -172,7 +172,7 @@ public class RestaurantPanel extends JPanel {
 		int s = count;
 		count++;
 		Restaurant1WaiterRole c = new Restaurant1WaiterRole(name, p);	
-		WaiterGui g = new WaiterGui(c, ho);
+		WaiterGui g = new WaiterGui(c);
 
 		gui.animationPanel.addGui(g);// dw
 		c.sethost(ho);

@@ -11,19 +11,29 @@ import utilities.restaurant.RestaurantCook;
 
 
 public class MarketTruckAgent extends Agent implements MarketTruck{
-	private MarketCustomerRole agent = null;
-	private int xDestination = 140, yDestination = 240;
 	private int restnum;
+	private int trucknum;
 	RestaurantCook cook;
 	List<Food> foodlist;
 	MarketCashier cashier;
 	MarketTruckGui myGui;
 	private Semaphore atDes = new Semaphore(0,true);
 	private List<myRestaurant> restaurant = new ArrayList<myRestaurant>();
+	private Map<Integer, CityMap> cityMap = new HashMap<Integer, CityMap>();
 	
 	public enum state {collecting, sending, readytoback, back};
 	public state s;
 
+	public MarketTruckAgent(int trucknum){
+		this.trucknum = trucknum;
+		cityMap.put(1, new CityMap(220, 90));
+		cityMap.put(2, new CityMap(250, 90));
+		cityMap.put(3, new CityMap(250, 90));
+		cityMap.put(4, new CityMap(540, 90));
+		cityMap.put(5, new CityMap(610, 90));
+		cityMap.put(6, new CityMap(510, 60));
+	}
+	
 	private class myRestaurant{
 		Restaurant r;
 		int number;
@@ -31,6 +41,16 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 		myRestaurant(Restaurant r, int number){
 			this.r = r;
 			this.number = number;
+		}
+	}
+	
+	private class CityMap{
+		int x;
+		int y;
+		
+		CityMap(int x, int y){
+			this.x = x;
+			this.y = y;
 		}
 	}
 	
@@ -44,13 +64,12 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	}
 
 	
-	public void setRestaurant(Restaurant rest, int number){
+	public void setRestaurant(Restaurant rest, int number){  ////////set restaurant!!!!!!!           do it in simcity gui!!!!!!
 		restaurant.add(new myRestaurant(rest,number));
 	}
 	
-	public void gotoPosition(RestaurantCook c, List<Food> food, int dx, int dy, int restaurantnum){
+	public void gotoPosition(RestaurantCook c, List<Food> food, int restaurantnum){
 		
-	
 		this.cook = c;
 		foodlist = food;
 		restnum = restaurantnum;
@@ -60,7 +79,6 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 	
 	public void msgGoBack(){
 		s = state.readytoback;
-	   
 		stateChanged();	
 	}
 	
@@ -83,7 +101,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 
     
     public void GoToCook(){
-    	myGui.GotoCook();
+    	myGui.GotoCook(cityMap.get(restnum).x,cityMap.get(restnum).y);
     	s = state.sending;
     	try {
 			atDes.acquire();
@@ -94,7 +112,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
     	for(myRestaurant rest: restaurant){
     		if(rest.number == restnum){
     			if(rest.r.isClosed()){
-    				myGui.GoBack();
+    				myGui.GoBack(trucknum);
     		      	try {
     	    			atDes.acquire();
     	    		} catch (InterruptedException e) {
@@ -114,7 +132,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
     }
     	
     public void Goback(){
-    	myGui.GoBack();
+    	myGui.GoBack(trucknum);
     	s = state.back;
       	try {
     			atDes.acquire();

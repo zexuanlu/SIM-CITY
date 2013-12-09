@@ -17,26 +17,15 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public MarketEmployeeGui employeeGui;
 	public List<Mycustomer> mycustomer = new ArrayList<Mycustomer>();
 	public List<Myrest> myrest = new ArrayList<Myrest>();
-	public Map<Integer, RestDes> CityMap = new HashMap<Integer, RestDes>();
 	private boolean endOfDay = false;
 	private Semaphore atTable = new Semaphore(0,true);
 
 	public MarketEmployeeRole(Person person, String name){
 		super(person);
 		roleName = "Market Employee";
-		CityMap.put(1, new RestDes(100, 120));
 		
 	}
 	
-	public class RestDes{
-		int x;
-		int y;
-		
-		RestDes(int x, int y){
-			this.x = x;
-			this.y =y;
-		}
-	}
 	
 	public class Mycustomer{
 		MarketCustomer c;
@@ -147,7 +136,7 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		rest.truck.gotoPosition(rest.cook, rest.order, CityMap.get(rest.restNum).x, CityMap.get(rest.restNum).y, rest.restNum);
+		rest.truck.gotoPosition(rest.cook, rest.order, rest.restNum);
 		myrest.remove(rest);
 	}
 
