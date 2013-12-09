@@ -241,7 +241,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			else if (chosen.getText().trim().equals("Three not working people")) {
 				// Here we will run the scenario where all restaurants order from the market
-				//FIX
+				runThreePersonScenario();
+				
 				System.err.println("Three not working people");
 			}
 			else if (chosen.getText().trim().equals("50-person scenario")) {
@@ -290,7 +291,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
 			//FIX
-			PersonGui pgui = new PersonGui(p, null);
+			PersonGui pgui = new PersonGui(p, 40, 170);
 			p.gui = pgui;
 			p.homeNumber = i;
 			people.add(p);
@@ -424,60 +425,87 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		}
 		
 		/**
+		 * SETTING BANK GUIS AND MARKET GUIS TO CITY ANIMATION PANEL
+		 */
+		cityAnimPanel.bankPanel.addGui(((BankTellerRole)roles.get(0)).gui);
+		cityAnimPanel.bankPanel.addGui(((BankTellerRole)roles.get(1)).gui);
+		cityAnimPanel.bankPanel2.addGui(((BankTellerRole)roles.get(2)).gui);
+		cityAnimPanel.bankPanel2.addGui(((BankTellerRole)roles.get(3)).gui);
+		cityAnimPanel.bankPanel.addGui(((BankHostRole)roles.get(4)).gui);
+		cityAnimPanel.bankPanel2.addGui(((BankHostRole)roles.get(5)).gui);
+		cityAnimPanel.marketPanel.addGui(((MarketEmployeeRole)roles.get(8)).employeeGui);
+		cityAnimPanel.marketPanel2.addGui(((MarketEmployeeRole)roles.get(9)).employeeGui);
+		
+		/**
 		 * RESTAURANT GUI CREATION AND INITIALIZATION
 		 */
 		// First Restaurant: FIRST SHIFT
 		WaiterGui r1sharedwg1 = new WaiterGui(rest1SDWaiter);
 		r1sharedwg1.isPresent = false;
 		rest1SDWaiter.setGui(r1sharedwg1);
+		cityAnimPanel.rest1Panel.addGui(r1sharedwg1);
 		
 		WaiterGui r1wg1 = new WaiterGui(rest1Waiter);
 		r1wg1.isPresent = false;
 		rest1Waiter.setGui(r1wg1);
+		cityAnimPanel.rest1Panel.addGui(r1wg1);
 		
 		CookGui r1cg1 = new CookGui(rest1Cook, null);
 		r1cg1.isPresent = false;
 		rest1Cook.setGui(r1cg1);
+		cityAnimPanel.rest1Panel.addGui(r1cg1);
 		
 		// Second Restaurant: FIRST SHIFT
 		Restaurant2WaiterGui r2sharedwg1 = new Restaurant2WaiterGui(rest2SDWaiter);
 		rest2SDWaiter.setGui(r2sharedwg1);
+		cityAnimPanel.rest2Panel.addGui(r2sharedwg1);
 		
 		Restaurant2WaiterGui r2wg1 = new Restaurant2WaiterGui(rest2Waiter);
 		rest2Waiter.setGui(r2wg1);
+		cityAnimPanel.rest2Panel.addGui(r2wg1);
 		
 		Restaurant2CookGui r2cg1 = new Restaurant2CookGui(rest2Cook);
 		rest2Cook.setGui(r2cg1);
+		cityAnimPanel.rest2Panel.addGui(r2cg1);
 		
 		// Fourth Restaurant: FIRST SHIFT
 		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, -20, -20);
 		rest4SDWaiter.setGui(r4sharedwg1);
+		cityAnimPanel.rest4Panel.addGui(r4sharedwg1);
 		
 		Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, -20, -20);
 		rest4Waiter.setGui(r4wg1);
+		cityAnimPanel.rest4Panel.addGui(r4wg1);
 		
 		Restaurant4CookGui r4cg1 = new Restaurant4CookGui(rest4Cook);
 		rest4Cook.setGui(r4cg1);
+		cityAnimPanel.rest4Panel.addGui(r4cg1);
 		
 		// Fifth Restaurant: FIRST SHIFT
 		WaiterGui5 r5sharedwg1 = new WaiterGui5(rest5SDWaiter, -20);
 		rest5SDWaiter.setGui(r5sharedwg1);
+		cityAnimPanel.rest5Panel.addGui(r5sharedwg1);
 		
 		WaiterGui5 r5wg1 = new WaiterGui5(rest5Waiter, -20);
 		rest5Waiter.setGui(r5wg1);
+		cityAnimPanel.rest5Panel.addGui(r5wg1);
 		
 		CookGui5 r5cg1 = new CookGui5(rest5Cook);
 		rest5Cook.setGui(r5cg1);
-	
+		cityAnimPanel.rest5Panel.addGui(r5cg1);
+		
 		// Sixth Restaurant: FIRST SHIFT
 		Restaurant6WaiterGui r6sharedwg1 = new Restaurant6WaiterGui(rest6SDWaiter, -20, -20);
 		rest6SDWaiter.setGui(r6sharedwg1);
+		cityAnimPanel.rest4Panel.addGui(r6sharedwg1);
 		
 		Restaurant6WaiterGui r6wg1 = new Restaurant6WaiterGui(rest6Waiter, -20, -20);
 		rest6Waiter.setGui(r6wg1);
+		cityAnimPanel.rest4Panel.addGui(r6wg1);
 		
 		Restaurant6CookGui r6cg1 = new Restaurant6CookGui(rest6Cook);
 		rest6Cook.setGui(r6cg1);
+		cityAnimPanel.rest4Panel.addGui(r6cg1);
 		
 		/**
 		 * SETTING LOCATIONS
@@ -500,17 +528,101 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(590, 170), LocationType.Restaurant5);
         Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 40), LocationType.Restaurant6);                
         
-        // SETTING COOK & CASHIER FOR RESTAURANTS
- 		rest1.setCashier(rest1Cashier);
- 		rest1.setCook(rest1Cook);
- 		rest2.setCashier(rest2Cashier);
- 		rest2.setCook(rest2Cook);
- 		rest4.setCashier(rest4Cashier);
- 		rest4.setCook(rest4Cook);
- 		rest5.setCashier(rest5Cashier);
- 		rest5.setCook(rest5Cook);
- 		rest6.setCashier(rest6Cashier);
- 		rest6.setCook(rest6Cook);
+        // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
+  		rest1.setCashier(rest1Cashier);
+  		rest1.setCook(rest1Cook);
+  		rest1Waiter.setcook(rest1Cook);
+  		rest1Waiter.sethost(rest1Host);
+  		rest1Waiter.setCashier(rest1Cashier);
+  		rest1SDWaiter.setcook(rest1Cook);
+  		rest1SDWaiter.sethost(rest1Host);
+  		rest1SDWaiter.setRevolvingStand(rest1Cook.getRevStand());
+  		rest1SDWaiter.setCashier(rest1Cashier);
+  		rest1Host.msgaddwaiter(rest1Waiter);
+  		rest1Host.msgaddwaiter(rest1SDWaiter);
+  		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
+  		rest1Cook.setCashier(rest1Cashier);
+  
+  		rest2.setCashier(rest2Cashier);
+  		rest2.setCook(rest2Cook);
+  		rest2Waiter.setCook(rest2Cook);
+  		rest2Waiter.setHost(rest2Host);
+  		rest2Waiter.setCashier(rest2Cashier);
+  		rest2SDWaiter.setCook(rest2Cook);
+  		rest2SDWaiter.setHost(rest2Host);
+  		rest2SDWaiter.revolver = rest2Cook.revolver;
+  		rest2SDWaiter.setCashier(rest2Cashier);
+  		rest2Host.addWaiter(rest2Waiter);
+  		rest2Host.addWaiter(rest2SDWaiter);
+  		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
+  		rest2Cook.cashier = rest2Cashier;
+  		
+  		rest4.setCashier(rest4Cashier);
+  		rest4.setCook(rest4Cook);
+  		rest4Waiter.setCook(rest4Cook);
+  		rest4Waiter.setHost(rest4Host);
+  		rest4Waiter.setCashier(rest4Cashier);
+  		rest4SDWaiter.setCook(rest4Cook);
+  		rest4SDWaiter.setHost(rest4Host);
+  		rest4SDWaiter.stand = rest4Cook.stand;
+  		rest4SDWaiter.setCashier(rest4Cashier);
+  		rest4Host.addWaiter(rest4Waiter);
+  		rest4Host.addWaiter(rest4SDWaiter);
+  		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest4Cook.rc = rest4Cashier;
+  		
+  		rest5.setCashier(rest5Cashier);
+  		rest5.setCook(rest5Cook);
+  		rest5Waiter.setCook(rest5Cook);
+  		rest5Waiter.setHost(rest5Host);
+  		rest5Waiter.setCashier(rest5Cashier);
+  		rest5SDWaiter.setCook(rest5Cook);
+  		rest5SDWaiter.setHost(rest5Host);
+  		rest5SDWaiter.revolvingstand = rest5Cook.revolvingstand;
+  		rest5SDWaiter.setCashier(rest5Cashier);
+  		rest5Host.addWaiter(rest5Waiter);
+  		rest5Host.addWaiter(rest5SDWaiter);
+  		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest5Cook.cashier = rest5Cashier;
+  		
+  		rest6.setCashier(rest6Cashier);
+  		rest6.setCook(rest6Cook);
+  		rest6Waiter.setCook(rest6Cook);
+  		rest6Waiter.setHost(rest6Host);
+  		rest6Waiter.setCashier(rest6Cashier);
+  		rest6SDWaiter.setCook(rest6Cook);
+  		rest6SDWaiter.setHost(rest6Host);
+  		rest6SDWaiter.revolvingStand = rest6Cook.revolvingStand;
+  		rest6SDWaiter.setCashier(rest6Cashier);
+  		rest6Host.msgSetWaiter(rest6Waiter);
+  		rest6Host.msgSetWaiter(rest6SDWaiter);
+  		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest6Cook.cashier = rest6Cashier;
+  		
+  		// Setting tellers for the first bank host & vice versa
+  		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
+  		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(1));
+  		((BankTellerRole)roles.get(0)).bh = ((BankHostRole)roles.get(4));
+  		((BankTellerRole)roles.get(1)).bh = ((BankHostRole)roles.get(4));
+  		
+  		// Setting tellers for the second bank host
+  		((BankHostRole)roles.get(5)).addTeller((BankTellerRole)roles.get(2));
+  		((BankHostRole)roles.get(5)).addTeller((BankTellerRole)roles.get(3));
+  		((BankTellerRole)roles.get(2)).bh = ((BankHostRole)roles.get(5));
+  		((BankTellerRole)roles.get(3)).bh = ((BankHostRole)roles.get(5));
+  		
+  		// Setting bank database for all tellers
+  		for (Role r : roles) {
+  			if (r instanceof BankTellerRole) {
+  				((BankTellerRole)r).bd = bankdatabase;
+  			}
+  		}
+        
+  		// Setting market employee to market cashier & vice versa
+  		((MarketCashierRole)roles.get(6)).addEmployee((MarketEmployeeRole)roles.get(8));
+  		((MarketEmployeeRole)roles.get(8)).setCashier((MarketCashierRole)roles.get(6));
+  		((MarketCashierRole)roles.get(7)).addEmployee((MarketEmployeeRole)roles.get(9));
+  		((MarketEmployeeRole)roles.get(9)).setCashier((MarketCashierRole)roles.get(7));
         
 		locations.add(bank);
 		locations.add(bank2);
@@ -645,7 +757,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the walking person
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
-		PersonGui pgui = new PersonGui(walking, null);
+		PersonGui pgui = new PersonGui(walking, 40, 170);
 		walking.gui = pgui;
 		people.add(walking);
 		peopleGuis.add(pgui);
@@ -685,6 +797,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		walking.msgAddEvent(depositBank2);
 		
 		for (PersonAgent p : people) {
+			p.setcitygui(simCityGui);
 			p.populateCityMap(locations);
 		}
 		
@@ -905,60 +1018,88 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		}
 		
 		/**
+		 * SETTING BANK GUIS AND MARKET GUIS TO CITY ANIMATION PANEL
+		 */
+		cityAnimPanel.bankPanel.addGui(((BankTellerRole)roles.get(0)).gui);
+		cityAnimPanel.bankPanel.addGui(((BankTellerRole)roles.get(1)).gui);
+		cityAnimPanel.bankPanel2.addGui(((BankTellerRole)roles.get(2)).gui);
+		cityAnimPanel.bankPanel2.addGui(((BankTellerRole)roles.get(3)).gui);
+		cityAnimPanel.bankPanel.addGui(((BankHostRole)roles.get(4)).gui);
+		cityAnimPanel.bankPanel2.addGui(((BankHostRole)roles.get(5)).gui);
+		cityAnimPanel.marketPanel.addGui(((MarketEmployeeRole)roles.get(8)).employeeGui);
+		cityAnimPanel.marketPanel2.addGui(((MarketEmployeeRole)roles.get(9)).employeeGui);
+		
+		
+		/**
 		 * RESTAURANT GUI CREATION AND INITIALIZATION
 		 */
 		// First Restaurant: FIRST SHIFT
 		WaiterGui r1sharedwg1 = new WaiterGui(rest1SDWaiter);
 		r1sharedwg1.isPresent = false;
 		rest1SDWaiter.setGui(r1sharedwg1);
+		cityAnimPanel.rest1Panel.addGui(r1sharedwg1);
 		
 		WaiterGui r1wg1 = new WaiterGui(rest1Waiter);
 		r1wg1.isPresent = false;
 		rest1Waiter.setGui(r1wg1);
+		cityAnimPanel.rest1Panel.addGui(r1wg1);
 		
 		CookGui r1cg1 = new CookGui(rest1Cook, null);
 		r1cg1.isPresent = false;
 		rest1Cook.setGui(r1cg1);
+		cityAnimPanel.rest1Panel.addGui(r1cg1);
 		
 		// Second Restaurant: FIRST SHIFT
 		Restaurant2WaiterGui r2sharedwg1 = new Restaurant2WaiterGui(rest2SDWaiter);
 		rest2SDWaiter.setGui(r2sharedwg1);
+		cityAnimPanel.rest2Panel.addGui(r2sharedwg1);
 		
 		Restaurant2WaiterGui r2wg1 = new Restaurant2WaiterGui(rest2Waiter);
 		rest2Waiter.setGui(r2wg1);
+		cityAnimPanel.rest2Panel.addGui(r2wg1);
 		
 		Restaurant2CookGui r2cg1 = new Restaurant2CookGui(rest2Cook);
 		rest2Cook.setGui(r2cg1);
+		cityAnimPanel.rest2Panel.addGui(r2cg1);
 		
 		// Fourth Restaurant: FIRST SHIFT
 		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, -20, -20);
 		rest4SDWaiter.setGui(r4sharedwg1);
+		cityAnimPanel.rest4Panel.addGui(r4sharedwg1);
 		
 		Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, -20, -20);
 		rest4Waiter.setGui(r4wg1);
+		cityAnimPanel.rest4Panel.addGui(r4wg1);
 		
 		Restaurant4CookGui r4cg1 = new Restaurant4CookGui(rest4Cook);
 		rest4Cook.setGui(r4cg1);
+		cityAnimPanel.rest4Panel.addGui(r4cg1);
 		
 		// Fifth Restaurant: FIRST SHIFT
 		WaiterGui5 r5sharedwg1 = new WaiterGui5(rest5SDWaiter, -20);
 		rest5SDWaiter.setGui(r5sharedwg1);
+		cityAnimPanel.rest5Panel.addGui(r5sharedwg1);
 		
 		WaiterGui5 r5wg1 = new WaiterGui5(rest5Waiter, -20);
 		rest5Waiter.setGui(r5wg1);
+		cityAnimPanel.rest5Panel.addGui(r5wg1);
 		
 		CookGui5 r5cg1 = new CookGui5(rest5Cook);
 		rest5Cook.setGui(r5cg1);
-	
+		cityAnimPanel.rest5Panel.addGui(r5cg1);
+		
 		// Sixth Restaurant: FIRST SHIFT
 		Restaurant6WaiterGui r6sharedwg1 = new Restaurant6WaiterGui(rest6SDWaiter, -20, -20);
 		rest6SDWaiter.setGui(r6sharedwg1);
+		cityAnimPanel.rest4Panel.addGui(r6sharedwg1);
 		
 		Restaurant6WaiterGui r6wg1 = new Restaurant6WaiterGui(rest6Waiter, -20, -20);
 		rest6Waiter.setGui(r6wg1);
+		cityAnimPanel.rest4Panel.addGui(r6wg1);
 		
 		Restaurant6CookGui r6cg1 = new Restaurant6CookGui(rest6Cook);
 		rest6Cook.setGui(r6cg1);
+		cityAnimPanel.rest4Panel.addGui(r6cg1);
 		
 		/**
 		 * SETTING LOCATIONS
@@ -981,17 +1122,101 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(590, 170), LocationType.Restaurant5);
         Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 40), LocationType.Restaurant6);                
         
-        // SETTING COOK & CASHIER FOR RESTAURANTS
+        // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
  		rest1.setCashier(rest1Cashier);
  		rest1.setCook(rest1Cook);
+ 		rest1Waiter.setcook(rest1Cook);
+ 		rest1Waiter.sethost(rest1Host);
+ 		rest1Waiter.setCashier(rest1Cashier);
+ 		rest1SDWaiter.setcook(rest1Cook);
+ 		rest1SDWaiter.sethost(rest1Host);
+ 		rest1SDWaiter.setRevolvingStand(rest1Cook.getRevStand());
+ 		rest1SDWaiter.setCashier(rest1Cashier);
+ 		rest1Host.msgaddwaiter(rest1Waiter);
+ 		rest1Host.msgaddwaiter(rest1SDWaiter);
+ 		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
+ 		rest1Cook.setCashier(rest1Cashier);
+ 
  		rest2.setCashier(rest2Cashier);
  		rest2.setCook(rest2Cook);
+ 		rest2Waiter.setCook(rest2Cook);
+ 		rest2Waiter.setHost(rest2Host);
+ 		rest2Waiter.setCashier(rest2Cashier);
+ 		rest2SDWaiter.setCook(rest2Cook);
+ 		rest2SDWaiter.setHost(rest2Host);
+ 		rest2SDWaiter.revolver = rest2Cook.revolver;
+ 		rest2SDWaiter.setCashier(rest2Cashier);
+ 		rest2Host.addWaiter(rest2Waiter);
+ 		rest2Host.addWaiter(rest2SDWaiter);
+ 		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
+ 		rest2Cook.cashier = rest2Cashier;
+ 		
  		rest4.setCashier(rest4Cashier);
  		rest4.setCook(rest4Cook);
+ 		rest4Waiter.setCook(rest4Cook);
+ 		rest4Waiter.setHost(rest4Host);
+ 		rest4Waiter.setCashier(rest4Cashier);
+ 		rest4SDWaiter.setCook(rest4Cook);
+ 		rest4SDWaiter.setHost(rest4Host);
+ 		rest4SDWaiter.stand = rest4Cook.stand;
+ 		rest4SDWaiter.setCashier(rest4Cashier);
+ 		rest4Host.addWaiter(rest4Waiter);
+ 		rest4Host.addWaiter(rest4SDWaiter);
+ 		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+ 		rest4Cook.rc = rest4Cashier;
+ 		
  		rest5.setCashier(rest5Cashier);
  		rest5.setCook(rest5Cook);
+ 		rest5Waiter.setCook(rest5Cook);
+ 		rest5Waiter.setHost(rest5Host);
+ 		rest5Waiter.setCashier(rest5Cashier);
+ 		rest5SDWaiter.setCook(rest5Cook);
+ 		rest5SDWaiter.setHost(rest5Host);
+ 		rest5SDWaiter.revolvingstand = rest5Cook.revolvingstand;
+ 		rest5SDWaiter.setCashier(rest5Cashier);
+ 		rest5Host.addWaiter(rest5Waiter);
+ 		rest5Host.addWaiter(rest5SDWaiter);
+ 		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+ 		rest5Cook.cashier = rest5Cashier;
+ 		
  		rest6.setCashier(rest6Cashier);
  		rest6.setCook(rest6Cook);
+ 		rest6Waiter.setCook(rest6Cook);
+ 		rest6Waiter.setHost(rest6Host);
+ 		rest6Waiter.setCashier(rest6Cashier);
+ 		rest6SDWaiter.setCook(rest6Cook);
+ 		rest6SDWaiter.setHost(rest6Host);
+ 		rest6SDWaiter.revolvingStand = rest6Cook.revolvingStand;
+ 		rest6SDWaiter.setCashier(rest6Cashier);
+ 		rest6Host.msgSetWaiter(rest6Waiter);
+ 		rest6Host.msgSetWaiter(rest6SDWaiter);
+ 		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+ 		rest6Cook.cashier = rest6Cashier;
+ 		
+ 		// Setting tellers for the first bank host & vice versa
+ 		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
+ 		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(1));
+ 		((BankTellerRole)roles.get(0)).bh = ((BankHostRole)roles.get(4));
+ 		((BankTellerRole)roles.get(1)).bh = ((BankHostRole)roles.get(4));
+ 		
+ 		// Setting tellers for the second bank host
+ 		((BankHostRole)roles.get(5)).addTeller((BankTellerRole)roles.get(2));
+ 		((BankHostRole)roles.get(5)).addTeller((BankTellerRole)roles.get(3));
+ 		((BankTellerRole)roles.get(2)).bh = ((BankHostRole)roles.get(5));
+ 		((BankTellerRole)roles.get(3)).bh = ((BankHostRole)roles.get(5));
+ 		
+ 		// Setting bank database for all tellers
+ 		for (Role r : roles) {
+ 			if (r instanceof BankTellerRole) {
+ 				((BankTellerRole)r).bd = bankdatabase;
+ 			}
+ 		}
+       
+ 		// Setting market employee to market cashier & vice versa
+ 		((MarketCashierRole)roles.get(6)).addEmployee((MarketEmployeeRole)roles.get(8));
+ 		((MarketEmployeeRole)roles.get(8)).setCashier((MarketCashierRole)roles.get(6));
+ 		((MarketCashierRole)roles.get(7)).addEmployee((MarketEmployeeRole)roles.get(9));
+ 		((MarketEmployeeRole)roles.get(9)).setCashier((MarketCashierRole)roles.get(7));
         
 		locations.add(bank);
 		locations.add(bank2);
@@ -1126,7 +1351,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the walking person
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
-		PersonGui pgui = new PersonGui(walking, null);
+		PersonGui pgui = new PersonGui(walking, 40, 170);
 		walking.gui = pgui;
 		people.add(walking);
 		peopleGuis.add(pgui);
@@ -1167,7 +1392,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the person taking the bus
 		PersonAgent busPerson = new PersonAgent("Person taking the Bus", cityMap, 900);
-		PersonGui busPersonGui = new PersonGui(busPerson, null);
+		PersonGui busPersonGui = new PersonGui(busPerson, 40, 170);
 		busPerson.gui = busPersonGui;
 		people.add(busPerson);
 		peopleGuis.add(busPersonGui);
@@ -1190,7 +1415,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the person taking the bus
 		PersonAgent carPerson = new PersonAgent("Person taking a Car", cityMap, 1000000);
-		PersonGui carPersonGui = new PersonGui(carPerson, null);
+		PersonGui carPersonGui = new PersonGui(carPerson, 40, 170);
 		carPerson.gui = carPersonGui;
 		people.add(carPerson);
 		peopleGuis.add(carPersonGui);
@@ -1211,6 +1436,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		carPerson.msgAddEvent(depositBank2);
 		
 		for (PersonAgent p : people) {
+			p.setcitygui(simCityGui);
+			simCityGui.people.add(p);
 			p.populateCityMap(locations);
 		}
 		

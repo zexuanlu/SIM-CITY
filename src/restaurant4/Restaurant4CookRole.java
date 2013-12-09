@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import market.Food;
+import market.MarketCashierRole;
 import restaurant4.interfaces.*;
 import market.interfaces.MarketCashier;
 import market.interfaces.MarketTruck;
@@ -332,5 +333,9 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	@Override
 	public String getRoleName() {
 		return "Restaurant 4 Cook";
+	}
+
+	public void setMarketCashier(MarketCashierRole r) {
+		mc = r;
 	}
 }
