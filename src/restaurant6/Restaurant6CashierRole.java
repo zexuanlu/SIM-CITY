@@ -282,12 +282,10 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 		markets.remove(m);		
 	}
 
-<<<<<<< HEAD
 	// Returns the name of the role
 	public String getRoleName() {
 		return "Restaurant 6 Cashier";
 	}
-=======
->>>>>>> cc9f589c01f4c18623ff6cbdecdab1a0cac12033
+
 }
 

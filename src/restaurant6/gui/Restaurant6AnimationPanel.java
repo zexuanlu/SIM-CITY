@@ -17,36 +17,36 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     private final int WINDOWY = 480;
     private Image bufferImage;
     private Dimension bufferSize;
-    public int tableXPos = 200;
-    public int tableYPos = 50;
+    public int tableXPos = 30;
+    public int tableYPos = 360;
     public final int tableWidth = 50;
     public final int tableHeight = 50;
-    public int grillXPos = 400;
-    public int grillYPos = 170;
-    public int grill2XPos = 440;
-    public int grill2YPos = 170;
-    public int grill3XPos = 480;
-    public int grill3YPos = 170;
-    public int grill4XPos = 520;
-    public int grill4YPos = 170;
+    public int grillXPos = 470;
+    public int grillYPos = 110;
+    public int grill2XPos = 470;
+    public int grill2YPos = 150;
+    public int grill3XPos = 470;
+    public int grill3YPos = 190;
+    public int grill4XPos = 470;
+    public int grill4YPos = 230;
     public final int grillWidth = 20;
     public final int grillHeight = 20;    
-    public int fridgeXPos = 560;
-    public int fridgeYPos = 170;
-    public final int fridgeWidth = 50;
-    public final int fridgeHeight = 20;
-    public int plateXPos = 320;
-    public int plateYPos = 170;
-    public final int plateWidth = 50;
-    public final int plateHeight = 20;
-    public int kitchenXPos = 320;
-    public int kitchenYPos = 120;
-    public final int kitchenWidth = 290;
-    public final int kitchenHeight = 90;
+    public int fridgeXPos = 470;
+    public int fridgeYPos = 270;
+    public final int fridgeWidth = 20;
+    public final int fridgeHeight = 50;
+    public int plateXPos = 470;
+    public int plateYPos = 40;
+    public final int plateWidth = 20;
+    public final int plateHeight = 50;
+    public int kitchenXPos = 400;
+    public int kitchenYPos = 40;
+    public final int kitchenWidth = 90;
+    public final int kitchenHeight = 280;
     public int waitingXPos = 40;
     public int waitingYPos = 40;
-    public final int waitingWidth = 150;
-    public final int waitingHeight = 200;
+    public final int waitingWidth = 100;
+    public final int waitingHeight = 100;
     public final int winX = 0;
     public final int winY = 0;
     public final int numTables = 3;
@@ -85,7 +85,7 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
         g2.setColor(getBackground());
         g2.fillRect(winX, winY, WINDOWX, WINDOWY);
         
-        tableXPos = 200; // Reinitializes the table x position to 50 
+        tableXPos = 30; // Reinitializes the table x position to 30 
         
         //Here is the table when the customer has just sat down
     	for (Shape s : tables) {
@@ -101,7 +101,7 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     	
     	// Drawing the customer waiting area
     	g2.setColor(Color.lightGray);
-    	g2.drawString("WAITING", waitingXPos+40, waitingYPos+210);
+    	g2.drawString("WAITING", waitingXPos+40, waitingYPos+110);
     	g2.fillRect(waitingXPos, waitingYPos, waitingWidth, waitingHeight);
     	
     	// Drawing the grill
@@ -122,12 +122,12 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     	
     	// Drawing the fridge
     	g2.setColor(Color.BLUE);
-    	g2.drawString("FRIDGE", fridgeXPos, fridgeYPos+30);
+//    	g2.drawString("FRIDGE", fridgeXPos, fridgeYPos+30);
     	g2.fillRect(fridgeXPos, fridgeYPos, fridgeWidth, fridgeHeight);
     	
     	// Drawing the plating area
     	g2.setColor(Color.BLACK);
-    	g2.drawString("FOOD", plateXPos, plateYPos+30);
+//    	g2.drawString("FOOD", plateXPos, plateYPos+30);
     	g2.fillRect(plateXPos, plateYPos, plateWidth, plateHeight);
         
         for(Gui gui : guis) {

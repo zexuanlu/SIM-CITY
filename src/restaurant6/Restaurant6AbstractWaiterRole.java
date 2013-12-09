@@ -79,8 +79,8 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
         super(p);
 
         this.name = name;
-        int x = 200;
-        int y = 50;
+        int x = 30;
+        int y = 360;
         
         // Make some tables
         tables = Collections.synchronizedList(new ArrayList<Restaurant6Table>(NTABLES));

@@ -22,7 +22,7 @@ public class Restaurant6CustomerGui implements Gui{
 	private boolean isEating = false;
 	private boolean hasOrdered = false;
 	Random waitingSpotGenerator = new Random(); // To determine random amount of money
-
+	
 	//RestaurantGui gui;
 
 	private int xPos, yPos;
@@ -31,14 +31,14 @@ public class Restaurant6CustomerGui implements Gui{
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 
-	public int tableXPos = 50;
-	public int tableYPos = 50;
+	public int tableXPos = 30;
+	public int tableYPos = 360;
 	
 	private final static int NTABLES = 3;
 	private Collection<Restaurant6Table> tables;
 	
 	private final int pickUpX = 10;
-	private final int pickUpY = 250;
+	private final int pickUpY = 150;
 	
 	private int waitingX;
 	private int waitingY;
@@ -51,8 +51,8 @@ public class Restaurant6CustomerGui implements Gui{
 		yDestination = -40;
 		//this.gui = gui;
 		
-		int x = 200;
-        int y = 50;
+		int x = 30;
+        int y = 360;
         
         // Makes some tables
         tables = Collections.synchronizedList(new ArrayList<Restaurant6Table>(NTABLES));
@@ -185,8 +185,8 @@ public class Restaurant6CustomerGui implements Gui{
 	}
 	
 	public void DoGoToWaitingArea() {
-		xDestination = generateWaitingSpot(130, 45);
-		yDestination = generateWaitingSpot(180, 45);
+		xDestination = generateWaitingSpot(45, 140);
+		yDestination = generateWaitingSpot(45, 140);
 	}
 	
 	public void DoGoToPickupSpot() {
