@@ -504,14 +504,14 @@ public class SimCityGUI extends JFrame {
                  */
 
 //                for (int i=1; i<6; i++){
-                int x = 100; 
+                int x = 40; 
                 int y = 330; 
                 for (int i=0; i<22; i++){
                         aStarTraversal = new AStarTraversal(grid);
                 		aStarTraversal.originalgrid = origgrid; 
                         PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
                         PersonGui pgui = new PersonGui(p, x, y);
-                        x = x+50; 
+                        x = x+40; 
                         p.setGui(pgui);
                         System.out.println(""+i);
                         if(i < 21){
@@ -519,7 +519,7 @@ public class SimCityGUI extends JFrame {
                                 p.homeNumber = i+1;
                         }
                         else
-                                p.homeNumber = i;
+                        p.homeNumber = i;
                         people.add(p);
                         peoplegui.add(pgui);
                         cityAnimPanel.addGui(pgui);
@@ -527,7 +527,7 @@ public class SimCityGUI extends JFrame {
                         //p.setcitygui(this);
                 }
                 
-                for (int i=7;i<22;i++){
+                for (int i=5;i<22;i++){
                         people.get(i).msgAddMoney(-200);
                 }
                 
@@ -747,6 +747,7 @@ public class SimCityGUI extends JFrame {
     		AStarTraversal aStarTrav = new AStarTraversal(grid);
     		aStarTrav.originalgrid = origgrid; 
             CarAgent caragent = new CarAgent(aStarTrav, p);
+            caragent.percentCrash = 100; 
             CarGui cgui = new CarGui(caragent,720,460);
             caragent.setGui(cgui);
             cityAnimPanel.addGui(cgui);
@@ -763,6 +764,7 @@ public class SimCityGUI extends JFrame {
     		aStarTrav = new AStarTraversal(grid);
     		aStarTrav.originalgrid = origgrid; 
             caragent = new CarAgent(aStarTrav, p);
+            caragent.percentCrash = 100; 
             cgui = new CarGui(caragent,720,460);
             caragent.setGui(cgui);
             cityAnimPanel.addGui(cgui);
