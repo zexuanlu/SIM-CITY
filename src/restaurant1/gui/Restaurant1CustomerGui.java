@@ -39,8 +39,8 @@ public class Restaurant1CustomerGui implements Gui{
 		agent = c;
 		xPos = 0;
 		yPos = 0;
-		xDestination = 40;
-		yDestination = 40;
+		xDestination = 0;
+		yDestination = 0;
 		//maitreD = m;
 		//this.gui = gui;
 	}
