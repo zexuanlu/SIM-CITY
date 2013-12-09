@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 
 
 
+
 //import person.Position;
 import simcity.astar.AStarNode;
 import person.PersonAgent; 
@@ -27,7 +28,10 @@ import utilities.TrafficLightAgent;
 
 //Break this sequence and you will screw up his disappearing/reappearing
 public class CarAgent extends Agent {
-	 private TrafficLightAgent trafficlightagent; 
+	int WIDTHTOTAL = 740; 
+	int HEIGHTTOTAL = 480; 
+	private TrafficLightAgent trafficlightagent; 
+
 	 public int percentCrash = 20; 
 	 boolean crashed = false; 
 	 Position currentPosition;
@@ -72,31 +76,84 @@ public class CarAgent extends Agent {
 	}
 	
      
-     public void msgatDestination(){
- 		person.Position p = null;
- 		if(myGui.yPos >= 180 && myGui.yPos < 280){
- 			System.err.println(myPerson.getName()+" on horizontal road");
- 			//on the horizontal road
- 			if(destinationY > currentPosition.getY()){
- 				//above
- 				p = new person.Position(myGui.xPos, 170);
- 			}
- 			else if(destinationY < currentPosition.getY()){
- 				//below
- 				p = new person.Position(myGui.xPos, 280);
- 			}
- 		}
- 		else { //on vertical road
- 			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
- 			if(destinationX > currentPosition.getX()){
- 				//to the right 
- 				p = new person.Position(440, myGui.yPos);
- 			}
- 			else if(destinationX < currentPosition.getX()){
- 				//to the left
- 				p = new person.Position(330, myGui.yPos);
- 			}
- 		}
+     public void msgatDestination(){ 	
+    	person.Position p; 
+    	 
+    	 
+ 		int tempX = 0; 
+		int tempY = 0; 
+
+		//split into quadrants 
+		if (myGui.xPos <= WIDTHTOTAL/2){ //leftside
+			if (myGui.yPos<=HEIGHTTOTAL/2){//topleft
+				tempX = Math.abs(myGui.xPos - 340);
+				tempY = Math.abs(myGui.yPos - 180);
+				if (tempX < tempY){ //on vertical road
+					p =  new person.Position(320, myGui.yPos);
+				}
+				else { //on horizontal road
+					p =  new person.Position(myGui.xPos, 160);
+				}
+			}
+			else { //bottomleft
+				tempX = Math.abs(myGui.xPos - 340);
+				tempY = Math.abs(myGui.yPos - 280);
+				if (tempX < tempY){ //on vertical road
+					p = new person.Position(320, myGui.yPos);
+				}
+				else { //on horizontal road
+					p = new person.Position(myGui.xPos, 280);
+				}
+				
+			}
+		}
+		else {//rightside
+			if (myGui.yPos<=HEIGHTTOTAL/2){//topright
+				tempX = Math.abs(myGui.xPos - 440);
+				tempY = Math.abs(myGui.yPos - 180);
+				if (tempX < tempY){ //on vertical road
+					p = new person.Position(440, myGui.yPos);
+				}
+				else { //on horizontal road
+					p =  new person.Position(myGui.xPos, 160);
+				}
+			}
+			else { //bottomright
+				tempX = Math.abs(myGui.xPos - 440);
+				tempY = Math.abs(myGui.yPos - 280);
+				if (tempX < tempY){ //on vertical road
+					p = new person.Position(440, myGui.yPos);
+				}
+				else { //on horizontal road
+					p = new person.Position(myGui.xPos, 280);
+				}
+			}
+		}
+				
+ 		
+// 		if(myGui.yPos >= 180 && myGui.yPos < 280){
+// 			System.err.println(myPerson.getName()+" on horizontal road");
+// 			//on the horizontal road
+// 			if(destinationY >= currentPosition.getY()){
+// 				//above
+// 				p = new person.Position(myGui.xPos, 170);
+// 			}
+// 			else if(destinationY < currentPosition.getY()){
+// 				//below
+// 				p = new person.Position(myGui.xPos, 280);
+// 			}
+// 		}
+// 		else { //on vertical road
+// 			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
+// 			if(destinationX >= currentPosition.getX()){
+// 				//to the right 
+// 				p = new person.Position(440, myGui.yPos);
+// 			}
+// 			else if(destinationX < currentPosition.getX()){
+// 				//to the left
+// 				p = new person.Position(330, myGui.yPos);
+// 			}
+// 		}
  		System.err.println(myPerson.getName()+" getting off at: ("+p.getX()+" , "+p.getY()+")");
  		myPerson.msgAtDest(p, this);//(new person.Position(myGui.xPos, myGui.yPos),this);
  	}
