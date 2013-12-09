@@ -153,5 +153,10 @@ public class MockPerson extends Mock implements Person {
 	public person.PersonAgent.Wallet getWallet() {
 		return null;
 	}
+	
+	
+	public void msgBanished() {
+		
+	}
 
 }
