@@ -89,17 +89,17 @@ public class CarAgent extends Agent {
 				tempX = Math.abs(myGui.xPos - 340);
 				tempY = Math.abs(myGui.yPos - 180);
 				if (tempX < tempY){ //on vertical road
-					p =  new person.Position(320, myGui.yPos);
+					p =  new person.Position(330, myGui.yPos);
 				}
 				else { //on horizontal road
-					p =  new person.Position(myGui.xPos, 160);
+					p =  new person.Position(myGui.xPos, 170);
 				}
 			}
 			else { //bottomleft
 				tempX = Math.abs(myGui.xPos - 340);
 				tempY = Math.abs(myGui.yPos - 280);
 				if (tempX < tempY){ //on vertical road
-					p = new person.Position(320, myGui.yPos);
+					p = new person.Position(330, myGui.yPos);
 				}
 				else { //on horizontal road
 					p = new person.Position(myGui.xPos, 280);
@@ -115,7 +115,7 @@ public class CarAgent extends Agent {
 					p = new person.Position(440, myGui.yPos);
 				}
 				else { //on horizontal road
-					p =  new person.Position(myGui.xPos, 160);
+					p =  new person.Position(myGui.xPos, 170);
 				}
 			}
 			else { //bottomright

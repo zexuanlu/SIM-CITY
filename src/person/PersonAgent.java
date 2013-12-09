@@ -2,9 +2,11 @@ package person;
 
 import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
+
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
 import person.Location.LocationType;
 import person.SimEvent.EventImportance;
 import person.SimEvent.EventType;
@@ -254,7 +256,6 @@ public class PersonAgent extends Agent implements Person{
 		print("Received the message AtDest from car");
 		gui.setPresent(true);
 		currentLocation = destination;
-		going.release();
 		dowalkto(destination.getX(),destination.getY());
 	}
 
@@ -940,11 +941,11 @@ public class PersonAgent extends Agent implements Person{
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
 				cap.bankPanel.addGui(bcg);
-				gui.setPresent(false);
 				if(e.directive.equals("deposit"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
+				gui.setPresent(false);
 				toDo.remove(e); //remove the event from the queue
 				return;
 			}
@@ -979,9 +980,9 @@ public class PersonAgent extends Agent implements Person{
 				roles.add(newRole);
 				BankTellerGui btg = new BankTellerGui(btr);
 				btr.setGui(btg);
-				gui.setPresent(false);
 				btr.gui.setPresent(true);
 				cap.bankPanel.addGui(btg);
+				gui.setPresent(false);
 				return;
 			}
 
@@ -1122,8 +1123,8 @@ public class PersonAgent extends Agent implements Person{
 					if(mr.type.equals("Home Owner")){
 						mr.setActive(true);
 						((HomeOwnerRole)mr.role).homeGui.isPresent = true;
-						gui.setPresent(false);
 						((HomeOwnerRole)mr.role).updateVitals(hunger, currentTime);
+						gui.setPresent(false);
 						toDo.remove(e);
 						return;
 					}
@@ -1134,10 +1135,10 @@ public class PersonAgent extends Agent implements Person{
 				roles.add(newRole);
 				HomeOwnerGui hog = new HomeOwnerGui((HomeOwnerRole)newRole.role);
 				hog.setPresent(true);
-				gui.setPresent(false);
 				((HomeOwnerRole)newRole.role).setGui(hog);
 				cap.getHouseGui(homeNumber).addGui(hog);
 				((HomeOwnerRole)newRole.role).updateVitals(hunger, currentTime);
+				gui.setPresent(false);
 				toDo.remove(e);
 				return;
 			}
@@ -1150,8 +1151,8 @@ public class PersonAgent extends Agent implements Person{
 						mr.setActive(true);
 						if(((ApartmentTenantRole)mr.role).aptGui != null)
 							((ApartmentTenantRole)mr.role).aptGui.setPresent(true);
-						gui.setPresent(false);
 						((ApartmentTenantRole)mr.role).updateVitals(hunger, currentTime); //this will give you the current time and the persons hunger level
+						gui.setPresent(false);
 						toDo.remove(e);
 						return;
 					}
@@ -1292,29 +1293,16 @@ public class PersonAgent extends Agent implements Person{
 		//}
 		//else{ 
 		if(testMode){ return; }
-		 //}
+		gui.DoGoTo(loc.getPosition()); //}
 		if(car != null){
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
-			//FIX
-
-			System.err.println(currentLocation.getX());
-
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print ("origin position "+ currentLocation.getX() + " " + currentLocation.getY() + " "+p.getX() + " " + p.getY());
-			print("goingto position " + loc.position.getX()+ " " + loc.position.getY() + " "+  l.getX() + " " + l.getY());
-			
+			print ("origin position "+p.getX() + " " + p.getY());
+			print("goingto position " + l.getX() + " " + l.getY());
 			print("gotoposition from person");
-			going.drainPermits();
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
-			try {
-				going.acquire();
-			} 
-			catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			gui.DoGoTo(loc.getPosition());
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}
@@ -1406,10 +1394,8 @@ public class PersonAgent extends Agent implements Person{
 
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
-		// FIX?
 
 		if (this.wallet.getOnHand() >= 400.00){
-
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
