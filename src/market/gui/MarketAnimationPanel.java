@@ -42,30 +42,16 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
 
-        //Here is the table
-//        g2.setColor(Color.ORANGE);
-//        g2.fillRect(200, 250, 50, 50);//200 and 250 need to be table params
-//        
+    
         g2.setColor(Color.BLUE);
         g2.fillRect(100, 160, 80, 80);
         
         g2.setColor(Color.green);
-        g2.fillRect(300, 260, 40, 40);
+        g2.fillRect(250, 120, 200, 20);
         
         g2.setColor(Color.green);
-        g2.fillRect(300, 100, 40, 40);
+        g2.fillRect(250, 260, 200, 20);
         
-        g2.setColor(Color.green);
-        g2.fillRect(400, 260, 40, 40);
-        
-        g2.setColor(Color.green);
-        g2.fillRect(400, 100, 40, 40);
-        
-        g2.setColor(Color.green);
-        g2.fillRect(500, 260, 40, 40);
-
-        g2.setColor(Color.green);
-        g2.fillRect(500, 100, 40, 40);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
