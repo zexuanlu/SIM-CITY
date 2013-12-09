@@ -180,15 +180,13 @@ public class CarAgent extends Agent {
              
              catch (Exception e){}
 
-             gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
+//             gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
              attempts ++;
              
              aStar.crashed();
-
              crashed = true; 
-
              myGui.gotoDeadPos();
-             break; 
+             return; 
       }
 
       //Did not get lock after trying n attempts. So recalculating path.
