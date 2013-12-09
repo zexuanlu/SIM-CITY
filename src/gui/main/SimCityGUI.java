@@ -522,7 +522,7 @@ public class SimCityGUI extends JFrame {
                         //p.setcitygui(this);
                 }
                 
-                for (int i=4;i<22;i++){
+                for (int i=7;i<22;i++){
                         people.get(i).msgAddMoney(-200);
                 }
                 
@@ -708,7 +708,7 @@ public class SimCityGUI extends JFrame {
         		aStarTraversal.originalgrid = origgrid; 
 
         CarAgent caragent = new CarAgent(aStarTraversal, p);
-        CarGui cgui = new CarGui(caragent,600,400);
+        CarGui cgui = new CarGui(caragent,720,460);
         caragent.setGui(cgui);
         cityAnimPanel.addGui(cgui);
         caragent.startThread();
@@ -724,6 +724,36 @@ public class SimCityGUI extends JFrame {
                 cityAnimPanel.addGui(pgui);
         }
 
+        
+        public void crashcars(){
+    		
+    		//THIS IS CREATED ONLY TO TEST OUT THE CAR CRASHING SCENARIO
+    		AStarTraversal aStarTraversal = new AStarTraversal(grid);
+
+    		PersonAgent p  = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
+    		p.msgAddMoney(-400);
+    		AStarTraversal aStarTrav = new AStarTraversal(grid);
+    		aStarTrav.originalgrid = origgrid; 
+            CarAgent caragent = new CarAgent(aStarTrav, p);
+            CarGui cgui = new CarGui(caragent,720,460);
+            caragent.setGui(cgui);
+            cityAnimPanel.addGui(cgui);
+            caragent.startThread();
+            caragent.gotoPosition(720, 180, 100, 180);
+            
+        	p  = new PersonAgent("Crash dummy2", citymap, aStarTraversal, 500.00);
+    		p.msgAddMoney(-400);
+    		aStarTrav = new AStarTraversal(grid);
+    		aStarTrav.originalgrid = origgrid; 
+            caragent = new CarAgent(aStarTrav, p);
+            cgui = new CarGui(caragent,720,460);
+            caragent.setGui(cgui);
+            cityAnimPanel.addGui(cgui);
+            caragent.startThread();
+            caragent.gotoPosition(420, 460, 420, 0);
+    	}
+    	
+        
 
         public static void main(String[] args){
                 SimCityGUI scg = new SimCityGUI();

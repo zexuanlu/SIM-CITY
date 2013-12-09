@@ -1232,5 +1232,11 @@ public class PersonAgent extends Agent implements Person{
 	public void setHungerLevel(int i) {
 		hunger = i;		
 	}
+	
+	
+	public void crashed(){
+		car = null; 
+		print ("My car crashed and now I have no car :("); 
+	}
 
 }

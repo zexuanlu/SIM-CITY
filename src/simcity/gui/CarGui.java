@@ -70,6 +70,14 @@ public class CarGui implements Gui {
         	yDestination = yPos; 
         	collided = true; 
         }
+        
+        public void gotoDeadPos(){
+       	 myCar.deadPos(deadpositionX, deadpositionY);
+            myCar.msgatDestination();
+            xDestination = deadpositionX;
+            yDestination = deadpositionY;
+            atPosition(deadpositionX, deadpositionY);
+       }
     
         
     public void updatePosition() {

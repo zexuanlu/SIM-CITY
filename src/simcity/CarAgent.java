@@ -167,22 +167,27 @@ public class CarAgent extends Agent {
       gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 
       //Did not get lock. Lets make n attempts.
-      while (!gotPermit && attempts < 5) {
+      while (!gotPermit && attempts < 10) {
              //System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
 
-    	  print ("HIT HERE and sleeping");
              //Wait for 1sec and try again to get lock.
-             try { Thread.sleep(2000); }
+          System.out.println("CRASHED");
+          crashed = true; 
+          myGui.Collide();
+          myPerson.crashed();
+
+             try { Thread.sleep(1000); }
              
              catch (Exception e){}
 
              gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
              attempts ++;
              
-             crashed = true; 
-             System.out.println("CRASHED");
              aStar.crashed();
-             myGui.Collide();
+
+             crashed = true; 
+
+             myGui.gotoDeadPos();
              break; 
       }
 
