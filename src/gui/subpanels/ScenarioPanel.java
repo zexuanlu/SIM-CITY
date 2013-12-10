@@ -363,7 +363,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
 		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
 		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
-		people.get(19).addRole(rest2Waiter, "Waiter 2 Shift 1");
+		people.get(19).addRole(rest2Waiter, "Rest 2 Waiter");
 		
 		// Fourth restaurant's employees: FIRST SHIFT 
 		Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", people.get(20));
@@ -565,7 +565,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest1SDWaiter.setRevolvingStand(rest1Cook.getRevStand());
   		rest1SDWaiter.setCashier(rest1Cashier);
   		rest1Host.msgaddwaiter(rest1Waiter);
-  		rest1Host.msgaddwaiter(rest1SDWaiter);
+  		//rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
   
@@ -1202,8 +1202,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
        // Third quadrant locations
         Home home = new Home("Home 1", homeOwner, new Position(460, 280), 1, LocationType.Home);
-        Home home2 = new Home("Home 2", homeOwner, new Position(440, 380), 1, LocationType.Home);
-        Home home3 = new Home("Home 3", homeOwner, new Position(520, 280), 1, LocationType.Home);
+        Home home2 = new Home("Home 2", homeOwner2, new Position(440, 380), 1, LocationType.Home);
+        Home home3 = new Home("Home 3", homeOwner3, new Position(520, 280), 1, LocationType.Home);
         
         // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
   		rest1.setCashier(rest1Cashier);
