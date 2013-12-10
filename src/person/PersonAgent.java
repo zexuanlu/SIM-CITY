@@ -257,7 +257,6 @@ public class PersonAgent extends Agent implements Person{
 	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
 		//print("Received the message AtDest");
 		//gui.setPresent(false);
-		System.err.println("RELEASING SEMAPHORE");
 		currentLocation = destination;
 		going.release();
 		stateChanged();
@@ -927,35 +926,35 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 		}
-//////////////////////////REST 6 EVENTS /////////////////////////////////////////////////
+		//////////////////////////REST 6 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant6){
-		Restaurant rest = (Restaurant)e.location;
-		if(e.type == EventType.CustomerEvent){
-		for(MyRole mr : roles){
-			if(mr.type.equals("Rest 6 Customer")){
-				((Restaurant6CustomerRole)mr.role).customerGui.setPresent(true);
-				((Restaurant6CustomerRole)mr.role).gotHungry();
-				mr.setActive(true);
-				gui.setPresent(false);
-				toDo.remove(e);
-				return;
+			Restaurant rest = (Restaurant)e.location;
+			if(e.type == EventType.CustomerEvent){
+			for(MyRole mr : roles){
+				if(mr.type.equals("Rest 6 Customer")){
+					((Restaurant6CustomerRole)mr.role).customerGui.setPresent(true);
+					((Restaurant6CustomerRole)mr.role).gotHungry();
+					mr.setActive(true);
+					gui.setPresent(false);
+					toDo.remove(e);
+					return;
+				}
 			}
-		}
-		print("Customer not found");
-		Restaurant6CustomerRole cRole = new Restaurant6CustomerRole(this.name, this);
-		MyRole newRole = new MyRole(cRole, "Rest 6 Customer");
-		newRole.setActive(true);
-		roles.add(newRole);
-		Restaurant6CustomerGui cg = new Restaurant6CustomerGui(cRole);
-		cg.isPresent = true;
-		cRole.setGui(cg);
-		cap.rest6Panel.addGui(cg);
-		cRole.setHost(((Restaurant6HostRole)rest.getHost()));
-		cRole.setCashier(((Restaurant6CashierRole)rest.getCashier()));
-		((Restaurant6CustomerRole)cRole).customerGui.setPresent(true);
-		cRole.gotHungry();
-		gui.setPresent(false);
-		toDo.remove(e);
+			print("Customer not found");
+			Restaurant6CustomerRole cRole = new Restaurant6CustomerRole(this.name, this);
+			MyRole newRole = new MyRole(cRole, "Rest 6 Customer");
+			newRole.setActive(true);
+			roles.add(newRole);
+			Restaurant6CustomerGui cg = new Restaurant6CustomerGui(cRole);
+			cg.isPresent = true;
+			cRole.setGui(cg);
+			cap.rest6Panel.addGui(cg);
+			cRole.setHost(((Restaurant6HostRole)rest.getHost()));
+			cRole.setCashier(((Restaurant6CashierRole)rest.getCashier()));
+			((Restaurant6CustomerRole)cRole).customerGui.setPresent(true);
+			cRole.gotHungry();
+			gui.setPresent(false);
+			toDo.remove(e);
 		}
 		
 		else if(e.type == EventType.HostEvent){
