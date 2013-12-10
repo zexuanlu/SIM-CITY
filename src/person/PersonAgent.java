@@ -340,7 +340,26 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgBanished(){
-
+		gui.setPresent(true);
+		if(gui.xPos > 350){
+			gui.xDestination = 440;
+			gui.yDestination = -30;
+			gui.walkto(gui.xPos, gui.yPos);
+		}
+		else{
+			gui.xDestination = 330;
+			gui.yDestination = -30;
+			gui.walkto(gui.xPos, gui.yPos);
+		}
+		try{
+			going.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+		Do("Terminating thread");
+		gui.setPresent(false);
+		this.stopThread();
 	}
 	/* Scheduler */
 
@@ -1563,6 +1582,8 @@ public class PersonAgent extends Agent implements Person{
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
+				else if(e.directive.equals("robBank"))
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 100000.00);
 				gui.setPresent(false);
 				((BankCustomerRole)newRole.role).gui.setPresent(true);
 				toDo.remove(e); //remove the event from the queue

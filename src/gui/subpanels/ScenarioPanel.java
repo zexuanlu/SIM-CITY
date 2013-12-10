@@ -56,6 +56,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	// Reference to the sim world clock
 	private SimWorldClock clock;
 	
+	List<PersonAgent> people;
+	List<PersonGui> peopleGuis;
+	List<Gui> guis;
+	List<Role> roles;
+	List<Location> locations;
+	
 	// Sets world clock
 	public void setClock(SimWorldClock c) {
 		clock = c;
@@ -211,7 +217,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == run) {
 			if (chosen.getText().trim().equals("Robber robs Bank")) {
-				// Here we will run the scenario where all restaurants order from the market
+				robberScenario();
 				//FIX
 				System.err.println("Robber robs bank");
 			}
@@ -273,19 +279,19 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	
 	public void runOnePersonScenario() {		
 		// List of people
-		List<PersonAgent> people = Collections.synchronizedList(new ArrayList<PersonAgent>());
+		people = Collections.synchronizedList(new ArrayList<PersonAgent>());
 		
 		// List of people GUIs
-		List<PersonGui> peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
+		peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
 		
 		// List of roles 
-		List<Role> roles = Collections.synchronizedList(new ArrayList<Role>());
+		roles = Collections.synchronizedList(new ArrayList<Role>());
 		
 		// List of guis
-		List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+		guis = Collections.synchronizedList(new ArrayList<Gui>());
 		
 		// List of locations
-		List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
+		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
@@ -543,9 +549,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
         
         // Second quadrant locations
-        Bank bank2 = new Bank("Bank 2", new TimeCard(), (BankHostRole)roles.get(5), 
+        Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
                         new Position(660, 170), LocationType.Bank);
-        Market market2 = new Market("Market 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
+        Market market2 = new Market("Pokemart 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
                         new Position(460, 170), LocationType.Market);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
@@ -883,22 +889,24 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
 	}
-
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// THREE PERSON SCENARIO////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
 	public void runThreePersonScenario() {		
 		// List of people
-		List<PersonAgent> people = Collections.synchronizedList(new ArrayList<PersonAgent>());
+		people = Collections.synchronizedList(new ArrayList<PersonAgent>());
 		
 		// List of people GUIs
-		List<PersonGui> peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
+		peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
 		
 		// List of roles 
-		List<Role> roles = Collections.synchronizedList(new ArrayList<Role>());
+		roles = Collections.synchronizedList(new ArrayList<Role>());
 		
 		// List of guis
-		List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+		guis = Collections.synchronizedList(new ArrayList<Gui>());
 		
 		// List of locations
-		List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
+		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
@@ -1566,5 +1574,33 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest4.getTimeCard());
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
+	}
+////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////ROBBER SCENARIO///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+	private void robberScenario(){
+		// Create the robber
+		PersonAgent robber = new PersonAgent("Robber", cityMap, 0);
+		robber.walking = true;
+		PersonGui pgui = new PersonGui(robber, 330, 40, this.cityAnimPanel);
+		robber.gui = pgui;
+		//people.add(robber);
+		//peopleGuis.add(robber.gui);
+		cityAnimPanel.addGui(robber.gui);
+		robber.setAnimationPanel(cityAnimPanel);
+		
+		robber.populateCityMap(locations);
+		SimEvent robBank = new SimEvent("robBank", robber.cityMap.pickABank(robber.gui.xPos, robber.gui.yPos), EventType.CustomerEvent);
+		if(robBank.location == null){
+			System.err.println("All banks closed - ending scenario");
+			people.remove(robber);
+			peopleGuis.remove(robber.gui);
+			cityAnimPanel.removeGui((Gui)robber.gui);
+			return;
+		}
+		else
+			robber.msgAddEvent(robBank);
+		robber.gui.setPresent(true);
+		robber.startThread();
 	}
 }

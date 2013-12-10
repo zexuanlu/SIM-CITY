@@ -843,6 +843,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                         this.location = location;
                 }
         }
-        
+
+		public void removeGui(Gui gui) {
+			guis.remove(gui);
+		}        
 }
 
