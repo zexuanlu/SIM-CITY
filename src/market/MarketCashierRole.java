@@ -161,7 +161,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// end of in market scenario
 
 	public void MsgIwantFood(RestaurantCook cook, RestaurantCashier ca, List<Food> food, int number){
-		myrest.add(new Myrest(cook, ca, food, number));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		myrest.add(new Myrest(cook, ca, temp, number));
 		stateChanged();
 	}
 
