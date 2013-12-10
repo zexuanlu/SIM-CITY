@@ -837,6 +837,12 @@ public class SimCityGUI extends JFrame {
                 
                 truck.setCashier(marketcashierrole);
                 marketcashierrole.addTruck(truck);
+                truck.setRestaurant(rest1, 1);
+                truck.setRestaurant(rest2, 2);
+                truck.setRestaurant(rest3, 3);
+                truck.setRestaurant(rest4, 4);
+                truck.setRestaurant(rest5, 5);
+                truck.setRestaurant(rest6, 6);
                 /*Create the SimWorldClock with the starting time and the list of people*/
                 simclock = new SimWorldClock(8,people, citymap);
                 simclock.timeCards.add(bank.getTimeCard());
