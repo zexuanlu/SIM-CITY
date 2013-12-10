@@ -15,6 +15,7 @@ import simcity.interfaces.Bus;
 
 public class CityMap {
 	//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
+	List<Integer>push = new ArrayList<Integer>();
 
 	//bus information
 	int WIDTHTOTAL = 740; 
@@ -35,12 +36,19 @@ public class CityMap {
 	public CityMap(List<Location> locations){
 		map = locations;
 		ateOutLast = false;
+
+		push.add(-20);
+		push.add(0);
+		push.add(20);
+	
+	
 	}
 
 	public CityMap(){
 
 	}
 	public BusRoute generateBusInformation(int finalx, int finaly, int originx, int originy){
+
 		BusRoute b = new BusRoute();
 		BusStop destStop = getClosestStop(finalx, finaly);
 		b.destination = getStopName(destStop);
@@ -58,6 +66,12 @@ public class CityMap {
 	}
 
 	public Position getNearestStreet(int x, int y){
+		int buffer = push.get(0);
+		push.remove(0);
+		push.add(buffer);
+		
+		
+		
 		//on horizontal road
 		int tempX = 0; 
 		int tempY = 0; 
@@ -68,9 +82,15 @@ public class CityMap {
 				tempX = Math.abs(x - 340);
 				tempY = Math.abs(y - 180);
 				if (tempX < tempY){ //on vertical road
+					if (y>20){
+						return new Position(340,y+buffer);
+					}
 					return new Position(340, y);
 				}
 				else { //on horizontal road
+					if (x>20){
+						return new Position(x+buffer, 180);
+					}
 					return new Position(x, 180);
 				}
 			}
@@ -78,9 +98,15 @@ public class CityMap {
 				tempX = Math.abs(x - 340);
 				tempY = Math.abs(y - 280);
 				if (tempX < tempY){ //on vertical road
+					if (y<440){
+						return new Position(340,y+buffer);
+					}
 					return new Position(340, y);
 				}
 				else { //on horizontal road
+					if (x>20){
+						return new Position(x+buffer,260);
+					}
 					return new Position(x, 260);
 				}
 				
@@ -230,6 +256,7 @@ public class CityMap {
 		return destination;
 	}
 	public Position findNearestBusStop(Position p){
+
 		PriorityQueue<Position> nearest = new PriorityQueue<Position>();
 		List<Location> busStops = getListOfType(LocationType.BusStop);
 		for(Location l : busStops){
