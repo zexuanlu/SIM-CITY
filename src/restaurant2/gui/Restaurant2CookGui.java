@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class Restaurant2CookGui implements Gui {
@@ -31,6 +33,8 @@ public class Restaurant2CookGui implements Gui {
     private boolean arrivedAtHome;
     private boolean isPresent = false;
 	private String orderText = " "; 
+	private ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+	private Image ck = img.getImage();
     
     public Restaurant2CookGui(Restaurant2CookRole agent) {
         this.agent = agent;
@@ -91,7 +95,8 @@ public class Restaurant2CookGui implements Gui {
 	}
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+       // g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(ck, xPos, yPos, 20, 20, null);
         g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         g.drawString(orderText, xPos, yPos);
 		for(Map.Entry<Integer, String> entry: grillLabels.entrySet())

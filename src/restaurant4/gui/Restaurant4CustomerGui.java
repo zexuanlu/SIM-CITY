@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 /**
@@ -26,6 +28,9 @@ public class Restaurant4CustomerGui implements Gui{
     private boolean atDestination = true;
 	private Map<String, Position> locations = new HashMap<String, Position>();
 	private String choice;
+	
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	public Image image = img.getImage();
 	
     public void setState(GUIstate st, String ch) {
     	s = st;
@@ -80,7 +85,8 @@ public class Restaurant4CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
-		g.fillRect(xPos, yPos, 20, 20);
+		//g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(image, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
         String foodChoice = null;

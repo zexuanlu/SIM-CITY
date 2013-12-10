@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class Restaurant6CookGui implements Gui {
@@ -21,6 +23,9 @@ public class Restaurant6CookGui implements Gui {
     
     private int homeX = 420;
     private int homeY = 60;
+    
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+    Image image = img.getImage();
     
     private static class MyGrill {
     	private int grillXPos;
@@ -128,7 +133,8 @@ public class Restaurant6CookGui implements Gui {
 
     public void draw(Graphics2D g) {
         g.setColor(Color.PINK);
-        g.fillRect(xPos, yPos, 20, 20);
+       // g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(image, xPos, yPos, 20, 20, null);
         g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         
         if (grills.get("Mint Chip Ice Cream").numCooking >= 1 && (grills.get("Mint Chip Ice Cream").state == MyGrill.GrillState.Cooking)) {

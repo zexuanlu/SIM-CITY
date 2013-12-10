@@ -575,6 +575,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		//rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
+  		rest1Cashier.accountNumber = 1;
+  		rest1Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 1);
   
   		rest2.setCashier(rest2Cashier);
   		rest2.setCook(rest2Cook);
@@ -591,6 +594,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
+  		rest2Cashier.accountNumber = 2;
+  		rest2Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest2Cashier, 5000.00, 2);
   		
   		rest4.setCashier(rest4Cashier);
   		rest4.setCook(rest4Cook);
@@ -605,6 +611,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Host.addWaiter(rest4SDWaiter);
   		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest4Cook.rc = rest4Cashier;
+  		rest4Cashier.accountNumber = 4;
+  		rest4Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest4Cashier, 5000.00, 4);
   		
   		rest5.setCashier(rest5Cashier);
   		rest5.setCook(rest5Cook);
@@ -619,6 +628,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest5Host.addWaiter(rest5SDWaiter);
   		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest5Cook.cashier = rest5Cashier;
+  		rest5Cashier.accountNumber = 5;
+  		rest5Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest5Cashier, 5000.00, 5);
   		
   		rest6.setCashier(rest6Cashier);
   		rest6.setCook(rest6Cook);
@@ -633,6 +645,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Host.msgSetWaiter(rest6SDWaiter);
   		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest6Cook.cashier = rest6Cashier;
+  		rest6Cashier.accountNumber = 6;
+  		rest6Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 6);
   		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
@@ -1228,6 +1243,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
+  		rest1Cashier.accountNumber = 1;
+  		rest1Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 1);
   
   		rest2.setCashier(rest2Cashier);
   		rest2.setCook(rest2Cook);
@@ -1244,6 +1262,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
+  		rest2Cashier.accountNumber = 2;
+  		rest2Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 2);
   		
   		rest4.setCashier(rest4Cashier);
   		rest4.setCook(rest4Cook);
@@ -1258,6 +1279,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Host.addWaiter(rest4SDWaiter);
   		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest4Cook.rc = rest4Cashier;
+  		rest4Cashier.accountNumber = 4;
+  		rest4Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest4Cashier, 5000.00, 4);
   		
   		rest5.setCashier(rest5Cashier);
   		rest5.setCook(rest5Cook);
@@ -1272,6 +1296,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest5Host.addWaiter(rest5SDWaiter);
   		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest5Cook.cashier = rest5Cashier;
+  		rest5Cashier.accountNumber = 5;
+  		rest5Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest5Cashier, 5000.00, 5);
   		
   		rest6.setCashier(rest6Cashier);
   		rest6.setCook(rest6Cook);
@@ -1286,6 +1313,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Host.msgSetWaiter(rest6SDWaiter);
   		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest6Cook.cashier = rest6Cashier;
+  		rest6Cashier.accountNumber = 6;
+  		rest6Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest6Cashier, 5000.00, 6);
   		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));

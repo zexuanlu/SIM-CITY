@@ -3,6 +3,8 @@ package restaurant3.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.swing.ImageIcon;
+import java.awt.Image;
 import restaurant3.Restaurant3CookRole;
 
 public class Restaurant3CookGui implements Gui{
@@ -34,6 +36,9 @@ public class Restaurant3CookGui implements Gui{
 	private enum Command {noCommand, GoToFridge, GoToGrill, GoToOrderStand};	//EDIT
 	private Command command = Command.noCommand;
 	public boolean isPresent = false;
+	
+	private ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+	private Image image = img.getImage();
 	
 	public Restaurant3CookGui(Restaurant3CookRole ck) {
 		agent = ck;
@@ -72,7 +77,8 @@ public class Restaurant3CookGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.MAGENTA);
-		g.fillRect(xPos, yPos, width, height);
+		//g.fillRect(xPos, yPos, width, height);
+		g.drawImage(image, xPos, yPos, 20, 20, null);
 	}
 
 	@Override

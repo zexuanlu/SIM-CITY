@@ -5,6 +5,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class Restaurant5CustomerGui implements Gui{
@@ -29,6 +31,9 @@ public class Restaurant5CustomerGui implements Gui{
 	public int xTable = 200;
 	public int yTable = 250;
 
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	public Image image = img.getImage();
+	
 	public Restaurant5CustomerGui(Restaurant5CustomerAgent c){ //HostAgent m) {
 		agent = c;
 		xPos = -20;
@@ -106,7 +111,8 @@ public class Restaurant5CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
-		g.fillRect(xPos, yPos, 20, 20);
+		//g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(image, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
 		//This is the icon that stays at the customer's table telling you that they have ordered
