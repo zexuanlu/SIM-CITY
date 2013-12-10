@@ -11,7 +11,7 @@ public class CustomerGui5 implements Gui{
 	private int sit; 
 
 	private CustomerAgent5 agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
 	
 	private boolean showIcon = false; 
@@ -30,13 +30,12 @@ public class CustomerGui5 implements Gui{
 	public int xTable = 200;
 	public int yTable = 250;
 
-	public CustomerGui5(CustomerAgent5 c, RestaurantGui gui){ //HostAgent m) {
+	public CustomerGui5(CustomerAgent5 c){ //HostAgent m) {
 		agent = c;
 		xPos = -40;
 		yPos = -40;
 		xDestination = -40;
 		yDestination = -40;
-		this.gui = gui;
 	}
 	
 	public CustomerGui5(CustomerAgent5 c, RestaurantGui gui, int x){ //HostAgent m) {

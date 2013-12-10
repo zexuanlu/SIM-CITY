@@ -39,7 +39,7 @@ public class CookAgent5 extends Role implements RestaurantCook {
 	private Semaphore atStand = new Semaphore(0);
 	private Semaphore atGrill = new Semaphore(0);
 	private Semaphore atPlate = new Semaphore(0);
-	private CookGui5 cookGui; 
+	public CookGui5 cookGui; 
 	LinkedList<MarketAgent5> markets = new LinkedList<MarketAgent5>(); 
 	
 	public class marketOrder {

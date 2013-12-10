@@ -765,8 +765,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		walking.msgAddEvent(withdrawFromBank1);
 		walking.msgAddEvent(goToMarket1);
-		walking.msgAddEvent(goToRest1);
-		//walking.msgAddEvent(goToRest2);
+//		walking.msgAddEvent(goToRest1);
+		walking.msgAddEvent(goToRest2);
 		walking.msgAddEvent(goToRest4);
 		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
@@ -825,10 +825,14 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
 		
-		for(int j = 0; j < 25; j++){
-			people.get(j).startThread();
-		}
+//		for(int j = 0; j < 25; j++){
+//			people.get(j).startThread();
+//		}
 
+		for (PersonAgent p : people) {
+			p.startThread();
+		}
+		
 		// Starts the thread of each timecard
 		bank.getTimeCard().startThread();
 		bank2.getTimeCard().startThread();

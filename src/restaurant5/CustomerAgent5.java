@@ -28,7 +28,7 @@ public class CustomerAgent5 extends Role implements Customer5 {
 	int myMoney;  
 	private State customerState;
 	FoodGui5 fgui; 
-	private CustomerGui5 customerGui; 
+	public CustomerGui5 customerGui; 
 	public String name; 
 	private enum Action{
 		gotChange, gotHungry, followingWaiter, leaving, atSeat, whatdoIwant, choosing, beingServed, becomeFull, seated, receivedCheck, doneLeaving, reorder
