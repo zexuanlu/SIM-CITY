@@ -1,7 +1,7 @@
 package restaurant5.gui;
 
 
-import restaurant5.CustomerAgent5;
+import restaurant5.Restaurant5CustomerAgent;
 import restaurant5.WaiterBase5;
 import restaurant5.interfaces.Customer5; 
 import utilities.Gui;
@@ -9,19 +9,19 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class WaiterGui5 implements Gui {
+public class Restaurant5WaiterGui implements Gui {
 	private int waitingX; 
 	private int waitingY; 
     private WaiterBase5 agent = null;
-    private RestaurantGui gui; 
+    public boolean isPresent; 
     
     ArrayList<myGui> myGuis = new ArrayList<myGui>();
 	public enum State {IconOn, IconOff,Brought};
 
     private class myGui {
-    	public FoodGui5 f;
+    	public Restaurant5FoodGui f;
     	public State s; 
-    	public CustomerAgent5 c; 
+    	public Restaurant5CustomerAgent c; 
     }
     
     private int custxPos, custyPos; 
@@ -38,13 +38,13 @@ public class WaiterGui5 implements Gui {
     
     public int xTable = 200;
     public int yTable = 250;
-    public ArrayList<Table5> tables;
+    public ArrayList<Restaurant5Table> tables;
 
-    FoodGui5 food; 
+    Restaurant5FoodGui food; 
   
     
-    public WaiterGui5(WaiterBase5 agent, int x) {
-    	waitingX = x; 
+    public Restaurant5WaiterGui(WaiterBase5 agent) {
+    	waitingX = 50; 
     	xPos = waitingX; 
     	xDestination = waitingX; 
     	waitingY = 30; 
@@ -55,9 +55,6 @@ public class WaiterGui5 implements Gui {
         this.agent = agent;
     }
 
-    public void setGui(RestaurantGui g){
-    	gui = g; 
-    }
     
  
     
@@ -95,7 +92,7 @@ public class WaiterGui5 implements Gui {
         
     }
     
-    public void IconOn(CustomerAgent5 c, String choice){
+    public void IconOn(Restaurant5CustomerAgent c, String choice){
     	showIcon = true;
     	food = c.getFoodGui();
         food.setFood(choice);
@@ -109,7 +106,7 @@ public class WaiterGui5 implements Gui {
 
     }
     
-    public void IconOff(CustomerAgent5 customer){
+    public void IconOff(Restaurant5CustomerAgent customer){
     	showIcon = false; 
     	for (myGui m: myGuis){
     		if (m.c == customer){
@@ -125,10 +122,10 @@ public class WaiterGui5 implements Gui {
         }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
-    public void DoGotoCustomer(CustomerAgent5 c){
+    public void DoGotoCustomer(Restaurant5CustomerAgent c){
     	xDestination = c.getGui().getXPos()+20; 
     	yDestination = c.getGui().getYPos()+20;
     	custxPos = xDestination; 
@@ -136,7 +133,7 @@ public class WaiterGui5 implements Gui {
         
     }
 
-    public void DoBringToTable(CustomerAgent5 customer, int test) {
+    public void DoBringToTable(Restaurant5CustomerAgent customer, int test) {
     	if (test == 1){ 
     		xTable = 200;
     	}

@@ -1,7 +1,7 @@
 package restaurant5;
 
 import agent.Role;
-import restaurant5.gui.CookGui5;
+import restaurant5.gui.Restaurant5CookGui;
 import restaurant5.interfaces.Waiter5; 
 import utilities.restaurant.RestaurantCook;
 import person.PersonAgent; 
@@ -19,11 +19,11 @@ import market.interfaces.MarketTruck;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class CookAgent5 extends Role implements RestaurantCook {
+public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	PersonAgent myPerson; 
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
-	public RevolvingStand5 revolvingstand; 
+	public Restaurant5RevolvingStand revolvingstand; 
 	public MarketCashierRole marketCashier;
 	private Queue<Integer> grillnumber = new LinkedList<Integer>(); 
 	private Queue<Integer> platenumber = new LinkedList<Integer>(); 
@@ -39,7 +39,7 @@ public class CookAgent5 extends Role implements RestaurantCook {
 	private Semaphore atStand = new Semaphore(0);
 	private Semaphore atGrill = new Semaphore(0);
 	private Semaphore atPlate = new Semaphore(0);
-	private CookGui5 cookGui; 
+	public Restaurant5CookGui cookGui; 
 	LinkedList<MarketAgent5> markets = new LinkedList<MarketAgent5>(); 
 	
 	public class marketOrder {
@@ -96,22 +96,22 @@ public class CookAgent5 extends Role implements RestaurantCook {
 	private Map<String,Food> foods = new HashMap<String,Food>();
 
 	// Sets cashier
-	public CashierAgent5 cashier;
+	public Restaurant5Cashier cashier;
 	
-    public CookAgent5(String name, PersonAgent p) {
+    public Restaurant5CookAgent(String name, PersonAgent p) {
 		super(p);
 		myPerson = p; 
 		this.name = name; 
-		revolvingstand = new RevolvingStand5();
+		revolvingstand = new Restaurant5RevolvingStand();
 		//type, cookingtimes, low, capacity, amount
-		Food f = new Food("Steak", 8, 2, 50, 50); 
-		foods.put("Steak",f);
-		f = new Food("Chicken", 6, 2,50,50); 
-		foods.put("Chicken",f);
-		f = new Food("Salad",3,2,50,50);
-		foods.put("Salad", f);
-		f = new Food ("Pizza", 4, 2, 50,50); 
-		foods.put("Pizza", f);
+		Food f = new Food("Belgium", 8, 2, 50, 50); 
+		foods.put("Belgium",f);
+		f = new Food("Sassy", 6, 2,50,50); 
+		foods.put("Sassy",f);
+		f = new Food("Chocolate",3,2,50,50);
+		foods.put("Chocolate", f);
+		f = new Food ("Chicken", 4, 2, 50,50); 
+		foods.put("Chicken", f);
 		grillnumber.add(1);
 		grillnumber.add(2);
 		grillnumber.add(3);
@@ -419,11 +419,11 @@ public class CookAgent5 extends Role implements RestaurantCook {
 		markets.addFirst(m); 
 	}
 	
-	public void setGui(CookGui5 l){
+	public void setGui(Restaurant5CookGui l){
 		cookGui = l; 
 	}
 	
-	public void setRevolvingStand(RevolvingStand5 rvs){
+	public void setRevolvingStand(Restaurant5RevolvingStand rvs){
 		revolvingstand = rvs; 
 	}
 

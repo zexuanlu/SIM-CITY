@@ -40,8 +40,8 @@ public class CityMap {
 		push.add(-20);
 		push.add(0);
 		push.add(20);
-	
-	
+
+
 	}
 
 	public CityMap(){
@@ -69,9 +69,9 @@ public class CityMap {
 		int buffer = push.get(0);
 		push.remove(0);
 		push.add(buffer);
-		
-		
-		
+
+
+
 		//on horizontal road
 		int tempX = 0; 
 		int tempY = 0; 
@@ -109,7 +109,7 @@ public class CityMap {
 					}
 					return new Position(x, 260);
 				}
-				
+
 			}
 		}
 		else {//rightside
@@ -134,16 +134,16 @@ public class CityMap {
 				}
 			}
 		}
-		
-		
-		
-//		
-//		if (x < WIDTHTOTAL/2){
-//			return(new Position(x,Street1));
-//		}
-//		else {
-//			return (new Position(Street2,y));
-//		}
+
+
+
+		//		
+		//		if (x < WIDTHTOTAL/2){
+		//			return(new Position(x,Street1));
+		//		}
+		//		else {
+		//			return (new Position(Street2,y));
+		//		}
 	}
 
 	public String getStopName(BusStop b){
@@ -236,41 +236,58 @@ public class CityMap {
 		}
 		return ll;
 	}
+	public Location getRestaurant(int choice){
+		Location l = null;
+		switch(choice) {
+		case 1:
+			l = get(LocationType.Restaurant1);
+			break;
+		case 2: 
+			l = get(LocationType.Restaurant2);
+			break;
+		case 3:
+			l = get(LocationType.Restaurant3);
+			break;
+		case 4:
+			l = get(LocationType.Restaurant4);
+			break;
+		case 5: 
+			l = get(LocationType.Restaurant5);
+			break;
+		case 6:
+			l = get(LocationType.Restaurant6);
+			break;
+		}
+		return l;
+	}
 	public Location eatOutOrIn(){
+
 		Random chooser = new Random();
 		int i = chooser.nextInt(6);
-		
-		Location l = null;
-		
-		switch(i) {
-		case 1:
-			l = chooseRandom(LocationType.Restaurant1);
-		break;
-		case 2: 
-			l = chooseRandom(LocationType.Restaurant2);
-		break;
-		case 3:
-			l = chooseRandom(LocationType.Restaurant3);
-		break;
-		case 4:
-			l = chooseRandom(LocationType.Restaurant4);
-		break;
-		case 5: 
-			l = chooseRandom(LocationType.Restaurant5);
-		break;
-		case 6:
-			l = chooseRandom(LocationType.Restaurant6);
-		break;
-		}
+		Location l  = getRestaurant(i);
 		if(history.size() == 6){
 			history.clear();
+		}
+		while(l.isClosed()){ 
+			i = chooser.nextInt(6);
+			l  = getRestaurant(i);
 		}
 		if(!history.contains(l)){
 			history.add(l);
 		}
 		System.out.println("Going to " + l.getName());
 		ateOutLast = true;
+
 		return l;
+	}
+	public Location get(LocationType lt){
+		Location ll = null;
+		for(Location l : map){
+			if(l.type == lt){
+				ll = l;
+			}
+		}
+		return ll;
 	}
 	public Location getByType(LocationType lt){
 		Location destination = new Location();
@@ -304,17 +321,23 @@ public class CityMap {
 				Math.pow((destination.getPosition().getY() - y), 2)));
 		return distance;
 	}
-	
+
 	public Bank pickABank(int x, int y){
 		Bank temp = ((Bank)chooseByName("Banco Popular"));
 		Bank temp2 = ((Bank)chooseByName("Banco Popular 2"));
-		if(distanceTo(x,y,temp) > distanceTo(x,y,temp2))
-			return temp2;
-		else
+		if(temp.isClosed() && temp2.isClosed())
+			return null;
+		else if(temp2.isClosed())
 			return temp;
-		
+		else if(temp.isClosed())
+			return temp2;
+		else if(distanceTo(x,y,temp) > distanceTo(x,y,temp2))
+			return temp2;
+		else 
+			return temp;
+
 	}
-	
+
 	public Location chooseByName(String name){ //sync? i dont think anyone will mess with this list after init
 		Location choice = null;
 		for(Location l : map){
@@ -327,7 +350,7 @@ public class CityMap {
 	public Location chooseRandom(LocationType type) {
 		Random chooser = new Random();
 		int i = chooser.nextInt(map.size());
-		
+
 		Location l = map.get(i);
 		if(l.type == type){
 			return l;

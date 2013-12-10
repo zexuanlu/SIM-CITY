@@ -40,10 +40,10 @@ public class MarketAgent5 extends Role implements Market5{
 	}
 	
 	class FlakedBill{
-		public CashierAgent5 cashier; 
+		public Restaurant5Cashier cashier; 
 		public int flakedAmount; 
 		public flakeState state; 
-		FlakedBill(CashierAgent5 c, int f){
+		FlakedBill(Restaurant5Cashier c, int f){
 			flakedAmount = f;
 			cashier = c; 
 			state = flakeState.flaked; 
@@ -53,8 +53,8 @@ public class MarketAgent5 extends Role implements Market5{
 	private enum State {ordered,sendingFood,toPay,paid, flaked,done};
 	private Map<String,Integer> foods = new HashMap<String,Integer>();
 	private List<Order> orders = Collections.synchronizedList(new ArrayList<Order>());
-	private CookAgent5 myCook; 
-	private CashierAgent5 myCashier; 
+	private Restaurant5CookAgent myCook; 
+	private Restaurant5Cashier myCashier; 
 	List<FlakedBill> flakes = Collections.synchronizedList(new ArrayList<FlakedBill>());
 	private String name;
 
@@ -198,7 +198,7 @@ public class MarketAgent5 extends Role implements Market5{
 		stateChanged();
 	}
 	
-	public void setCook(CookAgent5 c){
+	public void setCook(Restaurant5CookAgent c){
 		myCook = c;
 	}
 	
@@ -206,7 +206,7 @@ public class MarketAgent5 extends Role implements Market5{
 		return name;
 	}
 	
-	public void setCashier(CashierAgent5 c){
+	public void setCashier(Restaurant5Cashier c){
 		myCashier = c; 
 	}
 	

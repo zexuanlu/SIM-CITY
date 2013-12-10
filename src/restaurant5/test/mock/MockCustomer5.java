@@ -1,11 +1,11 @@
 package restaurant5.test.mock;
-import restaurant5.gui.FoodGui5;
+import restaurant5.gui.Restaurant5FoodGui;
 import restaurant5.interfaces.Waiter5; 
 import restaurant5.interfaces.Cashier5;
 import restaurant5.interfaces.Customer5;
-import restaurant5.CashierAgent5; 
+import restaurant5.Restaurant5Cashier; 
 import restaurant5.Menu5;
-import restaurant5.WaiterAgent5;
+import restaurant5.Restaurant5WaiterAgent;
 
 public class MockCustomer5 extends Mock5 implements Customer5 {
 	public EventLog5 log = new EventLog5(); 
@@ -14,7 +14,7 @@ public class MockCustomer5 extends Mock5 implements Customer5 {
 	/**
 	 * Reference to the Cashier under test that can be set by the unit test.
 	 */
-	public CashierAgent5 cashier;
+	public Restaurant5Cashier cashier;
 
 	public MockCustomer5(String name) {
 		super(name);

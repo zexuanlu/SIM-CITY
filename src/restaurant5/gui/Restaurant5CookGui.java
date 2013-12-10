@@ -1,23 +1,24 @@
 package restaurant5.gui;
 
 
-import restaurant5.CookAgent5; 
+import restaurant5.Restaurant5CookAgent; 
 import utilities.Gui;
 
 import java.awt.*;
 import java.util.*;
 
-public class CookGui5 implements Gui {
+public class Restaurant5CookGui implements Gui {
 
 	
     private int standX = 480; 
     private int standY = 20; 
     
+    public boolean isPresent; 
 	private int Ygrill; 
 	private int YPlate; 
     private int xPos, yPos;//default waiter position
     private int xDestination, yDestination;//default start position
-    private CookAgent5 agent = null;
+    private Restaurant5CookAgent agent = null;
     //private RestaurantGui gui; 
     
     private class drawGui {
@@ -30,7 +31,7 @@ public class CookGui5 implements Gui {
     }
     private Map<Integer, drawGui> drawguis = new HashMap<Integer, drawGui>();
 
-    public CookGui5(CookAgent5 c){
+    public Restaurant5CookGui(Restaurant5CookAgent c){
     	agent = c; 
     	xPos = 480; 
     	yPos = 75;
@@ -46,17 +47,17 @@ public class CookGui5 implements Gui {
 		for (Map.Entry<Integer, drawGui> entry: drawguis.entrySet()){
 				if (entry.getValue().cooking){
 					g.setColor(Color.ORANGE);
-		    		if (entry.getValue().s.equals("Steak")){
-		            	g.drawString("ST",entry.getValue().x,entry.getValue().y);
+		    		if (entry.getValue().s.equals("Belgium")){
+		            	g.drawString("BG",entry.getValue().x,entry.getValue().y);
 		    		}
 		    		else if (entry.getValue().s.equals("Chicken")){
-		            	g.drawString("CH",entry.getValue().x,entry.getValue().y);
+		            	g.drawString("CK",entry.getValue().x,entry.getValue().y);
 		    		}
-		    		else if (entry.getValue().s.equals("Salad")){
+		    		else if (entry.getValue().s.equals("Sassy")){
 		            	g.drawString("SA",entry.getValue().x,entry.getValue().y);
 		    		}
-		    		else if (entry.getValue().s.equals("Pizza")){
-		            	g.drawString("PI",entry.getValue().x,entry.getValue().y);
+		    		else if (entry.getValue().s.equals("Chocolate")){
+		            	g.drawString("CH",entry.getValue().x,entry.getValue().y);
 		    		}
 					
 				}
@@ -65,7 +66,7 @@ public class CookGui5 implements Gui {
 
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
     public void updatePosition() {

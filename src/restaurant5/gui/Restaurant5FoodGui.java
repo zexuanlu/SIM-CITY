@@ -7,9 +7,10 @@ import java.util.*;
 import utilities.Gui;
 
 
-public class FoodGui5 implements Gui {
+public class Restaurant5FoodGui implements Gui {
 	
-	public enum State {steak, chicken, salad, pizza};
+	public boolean isPresent; 
+	public enum State {belgium,sassy,chocolate,chicken};
 	private State Food; 
 	
 	public int xPos, yPos; 
@@ -31,7 +32,7 @@ public class FoodGui5 implements Gui {
 	}
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
     public void IconOn(){
@@ -44,17 +45,17 @@ public class FoodGui5 implements Gui {
     }
     
     public void setFood(String choice){
-    	if (choice.equals( "Steak")){
-    		Food = State.steak;
+    	if (choice.equals( "Belgium")){
+    		Food = State.belgium;
     	}
     	else if (choice.equals( "Chicken")){
     		Food = State.chicken;
     	}
-    	else if (choice.equals("Salad")){
-    		Food = State.salad;
+    	else if (choice.equals("Sassy")){
+    		Food = State.sassy;
     	}
-    	else if (choice.equals("Pizza")){
-    		Food = State.pizza; 
+    	else if (choice.equals("Chocolate")){
+    		Food = State.chocolate; 
     	}
     	
     }
@@ -62,17 +63,17 @@ public class FoodGui5 implements Gui {
     public void draw(Graphics2D g) {
         if (showIcon){
     		g.setColor(Color.BLACK);
-    		if (Food == State.steak){
-            	g.drawString("ST",xPos,yPos);
+    		if (Food == State.belgium){
+            	g.drawString("BG",xPos,yPos);
     		}
     		else if (Food == State.chicken){
-            	g.drawString("CH",xPos,yPos);
+            	g.drawString("CK",xPos,yPos);
     		}
-    		else if (Food == State.salad){
+    		else if (Food == State.sassy){
             	g.drawString("SA",xPos,yPos);
     		}
-    		else if (Food == State.pizza){
-            	g.drawString("PI",xPos,yPos);
+    		else if (Food == State.chocolate){
+            	g.drawString("CH",xPos,yPos);
     		}
         }
     	

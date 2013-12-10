@@ -1,6 +1,6 @@
 package restaurant5.test;
 
-import restaurant5.CashierAgent5;
+import restaurant5.Restaurant5Cashier;
 import restaurant5.test.mock.MockMarket5; 
 import restaurant5.test.mock.MockCustomer5;
 import restaurant5.test.mock.MockWaiter5; 
@@ -15,7 +15,7 @@ import junit.framework.*;
 public class CashierTest5 extends TestCase
 {
 	//these are instantiated for each test separately via the setUp() method.
-	CashierAgent5 cashier;
+	Restaurant5Cashier cashier;
 	MockWaiter5 waiter;
 	MockCustomer5 customer;
 	MockCustomer5 customer1; 
@@ -32,7 +32,7 @@ public class CashierTest5 extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
-		cashier = new CashierAgent5("cashier");	
+		cashier = new Restaurant5Cashier("cashier");	
 		
 		customer = new MockCustomer5("mockcustomer");	
 		customer1 = new MockCustomer5("mockcustomer1");

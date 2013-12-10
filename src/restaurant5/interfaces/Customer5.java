@@ -1,8 +1,8 @@
 package restaurant5.interfaces;
 
 import restaurant5.Menu5;
-import restaurant5.gui.CustomerGui5; 
-import restaurant5.gui.FoodGui5;
+import restaurant5.gui.Restaurant5CustomerGui; 
+import restaurant5.gui.Restaurant5FoodGui;
 
 /**
  * A sample Customer interface built to unit test a CashierAgent.

@@ -73,7 +73,7 @@ public class Restaurant3HostRole extends Role implements RestaurantHost{
 	
 	public void addWaiter(Restaurant3Waiter w){
 		waiters.add(w);
-		stateChanged();
+		//stateChanged(); FIXFIXFIX THIS IS A RAUNCHY HACK
 	}
 	
 	//MESSAGES *********************************

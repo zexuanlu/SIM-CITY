@@ -4,15 +4,15 @@ import person.PersonAgent;
 import java.util.concurrent.Semaphore;
 
 import restaurant5.WaiterBase5; 
-import restaurant5.CookAgent5.Order; 
+import restaurant5.Restaurant5CookAgent.Order; 
 /**
  * Restaurant Host Agent
  */
-public class SDWaiterAgent5 extends WaiterBase5 {
+public class Restaurant5SDWaiterAgent extends WaiterBase5 {
 	protected Semaphore atStand = new Semaphore(0,true);
-	public RevolvingStand5 revolvingstand; 
+	public Restaurant5RevolvingStand revolvingstand; 
 	
-	public SDWaiterAgent5(String _name, PersonAgent p) {
+	public Restaurant5SDWaiterAgent(String _name, PersonAgent p) {
 		super(_name, p);	
 		name = _name; 
 		waiterState = wState.ready; 
@@ -44,7 +44,7 @@ public class SDWaiterAgent5 extends WaiterBase5 {
 	}
 	
 	//utilities 
-	public void setStand(RevolvingStand5 rs){
+	public void setStand(Restaurant5RevolvingStand rs){
 		revolvingstand = rs; 
 	}
 	
