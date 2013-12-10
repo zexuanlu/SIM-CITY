@@ -117,9 +117,6 @@ public class SimCityGUI extends JFrame {
         public Restaurant5CookAgent cook5 = new Restaurant5CookAgent("Cook 5", initPerson); 
         public Restaurant5WaiterAgent waiter5 = new Restaurant5WaiterAgent("Waiter 5", initPerson);
         
-        
-        
-      
         /*
          * Role gui's must be initialized in SimCityGui with the role as happens below
          */

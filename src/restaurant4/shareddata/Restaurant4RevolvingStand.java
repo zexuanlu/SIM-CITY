@@ -20,9 +20,10 @@ public class Restaurant4RevolvingStand extends Object{
 				wait(5000);                         // Full, wait to add
 			} catch (InterruptedException ex) {};
 		}
-		
+		count++;
 		orders.add(o);
 		count++;
+		System.err.println("Added an order");
 		if(count == 1) {
 			System.out.println("\tNot Empty, notify");
 			notify();                               // Not empty, notify a 

@@ -48,9 +48,9 @@ public class PersonGui implements Gui{
         else if (xPos > xDestination && (yPos == 170 || yPos == 280))
             xPos--;
 
-        if (yPos < yDestination && (xPos == 330 || xPos == 440))
+        if (yPos < yDestination && xPos == 440) //{ (xPos == 330 || xPos == 440))
             yPos++;
-        else if (yPos > yDestination && (xPos == 330 || xPos == 440))
+        else if (yPos > yDestination && (xPos == 440)) //|| xPos == 440))
             yPos--;
 		
 		if(yPos == yDestination && xPos == xDestination && !arrived){

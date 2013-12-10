@@ -48,7 +48,11 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	
 	private String cookName;
 	
-	private Restaurant6CookGui cookGui = null;
+	public Restaurant6CookGui cookGui = null;
+	
+	public boolean offWork = false;
+	// To keep track of how many times have received this message
+	public int numReceived = 0;  
 
 	// Creating a list of orders
 	public List<Restaurant6Order> cookOrders = Collections.synchronizedList(new ArrayList<Restaurant6Order>());
@@ -108,16 +112,16 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	private boolean checkingStand;
 	
 	// Determines how long each food will be cooked for
-	private final int chickenTime = 5;
-	private final int steakTime = 8;
-	private final int pizzaTime = 3;
-	private final int saladTime = 1;
+	private final int gtTime = 5;
+	private final int maTime = 8;
+	private final int mcTime = 3;
+	private final int rrTime = 1;
 	
 	// Determines how much inventory the cook has for each item
-	private final int chickenAmount = 3;
-	private final int steakAmount = 3;
-	private final int pizzaAmount = 3;
-	private final int saladAmount = 3;
+	private final int gtAmount = 3;
+	private final int maAmount = 3;
+	private final int mcAmount = 3;
+	private final int rrAmount = 3;
 
 	// CookAgent constructor
 	public Restaurant6CookRole(String name, Person p) {
@@ -136,14 +140,21 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		// Creates revolving stand
 		revolvingStand = new Restaurant6RevolvingStand();
 		
+		standTimer.schedule(new TimerTask() {
+			public void run() {
+				msgCheckStand();
+				stateChanged();
+			}
+		}, (3000)); 
+		
 		// Checks inventory initially
 		msgCheckInventory();
 		
 		// Creates map of food choices to food objects
-		foods.put("Chicken", new Restaurant6Food("Chicken", chickenTime, chickenAmount));
-		foods.put("Steak", new Restaurant6Food("Steak", steakTime, steakAmount));
-		foods.put("Salad", new Restaurant6Food("Salad", saladTime, saladAmount));
-		foods.put("Pizza", new Restaurant6Food("Pizza", pizzaTime, pizzaAmount));
+		foods.put("Green Tea Ice Cream", new Restaurant6Food("Green Tea Ice Cream", gtTime, gtAmount));
+		foods.put("Mocha Almond Fudge Ice Cream", new Restaurant6Food("Mocha Almond Fudge Ice Cream", maTime, maAmount));
+		foods.put("Rocky Road Ice Cream", new Restaurant6Food("Rocky Road Ice Cream", rrTime, rrAmount));
+		foods.put("Mint Chip Ice Cream", new Restaurant6Food("Mint Chip Ice Cream", mcTime, mcAmount));
 	}
 	
 	// Sets the gui for the cook
@@ -162,6 +173,13 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	}
 
 	// Messages	
+	// Message from the waiter telling 
+	public void msgOffWork() {
+		++numReceived;
+		offWork = true;
+		stateChanged();
+	}
+	
 	// Message telling cook to check the revolving stand
 	public void msgCheckStand() {
 		print("I have to go check the revolving stand for orders!");
@@ -341,6 +359,9 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 				}
 			}
 		}
+		if (offWork) {
+			goOffWork();
+		}
 			
 		return false;
 		//we have tried all our rules and found
@@ -349,6 +370,15 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	}
 
 	// Actions
+	// Goes off work if num received is more than 2
+	private void goOffWork() {
+		offWork = false;
+		if (numReceived == 2) {
+			numReceived = 0;
+			this.person.msgFinishedEvent(this);
+		}
+	}
+	
 	// Check inventory and orders if low on inventory
 	private void checkInventory() {
 		state = CookState.Working;
@@ -358,37 +388,37 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		
 		MarketOrder tempOrder = new MarketOrder();
 		
-		// Check inventory for chicken. If below threshold, add to list of things you need to order
-		Restaurant6Food chicken = foods.get("Chicken");
-		if (chicken.getAmount() <= threshold) {
+		// Check inventory for gt. If below threshold, add to list of things you need to order
+		Restaurant6Food gt = foods.get("Green Tea Ice Cream");
+		if (gt.getAmount() <= threshold) {
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Food("Chicken", numNeeded));
-			print("Placed an order for chicken");
+			tempOrder.items.add(new Food("Green Tea Ice Cream", numNeeded));
+			print("Placed an order for green tea ice cream");
 		}
 		
-		// Check inventory for steak. If below threshold, add to list of things you need to order
-		Restaurant6Food steak = foods.get("Steak");
-		if (steak.getAmount() <= threshold) {
+		// Check inventory for mocha almond. If below threshold, add to list of things you need to order
+		Restaurant6Food ma = foods.get("Mocha Almond Fudge Ice Cream");
+		if (ma.getAmount() <= threshold) {
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Food("Steak", numNeeded));
-			print("Placed an order for steak");
+			tempOrder.items.add(new Food("Mocha Almond Fudge Ice Cream", numNeeded));
+			print("Placed an order for mocha almond fudge ice cream");
 		}
 		
-		// Check inventory for salad. If below threshold, add to list of things you need to order
-		Restaurant6Food salad = foods.get("Salad");
-		if (salad.getAmount() <= threshold) {
+		// Check inventory for mint chip. If below threshold, add to list of things you need to order
+		Restaurant6Food mc = foods.get("Mint Chip Ice Cream");
+		if (mc.getAmount() <= threshold) {
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Food("Salad", numNeeded));
-			print("Placed an order for salad");
+			tempOrder.items.add(new Food("Mint Chip Ice Cream", numNeeded));
+			print("Placed an order for mint chip ice cream");
 		}
 		
-		// Check inventory for pizza. If below threshold, add to list of things you need to order
-		Restaurant6Food pizza = foods.get("Pizza");
-		if (pizza.getAmount() <= threshold) {
-			pizza.setAmountMissing(numNeeded);
+		// Check inventory for rocky road. If below threshold, add to list of things you need to order
+		Restaurant6Food rr = foods.get("Rocky Road Ice Cream");
+		if (rr.getAmount() <= threshold) {
+			rr.setAmountMissing(numNeeded);
 			// Add food to list of orders to send to market
-			tempOrder.items.add(new Food("Pizza", numNeeded));
-			print("Placed an order for pizza");
+			tempOrder.items.add(new Food("Rocky Road Ice Cream", numNeeded));
+			print("Placed an order for rocky road");
 		}
 		
 		if (!tempOrder.items.isEmpty()) {
@@ -436,6 +466,10 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		print("Checking stand..");
 		log.add(new LoggedEvent("Checking stand.."));
 		
+//		if (cookGui != null) {
+//			cookGui.DoGoToPlatingArea();
+//		}
+		
 		Restaurant6Order tempOrder = revolvingStand.remove();
 		
 		if (tempOrder != null) {
@@ -455,7 +489,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 			public void run() {
 				msgCheckStand();
 			}
-		}, 1000); 
+		}, 3000); 
 		
 		checkingStand = false;
 	}

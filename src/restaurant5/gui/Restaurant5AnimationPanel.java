@@ -17,7 +17,7 @@ public class Restaurant5AnimationPanel extends JPanel implements ActionListener 
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public Restaurant5AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);

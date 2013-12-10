@@ -29,7 +29,7 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	public Restaurant4Cashier rc;
 	public MarketTruck truck;
 	private String name;
-	public Restaurant4RevolvingStand stand;
+	public Restaurant4RevolvingStand stand = new Restaurant4RevolvingStand();
 	private boolean sendTruckBack = false;
 	private boolean checkStand = false;
 	public Restaurant4CookGui gui;
@@ -47,6 +47,13 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		cookTimes.put("Scallops", new MyFood(3*baseCookingTime, "Scallops", 10, 4));
 		cookTimes.put("Lobster", new MyFood(5*baseCookingTime, "Lobster", 5, 2));
 		cookTimes.put("Crab", new MyFood(4*baseCookingTime, "Crab", 5, 2));
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkStand = true;
+				stateChanged();
+			}
+		},
+			5000);
 	}
 
 	public String getName() {
@@ -218,9 +225,12 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	
 	private void checkStand(){
 		checkStand = false;
-		cookOrder o = new cookOrder(stand.removeOrder());
+		Do("Checking stand");
+		Order o = stand.removeOrder();
 		if(o != null){
-		cookOrders.add(o);
+			cookOrder order = new cookOrder(o);
+			cookOrders.add(order);
+			Do("Adding Item");
 		}
 		
 		timer.schedule(new TimerTask() {

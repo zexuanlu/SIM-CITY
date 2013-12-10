@@ -60,10 +60,8 @@ public class Restaurant5WaiterGui implements Gui {
         this.agent = agent;
     }
 
-    
- 
-    
-    public void updatePosition() {
+
+	public void updatePosition() {
    	
         if (xPos < xDestination)
             xPos++;

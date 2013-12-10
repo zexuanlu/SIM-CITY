@@ -286,7 +286,7 @@ public class BankTellerRole extends Role implements BankTeller {
 	 * @return false if it doesn't have something to do
 	 */
 	public boolean pickAndExecuteAnAction(){
-		//If it needs to go somewhere
+		//If it needs to go somewhere		
 		if(s == state.haveDestination){
 			goToLocation(destination);
 			s = state.working;

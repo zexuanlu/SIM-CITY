@@ -49,7 +49,9 @@ public class Restaurant2RevolvingStand {
 	private void insert_item(Restaurant2Order data){
 		theData.addElement(data);
 	}
-
+	public boolean isEmpty(){
+		return theData.isEmpty();
+	}
 	private Restaurant2Order remove_item(){
 		Restaurant2Order data = (Restaurant2Order) theData.firstElement();
 		theData.removeElementAt(0);

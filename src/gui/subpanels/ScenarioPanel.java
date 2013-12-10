@@ -225,7 +225,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			else if (chosen.getText().trim().equals("One not working person")) {
 				// Here we will run the scenario where all restaurants order from the market
-				//FIX
 				runOnePersonScenario();
 				
 				System.err.println("One not working person");
@@ -298,7 +297,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 				people.get(i-1).addRole(temp, "Bank Teller");
 			}
 			else if (i >= 5 && i < 7) {
-				BankHostRole temp = new BankHostRole(people.get(i-1), "BANK TELLER");
+				BankHostRole temp = new BankHostRole(people.get(i-1), "BANK HOST");
 				roles.add(temp);
 				people.get(i-1).addRole(temp, "Bank Host");
 			}
@@ -325,63 +324,63 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		 */
 		// First restaurant's employees: FIRST SHIFT
 		Restaurant1HostRole rest1Host = new Restaurant1HostRole("Host 1 Shift 1", people.get(10));
-		people.get(10).addRole(rest1Host, "Host 1 Shift 1");
+		people.get(10).addRole(rest1Host, "Rest 1 Host");
 		Restaurant1CookRole rest1Cook = new Restaurant1CookRole("Cook 1 Shift 1", people.get(11));
-		people.get(11).addRole(rest1Cook, "Cook 1 Shift 1");
+		people.get(11).addRole(rest1Cook, "Rest 1 Cook");
 		Restaurant1CashierRole rest1Cashier = new Restaurant1CashierRole("Cashier 1 Shift 1", people.get(12));
-		people.get(12).addRole(rest1Cashier, "Cashier 1 Shift 1");
+		people.get(12).addRole(rest1Cashier, "Rest 1 Cashier");
 		Restaurant1SDWaiterRole rest1SDWaiter = new Restaurant1SDWaiterRole("Shared Data Waiter 1 Shift 1", people.get(13));
-		people.get(13).addRole(rest1SDWaiter, "Shared Data Waiter 1 Shift 1");
+		people.get(13).addRole(rest1SDWaiter, "Rest 1 SDWaiter");
 		Restaurant1WaiterRole rest1Waiter = new Restaurant1WaiterRole("Waiter 1 Shift 1", people.get(14));
-		people.get(14).addRole(rest1Waiter, "Waiter 1 Shift 1");
+		people.get(14).addRole(rest1Waiter, "Rest 1 Waiter");
 		
 		// Second restaurant's employees: FIRST SHIFT
 		Restaurant2HostRole rest2Host = new Restaurant2HostRole("Host 2 Shift 1", people.get(15));
-		people.get(15).addRole(rest2Host, "Host 2 Shift 1");
+		people.get(15).addRole(rest2Host, "Rest 2 Host");
 		Restaurant2CookRole rest2Cook = new Restaurant2CookRole("Cook 2 Shift 1", people.get(16));
-		people.get(16).addRole(rest2Cook, "Cook 2 Shift 1");
+		people.get(16).addRole(rest2Cook, "Rest 2 Cook");
 		Restaurant2CashierRole rest2Cashier = new Restaurant2CashierRole("Cashier 2 Shift 1", people.get(17));
-		people.get(17).addRole(rest2Cashier, "Cashier 2 Shift 1");
+		people.get(17).addRole(rest2Cashier, "Rest 2 Cashier");
 		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
-		people.get(18).addRole(rest2SDWaiter, "Shared Data Waiter 2 Shift 1");
+		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
 		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
 		people.get(19).addRole(rest2Waiter, "Waiter 2 Shift 1");
 		
 		// Fourth restaurant's employees: FIRST SHIFT 
 		Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", people.get(20));
-		people.get(20).addRole(rest4Host, "Host 4 Shift 1");
+		people.get(20).addRole(rest4Host, "Rest 4 Host");
 		Restaurant4CookRole rest4Cook = new Restaurant4CookRole("Cook 4 Shift 1", people.get(21));
-		people.get(21).addRole(rest4Cook, "Cook 4 Shift 1");
+		people.get(21).addRole(rest4Cook, "Rest 4 Cook");
 		Restaurant4CashierRole rest4Cashier = new Restaurant4CashierRole("Cashier 4 Shift 1", people.get(22));
-		people.get(22).addRole(rest4Cashier, "Cashier 4 Shift 1");
+		people.get(22).addRole(rest4Cashier, "Rest 4 Cashier");
 		Restaurant4SDWaiterRole rest4SDWaiter = new Restaurant4SDWaiterRole("Shared Data Waiter 4 Shift 1", people.get(23));
-		people.get(23).addRole(rest4SDWaiter, "Shared Data Waiter 4 Shift 1");
+		people.get(23).addRole(rest4SDWaiter, "Rest 4 SDWaiter");
 		Restaurant4WaiterRole rest4Waiter = new Restaurant4WaiterRole("Waiter 4 Shift 1", people.get(24));
-		people.get(24).addRole(rest4Waiter, "Waiter 4 Shift 1");
+		people.get(24).addRole(rest4Waiter, "Rest 4 Waiter");
 		
 		// Fifth restaurant's employees: FIRST SHIFT
 		Restaurant5HostAgent rest5Host = new Restaurant5HostAgent("Host 5 Shift 1", people.get(25));
-		people.get(25).addRole(rest5Host, "Host 5 Shift 1");
+		people.get(25).addRole(rest5Host, "Rest 5 Host");
 		Restaurant5CookAgent rest5Cook = new Restaurant5CookAgent("Cook 5 Shift 1", people.get(26));
-		people.get(26).addRole(rest5Cook, "Cook 5 Shift 1");
+		people.get(26).addRole(rest5Cook, "Rest 5 Cook");
 		Restaurant5Cashier rest5Cashier = new Restaurant5Cashier("Cashier 5 Shift 1", people.get(27));
-		people.get(27).addRole(rest5Cashier, "Cashier 5 Shift 1");
+		people.get(27).addRole(rest5Cashier, "Rest 5 Cashier");
 		Restaurant5SDWaiterAgent rest5SDWaiter = new Restaurant5SDWaiterAgent("Shared Data Waiter 5 Shift 1", people.get(28));
-		people.get(28).addRole(rest5SDWaiter, "Shared Data Waiter 5 Shift 1");
+		people.get(28).addRole(rest5SDWaiter, "Rest 5 SDWaiter");
 		Restaurant5WaiterAgent rest5Waiter = new Restaurant5WaiterAgent("Waiter 5 Shift 1", people.get(29));
-		people.get(29).addRole(rest5Waiter, "Waiter 5 Shift 1");
+		people.get(29).addRole(rest5Waiter, "Rest 5 Waiter");
 		
 		// Sixth restaurant's employees: FIRST SHIFT
 		Restaurant6HostRole rest6Host = new Restaurant6HostRole("Host 6 Shift 1", people.get(30));
-		people.get(30).addRole(rest6Host, "Host 6 Shift 1");
+		people.get(30).addRole(rest6Host, "Rest 6 Host");
 		Restaurant6CookRole rest6Cook = new Restaurant6CookRole("Cook 6 Shift 1", people.get(31));
-		people.get(31).addRole(rest6Cook, "Cook 6 Shift 1");
+		people.get(31).addRole(rest6Cook, "Rest 6 Cook");
 		Restaurant6CashierRole rest6Cashier = new Restaurant6CashierRole("Cashier 6 Shift 1", people.get(32));
-		people.get(32).addRole(rest6Cashier, "Cashier 6 Shift 1");
+		people.get(32).addRole(rest6Cashier, "Rest 6 Cashier");
 		Restaurant6SDWaiterRole rest6SDWaiter = new Restaurant6SDWaiterRole("Shared Data Waiter 6 Shift 1", people.get(33));
-		people.get(33).addRole(rest6SDWaiter, "Shared Data Waiter 6 Shift 1");
+		people.get(33).addRole(rest6SDWaiter, "Rest 6 SDWaiter");
 		Restaurant6WaiterRole rest6Waiter = new Restaurant6WaiterRole("Waiter 6 Shift 1", people.get(34));
-		people.get(34).addRole(rest6Waiter, "Waiter 6 Shift 1");
+		people.get(34).addRole(rest6Waiter, "Rest 6 Waiter");
 		
 		/** 
 		 * GUI CREATION AND INITIALIZATION
@@ -414,6 +413,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			++i;
 		}
+		
 		
 		/**
 		 * SETTING BANK GUIS AND MARKET GUIS TO CITY ANIMATION PANEL
@@ -460,11 +460,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		cityAnimPanel.rest2Panel.addGui(r2cg1);
 		
 		// Fourth Restaurant: FIRST SHIFT
-		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, -20, -20);
+		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, 52, 112);
 		rest4SDWaiter.setGui(r4sharedwg1);
 		cityAnimPanel.rest4Panel.addGui(r4sharedwg1);
 		
-		Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, -20, -20);
+		Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, 52, 134);
 		rest4Waiter.setGui(r4wg1);
 		cityAnimPanel.rest4Panel.addGui(r4wg1);
 		
@@ -514,10 +514,10 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Bank bank2 = new Bank("Bank 2", new TimeCard(), (BankHostRole)roles.get(5), 
                         new Position(660, 170), LocationType.Bank);
         Market market2 = new Market("Market 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
-                        new Position(450, 170), LocationType.Market);
+                        new Position(460, 170), LocationType.Market);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
-        Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(590, 170), LocationType.Restaurant5);
-        Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 40), LocationType.Restaurant6);                
+        Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
+        Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 100), LocationType.Restaurant6);                
         
         // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
   		rest1.setCashier(rest1Cashier);
@@ -541,9 +541,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Waiter.setCashier(rest2Cashier);
   		rest2SDWaiter.setCook(rest2Cook);
   		rest2SDWaiter.setHost(rest2Host);
-  		rest2SDWaiter.revolver = rest2Cook.revolver;
+  		Restaurant2RevolvingStand rs2 = new Restaurant2RevolvingStand();
+  		rest2Cook.setRevolvingStand(rs2);
+  		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		rest2Host.addWaiter(rest2Waiter);
+  		//rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
@@ -555,7 +557,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Waiter.setCashier(rest4Cashier);
   		rest4SDWaiter.setCook(rest4Cook);
   		rest4SDWaiter.setHost(rest4Host);
-  		rest4SDWaiter.stand = rest4Cook.stand;
+  		((Restaurant4SDWaiterRole)rest4SDWaiter).stand = rest4Cook.stand;
   		rest4SDWaiter.setCashier(rest4Cashier);
   		rest4Host.addWaiter(rest4Waiter);
   		rest4Host.addWaiter(rest4SDWaiter);
@@ -743,7 +745,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		 * GIVE WALKING PERSON EVENTS
 		 */
 		// Go to bank to withdraw money
-		SimEvent withdrawFromBank1 = new SimEvent("withdraw", bank, EventType.CustomerEvent);
+		SimEvent withdrawFromBank1 = new SimEvent("deposit", bank, EventType.CustomerEvent);
 		
 		// Go to market to buy shopping list items
 		SimEvent goToMarket1 = new SimEvent("Buy groceries", market, EventType.CustomerEvent);
@@ -761,26 +763,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// Go to bank to deposit money
 		SimEvent depositBank2 = new SimEvent("deposit", bank2, EventType.CustomerEvent);
 		
-//		// Go to market to buy shopping list items
-//		SimEvent goToMarket1 = new SimEvent("Buy groceries", market, EventType.CustomerEvent);
-//		
-//		// Eat at each restaurant.. fatty.
-//		SimEvent goToRest1 = new SimEvent(rest1, 15, EventType.CustomerEvent);
-//		SimEvent goToRest2 = new SimEvent(rest2, EventType.CustomerEvent);
-//		SimEvent goToRest4 = new SimEvent("Eat", rest4, EventType.CustomerEvent);
-//		SimEvent goToRest5 = new SimEvent("Eat", rest5, EventType.CustomerEvent);
-//		SimEvent goToRest6 = new SimEvent("Eat", rest6, EventType.CustomerEvent);
-//		
-//		// Go to market to buy more shopping list items
-//		SimEvent goToMarket2 = new SimEvent("Buy groceries", market2, EventType.CustomerEvent);
-//		
-//		// Go to bank to deposit money
-//		SimEvent depositBank2 = new SimEvent("Deposit money", bank2, EventType.CustomerEvent);
-
-		
 		walking.msgAddEvent(withdrawFromBank1);
 		walking.msgAddEvent(goToMarket1);
-		walking.msgAddEvent(goToRest1);
+//		walking.msgAddEvent(goToRest1);
 		walking.msgAddEvent(goToRest2);
 		walking.msgAddEvent(goToRest4);
 		walking.msgAddEvent(goToRest5);
@@ -840,10 +825,14 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
 		
+//		for(int j = 0; j < 25; j++){
+//			people.get(j).startThread();
+//		}
+
 		for (PersonAgent p : people) {
 			p.startThread();
 		}
-
+		
 		// Starts the thread of each timecard
 		bank.getTimeCard().startThread();
 		bank2.getTimeCard().startThread();
@@ -969,9 +958,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		Restaurant4CashierRole rest4Cashier = new Restaurant4CashierRole("Cashier 4 Shift 1", people.get(22));
 		people.get(22).addRole(rest4Cashier, "Cashier 4 Shift 1");
 		Restaurant4SDWaiterRole rest4SDWaiter = new Restaurant4SDWaiterRole("Shared Data Waiter 4 Shift 1", people.get(23));
-		people.get(23).addRole(rest4SDWaiter, "Shared Data Waiter 4 Shift 1");
+		people.get(23).addRole(rest4SDWaiter, "Rest 4 SDWaiter");
 		Restaurant4WaiterRole rest4Waiter = new Restaurant4WaiterRole("Waiter 4 Shift 1", people.get(24));
-		people.get(24).addRole(rest4Waiter, "Waiter 4 Shift 1");
+		people.get(24).addRole(rest4Waiter, "Rest 4 Waiter");
 		
 		// Fifth restaurant's employees: FIRST SHIFT
 		Restaurant5HostAgent rest5Host = new Restaurant5HostAgent("Host 5 Shift 1", people.get(25));
@@ -1501,7 +1490,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		}
 		
 		for (PersonAgent p : people) {
-			p.startThread();
+				p.startThread();
 		}
 	}
 }

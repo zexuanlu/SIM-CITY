@@ -53,7 +53,7 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     public boolean custOrdered = false;
     public boolean custEating = false;
     
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
     public List<Shape> tables;
 
     public Restaurant6AnimationPanel() {

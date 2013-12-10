@@ -26,7 +26,7 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
     static final int TABLEY = 300;
     static final int TABLEDIM = 50;
 
-    private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+    public List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 
     public Restaurant4AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -79,12 +79,6 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
         g2.drawString("Waiters", 50, 110);
         g2.drawString("Plating", 400, 384);
         g2.drawString("Cooking", 444, 384);
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
 
         synchronized(guis){
 	        for(Gui gui : guis) {

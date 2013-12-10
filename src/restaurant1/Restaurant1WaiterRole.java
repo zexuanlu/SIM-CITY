@@ -1,6 +1,5 @@
 package restaurant1;
 
-import restaurant1.Restaurant1AbstractWaiter.state;
 import restaurant1.gui.WaiterGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
@@ -47,14 +46,14 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		}
 	}
 	
-	private List<mycustomer> customer = new ArrayList<mycustomer>();
+	public List<mycustomer> customer = new ArrayList<mycustomer>();
 	
 	public Map<String, Double> menue = new HashMap<String, Double>();
 	
 	String names;
 		
 	enum waiterstate {none, working, applyingbreak};
-	private waiterstate ws = waiterstate.working;
+	waiterstate ws = waiterstate.working;
 	
 	
 	public Restaurant1WaiterRole(String name, Person pa){
@@ -122,10 +121,8 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	// Messages
 
 	public void msgIWantFood(Restaurant1Customer cust, int table, int loc) {
-		print("Customer added");
+		print("Seating customer");
 		customer.add(new mycustomer(cust, table, loc));
-		System.err.println(customer.get(0));
-		System.err.println(customer.size());
 		stateChanged();
 	}
 
@@ -213,8 +210,8 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */	
-		System.err.println("SCHEDULER");
-		System.err.println(customer.size());
+		Do("SCHEDULER");
+		Do(customer.size() + "");
 		try{
 		for(mycustomer customers: customer){
 			System.err.println(customers.c);
@@ -286,6 +283,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		catch(ConcurrentModificationException e){
 			return false;
 		}
+		Do("Why am I person 15?");
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent

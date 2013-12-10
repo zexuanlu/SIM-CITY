@@ -496,11 +496,32 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(Gui gui : marketPanel.guis){
                 gui.updatePosition();
         }
+        for(Gui gui : marketPanel2.guis){
+    		gui.updatePosition();
+        }
+        for(Gui gui : bankPanel2.guis){
+    		gui.updatePosition();
+        }
         for(Gui gui : bankPanel.guis){
                 gui.updatePosition();
         }
         for(Gui gui : rest1Panel.guis){
                 gui.updatePosition();
+        }
+        for(Gui gui : rest2Panel.guis){
+        		gui.updatePosition();
+        }
+        for(restaurant3.gui.Gui gui : rest3Panel.guis){
+    		gui.updatePosition();
+        }
+        for(Gui gui : rest4Panel.guis){
+    		gui.updatePosition();
+        }
+        for(Gui gui : rest5Panel.guis){
+    		gui.updatePosition();
+        }
+        for(Gui gui : rest6Panel.guis){
+    		gui.updatePosition();
         }
 
         for (ApartmentAnimationPanel apt : apartments) {
