@@ -17,6 +17,7 @@ import person.Restaurant;
 import person.SimEvent;
 import person.Location.LocationType;
 import person.interfaces.Person;
+import resident.HomeOwnerRole.MyPriority;
 import resident.gui.ApartmentTenantGui;
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
@@ -58,33 +59,14 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	}
 
 	public static class MyPriority {
-		public enum Type {Hunger, Cleaning, Maintainance, Shop}
+		public enum Type {Hunger, Cleaning, Maintainance, Shop, Bored}
 		public Type type;
-		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, GoToMarket, RestockFridge, PayRent, GoToRestaurant, NoFood}
+		public enum Task {NeedToEat, Cooking, CheckPerson, Eating, WashDishes, Washing, GoToMarket, RestockFridge, PayRent, GoToRestaurant, NoFood}
 		public Task task;
-		private double timeDuration;
-		private int levelOfImportance;
-		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>();
 
 		public MyPriority(Task t, Type type) {
 			task = t;
 			this.type = type;
-			
-			// All basic tasks of a resident
-			taskTime.put(Task.NeedToEat, 0);
-			taskTime.put(Task.Cooking, 30);
-			taskTime.put(Task.Eating, 30);
-			taskTime.put(Task.WashDishes, 0);
-			taskTime.put(Task.Washing, 10);
-			taskTime.put(Task.GoToMarket, 20);
-			taskTime.put(Task.RestockFridge, 5);
-			taskTime.put(Task.GoToRestaurant, 40);
-			taskTime.put(Task.NoFood, 0);
-			
-			// Maintenance person is an apartment tenant, so pays rent. This adds the new task of paying rent
-			taskTime.put(Task.PayRent, 10);
-			
-			timeDuration = taskTime.get(t);
 		}
 	}
 
@@ -182,6 +164,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		log.add(new LoggedEvent("Done washing dishes!"));
 		
 		print("Done washing dishes!");
+		
+		toDoList.add(new MyPriority(MyPriority.Task.CheckPerson, MyPriority.Type.Bored));
 		
 		stateChanged();
 	}
@@ -322,6 +306,12 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 					return true;
 				}
 			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.CheckPerson) {
+					checkPerson(p);
+					return true;
+				}
+			}
 		}
 		//aptGui.DoGoToHome();
 		return false;
@@ -330,7 +320,26 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	/**
 	 * Actions for Apartment Tenant
 	 */
-
+	private void checkPerson(MyPriority p) {
+		toDoList.remove(p);
+		
+		// Checks to see if there's something else for the person to do that is a one time event (aka not work)
+		for (SimEvent e : this.person.getToDo()) {
+			if (e.importance == SimEvent.EventImportance.OneTimeEvent) {
+				DoGoToFrontDoor();
+				
+				try {
+					atFrontDoor.acquire();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				this.person.msgFinishedEvent(this);
+			}
+		}
+	}
+	
 	private void payLandlord(MyPriority p) {
 		toDoList.remove(p);
 		

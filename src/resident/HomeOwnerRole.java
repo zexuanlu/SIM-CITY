@@ -68,9 +68,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	}
 	
 	public static class MyPriority {
-		public enum Task {NeedToEat, Cooking, Eating, WashDishes, Washing, MaintainHome, GoToMarket, RestockFridge, GoToRestaurant, NoFood}
+		public enum Task {NeedToEat, Cooking, Eating, WashDishes, CheckPerson, Washing, MaintainHome, GoToMarket, RestockFridge, GoToRestaurant, NoFood}
 		public Task task;
-		public enum Type {Hunger, Cleaning, Maintainance, Shop}
+		public enum Type {Hunger, Cleaning, Maintainance, Shop, Bored}
 		public Type type;
 		public int timeDuration;
 		private Map<Task, Integer> taskTime = new HashMap<Task, Integer>(); // Will have importance preinitialized
@@ -78,20 +78,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		public MyPriority(Task t, Type type) {
 			task = t;
 			this.type = type;
-			// Initializing all of the tasks and their times
-			taskTime.put(Task.NeedToEat, 0);
-			taskTime.put(Task.Cooking, 30);
-			taskTime.put(Task.Eating, 30);
-			taskTime.put(Task.WashDishes, 0);
-			taskTime.put(Task.Washing, 10);
-			taskTime.put(Task.MaintainHome, 30);
-			taskTime.put(Task.GoToMarket, 20);
-			taskTime.put(Task.RestockFridge, 5);
-			taskTime.put(Task.GoToRestaurant, 40);
-			taskTime.put(Task.NoFood, 0);
-			
-			timeDuration = taskTime.get(t);
-//			levelOfImportance = taskImportance.get(t);
 		}
 	}
 
@@ -104,7 +90,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	private int houseNumber;
 	private String name;
 	private double myMoney;
-	private static int minRestaurantMoney = 70; // Time it takes to cook the fastest food
+	private static int minRestaurantMoney = 2; // Amount you need to go to a restaurant
 	private static int hungerThreshold = 3;
 
 	public HomeOwnerGui homeGui;
@@ -112,7 +98,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	// All the gui semaphores
 	private Semaphore atFridge = new Semaphore(0, true);
 	public Semaphore atFrontDoor = new Semaphore(0, true);
-	private Semaphore waitForReturn = new Semaphore(0, true);
 	private Semaphore atStove = new Semaphore(0, true);
 	private Semaphore atTable = new Semaphore(0, true);
 	private Semaphore atSink = new Semaphore(0, true);
@@ -177,6 +162,8 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 		log.add(new LoggedEvent("Done washing dishes!"));
 		
 		print("Done washing dishes!");
+		
+		toDoList.add(new MyPriority(MyPriority.Task.CheckPerson, MyPriority.Type.Bored));
 		
 		stateChanged();
 	}
@@ -316,6 +303,12 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 					return true;
 				}
 			}
+			for (MyPriority p : toDoList) {
+				if (p.task == MyPriority.Task.CheckPerson) {
+					checkPerson(p);
+					return true;
+				}
+			}
 		}
 		//homeGui.DoGoToHome();
 		return false;
@@ -324,6 +317,26 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	/**
 	 * Actions for Homeowner
 	 */
+	private void checkPerson(MyPriority p) {
+		toDoList.remove(p);
+		
+		// Checks to see if there's something else for the person to do that is a one time event (aka not work)
+		for (SimEvent e : this.person.getToDo()) {
+			if (e.importance == SimEvent.EventImportance.OneTimeEvent) {
+				DoGoToFrontDoor();
+				
+				try {
+					atFrontDoor.acquire();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				this.person.msgFinishedEvent(this);
+			}
+		}
+	}
+	
 	private void sleep() {
 		// Set home owner's state to sleeping
 		state = MyState.Sleeping;
