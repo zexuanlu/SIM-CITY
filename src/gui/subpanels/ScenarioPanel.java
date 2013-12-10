@@ -541,9 +541,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Waiter.setCashier(rest2Cashier);
   		rest2SDWaiter.setCook(rest2Cook);
   		rest2SDWaiter.setHost(rest2Host);
-  		rest2SDWaiter.revolver = rest2Cook.revolver;
+  		Restaurant2RevolvingStand rs2 = new Restaurant2RevolvingStand();
+  		rest2Cook.setRevolvingStand(rs2);
+  		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		rest2Host.addWaiter(rest2Waiter);
+  		//rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;

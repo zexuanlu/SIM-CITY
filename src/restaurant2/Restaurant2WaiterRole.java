@@ -63,17 +63,14 @@ public class Restaurant2WaiterRole extends Restaurant2AbstractWaiterRole{
 			e.printStackTrace();
 		}
 		synchronized(MyCustomers){
-			for(MyCustomer mc : MyCustomers)
-			{
-				if(mc.getOrder() != "none") 
-				{
+			for(MyCustomer mc : MyCustomers){
+				if(mc.getOrder() != "none") {
 					cook.msgOrderToCook(mc.getOrder(), this, (Restaurant2CustomerRole)mc.getCustomer());
 					mc.changeState("ordered");
 					mc.setOrder("none");
 				}
 			}
 		}
-
 	}
 
 	@Override
