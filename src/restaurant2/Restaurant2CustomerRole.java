@@ -113,8 +113,7 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		event = AgentEvent.followHost;
 		stateChanged();
 	}
-	public void msgYouHaveToWait()
-	{
+	public void msgYouHaveToWait(){
 		print("im sorry from the wait! feel free to leave if need be");
 		event = AgentEvent.waiting;
 	}
@@ -138,29 +137,24 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		mealChoice = null;
 		stateChanged();
 	}
-	public void msgServed(String order)
-	{
+	public void msgServed(String order){
 		System.out.println("Thank you for the "+order);
 		event = AgentEvent.served;
 		stateChanged();
 	}
-	public void msgHeresYourCheck(int check)
-	{
+	public void msgHeresYourCheck(int check){
 		this.check = check;
 		stateChanged();
 	}
-	public void msgAtCashier()
-	{
-		if(state != AgentState.NotEnoughMoney || state != AgentState.DoingNothing)
-		{
+	public void msgAtCashier(){
+		if(state != AgentState.NotEnoughMoney || state != AgentState.DoingNothing){
 			waitForPayment.release();
 			print("At the cashier paying for meal");
 			event = AgentEvent.donePaying;
 			stateChanged();
 		}
 	}
-	public void msgThanksForDining()//from the cashier
-	{
+	public void msgThanksForDining(){
 		event = AgentEvent.doneLeaving;
 		stateChanged();
 	}
@@ -219,6 +213,7 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		}
 		if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
 			state = AgentState.DoingNothing;
+			leaveBuilding();
 			//no action
 			return true;
 		}
@@ -234,6 +229,9 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		{
 			leaveTable();
 		}
+	}
+	private void leaveBuilding(){
+		this.person.msgFinishedEvent(this);
 	}
 	private void goToRestaurant() {
 		Do("Going to restaurant");

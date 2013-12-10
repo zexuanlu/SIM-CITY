@@ -15,7 +15,6 @@ public class Restaurant2SDWaiterRole extends Restaurant2AbstractWaiterRole{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		try{
-			System.err.println("gaddamn gul");
 			for(MyCustomer mc : MyCustomers)
 			{
 				if(mc.getState() == "toBeServed"){
@@ -39,7 +38,6 @@ public class Restaurant2SDWaiterRole extends Restaurant2AbstractWaiterRole{
 					return true;
 				}
 				else if(mc.getState() == "waitingForFood"){
-					System.err.println("GULLLLLL");
 					ordersToCook();
 					return true;
 				}
@@ -66,7 +64,6 @@ public class Restaurant2SDWaiterRole extends Restaurant2AbstractWaiterRole{
 		synchronized(MyCustomers){
 			for(MyCustomer mc : MyCustomers){
 				if(mc.getOrder() != "none"){
-					Do("GUL IM GIVING YOU AN ORDER");
 					revolver.insert(new Restaurant2Order(this, mc.getCustomer(), mc.getOrder()));
 					mc.changeState("ordered");
 					mc.setOrder("none");
