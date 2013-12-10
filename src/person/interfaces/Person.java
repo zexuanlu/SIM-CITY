@@ -49,4 +49,6 @@ public interface Person {
 		
 		public abstract void msgBanished();
 		
+		public abstract List<SimEvent> getToDo(); // gets the person's to do list
+		
 }

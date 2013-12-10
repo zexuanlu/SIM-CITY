@@ -2281,4 +2281,8 @@ public class PersonAgent extends Agent implements Person{
 		print ("My car crashed and now I have no car :("); 
 	}
 
+	public List<SimEvent> getToDo() {
+		return toDo;
+	}
+
 }
