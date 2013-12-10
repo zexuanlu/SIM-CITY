@@ -3,6 +3,10 @@ package restaurant3.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import utilities.Gui; 
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
 import restaurant1.Restaurant1CustomerRole;
 import restaurant3.Restaurant3WaiterRole;
 import restaurant3.interfaces.Restaurant3Waiter;
@@ -32,6 +36,9 @@ public class Restaurant3WaiterGui implements Gui {
 		String wtrRole = "Restaurant 3 Waiter";
 		String sdwRole = "Restaurant 3 SDWaiter";
 
+		public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+		public Image image = img.getImage();
+		
 	public Restaurant3WaiterGui(Restaurant3Waiter w) {
 		agent = w;
 		xPos = xDestination;
@@ -78,7 +85,8 @@ public class Restaurant3WaiterGui implements Gui {
 		if(agent instanceof Restaurant3Waiter){
 			g.drawString(((PersonAgent)((Restaurant3WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		}
-		g.fillRect(xPos, yPos, width, height);
+		//g.fillRect(xPos, yPos, width, height);
+		g.drawImage(image, xPos, yPos, height, width, null);
 	}
 
 	@Override

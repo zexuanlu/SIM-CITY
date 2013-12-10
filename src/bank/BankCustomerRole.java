@@ -155,6 +155,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgCallingCops(){
 		log.add(new LoggedEvent("Received msgCallingCops from BankTeller"));
+		Do("Not the cops! I'm outta here!");
 		this.s = state.runAway;
 		stateChanged();
 	}
@@ -165,6 +166,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgHereIsMoney(double amount){
 		log.add(new LoggedEvent("Received msgHereIsMoney from BankTeller"));
+		Do("Just stole " + amount + " dollars! Time to skip town!");
 		this.s = state.runAway;
 		person.msgAddMoney(amount);
 		stateChanged();
@@ -187,6 +189,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @return false if the scheduler failed to pick an action
 	 */
 	public boolean pickAndExecuteAnAction(){
+		//At the end of the robber scenario, when he needs to run away
 		if(s == state.runAway){
 			escape();
 			return true;
@@ -308,11 +311,15 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 	}
 	
-	
+	/**
+	 * Leaves the bank, and then leaves town completely
+	 */
 	private void escape(){
 		goToLocation("Outside");
 		bt.msgLeavingBank(this);
 		s = state.none;
+		if(gui != null)
+			gui.setPresent(false);
 		person.msgBanished();
 	}
 	//Utilities

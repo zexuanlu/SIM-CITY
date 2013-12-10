@@ -11,6 +11,8 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 
@@ -22,7 +24,10 @@ public class Restaurant5WaiterGui implements Gui {
     
     ArrayList<myGui> myGuis = new ArrayList<myGui>();
 	public enum State {IconOn, IconOff,Brought};
-
+	
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+	public Image image = img.getImage();
+	
     private class myGui {
     	public Restaurant5FoodGui f;
     	public State s; 
@@ -121,7 +126,8 @@ public class Restaurant5WaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+        //g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(image, xPos, yPos, 20, 20, null);
         
         if(agent instanceof Restaurant5WaiterAgent){
         	g.drawString(((PersonAgent)((Restaurant5WaiterAgent)agent).getPerson()).getName(), xPos-14, yPos+30);

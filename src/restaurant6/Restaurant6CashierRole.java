@@ -1,9 +1,11 @@
 package restaurant6;
 
 import agent.Role;
+import bank.interfaces.BankDatabase;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import person.interfaces.Person;
 import market.Food;
@@ -22,6 +24,11 @@ import utilities.restaurant.RestaurantCashier;
  */
 
 public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
+	private double money;
+	Semaphore getMoney = new Semaphore(0,true);
+	public BankDatabase bank;
+	public int accountNumber;
+	
 	// Boolean to determine off work
 	public boolean offWork = false;
 	
@@ -173,6 +180,10 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
+		if(money < 500.00){
+			getMoneyFromBank();
+			return true;
+		}
 		/*Checks if the checks list is empty. If the check's state has yet 
 		 * to be computed, calculate the amount that the customer owes. 
 		 * If the customer is paying for the check right now, then get the money
@@ -215,6 +226,13 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	private void goOffWork() {
 		offWork = false;
 		if (numReceived == 2) {
+			bank.msgDepositMoney(this, money, accountNumber);
+			try{
+				getMoney.acquire();
+			}
+			catch(InterruptedException ie){
+				ie.printStackTrace();
+			}
 			numReceived = 0;
 			this.person.msgFinishedEvent(this);
 		}
@@ -296,5 +314,21 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	public utilities.Gui getGui(){
 		return null; 
 	}
+
+	private void getMoneyFromBank(){
+		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
+		try{
+			getMoney.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+	}
+	
+	public void msgAddMoney(double amount) {
+		money += amount;
+		getMoney.release();
+	}
+	
 }
 

@@ -2,6 +2,7 @@ package bank;
 
 import java.util.*;
 
+import utilities.restaurant.RestaurantCashier;
 import bank.test.mock.*;
 import agent.*;
 import bank.interfaces.*;
@@ -59,6 +60,12 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		stateChanged();
 	}
 	
+	public void msgDepositMoney(RestaurantCashier rc, double money, int accountNumber){
+		requests.add(new Request(rc, "deposit", accounts.get(accountNumber), money));
+		log.add(new LoggedEvent("Received msgDepositMoney from RestaurantCashier"));
+		stateChanged();
+	}
+	
 	/**
 	 * Received from a bank teller requesting a withdrawal of money from an account
 	 * 
@@ -70,6 +77,12 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	public void msgWithdrawMoney(BankCustomer bc, double money, int accountNumber, BankTeller bt){
 		requests.add(new Request("withdraw", accounts.get(accountNumber), money, bt, bc));
 		log.add(new LoggedEvent("Received msgWithdrawMoney from BankTeller"));
+		stateChanged();
+	}
+	
+	public void msgWithdrawMoney(RestaurantCashier rc, double money, int accountNumber){
+		requests.add(new Request(rc, "withdraw", accounts.get(accountNumber), money));
+		log.add(new LoggedEvent("Received msgWithdrawMoney from RestaurantCashier"));
 		stateChanged();
 	}
 	
@@ -87,6 +100,12 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		stateChanged();
 	}
 
+	/**
+	 * Received from a bank teller who is being robber
+	 * 
+	 * @param bt the bank teller who is being robbed
+	 * @param amount the amount of money that the robber demanded
+	 */
 	public void msgGiveAllMoney(BankTeller bt, double amount) {
 		requests.add(new Request("robbery", null, amount, bt, null));
 		log.add(new LoggedEvent("Received msgGiveAllMoney from BankTeller"));
@@ -135,6 +154,14 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		 * If the account has debt, half of the deposit goes to paying off the debt
 		 */
 		if(r.type.equals("deposit")){
+			if(r.bc == null && r.rc == r.a.cashier){
+				totalMoney += r.amount;
+				r.a.balance += r.amount;
+				if(r.rc != null)
+					r.rc.msgAddMoney(0-r.amount);
+				requests.remove(r);
+				return;
+			}
 			if(r.a.owner == r.bc){
 				if(r.a.debt == 0){
 					Do("Completed deposit of " + r.amount);
@@ -162,6 +189,14 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		 * If they have less than the amount, withdraws everything
 		 */
 		if(r.type.equals("withdraw")){
+			if(r.bc == null && r.rc == r.a.cashier){
+				totalMoney -= r.amount;
+				r.a.balance -= r.amount;
+				if(r.rc != null)
+					r.rc.msgAddMoney(r.amount);
+				requests.remove(r);
+				return;
+			}
 			if(r.a.owner == r.bc){
 				if(r.a.balance > r.amount){
 					r.a.balance -= r.amount;
@@ -195,11 +230,18 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			}
 			requests.remove(r);
 		}
+		/**
+		 * Gives the teller who is being robbed the correct amount of money
+		 */
 		if(r.type.equals("robbery")){
 			totalMoney -= r.amount;
 			r.bt.msgHereIsMoney(r.amount);
 			requests.remove(r);
 		}
+		/**
+		 * If the money drops below some amount, then message the national
+		 * branch to get more money
+		 */
 		if(totalMoney < 10000.0){
 			timer.schedule(new TimerTask() {
 				public void run() {
@@ -232,6 +274,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		public Account a;
 		public BankCustomer bc;
 		public BankTeller bt;
+		public RestaurantCashier rc;
 		Request(String type, Account a, double amount, BankTeller bt, BankCustomer bc){
 			this.type = type;
 			this.amount = amount;
@@ -243,6 +286,13 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			type = "openAccount";
 			bt = bt2;
 			bc = bc2;
+		}
+		public Request(RestaurantCashier rc, String type, Account a, double amount){
+			this.type = type;
+			this.amount = amount;
+			this.a = a;
+			this.rc = rc;
+			bc = null;
 		}
 	}
 	
@@ -256,9 +306,15 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		public double balance;
 		public int accountNumber;
 		public BankCustomer owner;
+		public RestaurantCashier cashier;
 		public double debt;
 		Account(BankCustomer owner, double balance, int accountNumber){
 			this.owner = owner;
+			this.balance = balance;
+			this.accountNumber = accountNumber;
+		}
+		Account(RestaurantCashier cashier, double balance, int accountNumber){
+			this.cashier = cashier;
 			this.balance = balance;
 			this.accountNumber = accountNumber;
 		}
@@ -269,7 +325,9 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		accounts.put(accountNumber, new Account(owner, balance, accountNumber));
 		totalMoney += balance;
 	}
-	
-	
-	
+
+	public void addRestaurantAccount(RestaurantCashier cashier, double balance, int accountNumber){
+		accounts.put(accountNumber, new Account(cashier, balance, accountNumber));
+		totalMoney += balance;
+	}
 }

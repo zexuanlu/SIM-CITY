@@ -9,6 +9,7 @@ import restaurant2.Restaurant2CookRole.MarketState;
 import utilities.restaurant.RestaurantCashier;
 import agent.Agent;
 import agent.Role;
+import bank.BankDatabaseAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketCashier;
 import person.interfaces.Person;
@@ -35,7 +37,10 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 
 	public enum MarketState {Unpaid, Paid, Idle};
 	public enum BillState {Pending, Ready, Paid, Complete, Waiting, IOU}; 
-	public int wallet;
+	public double wallet;
+	public int accountNumber;
+	public BankDatabaseAgent bank;
+	Semaphore getMoney = new Semaphore(0,true);
 
 	/**
 	 * Constructor for Customer class
@@ -95,6 +100,10 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 	 */
 	public boolean pickAndExecuteAnAction() {
 
+		if(wallet < 500.00){
+			getMoneyFromBank();
+			return true;
+		}
 		synchronized(bills){
 			for(Bill b : bills){
 				if(b.state == BillState.Ready){
@@ -139,8 +148,8 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 			}
 		}
 		else{
-			int remaining = b.getCheck().getCheck() - wallet;
-			b.getMarket().msgHeresPayment(this, -remaining);
+			double remaining = b.getCheck().getCheck() - wallet;
+			b.getMarket().msgHeresPayment(this, (int)-remaining);
 			b.setremaining(remaining);
 			print("Remaining: "+b.getCheck().getCheck());
 			//wallet -= b.getCheck().getCheck();
@@ -153,20 +162,20 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 		b.setState(BillState.Waiting);
 	}
 	private void Repay(Bill b){
-		int repay = b.remaining;
+		double repay = b.remaining;
 		if(wallet >= 0){
 			if(wallet < repay){
-				b.getMarket().msgHeresLatePayment(this, wallet);
+				b.getMarket().msgHeresLatePayment(this, (int)wallet);
 				b.remaining -= wallet;
 				wallet = 0;
 			}
 			else if(wallet > repay){
-				b.getMarket().msgHeresLatePayment(this, repay);
+				b.getMarket().msgHeresLatePayment(this, (int)repay);
 				wallet -= b.remaining;
 				b.remaining = 0;
 			}
 			else if(wallet == repay){
-				b.getMarket().msgHeresLatePayment(this, wallet);
+				b.getMarket().msgHeresLatePayment(this, (int)wallet);
 				wallet = 0;
 				b.remaining = 0;
 			}
@@ -209,7 +218,7 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 		public Restaurant2Market market;
 		public Check check;
 		public BillState state;
-		public int remaining;
+		public double remaining;
 		Bill(Restaurant2Customer c, Restaurant2Waiter w, Check chk){
 			customer = c;
 			waiter = w;
@@ -242,8 +251,8 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 		public Check getCheck(){
 			return check;
 		}
-		public void setremaining(int r){
-			remaining = r;
+		public void setremaining(double remaining2){
+			remaining = remaining2;
 		}
 	}
 	public class MyMarket {
@@ -340,6 +349,20 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 	
 	public utilities.Gui getGui(){
 		return null; 
+	}
+	private void getMoneyFromBank(){
+		bank.msgWithdrawMoney(this, (1000.00-wallet), accountNumber);
+		try{
+			getMoney.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+	}
+	
+	public void msgAddMoney(double amount) {
+		wallet += amount;
+		getMoney.release();
 	}
 }
 

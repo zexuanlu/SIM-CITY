@@ -88,6 +88,7 @@ public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
 	private boolean atHome = false;
+	private boolean atCasino = false;
 	public boolean walking = false;
 
 	private String name;
@@ -114,7 +115,7 @@ public class PersonAgent extends Agent implements Person{
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
 	public SimCityGUI simcitygui;
-
+	
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
@@ -224,7 +225,18 @@ public class PersonAgent extends Agent implements Person{
 	public void msgAtHome(){
 		print("Back home");
 	}
-
+	public void msgGoHome(){
+		atCasino = false;
+		SimEvent goHome = null;
+		if(homeType == HomeType.Home){
+			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
+		}
+		else if(homeType == HomeType.Apartment){
+			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
+		}
+		toDo.add(goHome);
+		stateChanged();
+	}
 	public void setGui(PersonGui pg){
 		gui = pg; 
 		currentLocation = new Position(pg.xPos, pg.yPos);
@@ -300,7 +312,7 @@ public class PersonAgent extends Agent implements Person{
 		wallet.setOnHand(change);
 		stateChanged();
 	}
-	public void msgFinishedEvent(Role r){ //The location manager will send this message as the persons role leaves the building
+	public void msgFinishedEvent(Role r){ 
 		atHome = false;
 		print("Received msgFinishedEvent");
 		for(MyRole role : roles){
@@ -343,12 +355,32 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgBanished(){
-
+		gui.setPresent(true);
+		if(gui.xPos > 350){
+			gui.xDestination = 440;
+			gui.yDestination = -30;
+			gui.walkto(gui.xPos, gui.yPos);
+		}
+		else{
+			gui.xDestination = 330;
+			gui.yDestination = -30;
+			gui.walkto(gui.xPos, gui.yPos);
+		}
+		try{
+			going.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+		Do("Terminating thread");
+		gui.setPresent(false);
+		this.stopThread();
 	}
 	/* Scheduler */
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(!atCasino){
 		for(MyRole r : roles){
 			if(r.isActive){
 				boolean b;
@@ -406,6 +438,8 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		return checkVitals();
+		}
+	return false;
 	}
 
 	/* Actions */
@@ -1558,6 +1592,8 @@ public class PersonAgent extends Agent implements Person{
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
+						else if(e.directive.equals("robBank"))
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 100000.00);
 						mr.setActive(true);
 						gui.setPresent(false);
 						((BankCustomerRole)mr.role).gui.setPresent(true);
@@ -1578,6 +1614,8 @@ public class PersonAgent extends Agent implements Person{
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
+				else if(e.directive.equals("robBank"))
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 100000.00);
 				gui.setPresent(false);
 				((BankCustomerRole)newRole.role).gui.setPresent(true);
 				toDo.remove(e); //remove the event from the queue
@@ -1853,7 +1891,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 
-		//////////////////////////MARKET EVENTS /////////////////////////////////////////////////
+		//////////////////////////MARKET 2 EVENTS /////////////////////////////////////////////////
 
 		else if(e.location.type == LocationType.Market2){
 			Market market = (Market)e.location;
@@ -1947,7 +1985,13 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 		}
-
+		//////////////////////// CASINO //////////////////////////////////////////////////////////////////////
+		else if(e.location.type == LocationType.Casino){
+			gui.setPresent(false);
+			toDo.remove(e);
+			atCasino = true;
+			return;
+		}
 		/////////////////////// HOME EVENTS /////////////////////////////////////////////////////////////////
 
 		else if(e.location.type == LocationType.Home){

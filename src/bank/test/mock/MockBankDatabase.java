@@ -1,5 +1,6 @@
 package bank.test.mock;
 
+import utilities.restaurant.RestaurantCashier;
 import bank.interfaces.*;
 
 public class MockBankDatabase extends Mock implements BankDatabase {
@@ -28,5 +29,14 @@ public class MockBankDatabase extends Mock implements BankDatabase {
 
 	public void msgGiveAllMoney(BankTeller bt, double amount) {
 		log.add(new LoggedEvent("Received msgGiveAllMoney from BankTeller"));
+	}
+
+	public void msgWithdrawMoney(RestaurantCashier cashier, double money, int accountNumber) {
+		log.add(new LoggedEvent("Received msgWithdrawMoney from RestaurantCashier"));
+	}
+
+	@Override
+	public void msgDepositMoney(RestaurantCashier cashier, double money, int accountNumber) {
+		log.add(new LoggedEvent("Received msgDepositMoney from RestaurantCashier"));
 	}
 }

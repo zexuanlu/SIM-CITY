@@ -56,6 +56,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	// Reference to the sim world clock
 	private SimWorldClock clock;
 	
+	List<PersonAgent> people;
+	List<PersonGui> peopleGuis;
+	List<Gui> guis;
+	List<Role> roles;
+	List<Location> locations;
+	
 	// Sets world clock
 	public void setClock(SimWorldClock c) {
 		clock = c;
@@ -211,7 +217,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == run) {
 			if (chosen.getText().trim().equals("Robber robs Bank")) {
-				// Here we will run the scenario where all restaurants order from the market
+				robberScenario();
 				//FIX
 				System.err.println("Robber robs bank");
 			}
@@ -246,6 +252,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			else if (chosen.getText().trim().equals("Weekend Behavior")) {
 				// FIX
+				weekendBehaviorScenario();
 				System.err.println("Weekend Behavior");
 
 			}
@@ -273,19 +280,19 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	
 	public void runOnePersonScenario() {		
 		// List of people
-		List<PersonAgent> people = Collections.synchronizedList(new ArrayList<PersonAgent>());
+		people = Collections.synchronizedList(new ArrayList<PersonAgent>());
 		
 		// List of people GUIs
-		List<PersonGui> peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
+		peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
 		
 		// List of roles 
-		List<Role> roles = Collections.synchronizedList(new ArrayList<Role>());
+		roles = Collections.synchronizedList(new ArrayList<Role>());
 		
 		// List of guis
-		List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+		guis = Collections.synchronizedList(new ArrayList<Gui>());
 		
 		// List of locations
-		List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
+		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
@@ -363,7 +370,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
 		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
 		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
-		people.get(19).addRole(rest2Waiter, "Waiter 2 Shift 1");
+		people.get(19).addRole(rest2Waiter, "Rest 2 Waiter");
 		
 		// Fourth restaurant's employees: FIRST SHIFT 
 		Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", people.get(20));
@@ -543,9 +550,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
         
         // Second quadrant locations
-        Bank bank2 = new Bank("Bank 2", new TimeCard(), (BankHostRole)roles.get(5), 
+        Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
                         new Position(660, 170), LocationType.Bank);
-        Market market2 = new Market("Market 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
+        Market market2 = new Market("Pokemart 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
                         new Position(460, 170), LocationType.Market);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
@@ -565,9 +572,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest1SDWaiter.setRevolvingStand(rest1Cook.getRevStand());
   		rest1SDWaiter.setCashier(rest1Cashier);
   		rest1Host.msgaddwaiter(rest1Waiter);
-  		rest1Host.msgaddwaiter(rest1SDWaiter);
+  		//rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
+  		rest1Cashier.accountNumber = 1;
+  		rest1Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 1);
   
   		rest2.setCashier(rest2Cashier);
   		rest2.setCook(rest2Cook);
@@ -584,6 +594,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
+  		rest2Cashier.accountNumber = 2;
+  		rest2Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest2Cashier, 5000.00, 2);
   		
   		rest4.setCashier(rest4Cashier);
   		rest4.setCook(rest4Cook);
@@ -598,6 +611,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Host.addWaiter(rest4SDWaiter);
   		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest4Cook.rc = rest4Cashier;
+  		rest4Cashier.accountNumber = 4;
+  		rest4Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest4Cashier, 5000.00, 4);
   		
   		rest5.setCashier(rest5Cashier);
   		rest5.setCook(rest5Cook);
@@ -612,6 +628,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest5Host.addWaiter(rest5SDWaiter);
   		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest5Cook.cashier = rest5Cashier;
+  		rest5Cashier.accountNumber = 5;
+  		rest5Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest5Cashier, 5000.00, 5);
   		
   		rest6.setCashier(rest6Cashier);
   		rest6.setCook(rest6Cook);
@@ -626,6 +645,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Host.msgSetWaiter(rest6SDWaiter);
   		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest6Cook.cashier = rest6Cashier;
+  		rest6Cashier.accountNumber = 6;
+  		rest6Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 6);
   		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
@@ -883,22 +905,24 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
 	}
-
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// THREE PERSON SCENARIO////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
 	public void runThreePersonScenario() {		
 		// List of people
-		List<PersonAgent> people = Collections.synchronizedList(new ArrayList<PersonAgent>());
+		people = Collections.synchronizedList(new ArrayList<PersonAgent>());
 		
 		// List of people GUIs
-		List<PersonGui> peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
+		peopleGuis = Collections.synchronizedList(new ArrayList<PersonGui>());
 		
 		// List of roles 
-		List<Role> roles = Collections.synchronizedList(new ArrayList<Role>());
+		roles = Collections.synchronizedList(new ArrayList<Role>());
 		
 		// List of guis
-		List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+		guis = Collections.synchronizedList(new ArrayList<Gui>());
 		
 		// List of locations
-		List<Location> locations = Collections.synchronizedList(new ArrayList<Location>());
+		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
@@ -1202,8 +1226,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
        // Third quadrant locations
         Home home = new Home("Home 1", homeOwner, new Position(460, 280), 1, LocationType.Home);
-        Home home2 = new Home("Home 2", homeOwner, new Position(440, 380), 1, LocationType.Home);
-        Home home3 = new Home("Home 3", homeOwner, new Position(520, 280), 1, LocationType.Home);
+        Home home2 = new Home("Home 2", homeOwner2, new Position(440, 380), 1, LocationType.Home);
+        Home home3 = new Home("Home 3", homeOwner3, new Position(520, 280), 1, LocationType.Home);
         
         // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
   		rest1.setCashier(rest1Cashier);
@@ -1219,6 +1243,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
+  		rest1Cashier.accountNumber = 1;
+  		rest1Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 1);
   
   		rest2.setCashier(rest2Cashier);
   		rest2.setCook(rest2Cook);
@@ -1235,6 +1262,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
+  		rest2Cashier.accountNumber = 2;
+  		rest2Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 2);
   		
   		rest4.setCashier(rest4Cashier);
   		rest4.setCook(rest4Cook);
@@ -1249,6 +1279,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Host.addWaiter(rest4SDWaiter);
   		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest4Cook.rc = rest4Cashier;
+  		rest4Cashier.accountNumber = 4;
+  		rest4Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest4Cashier, 5000.00, 4);
   		
   		rest5.setCashier(rest5Cashier);
   		rest5.setCook(rest5Cook);
@@ -1263,6 +1296,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest5Host.addWaiter(rest5SDWaiter);
   		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest5Cook.cashier = rest5Cashier;
+  		rest5Cashier.accountNumber = 5;
+  		rest5Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest5Cashier, 5000.00, 5);
   		
   		rest6.setCashier(rest6Cashier);
   		rest6.setCook(rest6Cook);
@@ -1277,6 +1313,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Host.msgSetWaiter(rest6SDWaiter);
   		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest6Cook.cashier = rest6Cashier;
+  		rest6Cashier.accountNumber = 6;
+  		rest6Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest6Cashier, 5000.00, 6);
   		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
@@ -1567,11 +1606,46 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
 	}
+////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////ROBBER SCENARIO///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+	private void robberScenario(){
+		// Create the robber
+		PersonAgent robber = new PersonAgent("Robber", cityMap, 0);
+		robber.walking = true;
+		PersonGui pgui = new PersonGui(robber, 330, 40, this.cityAnimPanel);
+		robber.gui = pgui;
+		//people.add(robber);
+		//peopleGuis.add(robber.gui);
+		cityAnimPanel.addGui(robber.gui);
+		robber.setAnimationPanel(cityAnimPanel);
+		
+		robber.populateCityMap(locations);
+		SimEvent robBank = new SimEvent("robBank", robber.cityMap.pickABank(robber.gui.xPos, robber.gui.yPos), EventType.CustomerEvent);
+		if(robBank.location == null){
+			System.err.println("All banks closed - ending scenario");
+			people.remove(robber);
+			peopleGuis.remove(robber.gui);
+			cityAnimPanel.removeGui((Gui)robber.gui);
+			return;
+		}
+		else
+			robber.msgAddEvent(robBank);
+		robber.gui.setPresent(true);
+		robber.startThread();
+}
+////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////WEEKEND SCENARIO//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Weekend behavior scenario : People will go to the casino 
 	 * one person will win enough money to go buy a car after playing
 	 */
-	public void weekendBehaviorScenario() {
-		
+	public void weekendBehaviorScenario(){
+		Casino casino = new Casino(people, "Casino", new Position(50, 50),LocationType.Casino);
+		SimEvent goToCasino = new SimEvent("Gamble", casino, EventType.CustomerEvent);
+		for(PersonAgent p : people){
+			p.msgAddEvent(goToCasino);
+		}
 	}
 }

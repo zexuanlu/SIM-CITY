@@ -1,6 +1,8 @@
 package restaurant5;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
+import bank.interfaces.BankDatabase;
 import market.interfaces.MarketCashier;
 import person.PersonAgent; 
 import restaurant5.interfaces.Cashier5; 
@@ -14,6 +16,9 @@ public class Restaurant5Cashier extends Role implements Cashier5{
 	String name; 
 	int Cash; 
 	int debt; 
+	public BankDatabase bank;
+	public int accountNumber;
+	Semaphore getMoney = new Semaphore(0,true);
 	
 	PersonAgent myPerson; 
 
@@ -119,7 +124,10 @@ public void msgDrainMoney(){
 }
 
 public boolean pickAndExecuteAnAction() {
-	
+	if(Cash < 500.00){
+		getMoneyFromBank();
+		return true;
+	}
 	synchronized(bills){
 		for (Bill b: bills){
 			if (b.bs == BillState.computing){
@@ -217,6 +225,21 @@ public String getRoleName(){
 
 public utilities.Gui getGui(){
 	return null; 
+}
+
+private void getMoneyFromBank(){
+	bank.msgWithdrawMoney(this, (1000.00-Cash), accountNumber);
+	try{
+		getMoney.acquire();
+	}
+	catch(InterruptedException ie){
+		ie.printStackTrace();
+	}
+}
+
+public void msgAddMoney(double amount) {
+	Cash += amount;
+	getMoney.release();
 }
 
 
