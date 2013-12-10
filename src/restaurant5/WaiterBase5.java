@@ -3,9 +3,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-
-import restaurant5.gui.RestaurantGui;
-import restaurant5.gui.WaiterGui5;
+import restaurant5.gui.Restaurant5WaiterGui;
 import restaurant5.interfaces.Waiter5;
 import agent.Role; 
 import person.PersonAgent; 
@@ -14,12 +12,11 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	protected String name;
 	public PersonAgent myPerson; 
-	protected HostAgent5 myHost; 
-	public CashierAgent5 myCashier; 
-	protected CookAgent5 myCook; 	
+	protected Restaurant5HostAgent myHost; 
+	public Restaurant5Cashier myCashier; 
+	protected Restaurant5CookAgent myCook; 	
 	
-	public RestaurantGui resGui = null;
-	public WaiterGui5 waiterGui = null; 
+	public Restaurant5WaiterGui waiterGui = null; 
 	
 	protected Semaphore atCustomer = new Semaphore(0,true);
 	protected Semaphore atTable = new Semaphore(0,true);
@@ -34,14 +31,14 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	protected List<myCustomer> customers = new ArrayList<myCustomer>();
 	public enum CustomerState {waiting,seated,readytoOrder,asked, ordered, cooking,outofFood, servefood,  reordered, cooked, computingCheck,senttoCashier,sendCheck, sentCheck,gotfood, served,leaving,paid, flaked, done;}
 	public class myCustomer{
-		CustomerAgent5 c;
+		Restaurant5CustomerAgent c;
 		int tablenum;
 		CustomerState s;
 		String choice;
 		int check;
 		Menu5 _menu; 
 		
-		myCustomer(CustomerAgent5 _c, int table, CustomerState _s) {
+		myCustomer(Restaurant5CustomerAgent _c, int table, CustomerState _s) {
 			c = _c;
 			tablenum = table;
 			s = _s;
@@ -53,7 +50,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		myPerson = p; 
 	}
 	
-	public void msgDoneEating(CustomerAgent5 c){
+	public void msgDoneEating(Restaurant5CustomerAgent c){
 		for (myCustomer mc:customers){
 			if (mc.c == c && mc.s == CustomerState.served){ ////////CHECK HERE CAREFUL!!!!!!!!
 				mc.s = CustomerState.computingCheck;
@@ -74,7 +71,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	public abstract void msgatStand();
 
-	public void msgseatCustomer(CustomerAgent5 cust, int table) {
+	public void msgseatCustomer(Restaurant5CustomerAgent cust, int table) {
 		boolean added = false;
 		for (myCustomer mc: customers){
 			if (mc.c == cust){
@@ -103,12 +100,12 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	public void msggoOnBreak(){
 		waiterState = wState.onBreak;
-		resGui.Break(true,this);
+		//resGui.Break(true,this);
 	}
 	
 	public void msgcantgoOnBreak(){
 		print ("Waiter can't go on break");
-		resGui.Break(false,this);
+	//	resGui.Break(false,this);
 		waiterState = wState.ready; 
 	}
 	
@@ -121,7 +118,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 			stateChanged();
 	}
 
-	public void msgReadytoOrder(CustomerAgent5 cust) {
+	public void msgReadytoOrder(Restaurant5CustomerAgent cust) {
 		for (myCustomer mc:customers){
 			if (mc.c == cust){
 				mc.s = CustomerState.readytoOrder;
@@ -131,7 +128,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	}
 	
 	
-	public void msghereisChoice(CustomerAgent5 c, String choice){
+	public void msghereisChoice(Restaurant5CustomerAgent c, String choice){
 		for (myCustomer mc:customers){
 			if (mc.c == c){
 				mc.choice = choice;
@@ -153,7 +150,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		stateChanged();
 	}
 
-	public void msgDoneandLeaving(CustomerAgent5 c){
+	public void msgDoneandLeaving(Restaurant5CustomerAgent c){
 		waiterGui.IconOff(c);
 		for (myCustomer mc:customers){
 			if (mc.c == c){
@@ -461,11 +458,11 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	//utilities
 
-	public void setGui(WaiterGui5 gui) {
+	public void setGui(Restaurant5WaiterGui gui) {
 		waiterGui = gui;
 	}
 
-	public WaiterGui5 getGui() {
+	public Restaurant5WaiterGui getGui() {
 		return waiterGui;
 	}
 	
@@ -486,7 +483,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		return name;
 	}
 	
-	public int getPlace(CustomerAgent5 c){
+	public int getPlace(Restaurant5CustomerAgent c){
 		for (myCustomer mc:customers){
 			if (mc.c == c){
 				return mc.tablenum;
@@ -494,17 +491,14 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		}
 		return 0;	
 	}
+
 	
-	public void setRestaurantGui(RestaurantGui r){
-		resGui = r; 
-	}
-	
-	public void setCashier(CashierAgent5 c){
+	public void setCashier(Restaurant5Cashier c){
 		myCashier = c; 
 	}
 	
 	
-	public void setCook(CookAgent5 cook){
+	public void setCook(Restaurant5CookAgent cook){
 		myCook = cook;
 	}
 	
@@ -514,11 +508,11 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 
 	public abstract String getRoleName();
 	
-	public void setHost(HostAgent5 host){
+	public void setHost(Restaurant5HostAgent host){
 		myHost = host; 
 	}
 	
-	public HostAgent5 getHost(){
+	public Restaurant5HostAgent getHost(){
 		return myHost; 
 	}
 

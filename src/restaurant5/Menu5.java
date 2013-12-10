@@ -8,14 +8,14 @@ public class Menu5 {
 
 	Menu5(){
 		myMenu = new ArrayList<String>();
-		myMenu.add("Steak");
-		prices.put("Steak", 16);
+		myMenu.add("Belgium");
+		prices.put("Belgium", 16);
 		myMenu.add("Chicken");
 		prices.put("Chicken", 11);
-		myMenu.add("Salad");
-		prices.put("Salad", 6);
-		myMenu.add("Pizza");
-		prices.put("Pizza", 9);
+		myMenu.add("Sassy");
+		prices.put("Sassy", 6);
+		myMenu.add("Chocolate");
+		prices.put("Chocolate", 9);
 		}
 	
 	public int getSize(){

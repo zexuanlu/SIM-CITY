@@ -79,20 +79,20 @@ public class Restaurant5AnimationPanel extends JPanel implements ActionListener 
         }
     }
 
-    public void addGui(CustomerGui5 gui) {
+    public void addGui(Restaurant5CustomerGui gui) {
         guis.add(gui);
     }
 
-    public void addGui(HostGui5 gui) {
+    public void addGui(Restaurant5HostGui gui) {
         guis.add(gui);
     }
-    public void addGui(WaiterGui5 gui){
+    public void addGui(Restaurant5WaiterGui gui){
     	guis.add(gui);
     }
-    public void addGui(FoodGui5 gui){
+    public void addGui(Restaurant5FoodGui gui){
     	guis.add(gui);
     }
-    public void addGui(CookGui5 gui){
+    public void addGui(Restaurant5CookGui gui){
     	guis.add(gui);
     }
 }
