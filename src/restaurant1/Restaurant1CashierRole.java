@@ -7,10 +7,11 @@ import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Waiter;
 import agent.Role;
 import person.interfaces.Person;
+import market.Food;
 import market.interfaces.MarketCashier;
 
 public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
-	
+
 	String name;
 	public List<Check> check = Collections.synchronizedList(new ArrayList<Check>());
 	public List<Bill> bill = Collections.synchronizedList(new ArrayList<Bill>());
@@ -18,7 +19,7 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 	public double money = 70;
 	boolean payingbill = false;
 	MarketCashier marketCashier;
-	
+
 	public Restaurant1CashierRole(String name, Person pa){
 		super(pa);
 		roleName = "Rest1 Cashier";
@@ -28,17 +29,18 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		Price.put("Salad", 5.99);
 		Price.put("Pizza", 8.99);
 	}
-	
+
 	public class Bill{
 		public MarketCashier m;
 		public double pay;
-		
+		public double invoice;
+		public state1 s1 = state1.notpaying;
 		Bill(MarketCashier m, double pay){
 			this.m = m;
 			this.pay = pay;
 		}
 	}
-	
+
 	public class Check{
 		Restaurant1Waiter w;
 		public Restaurant1Customer c;
@@ -47,7 +49,7 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		double pay;
 		public double price;
 		public double change;
-		
+
 		public Check(Restaurant1Waiter wa, Restaurant1Customer ca, String choice){
 			this.w = wa;
 			this.c = ca;
@@ -55,7 +57,8 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		}
 	}
 	public enum state {checkrequst, checkback, payingcheck, checkdone};
-	
+	public enum state1 {notpaying, paynow}
+
 	private Check find(Restaurant1Customer c){
 		Check a = null;
 		for(Check m: check){
@@ -66,51 +69,74 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		}
 		return a;
 	}
-	
+
+	private Bill findcashier(MarketCashier c){
+		Bill a = null;
+		for(Bill m: bill){
+			if(c == m.m){
+				a = m;
+				return a;
+			}
+		}
+		return a;
+	}
+
 	public void msgCheckthePrice(Restaurant1Waiter w, Restaurant1Customer c, String choice){
 		check.add(new Check(w,c,choice));
 		stateChanged();
 	}
-	
+
 	public void msgPayment(Restaurant1Customer c, double paying){
 		Check C = find(c);
 		C.pay = paying;
 		C.s = state.payingcheck;
 		stateChanged();
 	}
-	
+
 	public void msgPleasepaytheBill(MarketCashier c, double bills){
 		bill.add(new Bill(c, bills));
 		stateChanged();
 	}
-	
-	
 
-	
+	public void msgYouCanPayNow(MarketCashier c, List<Food> food){
+		Bill mb = findcashier(c);
+		double a = 0;
+		for(Food f: food){
+			a += Price.get(f.choice);
+		}
+		mb.invoice = a;
+		mb.s1 = state1.paynow;
+		stateChanged();
+	}
+
+
+
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		synchronized(bill){
-		if(!bill.isEmpty() && (money > 0)){
-			DoPayBill();
-			return true;
-		}
-		}
-		synchronized(check){
-		for(Check checks: check){
-			if(checks.s == state.checkrequst){
-				DoGiveCheckBack(checks);
-				return true;
+			for(Bill b: bill){
+				if(money > 0 && b.s1 == state1.paynow){
+					DoPayBill();
+					return true;
+				}
 			}
 		}
-		}
 		synchronized(check){
-		for(Check checks: check){
-			if(checks.s == state.payingcheck){
-				DoChange(checks);
-				return true;
+			for(Check checks: check){
+				if(checks.s == state.checkrequst){
+					DoGiveCheckBack(checks);
+					return true;
+				}
 			}
 		}
+		synchronized(check){
+			for(Check checks: check){
+				if(checks.s == state.payingcheck){
+					DoChange(checks);
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -131,14 +157,14 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		}
 
 	}
-	
+
 	public void DoGiveCheckBack(Check C){
 		C.price = Price.get(C.choice);
 		Do("Please pay "+C.price);
 		C.s = state.checkback;
 		C.w.msgHereistheCheck(C.c, C.price);
 	}
-	
+
 
 	public void DoChange(Check C){
 		C.s = state.checkdone;
