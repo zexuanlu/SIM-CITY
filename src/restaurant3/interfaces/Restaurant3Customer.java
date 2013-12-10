@@ -2,7 +2,9 @@ package restaurant3.interfaces;
 
 import java.util.Map;
 
-public interface Restaurant3Customer {
+import utilities.restaurant.RestaurantCustomer;
+
+public interface Restaurant3Customer extends RestaurantCustomer{
 	
 	//From GUI
 	public void gotHungry();
