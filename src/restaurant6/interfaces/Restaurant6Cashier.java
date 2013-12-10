@@ -24,4 +24,9 @@ public interface Restaurant6Cashier extends RestaurantCashier {
 	 */
 	public abstract void msgOrderedFood(List<Food> items);
 
+	/**
+	 * Sent by waiters when it's time to go off work
+	 */
+	public abstract void msgOffWork();
+
 }

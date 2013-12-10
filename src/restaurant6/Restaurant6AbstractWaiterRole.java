@@ -479,6 +479,8 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
 	private void goHome() {
 		print("Off for the day!");
 		this.person.msgGoOffWork(this, myPay);
+		cook.msgOffWork();
+		cashier.msgOffWork();
 		offWork = false;
 	}
 	

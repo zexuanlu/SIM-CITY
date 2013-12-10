@@ -49,6 +49,10 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	private String cookName;
 	
 	public Restaurant6CookGui cookGui = null;
+	
+	public boolean offWork = false;
+	// To keep track of how many times have received this message
+	public int numReceived = 0;  
 
 	// Creating a list of orders
 	public List<Restaurant6Order> cookOrders = Collections.synchronizedList(new ArrayList<Restaurant6Order>());
@@ -169,6 +173,13 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	}
 
 	// Messages	
+	// Message from the waiter telling 
+	public void msgOffWork() {
+		++numReceived;
+		offWork = true;
+		stateChanged();
+	}
+	
 	// Message telling cook to check the revolving stand
 	public void msgCheckStand() {
 		print("I have to go check the revolving stand for orders!");
@@ -348,6 +359,9 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 				}
 			}
 		}
+		if (offWork) {
+			goOffWork();
+		}
 			
 		return false;
 		//we have tried all our rules and found
@@ -356,6 +370,15 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	}
 
 	// Actions
+	// Goes off work if num received is more than 2
+	private void goOffWork() {
+		offWork = false;
+		if (numReceived == 2) {
+			numReceived = 0;
+			this.person.msgFinishedEvent(this);
+		}
+	}
+	
 	// Check inventory and orders if low on inventory
 	private void checkInventory() {
 		state = CookState.Working;
