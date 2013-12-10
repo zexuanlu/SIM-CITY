@@ -32,6 +32,10 @@ import market.*;
 import restaurant1.*;
 import restaurant1.gui.CookGui;
 import restaurant1.gui.WaiterGui;
+import restaurant3.*;
+import restaurant3.gui.Restaurant3CookGui;
+import restaurant3.gui.Restaurant3CustomerGui;
+import restaurant3.gui.Restaurant3WaiterGui;
 import restaurant4.*;
 import person.Location;
 import resident.ApartmentLandlordRole;
@@ -92,6 +96,14 @@ public class SimCityGUI extends JFrame {
         public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
         public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
         
+        //RESTAURANT 3 ROLES
+        public Restaurant3HostRole host3 = new Restaurant3HostRole("Host 3", initPerson);
+        public Restaurant3CookRole cook3 = new Restaurant3CookRole("Cook 3", initPerson);
+        public Restaurant3CashierRole cashier3 = new Restaurant3CashierRole("Cashier 3", initPerson);
+        public Restaurant3CustomerRole customer3 = new Restaurant3CustomerRole("Customer 3", initPerson);
+        public Restaurant3WaiterRole waiter3 = new Restaurant3WaiterRole("Waiter 3", initPerson);
+        public Restaurant3SDWaiterRole sdwaiter3 = new Restaurant3SDWaiterRole("SDWaiter 3", initPerson);
+        
         public Restaurant4HostRole host4 = new Restaurant4HostRole("Host 4", initPerson);
         public Restaurant4CookRole cook4 = new Restaurant4CookRole("Cook 4", initPerson);
         public Restaurant4CashierRole cashier4 = new Restaurant4CashierRole("Cashier 4", initPerson);
@@ -105,8 +117,14 @@ public class SimCityGUI extends JFrame {
         
         public MarketEmployeeGui meg = new MarketEmployeeGui(marketemployeerole);
         
+        //Restaurant 1 GUIs
         public WaiterGui wg = new WaiterGui(waiter1);
         public CookGui cg = new CookGui(cook1, null);
+        
+        //Restaurant 3 GUIs
+        public Restaurant3CookGui ck3g = new Restaurant3CookGui(cook3);
+        public Restaurant3WaiterGui w3g = new Restaurant3WaiterGui(waiter3);
+        public Restaurant3WaiterGui sdw3g = new Restaurant3WaiterGui(sdwaiter3);
         
         public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
         public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
@@ -187,7 +205,7 @@ public class SimCityGUI extends JFrame {
                                 new Position(130, 170), LocationType.Market);
                 Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
                 Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
-                Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
+                Restaurant rest3 = new Restaurant("Rest 3", host3, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
                 
                 // Second quadrant locations
                 Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
@@ -254,6 +272,8 @@ public class SimCityGUI extends JFrame {
                 
                 rest1.setCashier(cashier1);
                 rest1.setCook(cook1);
+                rest3.setCashier(cashier3);
+                rest3.setCook(cook3);
                 rest4.setCashier(cashier4);
                 rest4.setCook(cook4);
                 
@@ -424,13 +444,28 @@ public class SimCityGUI extends JFrame {
                 marketemployeerole.setGui(meg);
                 cityAnimPanel.marketPanel.addGui(meg);
                 
+                //SETTING RESTAURANT 1 GUIS
+                //Rest 1 waiter gui
                 wg.isPresent = false;
                 waiter1.setGui(wg);
                 cityAnimPanel.rest1Panel.addGui(wg);
                 
+                //Rest 1 cook gui
                 cg.isPresent = false;
                 cook1.setGui(cg);
                 cityAnimPanel.rest1Panel.addGui(cg);
+                
+                //SETTING RESTAURANT 3 GUIS
+                //Rest 3 waiter gui
+                waiter3.setGui(w3g);
+                cityAnimPanel.rest3Panel.addGui(w3g);
+                
+                sdwaiter3.setGui(sdw3g);
+                cityAnimPanel.rest3Panel.addGui(sdw3g);
+                
+                //Rest 3 cook gui
+                cook3.setGui(ck3g);
+                cityAnimPanel.rest3Panel.addGui(ck3g);
                 
                 hg1.isPresent = false;
                 homeOwnerRole1.setGui(hg1);
@@ -612,6 +647,7 @@ public class SimCityGUI extends JFrame {
                 }
                 
                 rest1.getTimeCard().startThread();
+                rest3.getTimeCard().startThread();
                 market.getTimeCard().startThread();
                 bank.getTimeCard().startThread();
                 bankdatabase.startThread();
@@ -628,12 +664,16 @@ public class SimCityGUI extends JFrame {
                  * */
                 SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
                 SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
+                SimEvent hostGoToRestaurant3 = new SimEvent(rest3, 8, EventType.HostEvent);	//CHANGE EVENT?
                 SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
                 SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CookEvent);
+                SimEvent cookGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CookEvent);	//CHANGE EVENT?
                 SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
                 SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CashierEvent);
+                SimEvent cashierGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CashierEvent);
                 SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
                 SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 14, EventType.SDWaiterEvent);
+                SimEvent waiterGoToRestaurant3 = new SimEvent(rest3, 8, EventType.WaiterEvent);	//CHANGE EVENT?
                 SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
                 SimEvent tellerGoToBank2 = new SimEvent(bank, 14, EventType.TellerEvent);
                 SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
@@ -660,6 +700,14 @@ public class SimCityGUI extends JFrame {
                 waiter1.setCashier(cashier1);
                 cook1.setMarketCashier(marketcashierrole);
                 cook1.setCashier(cashier1);
+                
+                //Set Restaurant 3 agent references
+                waiter3.setHost(host3);
+                waiter3.setCook(cook3);
+                waiter3.setCashier(cashier3);
+                cook3.setCashier(cashier3);
+                cook3.setMarketCashier(marketcashierrole);
+                host3.addWaiter(waiter3);
                 
 
                 // Messages landlord with initial tenants
@@ -697,6 +745,7 @@ public class SimCityGUI extends JFrame {
                 simclock.timeCards.add(bank.getTimeCard());
                 simclock.timeCards.add(market.getTimeCard());
                 simclock.timeCards.add(rest1.getTimeCard());
+                simclock.timeCards.add(rest3.getTimeCard());
                 for (PersonAgent p: people){
                         p.setcitygui(this);
                        p.startThread();

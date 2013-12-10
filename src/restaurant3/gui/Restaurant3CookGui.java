@@ -33,7 +33,7 @@ public class Restaurant3CookGui implements Gui{
 	//Commands
 	private enum Command {noCommand, GoToFridge, GoToGrill, GoToOrderStand};	//EDIT
 	private Command command = Command.noCommand;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	
 	public Restaurant3CookGui(Restaurant3CookRole ck) {
 		agent = ck;
