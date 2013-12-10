@@ -130,30 +130,7 @@ public class CarAgent extends Agent {
 			}
 		}
 				
- 		
-// 		if(myGui.yPos >= 180 && myGui.yPos < 280){
-// 			System.err.println(myPerson.getName()+" on horizontal road");
-// 			//on the horizontal road
-// 			if(destinationY >= currentPosition.getY()){
-// 				//above
-// 				p = new person.Position(myGui.xPos, 170);
-// 			}
-// 			else if(destinationY < currentPosition.getY()){
-// 				//below
-// 				p = new person.Position(myGui.xPos, 280);
-// 			}
-// 		}
-// 		else { //on vertical road
-// 			System.err.println(myPerson.getName()+" on vertical road "+myGui.xPos+" , "+myGui.yPos );
-// 			if(destinationX >= currentPosition.getX()){
-// 				//to the right 
-// 				p = new person.Position(440, myGui.yPos);
-// 			}
-// 			else if(destinationX < currentPosition.getX()){
-// 				//to the left
-// 				p = new person.Position(330, myGui.yPos);
-// 			}
-// 		}
+ 	
  		System.err.println(myPerson.getName()+" getting off at: ("+p.getX()+" , "+p.getY()+")");
  		myPerson.msgAtDest(p, this);//(new person.Position(myGui.xPos, myGui.yPos),this);
  	}
@@ -184,7 +161,7 @@ public class CarAgent extends Agent {
     	 
          currentPosition.release(aStar.getOrigGrid());
          currentPosition = new Position(originx/scale, originy/scale);
-         //currentPosition.moveInto(aStar.getOrigGrid());
+    //     currentPosition.moveInto(aStar.getOrigGrid());
          originalPosition = currentPosition;
  
          int numx = originx/scale;
