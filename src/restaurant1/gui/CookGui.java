@@ -29,13 +29,13 @@ public class CookGui implements Gui{
 	private int yPlate = 210;
 	private String food = "";
 	private String carryFood = "";
-	private Restaurant1AnimationPanel gui = null;
 	private boolean cooking = false;
 	private boolean refrigerator = false;
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+	public Image cImg = img.getImage();
 	
-	public CookGui(Restaurant1CookRole cook, Restaurant1AnimationPanel gui){
+	public CookGui(Restaurant1CookRole cook){
 		this.cook = cook;
-		this.gui = gui;
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class CookGui implements Gui{
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.black);
-		g.fillRect(xPos, yPos, distance, distance);
+		g.drawImage(cImg, xPos, yPos, distance, distance, null);
     	g.drawString(((PersonAgent)((Restaurant1CookRole)cook).getPerson()).getName(), xPos-14, yPos+30);
         g.drawString(food, xfood, yfood);
         g.drawString(carryFood, xPos, yPos);
