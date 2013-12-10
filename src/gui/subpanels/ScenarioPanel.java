@@ -514,10 +514,10 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Bank bank2 = new Bank("Bank 2", new TimeCard(), (BankHostRole)roles.get(5), 
                         new Position(660, 170), LocationType.Bank);
         Market market2 = new Market("Market 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
-                        new Position(450, 170), LocationType.Market);
+                        new Position(460, 170), LocationType.Market);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
-        Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(590, 170), LocationType.Restaurant5);
-        Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 40), LocationType.Restaurant6);                
+        Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
+        Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 100), LocationType.Restaurant6);                
         
         // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
   		rest1.setCashier(rest1Cashier);
@@ -778,15 +778,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 //		SimEvent depositBank2 = new SimEvent("Deposit money", bank2, EventType.CustomerEvent);
 
 		
-		walking.msgAddEvent(withdrawFromBank1);
-		walking.msgAddEvent(goToMarket1);
-		walking.msgAddEvent(goToRest1);
-		walking.msgAddEvent(goToRest2);
-		walking.msgAddEvent(goToRest4);
-		walking.msgAddEvent(goToRest5);
+//		walking.msgAddEvent(withdrawFromBank1);
+//		walking.msgAddEvent(goToMarket1);
+//		walking.msgAddEvent(goToRest1);
+//		walking.msgAddEvent(goToRest2);
+//		walking.msgAddEvent(goToRest4);
+//		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
-		walking.msgAddEvent(goToMarket2);
-		walking.msgAddEvent(depositBank2);
+//		walking.msgAddEvent(goToMarket2);
+//		walking.msgAddEvent(depositBank2);
 		
 		for (PersonAgent p : people) {
 			p.setcitygui(simCityGui);
@@ -840,9 +840,16 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
 		
-		for (PersonAgent p : people) {
-			p.startThread();
-		}
+//		for (PersonAgent p : people) {
+//			p.startThread();
+//		}
+		
+		people.get(30).startThread();
+		people.get(31).startThread();
+		people.get(32).startThread();
+		people.get(33).startThread();
+		people.get(34).startThread();
+		people.get(35).startThread();
 
 		// Starts the thread of each timecard
 		bank.getTimeCard().startThread();

@@ -19,7 +19,7 @@ import person.PersonAgent;
 public class Restaurant6CustomerGui implements Gui{
 
 	private Restaurant6CustomerRole agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
 	private boolean isEating = false;
 	private boolean hasOrdered = false;
@@ -188,8 +188,8 @@ public class Restaurant6CustomerGui implements Gui{
 	}
 	
 	public void DoGoToWaitingArea() {
-		xDestination = generateWaitingSpot(45, 140);
-		yDestination = generateWaitingSpot(45, 140);
+		xDestination = generateWaitingSpot(140, 45);
+		yDestination = generateWaitingSpot(140, 45);
 	}
 	
 	public void DoGoToPickupSpot() {

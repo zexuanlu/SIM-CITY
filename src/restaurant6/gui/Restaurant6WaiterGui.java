@@ -17,7 +17,7 @@ public class Restaurant6WaiterGui implements Gui {
 
     private Restaurant6AbstractWaiterRole agent = null;
     private Restaurant6CookGui cookGui;
-    private boolean isPresent;
+    public boolean isPresent;
     private Restaurant6HostRole host = null;
     private boolean onBreakSoon = false;
     private boolean canGoBackToWork = false;

@@ -342,6 +342,7 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
         	for (MyWaiter w : waiters) {
         		w.waiter.msgEndOfDay(restPay);
         	}
+        	
         	this.person.msgGoOffWork(this, restPay);
         	offWork = false;
         }
