@@ -490,7 +490,7 @@ public class SimCityGUI extends JFrame {
                 // Loops through the apartment guis to add them to their animation panels
                 for (ApartmentTenantGui aptGui : aptGuis) {
                         aptGui.isPresent = false;
-                        //cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+                        cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
                 }
                 
                 // Loops through apartment tenant roles and sets to respective GUI
