@@ -318,7 +318,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		goToLocation("Outside");
 		bt.msgLeavingBank(this);
 		s = state.none;
-		gui.setPresent(false);
+		if(gui != null)
+			gui.setPresent(false);
 		person.msgBanished();
 	}
 	//Utilities

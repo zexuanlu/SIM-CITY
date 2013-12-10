@@ -157,7 +157,8 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			if(r.bc == null && r.rc == r.a.cashier){
 				totalMoney += r.amount;
 				r.a.balance += r.amount;
-				r.rc.msgAddMoney(0-r.amount);
+				if(r.rc != null)
+					r.rc.msgAddMoney(0-r.amount);
 				requests.remove(r);
 				return;
 			}
@@ -191,7 +192,8 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 			if(r.bc == null && r.rc == r.a.cashier){
 				totalMoney -= r.amount;
 				r.a.balance -= r.amount;
-				r.rc.msgAddMoney(r.amount);
+				if(r.rc != null)
+					r.rc.msgAddMoney(r.amount);
 				requests.remove(r);
 				return;
 			}
