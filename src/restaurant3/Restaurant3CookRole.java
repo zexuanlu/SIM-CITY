@@ -31,7 +31,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	boolean sendTruckBack = false;
 	
 	//GUI references
-	Restaurant3CookGui cookGui;
+	public Restaurant3CookGui cookGui;
 	
 	//Private class for food information
 	private class MyFood{

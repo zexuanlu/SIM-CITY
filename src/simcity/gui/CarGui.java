@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.List; 
 import java.awt.Graphics2D;
 
+import javax.swing.ImageIcon;
+
 	
 public class CarGui implements Gui {
         
@@ -24,6 +26,8 @@ public class CarGui implements Gui {
         boolean deadpos;
         public int xPos, yPos, xDestination, yDestination;
         public int overallX, overallY;
+        ImageIcon img = new ImageIcon(this.getClass().getResource("car.png"));
+        Image carImg = img.getImage();
         
         private CarAgent myCar;
         
@@ -53,10 +57,10 @@ public class CarGui implements Gui {
             
                 if (!deadpos){
                         if (EastWest){
-                                g.fillRect(xPos, yPos, 20, 20);
+                                g.drawImage(carImg, xPos, yPos, 20, 20, null);
                         }
                         else if (NorthSouth){
-                                g.fillRect(xPos, yPos, 20, 20);
+                                g.drawImage(carImg, xPos, yPos, 20, 20, null);
                         }
                 }
     }

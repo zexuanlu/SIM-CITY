@@ -268,7 +268,7 @@ public class CityMap {
 		if(history.size() == 6){
 			history.clear();
 		}
-		while(l.isClosed()){ 
+		while(l != null && l.isClosed()){ 
 			i = chooser.nextInt(6);
 			l  = getRestaurant(i);
 		}

@@ -597,7 +597,7 @@ public class SimCityGUI extends JFrame {
                         x = x+20; 
 
                         PersonGui pgui = new PersonGui(p, x, y, cityAnimPanel);
-                        //pgui.setAnimationPanel(cityAnimPanel);
+                        x = x+40; 
                         p.setGui(pgui);
                         System.out.println(""+i);
                         if(i < 21){
@@ -878,7 +878,7 @@ public class SimCityGUI extends JFrame {
         }
         
         public void addPerson(PersonAgent p) {
-                PersonGui pgui = new PersonGui(p,100,100, this.cityAnimPanel);
+                PersonGui pgui = new PersonGui(p,100,100, cityAnimPanel);
                 p.setGui(pgui);
                 p.setAnimationPanel(cityAnimPanel);
                 people.add(p);
@@ -894,7 +894,7 @@ public class SimCityGUI extends JFrame {
     		AStarTraversal aStarTraversal = new AStarTraversal(grid);
 
     		PersonAgent p  = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
-            PersonGui pgui = new PersonGui(p,-20, -20, this.cityAnimPanel);
+            PersonGui pgui = new PersonGui(p,-20, -20, cityAnimPanel);
             p.setGui(pgui);
             p.setAnimationPanel(cityAnimPanel);
             cityAnimPanel.addGui(pgui);

@@ -45,6 +45,15 @@ import restaurant2.Restaurant2SDWaiterRole;
 import restaurant2.Restaurant2WaiterRole;
 import restaurant2.gui.Restaurant2CustomerGui;
 import restaurant2.gui.Restaurant2WaiterGui;
+import restaurant3.Restaurant3CashierRole;
+import restaurant3.Restaurant3CookRole;
+import restaurant3.Restaurant3CustomerRole;
+import restaurant3.Restaurant3HostRole;
+import restaurant3.Restaurant3SDWaiterRole;
+import restaurant3.Restaurant3WaiterRole;
+import restaurant3.gui.Restaurant3CustomerGui;
+import restaurant3.gui.Restaurant3CookGui;
+import restaurant3.gui.Restaurant3WaiterGui;
 import restaurant4.Restaurant4CashierRole;
 import restaurant4.Restaurant4CookRole;
 import restaurant4.Restaurant4CustomerRole;
@@ -762,7 +771,191 @@ public class PersonAgent extends Agent implements Person{
 				gui.setPresent(false);
 				return;
 			}
-		}		
+		}	
+		////////////////////////////////REST 3 EVENTS//////////////////////////////////////////////////////
+		else if(e.location.type == LocationType.Restaurant3){
+			Restaurant rest = (Restaurant)e.location;
+			if(e.type == EventType.CustomerEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 3 Customer")){
+						((Restaurant3CustomerRole)mr.role).custGui.setPresent(true);
+						((Restaurant3CustomerRole)mr.role).gotHungry();
+						mr.setActive(true);
+						gui.setPresent(false);
+						toDo.remove(e);
+						return;
+					}
+				}
+				print("Customer not found");
+				Restaurant3CustomerRole cRole = new Restaurant3CustomerRole(this.name, this);
+				MyRole newRole = new MyRole(cRole, "Rest 3 Customer");
+				newRole.setActive(true);
+				roles.add(newRole);
+				Restaurant3CustomerGui cg = new Restaurant3CustomerGui(cRole);
+				cg.isPresent = true;
+				cRole.setGui(cg);
+				cap.rest3Panel.addGui(cg);
+				cRole.setHost(((Restaurant3HostRole)rest.getHost()));
+				cRole.gotHungry();
+				gui.setPresent(false);
+				toDo.remove(e);
+			}
+			else if(e.type == EventType.HostEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 3 Host")){          
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				MyRole newRole = new MyRole(((Restaurant3HostRole)rest.getHost()), "Rest 3 Host");
+				newRole.setActive(true);
+				roles.add(newRole);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+			else if(e.type == EventType.WaiterEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 3 Waiter")){  
+						((Restaurant3WaiterRole)mr.role).waiterGui.setPresent(true);
+						rest.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				Restaurant3WaiterRole wRole = new Restaurant3WaiterRole(this.name, this); 
+				MyRole newRole = new MyRole(wRole, "Rest 3 Waiter");
+				newRole.setActive(true);
+				roles.add(newRole);
+				Restaurant3WaiterGui wg = new Restaurant3WaiterGui((Restaurant3WaiterRole)newRole.role);
+				wg.isPresent = true;
+				cap.rest3Panel.addGui(wg);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+			else if(e.type == EventType.SDWaiterEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 3 SDWaiter")){
+
+					}
+					else {
+						((Restaurant3SDWaiterRole)mr.role).waiterGui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				Restaurant3SDWaiterRole sdRole = new Restaurant3SDWaiterRole(this.name, this);
+				MyRole newRole = new MyRole(sdRole, "Rest 3 SDWaiter");
+				newRole.setActive(true);
+				roles.add(newRole);
+				Restaurant3WaiterGui wg = new Restaurant3WaiterGui((Restaurant3SDWaiterRole)newRole.role);
+				wg.isPresent = true;
+				cap.rest3Panel.addGui(wg);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+			else if(e.type == EventType.CookEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 3 Cook")){                                                       
+						rest.getTimeCard().msgBackToWork(this, mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						((Restaurant3CookRole)mr.role).cookGui.setPresent(true);
+						gui.setPresent(false);
+						return;
+					}
+				} 
+				MyRole newRole = new MyRole(((Restaurant3CookRole)rest.getCook()), "Rest 3 Cook");//FIX
+				newRole.setActive(true);
+				roles.add(newRole);
+				((Restaurant3CookRole)newRole.role).cookGui.setPresent(true);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+			else if(e.type == EventType.CashierEvent){
+				for(MyRole mr : roles){
+					if(mr.type.equals("Rest 3 Cashier")){                                                       
+						rest.getTimeCard().msgBackToWork(this, (Restaurant3CashierRole)mr.role);
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+				}
+				MyRole newRole = new MyRole(((Restaurant3CashierRole)rest.getCashier()), "Rest 3 Cashier");//FIX
+				newRole.setActive(true);
+				roles.add(newRole);
+				rest.getTimeCard().msgBackToWork(this, newRole.role);
+				try{
+					wait.acquire();
+				}
+				catch(InterruptedException ie){
+					ie.printStackTrace();
+				}
+				gui.setPresent(false);
+				return;
+			}
+		}
 		////////////////////////////////REST 4 EVENTS//////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Restaurant4){
 			Restaurant rest = (Restaurant)e.location;

@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.List; 
 import java.awt.Graphics2D;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class BusGui implements Gui {
@@ -19,6 +21,8 @@ public class BusGui implements Gui {
 	boolean NorthSouth; 
 	boolean EastWest; 
 	public int xPos, yPos, xDestination, yDestination; 
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("bus.png"));
+	public Image bImg = img.getImage();
 	
 	Position currentPosition; 
 	Position originalPosition;
@@ -42,10 +46,12 @@ public class BusGui implements Gui {
 		g.setColor(Color.ORANGE);
 		g.drawString(myBus.toString(), xPos-14, yPos+30);
 		if (EastWest){
-			g.fillRect(xPos, yPos, 20, 20);
+			//g.fillRect(xPos, yPos, 20, 20);
+			g.drawImage(bImg, xPos, yPos, 20, 20, null);
 		}
 		else if (NorthSouth){
-			g.fillRect(xPos, yPos, 20, 20);
+			//g.fillRect(xPos, yPos, 20, 20);
+			g.drawImage(bImg, xPos, yPos, 20, 20, null);
 		}
 		for(int i = 0; i < myBus.passengers.size(); i++){
 			g.drawString(((PersonAgent)((PassengerRole)myBus.passengers.get(i).p).person).getName(), xPos-15, yPos-(10*i));

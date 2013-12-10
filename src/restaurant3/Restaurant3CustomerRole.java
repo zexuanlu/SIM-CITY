@@ -36,7 +36,7 @@ public class Restaurant3CustomerRole extends Role implements Restaurant3Customer
 	Restaurant3Waiter myWaiter;
 	
 	//GUI references
-	Restaurant3CustomerGui custGui;
+	public Restaurant3CustomerGui custGui;
 	
 	//Utilities
 	Map<String, Double> menu = new HashMap<String, Double>();
