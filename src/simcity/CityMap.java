@@ -37,9 +37,9 @@ public class CityMap {
 		map = locations;
 		ateOutLast = false;
 
+		push.add(-20);
 		push.add(0);
-		push.add(0);
-		push.add(0);
+		push.add(20);
 	
 	
 	}
