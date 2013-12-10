@@ -17,12 +17,14 @@ public class SimWorldClock {
 	public List<TimeCard> timeCards;
 	private int currentHour;
 	public int endOfDay;
+	public int dayOfTheWeek;
 
 	public SimWorldClock(int currentHour, List<PersonAgent> people, CityMap cm){
 		this.currentHour = currentHour;
 		timeCards = new ArrayList<TimeCard>();
 		cityMap = cm;
 		this.people = people;
+		dayOfTheWeek = 1;
 		for(PersonAgent person : people){
 			person.msgNewHour(currentHour);
 		}
@@ -47,7 +49,10 @@ public class SimWorldClock {
 		if(currentHour != 24){
 			currentHour++;
 		}
-		else{ currentHour = 1; }
+		else{ 
+			currentHour = 1;
+			dayOfTheWeek++;
+		}
 	}
 	public void closeUp(){
 		for(Location l : cityMap.map){
@@ -59,7 +64,10 @@ public class SimWorldClock {
 	public void addPerson(PersonAgent p){
 		people.add(p);
 	}
-	public int getCurrentTime() {
+	public int getCurrentTime(){
 		return currentHour;
+	}
+	public int getCurrentDay(){
+		return dayOfTheWeek;
 	}
 }
