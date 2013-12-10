@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import person.PersonAgent;
+
 public class Restaurant6CustomerGui implements Gui{
 
 	private Restaurant6CustomerRole agent = null;
@@ -111,6 +113,7 @@ public class Restaurant6CustomerGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.CYAN);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 	
 	// Draws if the customer has ordered

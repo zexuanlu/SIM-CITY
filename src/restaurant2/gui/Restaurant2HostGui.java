@@ -7,6 +7,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import person.PersonAgent;
+
 public class Restaurant2HostGui implements Gui {
 
     private Restaurant2HostRole agent = null;
@@ -48,6 +50,7 @@ public class Restaurant2HostGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
     }
 
     public boolean isPresent() {

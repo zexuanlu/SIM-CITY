@@ -7,6 +7,8 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.*;
 
+import person.PersonAgent;
+
 public class CookGui5 implements Gui {
 
 	
@@ -17,6 +19,7 @@ public class CookGui5 implements Gui {
 	private int YPlate; 
     private int xPos, yPos;//default waiter position
     private int xDestination, yDestination;//default start position
+    public boolean isPresent = false;
     private CookAgent5 agent = null;
     //private RestaurantGui gui; 
     
@@ -42,6 +45,7 @@ public class CookGui5 implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.ORANGE);
         g.fillRect(xPos, yPos, 20, 20);
+        g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         
 		for (Map.Entry<Integer, drawGui> entry: drawguis.entrySet()){
 				if (entry.getValue().cooking){
@@ -65,7 +69,7 @@ public class CookGui5 implements Gui {
 
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
 
     public void updatePosition() {

@@ -3,6 +3,8 @@ package restaurant1.interfaces;
 
 
 public interface Restaurant1Waiter {
+	public String getName();
+	
 	public abstract void msgIWantFood(Restaurant1Customer cust, int table, int loc);
 
 	public abstract void msgreadytoorder(Restaurant1Customer customer);

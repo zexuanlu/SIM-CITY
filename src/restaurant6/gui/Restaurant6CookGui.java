@@ -8,9 +8,12 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import person.PersonAgent;
+
 public class Restaurant6CookGui implements Gui {
 	
     private Restaurant6CookRole agent = null;
+    public boolean isPresent;
 //    RestaurantGui gui;
 
     private int xPos = 400, yPos = 40; // Default cook position
@@ -87,13 +90,14 @@ public class Restaurant6CookGui implements Gui {
     public Restaurant6CookGui(Restaurant6CookRole c) {//, RestaurantGui gui) {
     	agent = c;
 //    	this.gui = gui;
+    	isPresent = false;
     	cookGuiState = GuiState.DoingNothing;
     	
     	synchronized(grills) {
-    		grills.put("Chicken", new MyGrill(450, 110));
-    		grills.put("Steak", new MyGrill(450, 150));
-    		grills.put("Pizza", new MyGrill(450, 190));
-    		grills.put("Salad", new MyGrill(450, 230));
+    		grills.put("Mint Chip Ice Cream", new MyGrill(450, 110));
+    		grills.put("Rocky Road Ice Cream", new MyGrill(450, 150));
+    		grills.put("Green Tea Ice Cream", new MyGrill(450, 190));
+    		grills.put("Mocha Almond Fudge Ice Cream", new MyGrill(450, 230));
     	}
     }
     
@@ -125,27 +129,28 @@ public class Restaurant6CookGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.PINK);
         g.fillRect(xPos, yPos, 20, 20);
+        g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         
-        if (grills.get("Steak").numCooking >= 1 && (grills.get("Steak").state == MyGrill.GrillState.Cooking)) {
+        if (grills.get("Mint Chip Ice Cream").numCooking >= 1 && (grills.get("Mint Chip Ice Cream").state == MyGrill.GrillState.Cooking)) {
         	g.setColor(Color.lightGray);
-        	g.drawString("St..", grills.get("Steak").grillXPos, grills.get("Steak").grillYPos+40);
+        	g.drawString("Mi..", grills.get("Mint Chip Ice Cream").grillXPos, grills.get("Mint Chip Ice Cream").grillYPos+40);
         }
-        if (grills.get("Chicken").numCooking >= 1 && (grills.get("Chicken").state == MyGrill.GrillState.Cooking)) {
+        if (grills.get("Rocky Road Ice Cream").numCooking >= 1 && (grills.get("Rocky Road Ice Cream").state == MyGrill.GrillState.Cooking)) {
         	g.setColor(Color.lightGray);
-        	g.drawString("Ch..", grills.get("Chicken").grillXPos, grills.get("Chicken").grillYPos+40);
+        	g.drawString("Ro..", grills.get("Rocky Road Ice Cream").grillXPos, grills.get("Rocky Road Ice Cream").grillYPos+40);
         }
-        if (grills.get("Pizza").numCooking >= 1 && (grills.get("Pizza").state == MyGrill.GrillState.Cooking)) {
+        if (grills.get("Green Tea Ice Cream").numCooking >= 1 && (grills.get("Green Tea Ice Cream").state == MyGrill.GrillState.Cooking)) {
         	g.setColor(Color.lightGray);
-        	g.drawString("Pi..", grills.get("Pizza").grillXPos, grills.get("Pizza").grillYPos+40);
+        	g.drawString("Gr..", grills.get("Green Tea Ice Cream").grillXPos, grills.get("Green Tea Ice Cream").grillYPos+40);
         }
-        if (grills.get("Salad").numCooking >= 1 && (grills.get("Salad").state == MyGrill.GrillState.Cooking)) {
+        if (grills.get("Mocha Almond Fudge Ice Cream").numCooking >= 1 && (grills.get("Mocha Almond Fudge Ice Cream").state == MyGrill.GrillState.Cooking)) {
         	g.setColor(Color.lightGray);
-        	g.drawString("Sa..", grills.get("Salad").grillXPos, grills.get("Salad").grillYPos+40);
+        	g.drawString("Mo..", grills.get("Mocha Almond Fudge Ice Cream").grillXPos, grills.get("Mocha Almond Fudge Ice Cream").grillYPos+40);
         }
     }
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
    
     public int getXPos() {                                                                

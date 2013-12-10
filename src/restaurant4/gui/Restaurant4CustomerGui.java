@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import person.PersonAgent;
+
 /**
  * This class represents the 
  * customers in the restaurant in the animation
@@ -15,7 +17,7 @@ import java.util.Map;
 public class Restaurant4CustomerGui implements Gui{
 
 	private Restaurant4CustomerRole agent = null;
-	public boolean isPresent = true;
+	public boolean isPresent = false;
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
@@ -71,6 +73,7 @@ public class Restaurant4CustomerGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
         String foodChoice = null;
         

@@ -16,7 +16,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 	//note that tables is typed with Collection semantics.
 		//Later we will see how it is implemented
 		public int tablenum;
-		private String name;
+		public String name;
 		private Semaphore atTable = new Semaphore(0,true);
 		private Semaphore atCook = new Semaphore(0, true);
 		boolean isBack = true;
@@ -25,6 +25,23 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		private Restaurant1CookRole cook= null;
 		private Restaurant1Cashier cashier = null;
 		private Restaurant1RevolvingStand revStand = null;
+		
+		public class mycustomer {
+			Restaurant1Customer c;
+			int table;
+			int location;
+			String choice;
+			double price;
+			
+			state s = state.waiting;
+			
+			mycustomer(Restaurant1Customer c, int table, int location){
+				this.location = location;
+				this.c = c;
+				this.table = table;
+			}
+		}
+		
 		List<mycustomer> customer = new ArrayList<mycustomer>();
 		
 		public Map<String, Double> menue = new HashMap<String, Double>();
@@ -104,9 +121,9 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		// Messages
 
 		public void msgIWantFood(Restaurant1Customer cust, int table, int loc) {
+			print("Seating customer");
 			customer.add(new mycustomer(cust, table, loc));
 			stateChanged();
-
 		}
 
 		public void msgreadytoorder(Restaurant1Customer customer){

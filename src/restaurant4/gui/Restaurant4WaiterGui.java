@@ -1,12 +1,18 @@
 package restaurant4.gui;
 
+import restaurant1.Restaurant1SDWaiterRole;
+import restaurant1.Restaurant1WaiterRole;
 import restaurant4.Restaurant4AbstractWaiter;
+import restaurant4.Restaurant4SDWaiterRole;
+import restaurant4.Restaurant4WaiterRole;
 import simcity.astar.Position;
 import utilities.Gui;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import person.PersonAgent;
 
 /**
  * This class represents the waiters
@@ -21,7 +27,7 @@ public class Restaurant4WaiterGui implements Gui {
     private boolean atDestination = true;
 	private Map<String, Position> locations = new HashMap<String, Position>();
     private String choice;
-    public boolean isPresent;
+    public boolean isPresent = false;
     private int xPos, yPos;//default waiter position
     private int xDestination = -20, yDestination = -20;//default start position
 
@@ -67,6 +73,13 @@ public class Restaurant4WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        
+        if(agent instanceof Restaurant4WaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant4WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
+        else if(agent instanceof Restaurant4SDWaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant4SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
         
         String foodChoice = null;
         

@@ -1,16 +1,23 @@
 package restaurant6.gui;
 
+import restaurant1.Restaurant1SDWaiterRole;
+import restaurant1.Restaurant1WaiterRole;
 import restaurant6.Restaurant6AbstractWaiterRole;
 import restaurant6.Restaurant6HostRole; 
+import restaurant6.Restaurant6SDWaiterRole;
 import restaurant6.Restaurant6Table;
+import restaurant6.Restaurant6WaiterRole;
 import utilities.Gui;
 
 import java.awt.*;
+
+import person.PersonAgent;
 
 public class Restaurant6WaiterGui implements Gui {
 
     private Restaurant6AbstractWaiterRole agent = null;
     private Restaurant6CookGui cookGui;
+    private boolean isPresent;
     private Restaurant6HostRole host = null;
     private boolean onBreakSoon = false;
     private boolean canGoBackToWork = false;
@@ -80,6 +87,8 @@ public class Restaurant6WaiterGui implements Gui {
 		//this.gui = gui;
 		requestedBreak = false;
 		
+		isPresent = false;
+		
 		homeX = x;
 		homeY = y;
 		xPos = homeX;
@@ -142,6 +151,13 @@ public class Restaurant6WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        
+        if(agent instanceof Restaurant6WaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant6WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
+        else if(agent instanceof Restaurant6SDWaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant6SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
     }
 
     // Draws the waiter delivering food
@@ -167,7 +183,7 @@ public class Restaurant6WaiterGui implements Gui {
 	}
     
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
     public boolean isOnBreak() {

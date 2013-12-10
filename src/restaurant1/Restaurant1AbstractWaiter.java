@@ -15,20 +15,6 @@ public abstract class Restaurant1AbstractWaiter extends Role {
 		super(pa);
 	}
 	
-	public static class mycustomer {
-		Restaurant1Customer c;
-		int table;
-		int location;
-		String choice;
-		double price;
-		
-		state s = state.waiting;
-		
-		mycustomer(Restaurant1Customer c, int table, int location){
-			this.location = location;
-			this.c = c;
-			this.table = table;
-		}
-	}
+	public String name;
 }	
 

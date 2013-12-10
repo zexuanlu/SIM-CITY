@@ -1,8 +1,12 @@
 package restaurant2.gui;
 
 
+import restaurant1.Restaurant1SDWaiterRole;
+import restaurant1.Restaurant1WaiterRole;
 import restaurant2.Restaurant2CustomerRole;
 import restaurant2.Restaurant2HostRole;
+import restaurant2.Restaurant2SDWaiterRole;
+import restaurant2.Restaurant2WaiterRole;
 import restaurant2.interfaces.Restaurant2Waiter;
 import utilities.Gui;
 
@@ -11,6 +15,8 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import person.PersonAgent;
 
 public class Restaurant2WaiterGui implements Gui {
 
@@ -101,13 +107,13 @@ public class Restaurant2WaiterGui implements Gui {
 		switch (skin)//this is simply to identify individual waiters and what their current doings are
 		{
 		case 0:
-			g.setColor(Color.BLUE);
+			g.setColor(Color.BLACK);
 			break;
 		case 1:
-			g.setColor(Color.MAGENTA);
+			g.setColor(Color.BLACK);
 			break;
 		case 2:
-			g.setColor(Color.RED);
+			g.setColor(Color.BLACK);
 			break;
 		case 3:
 			g.setColor(Color.BLACK);
@@ -116,6 +122,12 @@ public class Restaurant2WaiterGui implements Gui {
 		g.fillRect(xPos, yPos, 20, 20);
 		g.drawString(text, xPos, yPos);	
 		
+		if(agent instanceof Restaurant2WaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant2WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
+        else if(agent instanceof Restaurant2SDWaiterRole){
+        	g.drawString(((PersonAgent)((Restaurant2SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
 
 	}
 

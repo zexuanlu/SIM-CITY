@@ -1,7 +1,11 @@
 package restaurant5.gui;
 
 
+import restaurant1.Restaurant1SDWaiterRole;
+import restaurant1.Restaurant1WaiterRole;
 import restaurant5.CustomerAgent5;
+import restaurant5.SDWaiterAgent5;
+import restaurant5.WaiterAgent5;
 import restaurant5.WaiterBase5;
 import restaurant5.interfaces.Customer5; 
 import utilities.Gui;
@@ -9,11 +13,14 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.ArrayList;
 
+import person.PersonAgent;
+
 public class WaiterGui5 implements Gui {
 	private int waitingX; 
 	private int waitingY; 
     private WaiterBase5 agent = null;
     private RestaurantGui gui; 
+    public boolean isPresent = false;
     
     ArrayList<myGui> myGuis = new ArrayList<myGui>();
 	public enum State {IconOn, IconOff,Brought};
@@ -122,10 +129,17 @@ public class WaiterGui5 implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        
+        if(agent instanceof WaiterAgent5){
+        	g.drawString(((PersonAgent)((WaiterAgent5)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
+        else if(agent instanceof SDWaiterAgent5){
+        	g.drawString(((PersonAgent)((SDWaiterAgent5)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
         }
 
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
     public void DoGotoCustomer(CustomerAgent5 c){

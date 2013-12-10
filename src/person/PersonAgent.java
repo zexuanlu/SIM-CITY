@@ -69,6 +69,7 @@ public class PersonAgent extends Agent implements Person{
 	private EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
 	private boolean atHome = false;
+	public boolean walking = false;
 
 	private String name;
 	public int hunger; // tracks hunger level
@@ -111,6 +112,8 @@ public class PersonAgent extends Agent implements Person{
 		this.wallet = new Wallet(money, 0);//hacked in
 		this.hunger = 4;
 		currentTime = 7;
+		
+		shoppingBag.add(new Food("Chicken", 1));
 	}
 	public PersonAgent (String name, CityMap cm, AStarTraversal astar2, double money){
 		super();
@@ -270,6 +273,7 @@ public class PersonAgent extends Agent implements Person{
 		for(Food f : foodList){
 			shoppingBag.add(f);
 		}
+		gui.setPresent(true);
 		wallet.setOnHand(change);
 		stateChanged();
 	}
@@ -933,6 +937,7 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
+				System.err.println("Creating new role");
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
 				bcr.bh = bank.getHost();
@@ -946,6 +951,7 @@ public class PersonAgent extends Agent implements Person{
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 				gui.setPresent(false);
+				((BankCustomerRole)newRole.role).gui.setPresent(true);
 				toDo.remove(e); //remove the event from the queue
 				return;
 			}
@@ -1240,34 +1246,36 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void goToLocation(Location loc){
-		if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
-			//			//make a PassengerRole and start it
-			PassengerRole pRole = new PassengerRole(this.name, this);
-			//			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
-			MyRole newRole = new MyRole(pRole, "Passenger");
-			newRole.setActive(true);
-			roles.add(newRole);
-			if(!testMode){
-				PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
-				((PassengerRole)newRole.role).setGui(pg);
-				cap.addGui(pg);
-			}
-			((PassengerRole)newRole.role).setCityMap(cityMap);
-			((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
-			//lizhi added this testing:
-			gui.xDestination = loc.position.getX();
-			gui.yDestination = loc.position.getY();
-
-			((PassengerRole)newRole.role).gotoBus();
-			gui.setPresent(false);
-
-			while(newRole.isActive){
-				while(newRole.role.pickAndExecuteAnAction()){}
-				try{
-					stateChange.acquire();
+		if (!walking) {
+			if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
+				//			//make a PassengerRole and start it
+				PassengerRole pRole = new PassengerRole(this.name, this);
+				//			if(!containsRole(pRole)){ //if we dont already have a PassengerRole make one
+				MyRole newRole = new MyRole(pRole, "Passenger");
+				newRole.setActive(true);
+				roles.add(newRole);
+				if(!testMode){
+					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
+					((PassengerRole)newRole.role).setGui(pg);
+					cap.addGui(pg);
 				}
-				catch(InterruptedException e){
-					e.printStackTrace();
+				((PassengerRole)newRole.role).setCityMap(cityMap);
+				((PassengerRole)newRole.role).setPassDestination(loc.position.getX(), loc.position.getY());
+				//lizhi added this testing:
+				gui.xDestination = loc.position.getX();
+				gui.yDestination = loc.position.getY();
+	
+				((PassengerRole)newRole.role).gotoBus();
+				gui.setPresent(false);
+	
+				while(newRole.isActive){
+					while(newRole.role.pickAndExecuteAnAction()){}
+					try{
+						stateChange.acquire();
+					}
+					catch(InterruptedException e){
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -1403,7 +1411,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setcitygui(SimCityGUI scg){
 		simcitygui = scg; 
 
-		if (this.wallet.getOnHand() >= 400.00){
+		if (this.wallet.getOnHand() >= 1000.00){
 			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}

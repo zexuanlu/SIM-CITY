@@ -6,6 +6,8 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.*;
 
+import person.PersonAgent;
+
 /**
  * This class represents the 
  * customers in the restaurant in the animation
@@ -13,7 +15,7 @@ import java.util.*;
 public class Restaurant4CookGui implements Gui{
 
 	private Restaurant4CookRole agent = null;
-	private boolean isPresent = true;
+	private boolean isPresent = false;
 	private ArrayList<FoodGui> foods = new ArrayList<FoodGui>();
 
 	private int xPos, yPos;
@@ -47,6 +49,7 @@ public class Restaurant4CookGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
 		for(FoodGui fg : foods){
 			g.setColor(Color.BLACK);

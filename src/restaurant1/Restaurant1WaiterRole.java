@@ -1,5 +1,6 @@
 package restaurant1;
 
+import restaurant1.Restaurant1AbstractWaiter.state;
 import restaurant1.gui.WaiterGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
@@ -29,6 +30,23 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	private Restaurant1HostRole host = null;
 	private Restaurant1CookRole cook= null;
 	private Restaurant1Cashier cashier = null;
+	
+	public class mycustomer {
+		Restaurant1Customer c;
+		int table;
+		int location;
+		String choice;
+		double price;
+		
+		state s = state.waiting;
+		
+		mycustomer(Restaurant1Customer c, int table, int location){
+			this.location = location;
+			this.c = c;
+			this.table = table;
+		}
+	}
+	
 	private List<mycustomer> customer = new ArrayList<mycustomer>();
 	
 	public Map<String, Double> menue = new HashMap<String, Double>();
@@ -104,7 +122,10 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	// Messages
 
 	public void msgIWantFood(Restaurant1Customer cust, int table, int loc) {
+		print("Customer added");
 		customer.add(new mycustomer(cust, table, loc));
+		System.err.println(customer.get(0));
+		System.err.println(customer.size());
 		stateChanged();
 	}
 
@@ -192,10 +213,15 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */	
+		System.err.println("SCHEDULER");
+		System.err.println(customer.size());
 		try{
 		for(mycustomer customers: customer){
+			System.err.println(customers.c);
 			if(customers.s == state.waiting){
+				System.err.println("Checking");
 			if (isBack == true) {
+					System.err.println("I need to seat the customer");
 					isBack = false;
 					seatCustomer(customers, customers.table);//the action
 					return true;//return true to the abstract agent to reinvoke the scheduler.

@@ -5,6 +5,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import person.PersonAgent;
+
 public class CustomerGui5 implements Gui{
 	private int sit; 
 
@@ -107,6 +109,7 @@ public class CustomerGui5 implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
 		//This is the icon that stays at the customer's table telling you that they have ordered
 		if (showIcon){
