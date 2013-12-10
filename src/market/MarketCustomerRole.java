@@ -169,5 +169,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		return roleName;
 	}
 	
+	public utilities.Gui getGui(){
+		return customerGui; 
+	}
 	
 }

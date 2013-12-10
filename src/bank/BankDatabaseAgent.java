@@ -325,6 +325,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		accounts.put(accountNumber, new Account(owner, balance, accountNumber));
 		totalMoney += balance;
 	}
+
 	public void addRestaurantAccount(RestaurantCashier cashier, double balance, int accountNumber){
 		accounts.put(accountNumber, new Account(cashier, balance, accountNumber));
 		totalMoney += balance;

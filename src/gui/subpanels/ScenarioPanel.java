@@ -252,6 +252,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			else if (chosen.getText().trim().equals("Weekend Behavior")) {
 				// FIX
+				weekendBehaviorScenario();
 				System.err.println("Weekend Behavior");
 
 			}
@@ -1640,7 +1641,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	 * Weekend behavior scenario : People will go to the casino 
 	 * one person will win enough money to go buy a car after playing
 	 */
-	public void weekendBehaviorScenario() {
-		
+	public void weekendBehaviorScenario(){
+		Casino casino = new Casino(people, "Casino", new Position(50, 50),LocationType.Casino);
+		SimEvent goToCasino = new SimEvent("Gamble", casino, EventType.CustomerEvent);
+		for(PersonAgent p : people){
+			p.msgAddEvent(goToCasino);
+		}
 	}
 }

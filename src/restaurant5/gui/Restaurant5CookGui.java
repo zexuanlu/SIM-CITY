@@ -14,7 +14,7 @@ import person.PersonAgent;
 public class Restaurant5CookGui implements Gui {
 
 	
-    private int standX = 480; 
+    private int standX = 430; 
     private int standY = 20; 
     
     public boolean isPresent; 
@@ -41,9 +41,9 @@ public class Restaurant5CookGui implements Gui {
 
     public Restaurant5CookGui(Restaurant5CookAgent c){
     	agent = c; 
-    	xPos = 480; 
+    	xPos = 430; 
     	yPos = 75;
-    	xDestination = 480; 
+    	xDestination = 430; 
     	yDestination = 75; 
     }
     
@@ -91,7 +91,7 @@ public class Restaurant5CookGui implements Gui {
         else if (yPos > yDestination)
             yPos--;
         if (xPos == xDestination && yPos == yDestination
-        		& (xDestination == 560) & (yDestination == Ygrill)) {
+        		& (xDestination == 480) & (yDestination == Ygrill)) {
         	agent.msgatGrill();
         	int tempgrill = 0;
         	if (yDestination == 30){
@@ -107,7 +107,7 @@ public class Restaurant5CookGui implements Gui {
             	drawguis.get(tempgrill).cooking = true; 
         	}
         }
-        if (xPos == xDestination && yPos == yDestination && (xDestination == 480) && (yDestination == YPlate)){	
+        if (xPos == xDestination && yPos == yDestination && (xDestination == 430) && (yDestination == YPlate)){	
     		for (Map.Entry<Integer, drawGui> entry: drawguis.entrySet()){
     			if (entry.getValue().plating == true){
     				entry.getValue().plating = false; 
@@ -125,32 +125,32 @@ public class Restaurant5CookGui implements Gui {
     }
     
     public void gotoPlate(){
-    	xDestination = 480;
+    	xDestination = 430;
     	yDestination = 75; 
     }
     
     public void gotoPlate(String s, int grillposition, int platenumber){
     	
     	if (platenumber == 1){
-    		xDestination = 480; 
+    		xDestination = 430; 
     		YPlate = 50; 
     		yDestination = 50; 
     	}
     	
     	if (platenumber == 2){
     		YPlate = 75; 
-    	xDestination = 480;
+    	xDestination = 430;
     	yDestination = 75; 
     	}
     	if (platenumber == 3){
     		YPlate = 105; 
-    		xDestination = 480;
+    		xDestination = 430;
     		yDestination = 105; 
     	}
     	
 		for (Map.Entry<Integer, drawGui> entry: drawguis.entrySet()){
 			if (entry.getValue().grill== grillposition && entry.getValue().cooking){
-				entry.getValue().x = 455; 
+				entry.getValue().x = 415; 
 				entry.getValue().y = YPlate; 
 				entry.getValue().cooking = false; 
 				entry.getValue().plating = true; 
@@ -159,18 +159,18 @@ public class Restaurant5CookGui implements Gui {
     }
     public void gotoGrill(int grillposition){
     	if (grillposition == 1){
-    		xDestination = 560; 
+    		xDestination = 480; 
     		Ygrill = 30; 
     	}
     	else if (grillposition == 2){
-    		xDestination = 560; 
+    		xDestination = 480; 
     		Ygrill = 80; 
     	}
     	else if (grillposition == 3){
-    		xDestination = 560; 
+    		xDestination = 480; 
     		Ygrill = 130; 
     	}
-    	xDestination = 560; 
+    	xDestination = 480; 
     	yDestination = Ygrill; 
     	
     }
@@ -181,18 +181,18 @@ public class Restaurant5CookGui implements Gui {
     
     public void gotoGrill(int grillposition, String choice){
     	if (grillposition == 1){
-    		xDestination = 560; 
+    		xDestination = 480; 
     		Ygrill = 30; 
     	}
     	else if (grillposition == 2){
-    		xDestination = 560; 
+    		xDestination = 480; 
     		Ygrill = 80; 
     	}
     	else if (grillposition == 3){
-    		xDestination = 560; 
+    		xDestination = 480; 
     		Ygrill = 130; 
     	}
-    	xDestination = 560; 
+    	xDestination = 480; 
     	yDestination = Ygrill; 
     	
     	drawGui g = new drawGui();
@@ -210,4 +210,7 @@ public class Restaurant5CookGui implements Gui {
 	  yDestination = standY; 
     }
 
+    public void setPresent(boolean b){
+    	isPresent = b; 
+    }
 }

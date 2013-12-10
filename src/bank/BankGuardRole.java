@@ -56,4 +56,9 @@ public class BankGuardRole extends Role implements BankGuard {
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
+	
 }

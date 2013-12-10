@@ -145,5 +145,9 @@ public class MarketTruckGui implements Gui {
 		}
 		atstop = true;
 	}
+	
+	public void setPresent(boolean b){
+		isPresent = b; 
+	}
 
 }

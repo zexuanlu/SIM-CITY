@@ -311,6 +311,10 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 		return "Restaurant 6 Cashier";
 	}
 
+	public utilities.Gui getGui(){
+		return null; 
+	}
+
 	private void getMoneyFromBank(){
 		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
 		try{

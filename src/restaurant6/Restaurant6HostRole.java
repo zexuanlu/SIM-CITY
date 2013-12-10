@@ -454,6 +454,10 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
             minCustomers = tempMin;
         }
 
+        public utilities.Gui getGui(){
+        	return null; 
+        }
+        
 		public String getRoleName() {
 			return "Restaurant 6 Host";
 		}

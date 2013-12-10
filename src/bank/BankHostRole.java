@@ -225,4 +225,9 @@ public class BankHostRole extends Role implements BankHost {
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return this.gui; 
+	}
+	
 }

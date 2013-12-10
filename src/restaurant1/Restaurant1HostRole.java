@@ -274,7 +274,10 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 		public String toString() {
 			return "table " + tableNumber;
 		}
-
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
 	}
 	
 	public String getRoleName(){

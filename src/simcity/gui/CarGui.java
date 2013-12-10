@@ -143,6 +143,10 @@ public class CarGui implements Gui {
                 xDestination = x*scale;
                 yDestination = y*scale;
         }
+        
+        public void setPresent(boolean b){
+        	isPresent = b; 
+        }
     
     
 }

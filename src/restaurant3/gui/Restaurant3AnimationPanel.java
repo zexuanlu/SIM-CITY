@@ -1,7 +1,7 @@
 package restaurant3.gui;
 
 import restaurant3.Restaurant3HostRole;
-
+import utilities.Gui; 
 import java.awt.*;
 
 import javax.swing.*;
