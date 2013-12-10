@@ -325,7 +325,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 				}
 			}
 		}
-		aptGui.DoGoToHome();
+		//aptGui.DoGoToHome();
 		return false;
 	}
 	

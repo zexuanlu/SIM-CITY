@@ -207,7 +207,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		
 	
 		if (opened){ 
 			orderFoodthatisLow();

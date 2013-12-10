@@ -317,7 +317,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 				}
 			}
 		}
-		homeGui.DoGoToHome();
+		//homeGui.DoGoToHome();
 		return false;
 	}
 		
