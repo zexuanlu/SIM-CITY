@@ -150,12 +150,19 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the teller when the teller is scaring him off
+	 */
 	public void msgCallingCops(){
 		log.add(new LoggedEvent("Received msgCallingCops from BankTeller"));
 		this.s = state.runAway;
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the teller when the teller gives him the money he is stealing
+	 * @param amount the amount of money stolen
+	 */
 	public void msgHereIsMoney(double amount){
 		log.add(new LoggedEvent("Received msgHereIsMoney from BankTeller"));
 		this.s = state.runAway;
