@@ -32,7 +32,7 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 	private Restaurant4Host host;
 	private Restaurant4Waiter waiter;
 	private Restaurant4Cashier cashier;
-	double money;
+	public double money;
 
 	//The various states of the customer
 	public enum AgentState
@@ -78,7 +78,7 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
-
+	
 	/**
 	 * Received from the waiter, telling the customer to go to a table
 	 * 
@@ -248,6 +248,13 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 	//Tells the gui to go to the table
 	private void SitDown() {
 		customerGui.DoGoToLocation("Table " + tableNum);
+		try{
+			movement.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+		event = AgentEvent.seated;
 	}
 
 	//Tells the host that he is leaving
@@ -311,6 +318,7 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 	
 	//Goes to the cashier and pays for his food
 	public void payForFood(){
+		customerGui.carryFood(false);
 		customerGui.DoGoToLocation("Cashier");
 		try{
 			movement.acquire();
@@ -323,9 +331,16 @@ public class Restaurant4CustomerRole extends Role implements Restaurant4Customer
 	}
 	//Messages the gui to tell him to leave the table
 	private void leaveTable() {
-		customerGui.setState(GUIstate.None, "");
 		waiter.msgLeavingTable(this);
 		customerGui.DoGoToLocation("Home");
+		try{
+			movement.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+		person.msgFinishedEvent(this);
+		customerGui.setPresent(false);
 	}
 
 	// Accessors, etc.

@@ -1,6 +1,5 @@
 package restaurant1;
 
-import restaurant1.Restaurant1AbstractWaiter.state;
 import restaurant1.gui.WaiterGui;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;

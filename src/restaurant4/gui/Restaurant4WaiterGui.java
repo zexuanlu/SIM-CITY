@@ -29,22 +29,23 @@ public class Restaurant4WaiterGui implements Gui {
     private String choice;
     public boolean isPresent = false;
     private int xPos, yPos;//default waiter position
-    private int xDestination = -20, yDestination = -20;//default start position
+    private int xDestination, yDestination;//default start position
 
     public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, int x, int y) {
         this.agent = agent;;
         this.isPresent = false;
-
+        xPos = x;
+        yPos = y;
         locations.put("Home", new Position(x, y));
-        locations.put("Cashier", new Position(150, -20));
+        locations.put("Cashier", new Position(200, -20));
         locations.put("Host", new Position(-20, -20));
         locations.put("Cook", new Position(385, 250));
-        locations.put("Table 1", new Position(120, 300));
-        locations.put("Table 2", new Position(220, 300));
-        locations.put("Table 3", new Position(320, 300));
-        locations.put("Grill 1", new Position(385, 122));
-        locations.put("Grill 2", new Position(385, 142));
-        locations.put("Grill 3", new Position(385, 162));
+        locations.put("Table 1", new Position(120, 280));
+        locations.put("Table 2", new Position(220, 280));
+        locations.put("Table 3", new Position(320, 280));
+        locations.put("Grill 1", new Position(385, 170));
+        locations.put("Grill 2", new Position(385, 190));
+        locations.put("Grill 3", new Position(385, 210));
         locations.put("Customer 1", new Position(110, 136));
         locations.put("Customer 2", new Position(131, 136));
         locations.put("Customer 3", new Position(152, 136));
@@ -98,6 +99,13 @@ public class Restaurant4WaiterGui implements Gui {
     public void carryFood(String food){
     	s = GUIstate.CarryingFood;
     	choice = food;
+    }
+    
+    public void carryFood(boolean b){
+    	if(b)
+    		s = GUIstate.CarryingFood;
+    	else
+    		s = GUIstate.None;
     }
     
     public int getXPos() {

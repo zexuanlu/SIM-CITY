@@ -31,6 +31,13 @@ public class Restaurant4CustomerGui implements Gui{
     	s = st;
     	choice = ch;
     }
+    
+    public void carryFood(boolean b){
+    	if(b)
+    		s = GUIstate.EatingFood;
+    	else
+    		s = GUIstate.None;
+    }
 
 	public static final int xTable = 50;
 	public static final int yTable = 200;
@@ -39,9 +46,10 @@ public class Restaurant4CustomerGui implements Gui{
 		agent = c;
         locations.put("Cashier", new Position(150, -20));
         locations.put("Host", new Position(-20, -20));
-        locations.put("Table 1", new Position(120, 300));
-        locations.put("Table 2", new Position(220, 300));
-        locations.put("Table 3", new Position(320, 300));
+        locations.put("Home", new Position(-20, -20));
+        locations.put("Table 1", new Position(100, 300));
+        locations.put("Table 2", new Position(200, 300));
+        locations.put("Table 3", new Position(300, 300));
         locations.put("Customer 1", new Position(110, 136));
         locations.put("Customer 2", new Position(131, 136));
         locations.put("Customer 3", new Position(152, 136));

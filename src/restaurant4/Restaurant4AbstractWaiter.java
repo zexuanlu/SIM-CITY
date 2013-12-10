@@ -1,5 +1,7 @@
 package restaurant4;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -11,16 +13,16 @@ import person.interfaces.Person;
 
 public abstract class Restaurant4AbstractWaiter extends Role implements Restaurant4Waiter {
 
-	public List<MyCustomer> customers;
+	public List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	protected Restaurant4Host host = null;
 	protected Restaurant4CookRole cook = null;
 	protected Restaurant4CashierRole cashier = null;
 	protected String name;
-	protected Restaurant4Menu menu;
+	protected Restaurant4Menu menu = new Restaurant4Menu();
 	public Restaurant4WaiterGui gui;
-	protected breakState bs;
-	protected Semaphore movement;
-	protected Semaphore ordering;
+	protected breakState bs = breakState.none;
+	protected Semaphore movement = new Semaphore(0, true);
+	protected Semaphore ordering = new Semaphore(0, true);
 	
 	public Restaurant4AbstractWaiter(Person pa) {
 		super(pa);
@@ -28,7 +30,10 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	//Messages
 	public void msgSeatCustomer(Restaurant4Customer cust, int table, Restaurant4Host h, String location) {
-		customers.add(new MyCustomer(cust, table, location));
+		MyCustomer temp = new MyCustomer(cust, table, location);
+		temp.s = state.waiting;
+		customers.add(temp);
+		System.err.println("Here I Am");
 		host = h;
 		stateChanged();
 	}
@@ -136,6 +141,9 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction() {
+		Do("Scheduler fun time with " + customers.size() + " customers");
+		if(customers.size() != 0)
+			Do("State is" + customers.get(0).s);
 		try{
 			//Wants to go on break
 			if(bs == breakState.wantBreak){
@@ -206,6 +214,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 			for (MyCustomer customer : customers) {
 				if(customer.s == state.waiting){
 					seatCustomer(customer);
+					Do("Seating customer");
 					return true;
 				}
 			}
@@ -230,6 +239,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 
 	protected void seatCustomer(MyCustomer customer) {
 		gui.GoToLocation(customer.location);
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
@@ -238,6 +248,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 		customer.c.msgSitAtTable(customer.table, this, new Restaurant4Menu());
 		gui.GoToLocation("Table " + customer.table);
+		movement.drainPermits();
 		try {
 			movement.acquire();
 		} catch (InterruptedException e) {
@@ -249,6 +260,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	protected void takeOrder(MyCustomer customer){
 		gui.GoToLocation("Table " + customer.table);
+		movement.drainPermits();
 		try {
 			movement.acquire();
 		} 
@@ -256,6 +268,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 			e.printStackTrace();
 		}
 		customer.c.msgReadyForOrder();
+		ordering.drainPermits();
 		try{
 			ordering.acquire();
 		}
@@ -267,6 +280,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	private void giveFood(MyCustomer customer){
 		gui.GoToLocation(customer.location);
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
@@ -276,12 +290,14 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		cook.msgGettingFood(customer.choice, customer.table);
 		gui.GoToLocation("Table " + customer.table);
 		gui.carryFood(customer.choice);
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
+		gui.carryFood(false);
 		customer.c.msgHereIsFood(customer.choice);
 		customer.s = state.sitting;
 		gui.GoToLocation("Home");
@@ -289,6 +305,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	private void emptyTable(MyCustomer customer){
 		gui.GoToLocation("Host"); //Animation
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
@@ -326,6 +343,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	private void reOrder(MyCustomer customer){
 		gui.GoToLocation("Table " + customer.table);
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
@@ -337,6 +355,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	private void requestCheck(MyCustomer cust){
 		gui.GoToLocation("Cashier");
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
@@ -349,6 +368,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	private void sendCheck(MyCustomer cust){
 		gui.GoToLocation("Table " + cust.table);
+		movement.drainPermits();
 		try{
 			movement.acquire();
 		}
