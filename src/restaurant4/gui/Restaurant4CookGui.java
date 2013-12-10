@@ -6,13 +6,17 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.*;
 
+import person.PersonAgent;
+
 /**
  * This class represents the 
  * customers in the restaurant in the animation
  */
 public class Restaurant4CookGui implements Gui{
 
-	private boolean isPresent = true;
+	private Restaurant4CookRole agent = null;
+	private boolean isPresent = false;
+
 	private ArrayList<FoodGui> foods = new ArrayList<FoodGui>();
 
 	private int xPos, yPos;
@@ -45,6 +49,7 @@ public class Restaurant4CookGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
 		for(FoodGui fg : foods){
 			g.setColor(Color.BLACK);
@@ -85,10 +90,10 @@ public class Restaurant4CookGui implements Gui{
 	}
 	public void DoCookFood(String choice, int grillNum, int table){
 		switch (choice){
-		case "Shrimp": foods.add(new FoodGui("Sh", xPos+32, 32 + 20*grillNum)); break;
-		case "Scallops" : foods.add(new FoodGui("Sc", xPos+32, 32 + 20*grillNum)); break;
-		case "Lobster" : foods.add(new FoodGui("Lo", xPos+32, 32 + 20*grillNum)); break;
-		case "Crab" : foods.add(new FoodGui("Cr", xPos+32, 32 + 20*grillNum)); break;
+			case "Shrimp": foods.add(new FoodGui("Sh", xPos+32, yPos - 80 + 20*grillNum)); break;
+			case "Scallops" : foods.add(new FoodGui("Sc", xPos+32, yPos - 80 + 20*grillNum)); break;
+			case "Lobster" : foods.add(new FoodGui("Lo", xPos+32, yPos - 80 + 20*grillNum)); break;
+			case "Crab" : foods.add(new FoodGui("Cr", xPos+32, yPos - 80 + 20*grillNum)); break;
 		}
 		foods.get(foods.size()-1).table = table;
 	}

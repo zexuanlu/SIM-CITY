@@ -118,9 +118,6 @@ public class SimCityGUI extends JFrame {
         public Restaurant5WaiterAgent waiter5 = new Restaurant5WaiterAgent("Waiter 5", initPerson);
         public Restaurant5SDWaiterAgent sdwaiter5 = new Restaurant5SDWaiterAgent("Waiter 5SD", initPerson);
         
-        
-        
-      
         /*
          * Role gui's must be initialized in SimCityGui with the role as happens below
          */
@@ -750,6 +747,7 @@ public class SimCityGUI extends JFrame {
                  * 
                  * Creating host, cook, cashier, waiter, and teller events
                  * */
+
                 SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
                 SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
                 SimEvent hostGoToRestaurant3 = new SimEvent(rest3, 8, EventType.HostEvent);	//CHANGE EVENT?
@@ -900,7 +898,7 @@ public class SimCityGUI extends JFrame {
         }
         
         public void addPerson(PersonAgent p) {
-                PersonGui pgui = new PersonGui(p,100,100, cityAnimPanel);
+                PersonGui pgui = new PersonGui(p,40,170, cityAnimPanel);
                 p.setGui(pgui);
                 p.setAnimationPanel(cityAnimPanel);
                 people.add(p);

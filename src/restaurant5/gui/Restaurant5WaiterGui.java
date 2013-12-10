@@ -2,12 +2,17 @@ package restaurant5.gui;
 
 
 import restaurant5.Restaurant5CustomerAgent;
+import restaurant5.Restaurant5SDWaiterAgent;
+import restaurant5.Restaurant5WaiterAgent;
 import restaurant5.WaiterBase5;
 import restaurant5.interfaces.Customer5; 
 import utilities.Gui;
 
 import java.awt.*;
 import java.util.ArrayList;
+
+import person.PersonAgent;
+
 
 public class Restaurant5WaiterGui implements Gui {
 	private int waitingX; 
@@ -32,7 +37,7 @@ public class Restaurant5WaiterGui implements Gui {
     boolean showIcon = false; 
     boolean leaveIcon = false; 
     
-    private int standX = 430; 
+    private int standX = 380; 
     private int standY = 20; 
     
     
@@ -55,10 +60,8 @@ public class Restaurant5WaiterGui implements Gui {
         this.agent = agent;
     }
 
-    
- 
-    
-    public void updatePosition() {
+
+	public void updatePosition() {
    	
         if (xPos < xDestination)
             xPos++;
@@ -77,7 +80,7 @@ public class Restaurant5WaiterGui implements Gui {
         if (xPos == waitingX && yPos == waitingY){
         	agent.msgatOrigin();
         }
-        if (xPos == 430 && yPos == 80){
+        if (xPos == 380 && yPos == 80){
         	agent.msgatCook();
         }
         if (xPos == -20 && yPos == 200){
@@ -119,6 +122,13 @@ public class Restaurant5WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        
+        if(agent instanceof Restaurant5WaiterAgent){
+        	g.drawString(((PersonAgent)((Restaurant5WaiterAgent)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
+        else if(agent instanceof Restaurant5SDWaiterAgent){
+        	g.drawString(((PersonAgent)((Restaurant5SDWaiterAgent)agent).getPerson()).getName(), xPos-14, yPos+30);
+        }
         }
 
     public boolean isPresent() {
@@ -172,7 +182,7 @@ public class Restaurant5WaiterGui implements Gui {
     }
     
     public void DoGoToCook(){
-    	xDestination = 430;
+    	xDestination = 380;
     	yDestination = 80; 
     }
     
@@ -187,5 +197,9 @@ public class Restaurant5WaiterGui implements Gui {
 
     public int getYPos() {
         return yPos;
+    }
+    
+    public void setPresent(boolean b){
+    	isPresent = b; 
     }
 }

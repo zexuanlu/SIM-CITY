@@ -337,5 +337,9 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }
 

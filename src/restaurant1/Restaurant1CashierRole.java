@@ -181,4 +181,8 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }

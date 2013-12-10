@@ -24,6 +24,8 @@ public class MarketTruckGui implements Gui {
 
 	private MarketTruckAgent myTruck;
 	BuildingAnimationPanel buildPanel;
+	private int xorigin = 150, yorigin = 90;
+	private int x1origin  = 510, y1origin = 90;
 	private int x1rest = 220;
 	private int y1rest = 90;
 	private int x2rest = 250, y2rest = 90;
@@ -112,6 +114,18 @@ public class MarketTruckGui implements Gui {
 			atstop = false;
 			myTruck.msgrelease();
 		}
+
+		if (xPos == xDestination &&atstop&& yPos == yDestination
+				& (xDestination == xorigin) & (yDestination == yorigin )) {
+			atstop = false;
+			myTruck.msgrelease();
+		}
+
+		if (xPos == xDestination &&atstop&& yPos == yDestination
+				& (xDestination == x1origin) & (yDestination == y1origin )) {
+			atstop = false;
+			myTruck.msgrelease();
+		}
 	}
 
 	public void GotoCook(int x, int y){
@@ -130,6 +144,10 @@ public class MarketTruckGui implements Gui {
 			yDestination = 90;
 		}
 		atstop = true;
+	}
+	
+	public void setPresent(boolean b){
+		isPresent = b; 
 	}
 
 }

@@ -24,6 +24,8 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
     // List of checks
 	protected List<Restaurant6Check> waiterChecks = Collections.synchronizedList(new ArrayList<Restaurant6Check>());
     
+	public boolean offWork = false;
+	public double myPay = 0; 
 	protected Restaurant6HostRole host;
 	protected Restaurant6CookRole cook;
 	protected Restaurant6Cashier cashier;
@@ -185,35 +187,42 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
     }
     
     // Messages
+    // From the host to end the work day
+    public void msgEndOfDay(double m) {
+    	myPay = m;
+    	offWork = true;
+    	stateChanged();
+    }
+    
     // By the GUI to go on break
     public void msgOnBreak() {
-            guiSelectBreak = true;
-            // Waiter will ask for a break
-            waiterState = MyWaiterState.RequestBreak;
-            print("I want to go on break");
-            stateChanged();
+		guiSelectBreak = true;
+		// Waiter will ask for a break
+		waiterState = MyWaiterState.RequestBreak;
+		print("I want to go on break");
+		stateChanged();
     }
 
     // The host's reply to waiter wanting to go on break
     public void goOnBreak(boolean b) {
-            hostResponded = true;
-            hostReply = b;
-            
-            // Waiter state will depend on the host's reply
-            if (hostReply) {
-                    waiterState = MyWaiterState.ApprovedBreak;
-            }
-            else {
-                    waiterState = MyWaiterState.Working;
-            }
-            
-            stateChanged();
+		hostResponded = true;
+		hostReply = b;
+		
+		// Waiter state will depend on the host's reply
+		if (hostReply) {
+		        waiterState = MyWaiterState.ApprovedBreak;
+		}
+		else {
+		        waiterState = MyWaiterState.Working;
+		}
+		
+		stateChanged();
     }
     
     // Message from checkbox indicating off break
     public void msgOffBreak() {
-            host.msgSetWaiter(this);
-            stateChanged();
+		host.msgSetWaiter(this);
+		stateChanged();
     }
     
 	// Waiter receives message from cook saying that there's no more food
@@ -454,6 +463,10 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
 				}
 						return true;
 			}	
+			if (offWork) {
+				goHome();
+				return true;
+			}
 		}
 		return false;
 		//we have tried all our rules and found
@@ -462,6 +475,15 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
 	}
 
 	// Actions
+	// When the host tells the waiter that it's time to go home
+	private void goHome() {
+		print("Off for the day!");
+		this.person.msgGoOffWork(this, myPay);
+		cook.msgOffWork();
+		cashier.msgOffWork();
+		offWork = false;
+	}
+	
 	// Asks for the break
     protected void askHostForBreak() {
         waiterGui.DoCheckBreak(true, this);

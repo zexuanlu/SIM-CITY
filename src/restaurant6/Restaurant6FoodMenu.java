@@ -8,15 +8,15 @@ public class Restaurant6FoodMenu {
 	private Map<Double, String> reverseMenu = new HashMap<Double, String>();
 	
 	Restaurant6FoodMenu() {
-		foodMenu.put("Chicken", 10.99);
-		foodMenu.put("Steak", 15.99);
-		foodMenu.put("Salad", 5.99);
-		foodMenu.put("Pizza", 8.99);
+		foodMenu.put("Mint Chip Ice Cream", 3.99);
+		foodMenu.put("Rocky Road Ice Cream", 4.99);
+		foodMenu.put("Green Tea Ice Cream", 5.99);
+		foodMenu.put("Mocha Almond Fudge Ice Cream", 2.99);
 		
-		reverseMenu.put(10.99, "Chicken");
-		reverseMenu.put(15.99, "Steak");
-		reverseMenu.put(5.99, "Salad");
-		reverseMenu.put(8.99, "Pizza");
+		reverseMenu.put(3.99, "Mint Chip Ice Cream");
+		reverseMenu.put(4.99, "Rocky Road Ice Cream");
+		reverseMenu.put(5.99, "Green Tea Ice Cream");
+		reverseMenu.put(2.99, "Mocha Almond Fudge Ice Cream");
 	}
 	
 	public Map<String, Double> getMap() {

@@ -3,6 +3,7 @@ package market.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import person.PersonAgent;
 import utilities.Gui;
 import market.MarketCustomerRole;
 
@@ -40,6 +41,11 @@ public class MarketCustomerGui implements Gui {
         	atTable = false;
            agent.msgAtTable();
         }
+        
+        if (xPos == -20 && yPos == 240
+        		& (xDestination == -20) & (yDestination == 240 )) {
+        	agent.msgDoneLeaving();
+        }
 
 	}
 
@@ -48,6 +54,7 @@ public class MarketCustomerGui implements Gui {
 		// TODO Auto-generated method stub
 		g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, distance, distance);
+        g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 
 	@Override

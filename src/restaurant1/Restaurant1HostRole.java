@@ -220,8 +220,9 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 		else{
 			counter = 0;
 		}
-		customer.setwaiter(waiter.get(s).waiter);
-		waiter.get(s).waiter.msgIWantFood(customer, tablenum, mc.location);
+		customer.setwaiter(waiter.get(s+1).waiter);
+		print("Assigning waiter " + waiter.get(s).waiter.getName());
+		waiter.get(s+1).waiter.msgIWantFood(customer, tablenum, mc.location);
 		table.setOccupant(customer);
 		Do("host seat customer");
 		waitingCustomers.remove(mc);
@@ -273,7 +274,10 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 		public String toString() {
 			return "table " + tableNumber;
 		}
-
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
 	}
 	
 	public String getRoleName(){

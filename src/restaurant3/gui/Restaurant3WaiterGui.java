@@ -2,7 +2,7 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
+import utilities.Gui; 
 import restaurant1.Restaurant1CustomerRole;
 import restaurant3.Restaurant3WaiterRole;
 import restaurant3.interfaces.Restaurant3Waiter;

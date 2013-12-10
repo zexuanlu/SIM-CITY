@@ -22,6 +22,11 @@ import utilities.restaurant.RestaurantCashier;
  */
 
 public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
+	// Boolean to determine off work
+	public boolean offWork = false;
+	
+	// Integer to determine num messages received from waiter
+	public int numReceived = 0;
 	
 	// For the purposes of JUnit testing
 	public EventLog log = new EventLog();
@@ -84,10 +89,10 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 		super(p);
 		cashierName = name;
 		// Creates map of food choices to food objects
-		prices.put("Chicken", 10.99);
-		prices.put("Steak", 15.99);
-		prices.put("Salad", 5.99);
-		prices.put("Pizza", 8.99);
+		prices.put("Mint Chip Ice Cream", 3.99);
+		prices.put("Rocky Road Ice Cream", 4.99);
+		prices.put("Green Tea Ice Cream", 5.99);
+		prices.put("Mocha Almond Fudge Ice Cream", 2.99);
 		
 		// Sets initial amount of restaurant's money
 		restaurantMoney = 800;
@@ -117,6 +122,13 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	private List<Food> marketOrders = Collections.synchronizedList(new ArrayList<Food>());
 
 	// Messages	
+	// Message from waiter saying that it's time to go home
+	public void msgOffWork() {
+		offWork = true;
+		++numReceived;
+		stateChanged();
+	}
+	
 	// Message from the cook detailing what was ordered from the market
 	public void msgOrderedFood(List<Food> list) {
 		// Copy all of the orders into market orders so there is a reference when market sends invoice
@@ -186,6 +198,11 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 			payMarket(markets.get(0));
 			return true;
 		}
+		
+		if (offWork) {
+			goOffWork();
+			return true;
+		}
 			
 		return false;
 		//we have tried all our rules and found
@@ -194,6 +211,15 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	}
 
 	// Actions
+	// If the number received is 2, then go off work
+	private void goOffWork() {
+		offWork = false;
+		if (numReceived == 2) {
+			numReceived = 0;
+			this.person.msgFinishedEvent(this);
+		}
+	}
+	
 	// Computes the check after receiving order from the waiter
 	private void computeCheck(Restaurant6Check c) {
 		print("Computing check..");
@@ -267,5 +293,8 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 		return "Restaurant 6 Cashier";
 	}
 
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }
 

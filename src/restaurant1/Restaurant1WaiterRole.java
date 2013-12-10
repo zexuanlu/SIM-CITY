@@ -29,14 +29,31 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	private Restaurant1HostRole host = null;
 	private Restaurant1CookRole cook= null;
 	private Restaurant1Cashier cashier = null;
-	private List<mycustomer> customer = new ArrayList<mycustomer>();
+	
+	public class mycustomer {
+		Restaurant1Customer c;
+		int table;
+		int location;
+		String choice;
+		double price;
+		
+		state s = state.waiting;
+		
+		mycustomer(Restaurant1Customer c, int table, int location){
+			this.location = location;
+			this.c = c;
+			this.table = table;
+		}
+	}
+	
+	public List<mycustomer> customer = new ArrayList<mycustomer>();
 	
 	public Map<String, Double> menue = new HashMap<String, Double>();
 	
 	String names;
 		
 	enum waiterstate {none, working, applyingbreak};
-	private waiterstate ws = waiterstate.working;
+	waiterstate ws = waiterstate.working;
 	
 	
 	public Restaurant1WaiterRole(String name, Person pa){
@@ -104,6 +121,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 	// Messages
 
 	public void msgIWantFood(Restaurant1Customer cust, int table, int loc) {
+		print("Seating customer");
 		customer.add(new mycustomer(cust, table, loc));
 		stateChanged();
 	}
@@ -192,10 +210,15 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */	
+		Do("SCHEDULER");
+		Do(customer.size() + "");
 		try{
 		for(mycustomer customers: customer){
+			System.err.println(customers.c);
 			if(customers.s == state.waiting){
+				System.err.println("Checking");
 			if (isBack == true) {
+					System.err.println("I need to seat the customer");
 					isBack = false;
 					seatCustomer(customers, customers.table);//the action
 					return true;//return true to the abstract agent to reinvoke the scheduler.
@@ -260,6 +283,7 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		catch(ConcurrentModificationException e){
 			return false;
 		}
+		Do("Why am I person 15?");
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent

@@ -42,7 +42,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	private Semaphore atGrill = new Semaphore(0);
 	private Semaphore atPlate = new Semaphore(0);
 	public Restaurant5CookGui cookGui; 
-	LinkedList<MarketAgent5> markets = new LinkedList<MarketAgent5>(); 
 	
 	public class marketOrder {
 		marketOrder(Map<String,Integer>f, OrderState _s){
@@ -190,14 +189,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	}
 
 	
-	public void msgHereisOutofList(MarketAgent5 myMarket, Map<String,Integer> outofList){  //unable to fulfill any of the order
-		//do we have to remove market after they have nothing? 
-		//since no items were sent, then i will just get them to redo the entire thing and change the market
-		marketOrder m = new marketOrder(outofList, OrderState.needtoOrder);
-		marketOrders.add(m);
-		markets.remove(myMarket);
-		stateChanged();
-	}
 	
 	public void msgfoodDone(Order o){
 		o.s = State.done;
@@ -207,7 +198,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		
 	
 		if (opened){ 
 			orderFoodthatisLow();
@@ -220,7 +210,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		}
 		
 		synchronized(marketOrders){
-			if (markets.size()!= 0){
 				for (marketOrder m: marketOrders){
 					if(m.s == OrderState.needtoOrder){
 						orderFood(m);
@@ -228,7 +217,7 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 					}
 				}
 			}
-		}
+
 		synchronized(orders){
 			for (Order o:orders){
 				if (o.s == State.done){
@@ -305,7 +294,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	}
 	
 	private void orderFood(marketOrder m){
-		if (markets.size()!=0){
 			m.s = OrderState.ordered;
 			print ("Cook ordered food that is low");
 			//pickaMarket().msgOrderFood(m.order);
@@ -314,7 +302,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 				orderfood.add(new market.Food(entry.getKey(), entry.getValue()));
 			}			
 			marketCashier.MsgIwantFood(this, cashier, orderfood, 5);//put in list of food
-		}
 	}
 	
 	private boolean checkInventory(){
@@ -420,12 +407,7 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		foods.get(o.choice).cookingtimes*1000);//getHungerLevel() * 1000);//how long to wait before running task
 		}
 	
-	private MarketAgent5 pickaMarket(){
-		MarketAgent5 temp; 
-		temp = markets.pop();
-		markets.addLast(temp);
-		return temp; 
-	}
+
 	
 	public void drain(){
 		for(Food f: foods.values()){
@@ -437,9 +419,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		return name;
 	}
 	
-	public void addMarket(MarketAgent5 m){
-		markets.addFirst(m); 
-	}
 	
 	public void setGui(Restaurant5CookGui l){
 		cookGui = l; 
@@ -474,4 +453,8 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		marketCashier = mc; 
 	}
 	
+	
+	public Restaurant5CookGui getGui(){
+		return cookGui; 
+	}
 }

@@ -20,6 +20,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public double money = 30;
 	Person p;
 	
+	private Semaphore leaving = new Semaphore(0, true);
+	
 	public MarketCustomerRole(Person person, String name){
 		super(person);
 		roleName = "Market Customer";
@@ -81,6 +83,10 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	public void msgAtTable(){
 		Do("At table");
 		atTable.release();
+	}
+	
+	public void msgDoneLeaving() {
+		leaving.release();
 	}
 
 	@Override
@@ -149,6 +155,13 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	void CollectandLeave(){
 		s = state.collected;
 		customerGui.DoLeave();
+		leaving.drainPermits();
+		try {
+			leaving.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		p.msgFinishedEvent(this, Receivedfood, money );
 	}
 
@@ -156,5 +169,8 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		return roleName;
 	}
 	
+	public utilities.Gui getGui(){
+		return customerGui; 
+	}
 	
 }

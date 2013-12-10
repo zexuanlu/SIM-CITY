@@ -2,7 +2,7 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
+import utilities.Gui; 
 import restaurant3.Restaurant3CookRole;
 
 public class Restaurant3CookGui implements Gui{

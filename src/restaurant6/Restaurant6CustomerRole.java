@@ -25,7 +25,7 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 	private Timer timer = new Timer();
 	private Timer readMenuTimer = new Timer();
 	private Timer washingDishesTimer = new Timer();
-	private Restaurant6CustomerGui customerGui;
+	public Restaurant6CustomerGui customerGui;
 	private int customerSeat;
 	private Random generator = new Random();	// To determine customer's food choice
 	private Random moneyGenerator = new Random(); // To determine random amount of money
@@ -149,13 +149,13 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 	public String generateChoice() {
 		int r = generator.nextInt(3);
 		if (r == 0)
-			myChoice = "Chicken";
+			myChoice = "Mint Chip Ice Cream";
 		if (r == 1)
-			myChoice = "Steak";
+			myChoice = "Rocky Road Ice Cream";
 		if (r == 2)
-			myChoice = "Salad";
+			myChoice = "Green Tea Ice Cream";
 		if (r == 3)
-			myChoice = "Pizza";
+			myChoice = "Mocha Almond Fudge Ice Cream";
 		return myChoice;
 	}
 	
@@ -181,17 +181,17 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 	// Finds the cheapest item on the menu if the customer can't afford choice
 	private String findCheapestItem(double money) {
 		String temp;
-		if (money >= 15.99) {
-			temp = "Steak";
+		if (money >= 5.99) {
+			temp = "Green Tea Ice Cream";
 		}
-		else if (money >= 10.99) {
-			temp = "Chicken";
+		else if (money >= 4.99) {
+			temp = "Rocky Road Ice Cream";
 		}
-		else if (money >= 8.99) {
-			temp = "Pizza";
+		else if (money >= 3.99) {
+			temp = "Mint Chip Ice Cream";
 		}
 		else {
-			temp = "Salad";
+			temp = "Mocha Almond Fudge Ice Cream";
 		}
 		return temp;
 	}
@@ -201,15 +201,9 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 	public void gotHungry() {
 		print("I'm hungry");
 		
-		// If the customer has debt, generate a random number enough to pay off that debt
-		// Also generate a random choice so the customer can switch it up
-		if (debt > 0) {
-			int temp = (int)debt + 15;
-			myMoney += generateMoney(100, temp);
-			myChoice = generateChoice();
-		}
+		myMoney = this.person.getWallet().getOnHand();
 		
-		print("My money: $" + myMoney);
+		print("My money: $" + this.person.getWallet().getOnHand());
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
@@ -581,6 +575,9 @@ public class Restaurant6CustomerRole extends Role implements Restaurant6Customer
 		print("My debt: $" + df.format(debt));
 		print("My bill: $" + df.format(myCheck.getBillAmount()));
 		print("Thank you for a lovely meal. I now have $" + df.format(myMoney) + ".");
+		
+		// Messages the person that he's done eating
+		this.person.msgFinishedEvent(this);
 	}
 	
 	// Accessors, etc.

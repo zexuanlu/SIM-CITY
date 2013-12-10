@@ -55,12 +55,12 @@ public class Restaurant2SDWaiterRole extends Restaurant2AbstractWaiterRole{
 
 	public void ordersToCook(){
 		waiterGui.DoTakeToCook(); 
-
 		try {
 			atCook.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.err.println("FREE AT LAST");
 		synchronized(MyCustomers){
 			for(MyCustomer mc : MyCustomers){
 				if(mc.getOrder() != "none"){

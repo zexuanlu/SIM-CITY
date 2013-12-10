@@ -179,4 +179,8 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 			mb.mCash.msgBillFromTheAir(payment);
 		}
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }

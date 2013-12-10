@@ -44,6 +44,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Scallops", 2000);
 		inventory.put("Lobster", 2000);
 		inventory.put("Crab", 2000);
+		inventory.put("Mint Chip Ice Cream", 2000);
+		inventory.put("Rocky Road Ice Cream", 2000);
+		inventory.put("Green Tea Ice Cream", 2000);
+		inventory.put("Mocha Almond Fudge Ice Cream", 2000);
+		inventory.put("Belgium", 2000);
+		inventory.put("Sassy", 2000);
+		inventory.put("Chocolate", 2000);
+		
 		price.put("Steak", (double) 2);
 		price.put("Car", (double) 2);
 		price.put("Pizza", (double) 2);
@@ -56,6 +64,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		price.put("Scallops", (double) 2);
 		price.put("Lobster", (double) 2);
 		price.put("Crab", (double) 2);
+		price.put("Mint Chip Ice Cream", (double) 2);
+		price.put("Rocky Road Ice Cream", (double) 2);
+		price.put("Green Tea Ice Cream", (double) 2);
+		price.put("Mocha Almond Fudge Ice Cream", (double) 2);
+		price.put("Belgium", (double) 2);
+		price.put("Sassy", (double) 2);
+		price.put("Chocolate", (double) 2);
 		
 	}
 
@@ -136,7 +151,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
-		mycustomer.add(new Mycustomer(customer, food));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		mycustomer.add(new Mycustomer(customer, temp));
 		stateChanged();
 	}
 
@@ -161,7 +180,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// end of in market scenario
 
 	public void MsgIwantFood(RestaurantCook cook, RestaurantCashier ca, List<Food> food, int number){
-		myrest.add(new Myrest(cook, ca, food, number));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		myrest.add(new Myrest(cook, ca, temp, number));
 		stateChanged();
 	}
 
@@ -177,7 +200,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food, Restaurant r, int restnum){
 		truck.add(t);
-		pendingOrder.add(new PendingOrder(cook, food, r, restnum));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		pendingOrder.add(new PendingOrder(cook, temp, r, restnum));
 		stateChanged();
 	}
 
@@ -359,5 +386,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	public String getRoleName(){
 		return roleName;
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
 	}
 }

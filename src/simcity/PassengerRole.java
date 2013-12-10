@@ -177,4 +177,8 @@ public class PassengerRole extends Role implements Passenger{   //TEMPORARY MADE
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return myGui; 
+	}
 }

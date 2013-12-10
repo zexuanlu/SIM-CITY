@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import person.PersonAgent;
+
 public class Restaurant2CookGui implements Gui {
 
     private Restaurant2CookRole agent = null;
@@ -90,6 +92,7 @@ public class Restaurant2CookGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         g.fillRect(xPos, yPos, 20, 20);
+        g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         g.drawString(orderText, xPos, yPos);
 		for(Map.Entry<Integer, String> entry: grillLabels.entrySet())
 		{

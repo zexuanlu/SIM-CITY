@@ -76,6 +76,10 @@ public class Restaurant3WaiterRole extends Restaurant3AbstractWaiter implements 
 	public void setGui(Restaurant3WaiterGui wg){
 		this.waiterGui = wg;
 	}
+	
+	public utilities.Gui getGui(){
+		return waiterGui; 
+	}
 
 	@Override
 	public void msgSeatCustomerAtTable(Restaurant3Customer c, int table) {

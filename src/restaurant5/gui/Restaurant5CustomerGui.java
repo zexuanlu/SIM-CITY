@@ -1,9 +1,11 @@
 package restaurant5.gui;
 
-import restaurant5.Restaurant5CustomerAgent;
+import restaurant5.Restaurant5CustomerAgent; 
 import utilities.Gui;
 
 import java.awt.*;
+
+import person.PersonAgent;
 
 public class Restaurant5CustomerGui implements Gui{
 	private int sit; 
@@ -105,6 +107,7 @@ public class Restaurant5CustomerGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
 		//This is the icon that stays at the customer's table telling you that they have ordered
 		if (showIcon){

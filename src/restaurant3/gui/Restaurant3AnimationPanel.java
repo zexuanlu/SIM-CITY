@@ -1,7 +1,7 @@
 package restaurant3.gui;
 
 import restaurant3.Restaurant3HostRole;
-
+import utilities.Gui; 
 import java.awt.*;
 
 import javax.swing.*;
@@ -48,7 +48,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 	
 	//Animation utilities
 	Timer animTimer = new Timer(2, this);
-	private List<Gui> guis = new ArrayList<Gui>();
+	public List<Gui> guis = new ArrayList<Gui>();
 	
 	public Restaurant3AnimationPanel() {
 		//Set up panel

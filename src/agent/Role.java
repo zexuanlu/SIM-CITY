@@ -1,6 +1,7 @@
 package agent;
 
 import java.io.*;
+import utilities.Gui; 
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -42,7 +43,7 @@ public abstract class Role {
             this.isActive = active;
     }
 
-    /**
+   /**
 * This should be called whenever state has changed that might cause
 * the agent to do something.
 */
@@ -99,4 +100,8 @@ public abstract class Role {
     }
     
     public abstract String getRoleName();
+
+
+	public abstract Gui getGui();
+	
 }

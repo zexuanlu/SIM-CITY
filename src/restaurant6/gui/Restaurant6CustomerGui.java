@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import person.PersonAgent;
+
 public class Restaurant6CustomerGui implements Gui{
 
 	private Restaurant6CustomerRole agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
 	private boolean isEating = false;
 	private boolean hasOrdered = false;
@@ -111,6 +113,7 @@ public class Restaurant6CustomerGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.CYAN);
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 	
 	// Draws if the customer has ordered
@@ -185,8 +188,8 @@ public class Restaurant6CustomerGui implements Gui{
 	}
 	
 	public void DoGoToWaitingArea() {
-		xDestination = generateWaitingSpot(45, 140);
-		yDestination = generateWaitingSpot(45, 140);
+		xDestination = generateWaitingSpot(140, 45);
+		yDestination = generateWaitingSpot(140, 45);
 	}
 	
 	public void DoGoToPickupSpot() {

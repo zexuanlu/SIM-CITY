@@ -160,4 +160,8 @@ public class MarketEmployeeRole extends Role implements MarketEmployee{
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return employeeGui; 
+	}
 }

@@ -8,7 +8,6 @@ import market.Food;
 import resident.test.mock.MockPerson;
 import restaurant6.Restaurant6CashierRole;
 import restaurant6.Restaurant6Invoice;
-import restaurant6.Restaurant6Restock;
 import restaurant6.Restaurant6Check.CheckState;
 import restaurant6.interfaces.Restaurant6Cashier;
 import restaurant6.test.mock.MockCook;
@@ -124,110 +123,6 @@ public class CashierTest extends TestCase
 	}
 	
 	/**
-	 * This tests the cashier's paying two markets in full
-	 */
-	public void testPayTwoMarketsInFull() { 
-		System.out.println("Testing Paying Two Markets in Full");
-		DecimalFormat df = new DecimalFormat("###.##");
-		
-		cashier.setRestaurantMoney(300); 
-		
-		// Precondition: Cashier shouldn't have any invoices from the markets
-		assertEquals("Cashier should have 0 invoices. It doesn't.", 0, cashier.getMarkets().size());
-		
-		// Precondition: Market should have 0 event logs
-		assertEquals("Market 1 should have 0 event logs. It doesn't.", 0, market.log.size());
-		
-		// Adding an order from the cook to the market
-		List<Restaurant6Restock> orders = new ArrayList<Restaurant6Restock>();
-		Restaurant6Restock item = new Restaurant6Restock("Chicken", 7);
-		orders.add(item);
-		
-		// Messages the markets the ordered inventory
-		market.msgOrderFood(orders);
-		
-		// Makes sure that the first market has two logs now, which are printed upon receipt of the msgOrderFood message
-		assertEquals("Market 1 should have 2 logs.", 2, market.log.size());
-		
-		// Other log event should say that market received order message
-		assertTrue(market.log.containsString("Received order from cook."));
-		
-		// Market event log should say that the market is not able to fulfill the order
-		assertTrue(market.log.getLastLoggedEvent().toString().contains("Cannot fulfill the order, but can fulfill 5"));
-		
-		// Messages the cashier the invoice from the market
-		cashier.msgPleasepaytheBill(market, 5*10.99);
-		
-		// Cashier should have 1 invoice in markets list now
-		assertEquals("Cashier should have 1 invoice from market 1.", 1, cashier.getMarkets().size());
-		
-		// Invoice should be from the first market
-		assertEquals("Invoice is from the correct market (Market 1).", market, cashier.getMarkets().get(0).market);
-		
-		// Messages the second market to order the leftover inventory
-		List<Restaurant6Restock> ordersToSecond = new ArrayList<Restaurant6Restock>();
-		Restaurant6Restock itemForSecond = new Restaurant6Restock("Chicken", 2);
-		ordersToSecond.add(itemForSecond);
-		market2.msgOrderFood(ordersToSecond);
-		
-		// Makes sure that the first market has two logs now, which are printed upon receipt of the msgOrderFood message
-		assertEquals("Market 2 should have 2 logs.", 2, market2.log.size());
-		
-		// Other log event should say that market received order message
-		assertTrue(market2.log.containsString("Received order from cook."));
-		
-		// Market event log should say that the market is not able to fulfill the order
-		assertTrue(market2.log.getLastLoggedEvent().toString().contains("Can fulfill the order of 2"));
-		
-		// Messages the cashier the second invoice from the market
-		cashier.msgPleasepaytheBill(market2, 2*10.99);
-		
-		// Makes sure that the cashier has two invoices after receiving the messages from the market
-		assertEquals("Cashier should have 2 invoices.", 2, cashier.getMarkets().size());
-		
-		// Invokes the cashier's scheduler and executes the action and checks to make sure action was executed
-		assertTrue(cashier.pickAndExecuteAnAction());
-		
-		// Checks to make sure that the cashier only has one invoice left after the action
-		assertEquals("Cashier should have 1 invoices after executing the action.", 1, cashier.getMarkets().size());	
-		
-		// Checks to make sure that the cashier's log contains the correct message - that it can pay the market in full
-		assertTrue(cashier.log.containsString("Can pay the market in full. Paid $54.95"));
-		
-		// Checks to make sure that the cashier's event log has the right message
-		assertTrue(cashier.log.getLastLoggedEvent().toString().contains("My money is now $245.05"));
-		
-		// Checks cashier's restaurant money amount
-		assertEquals("Cashier should have $54.95 less than original.", df.format((300-(5*10.99))), df.format(cashier.getRestaurantMoney()));
-		
-		// Market should have a logged event that says received payment from cashier
-		assertTrue(market.log.getLastLoggedEvent().toString().contains("Received payment of $54.95 from cashier."));
-		
-		// Invokes the cashier's scheduler and executes the action and checks to make sure action was executed
-		assertTrue(cashier.pickAndExecuteAnAction());
-		
-		// Checks to make sure that the cashier has no invoices after this action
-		assertEquals("Cashier should have 0 invoices after executing the action.", 0, cashier.getMarkets().size());
-		
-		// Makes sure the cashier's log contains the message that it can pay the market in full
-		assertTrue(cashier.log.containsString("Can pay the market in full. Paid $21.98"));
-		
-		// Makes sure that the cashier's event log has the right message
-		assertTrue(cashier.log.getLastLoggedEvent().toString().contains("My money is now $223.07"));
-		
-		// Checks cashier's restaurant money amount
-		assertEquals("Cashier should have $76.93 less than original.", df.format((300-((5*10.99)+(2*10.99)))), df.format(cashier.getRestaurantMoney()));
-		
-		// Market should have a logged event that says received payment from cashier
-		assertTrue(market2.log.getLastLoggedEvent().toString().contains("Received payment of $21.98 from cashier."));
-		
-		// Makes sure cashier and markets have correct number of logs
-		assertEquals("Cashier should have 4 logs.", 4, cashier.log.size());
-		assertEquals("Market should have 3 logs.", 3, market.log.size());
-		assertEquals("Market 2 should have 3 logs.", 3, market2.log.size());
-	}
-	
-	/**
 	 * This tests the cashier under very simple terms: one customer is ready to pay the exact bill.
 	 */
 	public void testCustomerPayExactAmount() {		
@@ -252,7 +147,7 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 0 logs. It doesn't.", 0, customer.log.size());
 		
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Chicken", waiter, customer);	
+		cashier.pleaseComputeCheck("Rocky Road Ice Cream", waiter, customer);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 1 event log.", 1, cashier.log.size());
@@ -261,8 +156,8 @@ public class CashierTest extends TestCase
 		// Cashier should now have 1 check
 		assertEquals("Cashier should have 1 check.", 1, cashier.getChecks().size());
 		
-		// Check's amount should be equal to 10.99
-		assertEquals("Check amount should be $10.99",  10.99, cashier.getChecks().get(0).getBillAmount());
+		// Check's amount should be equal to 4.99
+		assertEquals("Check amount should be $4.99",  4.99, cashier.getChecks().get(0).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(0).getCheckState());
@@ -285,8 +180,8 @@ public class CashierTest extends TestCase
 		// Make sure customer event log has no entries
 		assertEquals("Customer should have 0 in the event log.", 0, customer.log.size());
 		
-		// Sets the customer's payment amount to price of chicken
-		cashier.iWouldLikeToPayPlease(10.99, customer, cashier.getChecks().get(0));
+		// Sets the customer's payment amount to price of ice cream
+		cashier.iWouldLikeToPayPlease(4.99, customer, cashier.getChecks().get(0));
 		
 		// Makes sure that the cashier has set the state of the check to customerIsPaying
 		assertEquals("Check that cashier keeps track of should now have state customerIsPaying.", CheckState.customerIsPaying, cashier.getChecks().get(0).getCheckState());
@@ -304,12 +199,12 @@ public class CashierTest extends TestCase
 		// Makes sure that the cashier has no checks after the customer has fully paid
 		assertEquals("Cashier should have 0 checks.", 0, cashier.getChecks().size());
 		
-		// Cashier should now have $10.99 more in the register
-		assertEquals("Cashier should now have $310.99.", 310.99, cashier.getRestaurantMoney());
+		// Cashier should now have $4.99 more in the register
+		assertEquals("Cashier should now have $304.99.", 304.99, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 4 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 4 event logs.", 4, cashier.log.size());
-		assertTrue(cashier.log.containsString("My money is now $310.99"));
+		assertTrue(cashier.log.containsString("My money is now $304.99"));
 		assertTrue(cashier.log.containsString("Your change is $0.00. Have a nice day!"));	
 		
 	}
@@ -340,7 +235,7 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 0 logs. It doesn't.", 0, customer.log.size());
 		
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Chicken", waiter, customer);	
+		cashier.pleaseComputeCheck("Green Tea Ice Cream", waiter, customer);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 1 event log.", 1, cashier.log.size());
@@ -349,8 +244,8 @@ public class CashierTest extends TestCase
 		// Cashier should now have 1 check
 		assertEquals("Cashier should have 1 check.", 1, cashier.getChecks().size());
 		
-		// Check's amount should be equal to 10.99
-		assertEquals("Check amount should be $10.99",  10.99, cashier.getChecks().get(0).getBillAmount());
+		// Check's amount should be equal to 5.99
+		assertEquals("Check amount should be $5.99",  5.99, cashier.getChecks().get(0).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(0).getCheckState());
@@ -374,7 +269,7 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 0 in the event log.", 0, customer.log.size());
 		
 		// Sets the customer's payment amount to price of chicken
-		cashier.iWouldLikeToPayPlease(5.99, customer, cashier.getChecks().get(0));
+		cashier.iWouldLikeToPayPlease(3.99, customer, cashier.getChecks().get(0));
 		
 		// Makes sure that the cashier has set the state of the check to customerIsPaying
 		assertEquals("Check that cashier keeps track of should now have state customerIsPaying.", CheckState.customerIsPaying, cashier.getChecks().get(0).getCheckState());
@@ -387,22 +282,22 @@ public class CashierTest extends TestCase
 		
 		// Check the customer's log. One should have debt and another should have change
 		assertTrue(customer.log.containsString("Received change from cashier. Change: 0"));
-		assertTrue(customer.log.containsString("Received debt amount from cashier. Debt: 5"));
+		assertTrue(customer.log.containsString("Received debt amount from cashier. Debt: 2"));
 		
 		// Makes sure that the cashier has no checks after the customer has fully paid
 		assertEquals("Cashier should have 0 checks.", 0, cashier.getChecks().size());
 		
-		// Cashier should now have $10.99 more in the register
-		assertEquals("Cashier should now have $305.99.", 305.99, cashier.getRestaurantMoney());
+		// Cashier should now have $3.99 more in the register
+		assertEquals("Cashier should now have $303.99.", 303.99, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 4 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 4 event logs.", 4, cashier.log.size());
-		assertTrue(cashier.log.containsString("My money is now $305.99"));
+		assertTrue(cashier.log.containsString("My money is now $303.99"));
 		assertTrue(cashier.log.containsString("Your payment is not enough. You have to pay next time."));	
 		
 		// Step 3: Customer with debt comes back to eat. Waiter asks cashier to compute check.
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Salad", waiter, customer);	
+		cashier.pleaseComputeCheck("Green Tea Ice Cream", waiter, customer);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 5 event logs.", 5, cashier.log.size());
@@ -412,7 +307,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 1 check.", 1, cashier.getChecks().size());
 		
 		// Check's amount should be equal to 5.99 + debt
-		assertEquals("Check amount should be $5.99 + Debt", 10.99, cashier.getChecks().get(0).getBillAmount());
+		assertEquals("Check amount should be $5.99 + Debt", 7.99, cashier.getChecks().get(0).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(0).getCheckState());
@@ -435,7 +330,7 @@ public class CashierTest extends TestCase
 		// Make sure customer event log has 2 entries
 		assertEquals("Customer should have 2 in the event log.", 2, customer.log.size());
 		
-		// Sets the customer's payment amount to price of chicken
+		// Sets the customer's payment amount to price of green tea ice cream
 		cashier.iWouldLikeToPayPlease(30, customer, cashier.getChecks().get(0));
 		
 		// Makes sure that the cashier has set the state of the check to customerIsPaying
@@ -448,19 +343,19 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 4 event logs.", 4, customer.log.size());
 		
 		// Check the customer's log. One should have debt and another should have change
-		assertTrue(customer.log.containsString("Received change from cashier. Change: 19"));
+		assertTrue(customer.log.containsString("Received change from cashier. Change: 22"));
 		assertTrue(customer.log.containsString("Received debt amount from cashier. Debt: 0"));
 		
 		// Makes sure that the cashier has no checks after the customer has fully paid
 		assertEquals("Cashier should have 0 checks.", 0, cashier.getChecks().size());
 		
-		// Cashier should now have $10.99 more in the register
-		assertEquals("Cashier should now have $316.98.", 316.98, cashier.getRestaurantMoney());
+		// Cashier should now have $7.99 more in the register
+		assertEquals("Cashier should now have $311.98.", 311.98, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 8 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 8 event logs.", 8, cashier.log.size());
-		assertTrue(cashier.log.containsString("My money is now $316.98"));
-		assertTrue(cashier.log.containsString("Your change is $19.01. Have a nice day!"));
+		assertTrue(cashier.log.containsString("My money is now $311.98"));
+		assertTrue(cashier.log.containsString("Your change is $22.01. Have a nice day!"));
 	}
 	
 	/**
@@ -488,7 +383,7 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 0 logs. It doesn't.", 0, customer.log.size());
 		
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Chicken", waiter, customer);	
+		cashier.pleaseComputeCheck("Mocha Almond Fudge Ice Cream", waiter, customer);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 1 event log.", 1, cashier.log.size());
@@ -497,8 +392,8 @@ public class CashierTest extends TestCase
 		// Cashier should now have 1 check
 		assertEquals("Cashier should have 1 check.", 1, cashier.getChecks().size());
 		
-		// Check's amount should be equal to 10.99
-		assertEquals("Check amount should be $10.99",  10.99, cashier.getChecks().get(0).getBillAmount());
+		// Check's amount should be equal to 2.99
+		assertEquals("Check amount should be $2.99",  2.99, cashier.getChecks().get(0).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(0).getCheckState());
@@ -512,7 +407,7 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 0 logs. It doesn't.", 0, customer.log.size());
 		
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Steak", waiter, customer2);	
+		cashier.pleaseComputeCheck("Green Tea Ice Cream", waiter, customer2);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 2 event logs.", 2, cashier.log.size());
@@ -522,10 +417,10 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 2 checks.", 2, cashier.getChecks().size());
 		
 		// Check was added to the end of the list
-		assertEquals("Check for steak should be at end of the cashier's checks list.", "Steak", cashier.getChecks().get(1).getChoice());
+		assertEquals("Check for steak should be at end of the cashier's checks list.", "Green Tea Ice Cream", cashier.getChecks().get(1).getChoice());
 		
-		// Check's amount should be equal to 10.99
-		assertEquals("Check amount should be $15.99",  15.99, cashier.getChecks().get(1).getBillAmount());
+		// Check's amount should be equal to 5.99
+		assertEquals("Check amount should be $5.99",  5.99, cashier.getChecks().get(1).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(1).getCheckState());
@@ -562,7 +457,7 @@ public class CashierTest extends TestCase
 		// Make sure customer event log has no entries
 		assertEquals("Customer should have 0 in the event log.", 0, customer.log.size());
 		
-		// Sets the customer's payment amount to price of chicken
+		// Sets the customer's payment amount
 		cashier.iWouldLikeToPayPlease(12.99, customer, cashier.getChecks().get(0));
 		
 		// Makes sure that the cashier has set the state of the check to customerIsPaying
@@ -575,19 +470,19 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 2 event logs.", 2, customer.log.size());
 		
 		// Check the customer's log. One should have debt and another should have change
-		assertTrue(customer.log.containsString("Received change from cashier. Change: 2"));
+		assertTrue(customer.log.containsString("Received change from cashier. Change: 10"));
 		assertTrue(customer.log.containsString("Received debt amount from cashier. Debt: 0"));
 		
 		// Makes sure that the cashier has no checks after the customer has fully paid
 		assertEquals("Cashier should have 1 checks.", 1, cashier.getChecks().size());
 		
-		// Cashier should now have $10.99 more in the register
-		assertEquals("Cashier should now have $310.99.", 310.99, cashier.getRestaurantMoney());
+		// Cashier should now have $2.99 more in the register
+		assertEquals("Cashier should now have $32.99.", 302.99, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 6 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 6 event logs.", 6, cashier.log.size());
-		assertTrue(cashier.log.containsString("My money is now $310.99"));
-		assertTrue(cashier.log.containsString("Your change is $2. Have a nice day!"));
+		assertTrue(cashier.log.containsString("My money is now $302.99"));
+		assertTrue(cashier.log.containsString("Your change is $10. Have a nice day!"));
 		
 		// Step 4: Customer 2 goes to pay the check
 		// Make sure customer event log has no entries
@@ -607,22 +502,22 @@ public class CashierTest extends TestCase
 		
 		// Check the customer's log. One should have debt and another should have change
 		assertTrue(customer2.log.containsString("Received change from cashier. Change: 0"));
-		assertTrue(customer2.log.containsString("Received debt amount from cashier. Debt: 12.99"));
+		assertTrue(customer2.log.containsString("Received debt amount from cashier. Debt: 2.99"));
 		
 		// Makes sure that the cashier has no checks after the customer has fully paid
 		assertEquals("Cashier should have 0 checks.", 0, cashier.getChecks().size());
 		
 		// Cashier should now have $3 more in the register
-		assertEquals("Cashier should now have $313.99.", 313.99, cashier.getRestaurantMoney());
+		assertEquals("Cashier should now have $305.99.", 305.99, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 8 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 8 event logs.", 8, cashier.log.size());
 		assertTrue(cashier.log.containsString("Your payment is not enough. You have to pay next time."));
-		assertTrue(cashier.log.getLastLoggedEvent().toString().contains("My money is now $313.99"));
+		assertTrue(cashier.log.getLastLoggedEvent().toString().contains("My money is now $305.99"));
 		
 		// Step 5: Customer with debt comes back to eat. Waiter asks cashier to compute check.
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Pizza", waiter, customer2);	
+		cashier.pleaseComputeCheck("Green Tea Ice Cream", waiter, customer2);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 9 event logs.", 9, cashier.log.size());
@@ -631,8 +526,8 @@ public class CashierTest extends TestCase
 		// Cashier should now have 1 check
 		assertEquals("Cashier should have 1 check.", 1, cashier.getChecks().size());
 		
-		// Check's amount should be equal to 8.99 + customer's debt
-		assertEquals("Check amount should be $8.99 + Debt", 21.98, cashier.getChecks().get(0).getBillAmount());
+		// Check's amount should be equal to 5.99 + customer's debt
+		assertEquals("Check amount should be $5.99 + Debt", 8.98, cashier.getChecks().get(0).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(0).getCheckState());
@@ -668,19 +563,19 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 4 event logs.", 4, customer2.log.size());
 		
 		// Check the customer's log. One should have debt and another should have change
-		assertTrue(customer2.log.containsString("Received change from cashier. Change: 8.02"));
+		assertTrue(customer2.log.containsString("Received change from cashier. Change: 21.02"));
 		assertTrue(customer2.log.containsString("Received debt amount from cashier. Debt: 0"));
 		
 		// Makes sure that the cashier has no checks after the customer has fully paid
 		assertEquals("Cashier should have 0 checks.", 0, cashier.getChecks().size());
 		
-		// Cashier should now have $21.98 more in the register
-		assertEquals("Cashier should now have $335.97.", 335.97, cashier.getRestaurantMoney());
+		// Cashier should now have $314.97 in the register
+		assertEquals("Cashier should now have $314.97.", 314.97, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 12 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 12 event logs.", 12, cashier.log.size());
-		assertTrue(cashier.log.containsString("My money is now $335.97"));
-		assertTrue(cashier.log.containsString("Your change is $8.02. Have a nice day!"));
+		assertTrue(cashier.log.containsString("My money is now $314.97"));
+		assertTrue(cashier.log.containsString("Your change is $21.02. Have a nice day!"));
 	}	
 	
 	/**
@@ -713,13 +608,13 @@ public class CashierTest extends TestCase
 		assertEquals("Market should have 0 logs.", 0, market.log.size());		
 		
 		// Adding an order from the cook to the market
-		List<Restaurant6Restock> orders = new ArrayList<Restaurant6Restock>();
-		Restaurant6Restock item = new Restaurant6Restock("Pizza", 1);
+		List<Food> orders = new ArrayList<Food>();
+		Food item = new Food("Mint Chip Ice Cream", 1);
 		orders.add(item);
 		
 		// Step 1: Market gets an order and then bills the cashier
-		// Messages the market the ordered inventory
-		market.msgOrderFood(orders);
+		// Messages the markets the ordered inventory
+		market.MsgIwantFood(cook, cashier, orders, 1);
 		
 		// Makes sure that the market has two logs now, which are printed upon receipt of the msgOrderFood message
 		assertEquals("Market should have 2 logs.", 2, market.log.size());
@@ -731,13 +626,13 @@ public class CashierTest extends TestCase
 		assertTrue(market.log.containsString("Can fulfill the order of 1"));
 		
 		// Messages the cashier the invoice from the market
-		cashier.msgPleasepaytheBill(market, 8.99);
+		cashier.msgPleasepaytheBill(market, 3.99);
 		
 		// Makes sure that the cashier has one invoice after receiving the message from the market
 		assertEquals("Cashier should have 1 invoice.", 1, cashier.getMarkets().size());
 		
 		// Checks that the cashier's markets list has the same invoice amount as what was just added
-		assertEquals("Cashier should have an invoice of $8.99", 8.99, cashier.getMarkets().get(0).money);
+		assertEquals("Cashier should have an invoice of $3.99", 3.99, cashier.getMarkets().get(0).money);
 	
 		// Step 2: Waiter asks cashier to compute the check
 		// Precondition: cashier should have $300
@@ -750,7 +645,7 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 0 logs. It doesn't.", 0, cashier.log.size());
 		
 		// Adds an order for the cashier to compute
-		cashier.pleaseComputeCheck("Chicken", waiter, customer);	
+		cashier.pleaseComputeCheck("Mint Chip Ice Cream", waiter, customer);	
 
 		// Checks the cashier's event log
 		assertEquals("Cashier should have 1 event log.", 1, cashier.log.size());
@@ -759,8 +654,8 @@ public class CashierTest extends TestCase
 		// Cashier should now have 1 check
 		assertEquals("Cashier should have 1 check.", 1, cashier.getChecks().size());
 		
-		// Check's amount should be equal to 10.99
-		assertEquals("Check amount should be $10.99",  10.99, cashier.getChecks().get(0).getBillAmount());
+		// Check's amount should be equal to 3
+		assertEquals("Check amount should be $3.99",  3.99, cashier.getChecks().get(0).getBillAmount());
 		
 		// Check should have state of toBeComputed
 		assertEquals("Cashier's check should have state of toBeComputed.", CheckState.toBeComputed, cashier.getChecks().get(0).getCheckState());
@@ -787,7 +682,7 @@ public class CashierTest extends TestCase
 		assertEquals("Customer should have 0 in the event log.", 0, customer.log.size());
 		
 		// Sets the customer's payment amount to price of chicken
-		cashier.iWouldLikeToPayPlease(10.99, customer, cashier.getChecks().get(0));
+		cashier.iWouldLikeToPayPlease(3.99, customer, cashier.getChecks().get(0));
 		
 		// Makes sure that the cashier has set the state of the check to customerIsPaying
 		assertEquals("Check that cashier keeps track of should now have state customerIsPaying.", CheckState.customerIsPaying, cashier.getChecks().get(0).getCheckState());
@@ -809,11 +704,11 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 0 checks.", 0, cashier.getChecks().size());
 		
 		// Cashier should now have $10.99 more in the register
-		assertEquals("Cashier should now have $310.99.", 310.99, cashier.getRestaurantMoney());
+		assertEquals("Cashier should now have $303.", 303.99, cashier.getRestaurantMoney());
 		
 		// Cashier's event log should have 4 logs now - one with changed restaurant money and one that tells customer change
 		assertEquals("Cashier should have 4 event logs.", 4, cashier.log.size());
-		assertTrue(cashier.log.containsString("My money is now $310.99"));
+		assertTrue(cashier.log.containsString("My money is now $303.99"));
 		assertTrue(cashier.log.containsString("Your change is $0.00. Have a nice day!"));
 		
 		/*
@@ -826,13 +721,13 @@ public class CashierTest extends TestCase
 		assertEquals("Cashier should have 0 invoices after executing the action", 0, cashier.getMarkets().size());	
 		
 		// Checks to make sure that the cashier's log contains the correct message - that it can pay the market in full
-		assertTrue(cashier.log.containsString("Can pay the market in full. Paid $8.99"));
+		assertTrue(cashier.log.containsString("Can pay the market in full. Paid $3.99"));
 		
 		// Check to make sure that the cashier's restaurant money amount has decreased by the amount of the order
-		assertEquals("Cashier should have $8.99 less in the register.", df.format(310.99-8.99), df.format(cashier.getRestaurantMoney()));
+		assertEquals("Cashier should have $3.99 less in the register.", df.format(303.99-3.99), df.format(cashier.getRestaurantMoney()));
 
 		// Checks to make sure that the cashier's last log contains the right message
-		assertTrue(cashier.log.getLastLoggedEvent().toString().contains("My money is now $302"));
+		assertTrue(cashier.log.getLastLoggedEvent().toString().contains("My money is now $300"));
 		
 		// Checks the total number of cashier event logs
 		assertEquals("Cashier should have 6 event logs.", 6, cashier.log.size());
@@ -841,7 +736,7 @@ public class CashierTest extends TestCase
 		assertEquals("Market should have 3 logged events.", 3, market.log.size());
 		
 		// Market should have a logged event that says received payment from cashier
-		assertTrue(market.log.getLastLoggedEvent().toString().contains("Received payment of $8.99 from cashier."));
+		assertTrue(market.log.getLastLoggedEvent().toString().contains("Received payment of $3.99 from cashier."));
 		
 	}
 }

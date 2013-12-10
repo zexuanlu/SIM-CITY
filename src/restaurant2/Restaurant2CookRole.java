@@ -42,8 +42,8 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	private Map<String, Integer> cookTimes = new HashMap<String, Integer>();
 	private Map<MyMarket, Check> owed = new HashMap<MyMarket, Check>();
 	private Food inventory = new Food(10,10,10,10,10,10);
-	public Restaurant2RevolvingStand revolver = new Restaurant2RevolvingStand();
-	
+	public Restaurant2RevolvingStand revolver; //= new Restaurant2RevolvingStand();
+
 	private Semaphore atGrill = new Semaphore(0, true);
 	private Semaphore atCs = new Semaphore(0, true);
 
@@ -52,7 +52,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	private MyMarket mm3;
 	private MyMarket market;
 	public enum MarketState {Idle, OrderedFrom, NeedsPayment};
-	
+
 	/**
 	 * Constructor for CookAgent class
 	 *
@@ -67,13 +67,6 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		cookTimes.put("Ribs", 1500);
 		cookTimes.put("Salad", 750);
 		cookTimes.put("Pound Cake", 900);
-		
-		checkStand.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				takeFromStand();
-			}
-		}, 0, 6000);
 	}
 	public void setMarket(MarketAgent a, MarketAgent b, MarketAgent c){
 		market = new MyMarket(a, "market");
@@ -83,10 +76,19 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		markets.add(mm1);
 		markets.add(mm2);
 		markets.add(mm3);*/
+		checkStand.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				Do("THE LORD");
+				stateChanged();
+			}
+		}, 0, 1000);
 
 	}
 	public void setGui(Restaurant2CookGui c){
 		cookGui = c;
+	}
+	public void setRevolvingStand(Restaurant2RevolvingStand r){
+		revolver = r;
 	}
 	// Messages
 	public void msgOrderToCook(String orderString, Restaurant2Waiter waiter, Restaurant2CustomerRole customer) {
@@ -141,15 +143,18 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-
+		Do("GUL IM COOKIN");
 		checkInventory();//check inventory every time we iterate to make sure were stocked
+		if(!revolver.isEmpty()){
+			takeFromStand();
+		}
 		for(int i=0; i<orders.size(); i++){
 			if(orders.get(i).state == OrderState.Uncooked){
 				orders.get(i).state = OrderState.Cooking;
 				Restaurant2Order order = orders.get(i);
 				int num = inventory.getInventory(order.order);
 				if(num > 0){
-					int pos = grill.getNextFree();//add a location for -1 in the cookGui
+					int pos = grill.getNextFree();
 					goToGrill(pos, order);
 					return true;
 				}
@@ -175,7 +180,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		orders.add(revolver.remove());
 	}
 	private void cookFood(final int position, final Restaurant2Order custOrder) {
-		
+
 		int cookTime = cookTimes.get(custOrder.getOrder());//get the cook time from our map
 		timer.schedule(new TimerTask() {
 
@@ -484,7 +489,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		}
 
 	}*/
-	
+
 	// FIX
 	@Override
 	public String getRoleName() {
@@ -493,17 +498,21 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	@Override
 	public void msgHereisYourFood(MarketTruck t, List<market.Food> fList) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void msgEmptyStock() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
+
+
 	public void setMarketCashier(MarketCashierRole r) {
 		marketCashier = r;
+	}
+	
+	public utilities.Gui getGui(){
+		return cookGui; 
 	}
 }
 

@@ -176,7 +176,7 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 											waiterSelect = 0;
 										}
 									}
-									seatCustomer(customer, table, (waiters.get(waiterSelect)).waiter);//the action
+									seatCustomer(customer, table, (waiters.get(0)).waiter);//the action
 									return true;
 								}
 							}
@@ -325,6 +325,10 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 	public void msgEndOfDay(){
 		endOfDay = true;
 		stateChanged();
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
 	}
 }
 

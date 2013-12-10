@@ -20,7 +20,7 @@ public class PassengerGui implements Gui {
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
 	public Image pImg = img.getImage();
 
-	
+	public boolean isPresent; 
 
 	public PassengerGui(PassengerRole mp, int x, int y){
 		passenger = mp; 
@@ -40,7 +40,7 @@ public class PassengerGui implements Gui {
     }
 	
     public boolean isPresent() {
-        return true;
+        return isPresent;
     }
     
     public void updatePosition() {
@@ -82,4 +82,7 @@ public class PassengerGui implements Gui {
     }
 
     	
+    public void setPresent(boolean b){
+    	isPresent = b; 
+    }
 }

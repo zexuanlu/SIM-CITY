@@ -5,7 +5,6 @@ import java.util.List;
 import market.Food;
 import restaurant6.Restaurant6Check;
 import restaurant6.Restaurant6Invoice;
-import restaurant6.Restaurant6Restock;
 import utilities.restaurant.RestaurantCashier;
 
 public interface Restaurant6Cashier extends RestaurantCashier {
@@ -24,5 +23,10 @@ public interface Restaurant6Cashier extends RestaurantCashier {
 	 * @param items
 	 */
 	public abstract void msgOrderedFood(List<Food> items);
+
+	/**
+	 * Sent by waiters when it's time to go off work
+	 */
+	public abstract void msgOffWork();
 
 }

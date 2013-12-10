@@ -269,4 +269,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		accounts.put(accountNumber, new Account(owner, balance, accountNumber));
 		totalMoney += balance;
 	}
+	
+	
+	
 }

@@ -216,4 +216,8 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		endOfDay++;
 		stateChanged();
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }

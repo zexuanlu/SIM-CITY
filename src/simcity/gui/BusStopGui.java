@@ -38,5 +38,9 @@ public class BusStopGui implements Gui{
 		return d; 
 		
 	}
+	
+	public void setPresent(boolean b){
+		
+	}
 
 }

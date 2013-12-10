@@ -32,7 +32,9 @@ public class Restaurant4SDWaiterRole extends Restaurant4AbstractWaiter{
 		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		Do("Customer ordered " + customer.choice + " from table " + customer.table);
 		stand.insertOrder(new Order(this, customer.choice, customer.table));
+		Do("Stuffing Stand");
 		customer.s = state.sitting;
 		gui.GoToLocation("Home");
 	}

@@ -9,7 +9,6 @@ import market.interfaces.MarketCustomer;
 import market.interfaces.MarketTruck;
 import restaurant6.Restaurant6Check;
 import restaurant6.Restaurant6Invoice;
-import restaurant6.Restaurant6Restock;
 import restaurant6.interfaces.Restaurant6Cashier;
 import restaurant6.interfaces.Restaurant6Market;
 import utilities.restaurant.RestaurantCashier;
@@ -37,14 +36,14 @@ public class MockMarket extends Mock implements MarketCashier {
 	 * Cook sends a message to the market ordering food
 	 * @param orders
 	 */
-	public void msgOrderFood(List<Restaurant6Restock> orders) {
+	public void msgOrderFood(List<Food> orders) {
 		log.add(new LoggedEvent("Received order from cook."));	
-		for (Restaurant6Restock r : orders) {
-			if (r.getAmount() > inventory) {
-				log.add(new LoggedEvent("Cannot fulfill the order, but can fulfill " + inventory + r.getOrderChoice()));
+		for (Food r : orders) {
+			if (r.amount > inventory) {
+				log.add(new LoggedEvent("Cannot fulfill the order, but can fulfill " + inventory + r.choice));
 			}
 			else {
-				log.add(new LoggedEvent("Can fulfill the order of " + r.getAmount() + r.getOrderChoice()));
+				log.add(new LoggedEvent("Can fulfill the order of " + r.amount + r.choice));
 			}
 		}	
 	}

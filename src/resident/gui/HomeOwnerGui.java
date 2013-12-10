@@ -12,14 +12,14 @@ public class HomeOwnerGui implements Gui {
     private HomeOwnerRole homeOwner = null;
     public boolean isPresent;
     
-    private int xPos = 600, yPos = 50; // Default home owner position
-    private int xDestination = 600, yDestination = 50; // Default start position
+    private int xPos = 20, yPos = 50; // Default home owner position
+    private int xDestination = 20, yDestination = 50; // Default start position
     
     private int homeX = 50;
     private int homeY = 50;
     private int fridgeX = 70;
     private int fridgeY = 170;
-    private int doorX = 600;
+    private int doorX = 20;
     private int doorY = 50;
     private int stoveX = 100;
     private int stoveY = 170;

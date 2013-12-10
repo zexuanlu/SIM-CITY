@@ -215,5 +215,9 @@ public String getRoleName(){
 	return "Restaurant 5 Cashier";
 }
 
+public utilities.Gui getGui(){
+	return null; 
+}
+
 
 }

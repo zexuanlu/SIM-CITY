@@ -17,7 +17,7 @@ public class Restaurant5AnimationPanel extends JPanel implements ActionListener 
     private Image bufferImage;
     private Dimension bufferSize;
 
-    private List<Gui> guis = new ArrayList<Gui>();
+    public List<Gui> guis = new ArrayList<Gui>();
 
     public Restaurant5AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -51,26 +51,26 @@ public class Restaurant5AnimationPanel extends JPanel implements ActionListener 
         g2.fillRect(400,250,50,50);
         
         g2.setColor(Color.blue);
-        g2.fillRect(450,20,30,130);
+        g2.fillRect(400,20,30,130);
         
         g2.setColor(Color.PINK);
-        g2.fillRect(450, 20, 30, 10);
+        g2.fillRect(400, 20, 30, 10);
         
         g2.setColor(Color.blue);
-        g2.fillRect(560,20,30,30);
+        g2.fillRect(480,20,30,30);
         
         g2.setColor(Color.blue);
-        g2.fillRect(560,70,30,30);
+        g2.fillRect(480,70,30,30);
         
         g2.setColor(Color.blue);
-        g2.fillRect(560,120,30,30);
+        g2.fillRect(480,120,30,30);
    
-
-        for(Gui gui : guis) {
-            if (gui.isPresent()) {
-                gui.updatePosition();
-            }
-        }
+//
+//        for(Gui gui : guis) {
+//            if (gui.isPresent()) {
+//                gui.updatePosition();
+//            }
+//        }
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
