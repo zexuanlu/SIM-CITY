@@ -35,7 +35,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	private Semaphore AR = new Semaphore(0,true);
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
-
+	Timer timer = new Timer();
 	
 	private boolean TT = true;
 
@@ -48,6 +48,15 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		food.put("Pizza", new MyFood("Pizza", 4000, 6, 2, 5, 10));
 		food.put("Salad", new MyFood("Salad", 3000, 6, 2, 8, 10));
 
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkStand = true;
+				stateChanged();
+			}
+		},
+			5000);
+	
+		
 	}
 
 	public class MyFood{
@@ -87,7 +96,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		return this.revStand;
 	}
 
-	Timer timer = new Timer();
+
 
 	public void msghereisorder(Restaurant1Waiter w, String choice, int table){
 		order.add(new Order(w, choice, table));
@@ -138,7 +147,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			Orderfoodislow();
 		}
 		
-		if(opening){
+		if(checkStand){
 			Orderfoodislow();
 			return true;
 		}
@@ -229,14 +238,19 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	}
 
 	public void TakeOrderFromStand() {
-		//		checkStand = false;
+		checkStand = false;
 		Order o = null;
 		o = revStand.removeOrder();
-		System.out.println(o.choice);
 		if(o != null){
 			order.add(o);
-			System.out.println(""+order.size());
 		}
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkStand = true;
+				stateChanged();
+			}
+		},
+			5000);
 
 	}
 
