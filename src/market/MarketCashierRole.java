@@ -44,6 +44,14 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		inventory.put("Scallops", 2000);
 		inventory.put("Lobster", 2000);
 		inventory.put("Crab", 2000);
+		inventory.put("Mint Chip Ice Cream", 2000);
+		inventory.put("Rocky Road Ice Cream", 2000);
+		inventory.put("Green Tea Ice Cream", 2000);
+		inventory.put("Mocha Almond Fudge Ice Cream", 2000);
+		inventory.put("Belgium", 2000);
+		inventory.put("Sassy", 2000);
+		inventory.put("Chocolate", 2000);
+		
 		price.put("Steak", (double) 2);
 		price.put("Car", (double) 2);
 		price.put("Pizza", (double) 2);
@@ -56,6 +64,13 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		price.put("Scallops", (double) 2);
 		price.put("Lobster", (double) 2);
 		price.put("Crab", (double) 2);
+		price.put("Mint Chip Ice Cream", (double) 2);
+		price.put("Rocky Road Ice Cream", (double) 2);
+		price.put("Green Tea Ice Cream", (double) 2);
+		price.put("Mocha Almond Fudge Ice Cream", (double) 2);
+		price.put("Belgium", (double) 2);
+		price.put("Sassy", (double) 2);
+		price.put("Chocolate", (double) 2);
 		
 	}
 
