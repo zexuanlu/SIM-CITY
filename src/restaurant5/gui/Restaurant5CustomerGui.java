@@ -1,20 +1,19 @@
 package restaurant5.gui;
 
-import restaurant5.CustomerAgent5;
+import restaurant5.Restaurant5CustomerAgent;
 import utilities.Gui;
 
 import java.awt.*;
 
-public class CustomerGui5 implements Gui{
+public class Restaurant5CustomerGui implements Gui{
 	private int sit; 
 
-	private CustomerAgent5 agent = null;
-	private boolean isPresent = false;
+	private Restaurant5CustomerAgent agent = null;
+	public boolean isPresent = false;
 	private boolean isHungry = false;
 	
 	private boolean showIcon = false; 
 	//private HostAgent host;
-	RestaurantGui gui;
 	private String myChoice; 
 
 	private int enterX; 
@@ -28,16 +27,17 @@ public class CustomerGui5 implements Gui{
 	public int xTable = 200;
 	public int yTable = 250;
 
-	public CustomerGui5(CustomerAgent5 c, RestaurantGui gui){ //HostAgent m) {
+	public Restaurant5CustomerGui(Restaurant5CustomerAgent c){ //HostAgent m) {
 		agent = c;
-		xPos = -40;
-		yPos = -40;
-		xDestination = -40;
-		yDestination = -40;
-		this.gui = gui;
+		xPos = -20;
+		yPos = -20;
+		waitingX = 20; 
+		waitingY = 20; 
+		xDestination = -20;
+		yDestination = -20;
 	}
 	
-	public CustomerGui5(CustomerAgent5 c, RestaurantGui gui, int x){ //HostAgent m) {
+	public Restaurant5CustomerGui(Restaurant5CustomerAgent c, int x){ //HostAgent m) {
 		agent = c;
 		waitingX = -20; 
 		waitingY = -20; 
@@ -46,7 +46,6 @@ public class CustomerGui5 implements Gui{
 		enterX = x; 
 		xDestination = -20;
 		yDestination = -20;
-		this.gui = gui;
 	}
 	
 	public void enterRestaurant(){
@@ -97,7 +96,6 @@ public class CustomerGui5 implements Gui{
 			else if (command==Command.LeaveRestaurant) {
 				agent.msgAnimationFinishedLeaveRestaurant();
 				isHungry = false;
-				gui.setCustomerEnabled(agent);
 			}
 			command=Command.noCommand;
 		}
@@ -111,17 +109,17 @@ public class CustomerGui5 implements Gui{
 		//This is the icon that stays at the customer's table telling you that they have ordered
 		if (showIcon){
 			g.setColor(Color.BLACK);
-			if (myChoice.equals("Steak")){
-	        	g.drawString("ST?",xPos+20,yPos+20);
+			if (myChoice.equals("Belgium")){
+	        	g.drawString("BG?",xPos+20,yPos+20);
 			}
-			else if (myChoice.equals("Salad")){
+			else if (myChoice.equals("Sassy")){
 	        	g.drawString("SA?",xPos+20,yPos+20);
 			}
 			else if(myChoice.equals("Chicken")){
-	        	g.drawString("CH?",xPos+20,yPos+20);
+	        	g.drawString("CK?",xPos+20,yPos+20);
 			}
-			else if(myChoice.equals("Pizza")){
-	        	g.drawString("PI?",xPos+20,yPos+20);
+			else if(myChoice.equals("Chocolate")){
+	        	g.drawString("CH?",xPos+20,yPos+20);
 			}
 			
 			

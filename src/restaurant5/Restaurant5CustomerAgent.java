@@ -1,6 +1,6 @@
 package restaurant5;
 //for part 1 to close stuff
-import restaurant5.gui.CustomerGui5;
+import restaurant5.gui.Restaurant5CustomerGui;
 
 import java.util.concurrent.Semaphore;
 
@@ -8,7 +8,7 @@ import agent.Role;
 import person.PersonAgent; 
 import restaurant5.interfaces.Customer5; 
 import restaurant5.interfaces.Waiter5; 
-import restaurant5.gui.FoodGui5; 
+import restaurant5.gui.Restaurant5FoodGui; 
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,26 +16,26 @@ import java.util.TimerTask;
 /**
  * Restaurant customer agent.
  */
-public class CustomerAgent5 extends Role implements Customer5 {
+public class Restaurant5CustomerAgent extends Role implements Customer5 {
 	private Semaphore atRestaurant = new Semaphore(0,true);
 	PersonAgent myPerson; 
 	private enum State{
 		paid, waitingforCheck, nothing, waitinginRestaurant,hungry,following, seated,ordered,eating,done
 	}
 	Timer timer = new Timer();
-	CashierAgent5 myCashier; 
+	Restaurant5Cashier myCashier; 
 	int myCheck; 
 	int myMoney;  
 	private State customerState;
-	FoodGui5 fgui; 
-	private CustomerGui5 customerGui; 
+	Restaurant5FoodGui fgui; 
+	public Restaurant5CustomerGui customerGui; 
 	public String name; 
 	private enum Action{
 		gotChange, gotHungry, followingWaiter, leaving, atSeat, whatdoIwant, choosing, beingServed, becomeFull, seated, receivedCheck, doneLeaving, reorder
 	}
 	private Action customerAction;
 
-	private HostAgent5 myHost;
+	private Restaurant5HostAgent myHost;
 	Waiter5 myWaiter;
 	String choice; 
 	Menu5 myMenu; 
@@ -46,7 +46,7 @@ public class CustomerAgent5 extends Role implements Customer5 {
 	 * @param name name of the customer
 	 * @param gui  reference to the customergui so the customer can send it messages
 	 */
-	public CustomerAgent5(String name, PersonAgent p){
+	public Restaurant5CustomerAgent(String name, PersonAgent p){
 		super(p);
 		myPerson = p; 
 		this.name = name;
@@ -260,7 +260,7 @@ public class CustomerAgent5 extends Role implements Customer5 {
 	}
 	
 	private String pickChoice(){
-		if (name.equals("Steak")||name.equals("Chicken")||name.equals("Pizza")||name.equals("Salad")){
+		if (name.equals("Belgium")||name.equals("Chicken")||name.equals("Sassy")||name.equals("Chocolate")){
 			if (myMenu.find(name)){
 				return name; 
 			}
@@ -328,15 +328,15 @@ public class CustomerAgent5 extends Role implements Customer5 {
 	
 	// Accessors, etc.
 	
-	public void setFoodGui(FoodGui5 f){
+	public void setFoodGui(Restaurant5FoodGui f){
 		fgui = f; 
 	}
 	
-	public FoodGui5 getFoodGui(){
+	public Restaurant5FoodGui getFoodGui(){
 		return fgui; 
 	}
 	
-	public CustomerGui5 getGui() {
+	public Restaurant5CustomerGui getGui() {
 		return customerGui;
 	}
 
@@ -344,15 +344,15 @@ public class CustomerAgent5 extends Role implements Customer5 {
 		return name;
 	}
 	
-	public void setGui(CustomerGui5 g) {
+	public void setGui(Restaurant5CustomerGui g) {
 		customerGui = g;
 	}
 	
-	public void setHost(HostAgent5 host) {
+	public void setHost(Restaurant5HostAgent host) {
 		this.myHost = host;
 	}
 	
-	public void setCashier(CashierAgent5 c){
+	public void setCashier(Restaurant5Cashier c){
 		myCashier = c; 
 	}
 

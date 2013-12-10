@@ -1,16 +1,16 @@
 package restaurant5.gui;
 
-import restaurant5.CustomerAgent5;
+import restaurant5.Restaurant5CustomerAgent;
 
-public class Table5 {
-	public CustomerAgent5 occupiedBy;
+public class Restaurant5Table {
+	public Restaurant5CustomerAgent occupiedBy;
 	public int tableNumber;
 
-	public Table5(int tableNumber) {
+	public Restaurant5Table(int tableNumber) {
 		this.tableNumber = tableNumber;
 	}
 	
-	public void setOccupant(CustomerAgent5 cust) {
+	public void setOccupant(Restaurant5CustomerAgent cust) {
 		occupiedBy = cust;
 	}
 
@@ -18,7 +18,7 @@ public class Table5 {
 		occupiedBy = null;
 	}
 
-	public CustomerAgent5 getOccupant() {
+	public Restaurant5CustomerAgent getOccupant() {
 		return occupiedBy;
 	}
 

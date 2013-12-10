@@ -2,8 +2,8 @@ package restaurant5;
 
 import agent.Role; 
 import person.PersonAgent; 
-import restaurant5.gui.HostGui5;
-import restaurant5.gui.Table5;
+import restaurant5.gui.Restaurant5HostGui;
+import restaurant5.gui.Restaurant5Table;
 import restaurant5.interfaces.Waiter5; 
 import utilities.restaurant.RestaurantHost;
 
@@ -16,7 +16,7 @@ import java.util.*;
 //does all the rest. Rather than calling the other agent a waiter, we called him
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
-public class HostAgent5 extends Role implements RestaurantHost {
+public class Restaurant5HostAgent extends Role implements RestaurantHost {
     LinkedList<myWaiter> waiterQ = new LinkedList<myWaiter>();
     public class myWaiter {
     	myWaiter(Waiter5 _w, WaiterState _s){
@@ -31,14 +31,14 @@ public class HostAgent5 extends Role implements RestaurantHost {
     private enum WaiterState {ready,onBreak, denied,asked};
 	private int NTABLES = 3; //hard coded table shit
 	private List<myCustomer> customers;
-	private List<Table5> tables;
-	public HostGui5 hostGui = null;
+	private List<Restaurant5Table> tables;
+	public Restaurant5HostGui hostGui = null;
 	private String name;
 
 	private class myCustomer{
-		CustomerAgent5 c;
+		Restaurant5CustomerAgent c;
 		CustomerState s;
-		myCustomer(CustomerAgent5 _c, CustomerState _s){
+		myCustomer(Restaurant5CustomerAgent _c, CustomerState _s){
 			c = _c;
 			s = _s;
 		}
@@ -46,15 +46,15 @@ public class HostAgent5 extends Role implements RestaurantHost {
 	private enum CustomerState {waiting, restaurantfull, gettingseated, eating, done, toserve};
 	
 	
-	public HostAgent5(String name, PersonAgent p) {
+	public Restaurant5HostAgent(String name, PersonAgent p) {
 		super(p);
 		myPerson = p; 
 		customers = Collections.synchronizedList(new ArrayList<myCustomer>());
 		this.name = name; 
 		// make some tables
-		tables = Collections.synchronizedList(new ArrayList<Table5>(NTABLES));
+		tables = Collections.synchronizedList(new ArrayList<Restaurant5Table>(NTABLES));
 		for (int ix = 1; ix <= NTABLES; ix++) {
-			tables.add(new Table5(ix));//how you add to a collections
+			tables.add(new Restaurant5Table(ix));//how you add to a collections
 		}	
 	}
 
@@ -69,7 +69,7 @@ public class HostAgent5 extends Role implements RestaurantHost {
 		}
 	}
 	
-	public void msgIWantFood(CustomerAgent5 cust) {
+	public void msgIWantFood(Restaurant5CustomerAgent cust) {
 		boolean added = false; 
 		for (myCustomer m: customers){
 			if (m.c == cust){
@@ -87,7 +87,7 @@ public class HostAgent5 extends Role implements RestaurantHost {
 		stateChanged();
 	}
 	
-	public void msgLeaving(CustomerAgent5 c){
+	public void msgLeaving(Restaurant5CustomerAgent c){
 		
 		synchronized(customers){
 			for (myCustomer m:customers){
@@ -109,9 +109,9 @@ public class HostAgent5 extends Role implements RestaurantHost {
 	}
 	
 	public void msgTableFree(Waiter5 w, int table) {
-		CustomerAgent5 c = null; 
+		Restaurant5CustomerAgent c = null; 
 		synchronized(tables){
-			for (Table5 _table : tables) {
+			for (Restaurant5Table _table : tables) {
 				if (_table.tableNumber == table) {
 					c = _table.occupiedBy; 
 					_table.occupiedBy = null;
@@ -146,7 +146,7 @@ public class HostAgent5 extends Role implements RestaurantHost {
 				synchronized(customers){
 			for (myCustomer mc: customers){
 				if (mc.s == CustomerState.waiting || mc.s == CustomerState.toserve){
-					for (Table5 _table: tables){
+					for (Restaurant5Table _table: tables){
 						if (_table.occupiedBy == null){
 							_table.occupiedBy = mc.c; 
 							seatCustomer(mc,_table);
@@ -207,7 +207,7 @@ public class HostAgent5 extends Role implements RestaurantHost {
 		}
 	}
 	
-	private void seatCustomer(myCustomer mc, Table5 t){
+	private void seatCustomer(myCustomer mc, Restaurant5Table t){
 		Waiter5 _w = pickaWaiter(); 
 		print("Host "+ _w.getName() + " " + "Seat Customer " +mc.c.name + " at Table " + t.tableNumber);
 		mc.s = CustomerState.gettingseated;
@@ -235,15 +235,15 @@ public class HostAgent5 extends Role implements RestaurantHost {
 		waiterQ.addFirst(_w);
 	}
 	
-	public List<Table5> getTables() {
+	public List<Restaurant5Table> getTables() {
 		return tables;
 	}
 	
-	public void setGui(HostGui5 gui) {
+	public void setGui(Restaurant5HostGui gui) {
 		hostGui = gui;
 	}
 	
-	public HostGui5 getGui() {
+	public Restaurant5HostGui getGui() {
 		return hostGui;
 	}
 	

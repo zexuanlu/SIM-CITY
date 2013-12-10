@@ -2,6 +2,7 @@ package restaurant4;
 
 import agent.Role;
 import restaurant4.interfaces.*;
+import restaurant4.test.mock.EventLog;
 
 import java.util.*;
 
@@ -21,10 +22,12 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	private int endOfDay = 0;
 	//Lets the Cashier check the prices of items
 	private Map<String, Double> foodPrices = Collections.synchronizedMap(new HashMap<String, Double>());
+	public EventLog log;
 
 	public Restaurant4CashierRole(String name, Person pa) {
 		super(pa);
 		this.name = name;
+		log = new EventLog();
 		foodPrices.put("Shrimp", 8.99);
 		foodPrices.put("Scallops", 7.99);
 		foodPrices.put("Lobster", 14.99);

@@ -5,9 +5,9 @@ import restaurant5.WaiterBase5;
 /**
  * Restaurant Host Agent
  */
-public class WaiterAgent5 extends WaiterBase5 {
+public class Restaurant5WaiterAgent extends WaiterBase5 {
 	
-	public WaiterAgent5(String _name, PersonAgent p) {
+	public Restaurant5WaiterAgent(String _name, PersonAgent p) {
 		super(_name, p);	
 		name = _name; 
 		waiterState = wState.ready; 

@@ -369,15 +369,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(24).addRole(rest4Waiter, "Waiter 4 Shift 1");
 		
 		// Fifth restaurant's employees: FIRST SHIFT
-		HostAgent5 rest5Host = new HostAgent5("Host 5 Shift 1", people.get(25));
+		Restaurant5HostAgent rest5Host = new Restaurant5HostAgent("Host 5 Shift 1", people.get(25));
 		people.get(25).addRole(rest5Host, "Host 5 Shift 1");
-		CookAgent5 rest5Cook = new CookAgent5("Cook 5 Shift 1", people.get(26));
+		Restaurant5CookAgent rest5Cook = new Restaurant5CookAgent("Cook 5 Shift 1", people.get(26));
 		people.get(26).addRole(rest5Cook, "Cook 5 Shift 1");
-		CashierAgent5 rest5Cashier = new CashierAgent5("Cashier 5 Shift 1", people.get(27));
+		Restaurant5Cashier rest5Cashier = new Restaurant5Cashier("Cashier 5 Shift 1", people.get(27));
 		people.get(27).addRole(rest5Cashier, "Cashier 5 Shift 1");
-		SDWaiterAgent5 rest5SDWaiter = new SDWaiterAgent5("Shared Data Waiter 5 Shift 1", people.get(28));
+		Restaurant5SDWaiterAgent rest5SDWaiter = new Restaurant5SDWaiterAgent("Shared Data Waiter 5 Shift 1", people.get(28));
 		people.get(28).addRole(rest5SDWaiter, "Shared Data Waiter 5 Shift 1");
-		WaiterAgent5 rest5Waiter = new WaiterAgent5("Waiter 5 Shift 1", people.get(29));
+		Restaurant5WaiterAgent rest5Waiter = new Restaurant5WaiterAgent("Waiter 5 Shift 1", people.get(29));
 		people.get(29).addRole(rest5Waiter, "Waiter 5 Shift 1");
 		
 		// Sixth restaurant's employees: FIRST SHIFT
@@ -482,15 +482,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		cityAnimPanel.rest4Panel.addGui(r4cg1);
 		
 		// Fifth Restaurant: FIRST SHIFT
-		WaiterGui5 r5sharedwg1 = new WaiterGui5(rest5SDWaiter, -20);
+		Restaurant5WaiterGui r5sharedwg1 = new Restaurant5WaiterGui(rest5SDWaiter, -20);
 		rest5SDWaiter.setGui(r5sharedwg1);
 		cityAnimPanel.rest5Panel.addGui(r5sharedwg1);
 		
-		WaiterGui5 r5wg1 = new WaiterGui5(rest5Waiter, -20);
+		Restaurant5WaiterGui r5wg1 = new Restaurant5WaiterGui(rest5Waiter, -20);
 		rest5Waiter.setGui(r5wg1);
 		cityAnimPanel.rest5Panel.addGui(r5wg1);
 		
-		CookGui5 r5cg1 = new CookGui5(rest5Cook);
+		Restaurant5CookGui r5cg1 = new Restaurant5CookGui(rest5Cook);
 		rest5Cook.setGui(r5cg1);
 		cityAnimPanel.rest5Panel.addGui(r5cg1);
 		
@@ -962,15 +962,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(24).addRole(rest4Waiter, "Waiter 4 Shift 1");
 		
 		// Fifth restaurant's employees: FIRST SHIFT
-		HostAgent5 rest5Host = new HostAgent5("Host 5 Shift 1", people.get(25));
+		Restaurant5HostAgent rest5Host = new Restaurant5HostAgent("Host 5 Shift 1", people.get(25));
 		people.get(25).addRole(rest5Host, "Host 5 Shift 1");
-		CookAgent5 rest5Cook = new CookAgent5("Cook 5 Shift 1", people.get(26));
+		Restaurant5CookAgent rest5Cook = new Restaurant5CookAgent("Cook 5 Shift 1", people.get(26));
 		people.get(26).addRole(rest5Cook, "Cook 5 Shift 1");
-		CashierAgent5 rest5Cashier = new CashierAgent5("Cashier 5 Shift 1", people.get(27));
+		Restaurant5Cashier rest5Cashier = new Restaurant5Cashier("Cashier 5 Shift 1", people.get(27));
 		people.get(27).addRole(rest5Cashier, "Cashier 5 Shift 1");
-		SDWaiterAgent5 rest5SDWaiter = new SDWaiterAgent5("Shared Data Waiter 5 Shift 1", people.get(28));
+		Restaurant5SDWaiterAgent rest5SDWaiter = new Restaurant5SDWaiterAgent("Shared Data Waiter 5 Shift 1", people.get(28));
 		people.get(28).addRole(rest5SDWaiter, "Shared Data Waiter 5 Shift 1");
-		WaiterAgent5 rest5Waiter = new WaiterAgent5("Waiter 5 Shift 1", people.get(29));
+		Restaurant5WaiterAgent rest5Waiter = new Restaurant5WaiterAgent("Waiter 5 Shift 1", people.get(29));
 		people.get(29).addRole(rest5Waiter, "Waiter 5 Shift 1");
 		
 		// Sixth restaurant's employees: FIRST SHIFT
@@ -1076,15 +1076,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		cityAnimPanel.rest4Panel.addGui(r4cg1);
 		
 		// Fifth Restaurant: FIRST SHIFT
-		WaiterGui5 r5sharedwg1 = new WaiterGui5(rest5SDWaiter, -20);
+		Restaurant5WaiterGui r5sharedwg1 = new Restaurant5WaiterGui(rest5SDWaiter, -20);
 		rest5SDWaiter.setGui(r5sharedwg1);
 		cityAnimPanel.rest5Panel.addGui(r5sharedwg1);
 		
-		WaiterGui5 r5wg1 = new WaiterGui5(rest5Waiter, -20);
+		Restaurant5WaiterGui r5wg1 = new Restaurant5WaiterGui(rest5Waiter, -20);
 		rest5Waiter.setGui(r5wg1);
 		cityAnimPanel.rest5Panel.addGui(r5wg1);
 		
-		CookGui5 r5cg1 = new CookGui5(rest5Cook);
+		Restaurant5CookGui r5cg1 = new Restaurant5CookGui(rest5Cook);
 		rest5Cook.setGui(r5cg1);
 		cityAnimPanel.rest5Panel.addGui(r5cg1);
 		

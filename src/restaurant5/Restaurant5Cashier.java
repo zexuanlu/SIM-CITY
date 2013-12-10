@@ -9,7 +9,7 @@ import restaurant5.interfaces.Waiter5;
 import restaurant5.interfaces.Market5; 
 import agent.Role;
 
-public class CashierAgent5 extends Role implements Cashier5{
+public class Restaurant5Cashier extends Role implements Cashier5{
 	Menu5 myMenu = new Menu5(); 
 	String name; 
 	int Cash; 
@@ -52,7 +52,7 @@ public class CashierAgent5 extends Role implements Cashier5{
 	private List<Bill> flakes = Collections.synchronizedList(new ArrayList<Bill>());
 	
 	
-	public CashierAgent5(String name, PersonAgent p){
+	public Restaurant5Cashier(String name, PersonAgent p){
 		super(p);
 		myPerson = p; 
 		this.name = name;

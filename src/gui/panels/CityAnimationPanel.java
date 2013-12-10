@@ -163,7 +163,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 
                 // Creating the apartment animation panel
 
-                for (int i = 5; i < 25; ++i) {
+                for (int i = 5; i < 65; ++i) {
                         apartments.add(new ApartmentAnimationPanel(i));
                 }
                 
