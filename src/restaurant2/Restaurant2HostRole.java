@@ -149,15 +149,11 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 			}
 		}
 		synchronized(waitingCustomers){
-			while(!waitingCustomers.isEmpty())
-			{
-				for (Table table : tables) 
-				{
-					if (!table.isOccupied()) 
-					{
+			while(!waitingCustomers.isEmpty()){
+				for (Table table : tables) {
+					if (!table.isOccupied()) {
 						synchronized(waiters){
-							for(MyWaiter waiter: waiters)
-							{
+							for(MyWaiter waiter: waiters){
 
 								if(waiter.isActive() && waiter.isAvailable() && !waiter.isOnBreak()){
 									seatCustomer(waitingCustomers.get(0), table, waiter);//the action

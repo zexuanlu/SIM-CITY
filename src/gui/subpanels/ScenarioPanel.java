@@ -460,11 +460,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		cityAnimPanel.rest2Panel.addGui(r2cg1);
 		
 		// Fourth Restaurant: FIRST SHIFT
-		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, -20, -20);
+		Restaurant4WaiterGui r4sharedwg1 = new Restaurant4WaiterGui(rest4SDWaiter, 52, 112);
 		rest4SDWaiter.setGui(r4sharedwg1);
 		cityAnimPanel.rest4Panel.addGui(r4sharedwg1);
 		
-		Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, -20, -20);
+		Restaurant4WaiterGui r4wg1 = new Restaurant4WaiterGui(rest4Waiter, 52, 134);
 		rest4Waiter.setGui(r4wg1);
 		cityAnimPanel.rest4Panel.addGui(r4wg1);
 		
@@ -541,9 +541,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Waiter.setCashier(rest2Cashier);
   		rest2SDWaiter.setCook(rest2Cook);
   		rest2SDWaiter.setHost(rest2Host);
-  		rest2SDWaiter.revolver = rest2Cook.revolver;
+  		Restaurant2RevolvingStand rs2 = new Restaurant2RevolvingStand();
+  		rest2Cook.setRevolvingStand(rs2);
+  		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		rest2Host.addWaiter(rest2Waiter);
+  		//rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
@@ -555,7 +557,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Waiter.setCashier(rest4Cashier);
   		rest4SDWaiter.setCook(rest4Cook);
   		rest4SDWaiter.setHost(rest4Host);
-  		rest4SDWaiter.stand = rest4Cook.stand;
+  		((Restaurant4SDWaiterRole)rest4SDWaiter).stand = rest4Cook.stand;
   		rest4SDWaiter.setCashier(rest4Cashier);
   		rest4Host.addWaiter(rest4Waiter);
   		rest4Host.addWaiter(rest4SDWaiter);
@@ -743,7 +745,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		 * GIVE WALKING PERSON EVENTS
 		 */
 		// Go to bank to withdraw money
-		SimEvent withdrawFromBank1 = new SimEvent("withdraw", bank, EventType.CustomerEvent);
+		SimEvent withdrawFromBank1 = new SimEvent("deposit", bank, EventType.CustomerEvent);
 		
 		// Go to market to buy shopping list items
 		SimEvent goToMarket1 = new SimEvent("Buy groceries", market, EventType.CustomerEvent);
@@ -764,7 +766,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		walking.msgAddEvent(withdrawFromBank1);
 		walking.msgAddEvent(goToMarket1);
 		walking.msgAddEvent(goToRest1);
-		walking.msgAddEvent(goToRest2);
+		//walking.msgAddEvent(goToRest2);
 		walking.msgAddEvent(goToRest4);
 		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
@@ -823,16 +825,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
 		
-		for (PersonAgent p : people) {
-			p.startThread();
+		for(int j = 0; j < 25; j++){
+			people.get(j).startThread();
 		}
-		
-//		people.get(30).startThread();
-//		people.get(31).startThread();
-//		people.get(32).startThread();
-//		people.get(33).startThread();
-//		people.get(34).startThread();
-//		people.get(35).startThread();
 
 		// Starts the thread of each timecard
 		bank.getTimeCard().startThread();
@@ -959,9 +954,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		Restaurant4CashierRole rest4Cashier = new Restaurant4CashierRole("Cashier 4 Shift 1", people.get(22));
 		people.get(22).addRole(rest4Cashier, "Cashier 4 Shift 1");
 		Restaurant4SDWaiterRole rest4SDWaiter = new Restaurant4SDWaiterRole("Shared Data Waiter 4 Shift 1", people.get(23));
-		people.get(23).addRole(rest4SDWaiter, "Shared Data Waiter 4 Shift 1");
+		people.get(23).addRole(rest4SDWaiter, "Rest 4 SDWaiter");
 		Restaurant4WaiterRole rest4Waiter = new Restaurant4WaiterRole("Waiter 4 Shift 1", people.get(24));
-		people.get(24).addRole(rest4Waiter, "Waiter 4 Shift 1");
+		people.get(24).addRole(rest4Waiter, "Rest 4 Waiter");
 		
 		// Fifth restaurant's employees: FIRST SHIFT
 		HostAgent5 rest5Host = new HostAgent5("Host 5 Shift 1", people.get(25));
@@ -1491,7 +1486,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		}
 		
 		for (PersonAgent p : people) {
-			p.startThread();
+				p.startThread();
 		}
 	}
 }

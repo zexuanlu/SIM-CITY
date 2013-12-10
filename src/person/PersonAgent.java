@@ -643,9 +643,6 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.SDWaiterEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 SDWaiter")){
-
-					}
-					else {
 						((Restaurant2SDWaiterRole)mr.role).waiterGui.setPresent(true);
 						rest.getTimeCard().msgBackToWork(this, mr.role);
 						try{
@@ -745,6 +742,7 @@ public class PersonAgent extends Agent implements Person{
 					if(mr.type.equals("Rest 4 Customer")){
 						((Restaurant4CustomerRole)mr.role).customerGui.setPresent(true);
 						((Restaurant4CustomerRole)mr.role).gotHungry();
+						((Restaurant4CustomerRole)mr.role).money = wallet.onHand;
 						mr.setActive(true);
 						gui.setPresent(false);
 						toDo.remove(e);
@@ -760,6 +758,7 @@ public class PersonAgent extends Agent implements Person{
 				cg.isPresent = true;
 				cRole.setGui(cg);
 				cap.rest4Panel.addGui(cg);
+				cRole.money = wallet.onHand;
 				cRole.setHost(((Restaurant4HostRole)rest.getHost()));
 				cRole.gotHungry();
 				gui.setPresent(false);
@@ -797,7 +796,9 @@ public class PersonAgent extends Agent implements Person{
 
 			else if(e.type == EventType.WaiterEvent){
 				for(MyRole mr : roles){
+					Do("Checking Role " + mr.type);
 					if(mr.type.equals("Rest 4 Waiter")){  
+						Do("Found ONe!");
 						((Restaurant4WaiterRole)mr.role).gui.setPresent(true);
 						rest.getTimeCard().msgBackToWork(this, mr.role); 
 						try{
@@ -831,10 +832,9 @@ public class PersonAgent extends Agent implements Person{
 
 			else if(e.type == EventType.SDWaiterEvent){
 				for(MyRole mr : roles){
+					Do("Checking Role " + mr.type);
 					if(mr.type.equals("Rest 4 SDWaiter")){
-
-					}
-					else {
+						Do("Found one!");
 						((Restaurant4SDWaiterRole)mr.role).gui.isPresent = true;
 						rest.getTimeCard().msgBackToWork(this, mr.role);
 						try{

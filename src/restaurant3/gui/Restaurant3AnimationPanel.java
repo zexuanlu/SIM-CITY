@@ -48,7 +48,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 	
 	//Animation utilities
 	//Timer animTimer = new Timer(5, this);
-	private List<Gui> guis = new ArrayList<Gui>();
+	public List<Gui> guis = new ArrayList<Gui>();
 	
 	public Restaurant3AnimationPanel() {
 		//Set up panel
