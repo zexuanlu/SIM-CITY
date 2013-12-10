@@ -22,6 +22,7 @@ public class Restaurant4RevolvingStand extends Object{
 		}
 		
 		orders.add(o);
+		count++;
 		if(count == 1) {
 			System.out.println("\tNot Empty, notify");
 			notify();                               // Not empty, notify a 

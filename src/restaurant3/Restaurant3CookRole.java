@@ -2,6 +2,8 @@ package restaurant3;
 
 import agent.Role;
 import person.PersonAgent;
+import restaurant1.shareddata.Order;
+import restaurant1.shareddata.Restaurant1RevolvingStand;
 import restaurant3.interfaces.Restaurant3Waiter;
 import restaurant3.interfaces.Restaurant3Cook;
 import restaurant3.Restaurant3CashierRole;
@@ -18,6 +20,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//MEMBER DATA
 	String name;
 	int marketNum = 1;
+	private Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
 	//Agent references
 	Restaurant3CashierRole cashier;
@@ -29,24 +32,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	
 	//GUI references
 	Restaurant3CookGui cookGui;
-	
-	//Enum to keep track of order state
-	public enum oState {pending, cooking, cooked};
-	
-	//Private class for order information
-	private class Order{
-		String choice;
-		Restaurant3Waiter wtr;
-		int tableNum;
-		oState state;
-		
-		Order(Restaurant3Waiter w, int tNum, String ch){
-			wtr = w;
-			tableNum = tNum;
-			choice = ch;
-			state = oState.pending;
-		}
-	}
 	
 	//Private class for food information
 	private class MyFood{
@@ -65,7 +50,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	}
 	
 	//Order list
-	List<Order> orders = new ArrayList<Order>();
+	List<Restaurant3Order> orders = new ArrayList<Restaurant3Order>();
 	
 	//Food inventory
 	Map<String, MyFood> foodInventory = new HashMap<String, MyFood>();
@@ -98,6 +83,10 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		return name;
 	}
 	
+	public Restaurant3RevolvingStand getRevStand(){
+		return this.revStand;
+	}
+	
 	public String getRoleName(){
 		return roleName;
 	}
@@ -118,7 +107,11 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	@Override
 	public void msgNewOrder(Restaurant3Waiter w, int table, String choice) {
 		print(name + ": received new order from waiter " + w.getName());
-		orders.add(new Order(w, table,choice));
+		orders.add(new Restaurant3Order(w, choice, table));
+		stateChanged();
+	}
+	
+	public void msgAddedOrderToRevolvingStand(){
 		stateChanged();
 	}
 	
@@ -145,21 +138,26 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 			truckBack();
 			return true;
 		}
+		//Check if there is an order on the revolving stand
+		if(!revStand.isEmpty()){
+			takeOrderFromStand();
+			return true;
+		}
 		//Check if food needs to be restocked
 		if(!restockList.isEmpty()){
 			restockFood();
 			return true;
 		}
 		//Check if an order is pending
-		for(Order o : orders){
-			if(o.state == oState.pending){
+		for(Restaurant3Order o : orders){
+			if(o.state == Restaurant3Order.oState.pending){
 				cookOrder(o);
 				return true;
 			}
 		}	
 		//Check if an order is cooked
-		for(Order o : orders){
-			if(o.state == oState.cooked){
+		for(Restaurant3Order o : orders){
+			if(o.state == Restaurant3Order.oState.cooked){
 				sendOrderToTable(o);
 				return true;
 			}
@@ -168,7 +166,16 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	}
 
 	//ACTIONS *************************************
-	public void cookOrder(Order o){
+	public void takeOrderFromStand(){
+		Restaurant3Order o = null;
+		o = revStand.removeOrder();
+		System.out.println(o.choice);
+		if(o != null){
+			orders.add(o);
+		}
+	}
+	
+	public void cookOrder(Restaurant3Order o){
 		print(name + " cooking order for table " + o.tableNum);
 		//Check if food needs to be restocked
 		for(Entry<String, MyFood> f : foodInventory.entrySet()){
@@ -180,11 +187,11 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 				}
 			}
 		}
-		o.state = oState.cooking;
+		o.state = Restaurant3Order.oState.cooking;
 		DoCooking(o);
 	}
 	
-	public void sendOrderToTable(Order o){
+	public void sendOrderToTable(Restaurant3Order o){
 		print(name + ": order for table " + o.tableNum + " cooked. Sending out.");
 		DoSendOrder();
 		orders.remove(o);
@@ -204,7 +211,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	}
 	
 	//DO METHODS ****************************************
-	public void DoCooking(final Order o){
+	public void DoCooking(final Restaurant3Order o){
 		cookGui.DoGoToFridge();	//GUI CODE
 		atFr.drainPermits();
 		try{
@@ -225,7 +232,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 
 		cookTimer.schedule(new TimerTask(){
 			public void run(){
-				o.state = oState.cooked;
+				o.state = Restaurant3Order.oState.cooked;
 				stateChanged();
 			}
 		}, foodInventory.get(o.choice).cookTime);

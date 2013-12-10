@@ -2,6 +2,7 @@ package simcity;
 import java.util.*;
 import java.awt.Dimension;
 
+import person.Bank;
 import person.Location;
 import person.PersonAgent.HomeType;
 import person.Position;
@@ -240,6 +241,7 @@ public class CityMap {
 		if(!history.contains(l)){
 			history.add(l);
 		}
+		System.out.println("Going to " + l.getName());
 		ateOutLast = true;
 		return l;
 	}
@@ -276,7 +278,17 @@ public class CityMap {
 				Math.pow((destination.getPosition().getY() - y), 2)));
 		return distance;
 	}
-
+	
+	public Bank pickABank(int x, int y){
+		Bank temp = ((Bank)chooseByName("Banco Popular"));
+		Bank temp2 = ((Bank)chooseByName("Banco Popular 2"));
+		if(distanceTo(x,y,temp) > distanceTo(x,y,temp2))
+			return temp2;
+		else
+			return temp;
+		
+	}
+	
 	public Location chooseByName(String name){ //sync? i dont think anyone will mess with this list after init
 		Location choice = null;
 		for(Location l : map){
