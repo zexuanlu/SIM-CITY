@@ -711,7 +711,7 @@ public class SimCityGUI extends JFrame {
                 waiter3.setCashier(cashier3);
                 cook3.setCashier(cashier3);
                 cook3.setMarketCashier(marketcashierrole);
-                host3.addWaiter(waiter3);
+                //host3.addWaiter(waiter3);
                 
 
                 // Messages landlord with initial tenants
