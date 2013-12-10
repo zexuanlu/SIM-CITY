@@ -189,6 +189,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * @return false if the scheduler failed to pick an action
 	 */
 	public boolean pickAndExecuteAnAction(){
+		//At the end of the robber scenario, when he needs to run away
 		if(s == state.runAway){
 			escape();
 			return true;
@@ -310,7 +311,9 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		}
 	}
 	
-	
+	/**
+	 * Leaves the bank, and then leaves town completely
+	 */
 	private void escape(){
 		goToLocation("Outside");
 		bt.msgLeavingBank(this);
