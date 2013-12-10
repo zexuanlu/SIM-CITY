@@ -6,11 +6,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import agent.Agent;
-import restaurant3.interfaces.Customer;
-import restaurant3.interfaces.Waiter;
+import agent.Role;
+import person.PersonAgent;
+import restaurant3.interfaces.Restaurant3Customer;
+import restaurant3.interfaces.Restaurant3Waiter;
 
-public class Restaurant3HostRole extends Agent {
+import utilities.restaurant.RestaurantHost;
+
+public class Restaurant3HostRole extends Role implements RestaurantHost{
 	//MEMBER DATA
 	public static final int NTABLES = 3;
 	private String name;
@@ -37,19 +40,20 @@ public class Restaurant3HostRole extends Agent {
 	
 	
 	//List of customers at restaurant
-	public List<Customer> waitingCustomers
-	= Collections.synchronizedList(new ArrayList<Customer>());
+	public List<Restaurant3Customer> waitingCustomers
+	= Collections.synchronizedList(new ArrayList<Restaurant3Customer>());
 	//List of waiters
-	public List<Waiter> waiters
-	= Collections.synchronizedList(new ArrayList<Waiter>());
+	public List<Restaurant3Waiter> waiters
+	= Collections.synchronizedList(new ArrayList<Restaurant3Waiter>());
 	//All tables at restaurant
 	public Collection<Table> tables
 	= Collections.synchronizedList(new ArrayList<Table>(NTABLES));;
 	
 	
 	//CONSTRUCTOR ******************************
-	public Restaurant3HostRole(String name) {
-		super();
+	public Restaurant3HostRole(String name, PersonAgent pa) {
+		super(pa);
+		roleName = "Restaurant 3 Host";
 		this.name = name;
 		
 		//Create tables
@@ -63,13 +67,17 @@ public class Restaurant3HostRole extends Agent {
 		return name;
 	}
 	
-	public void addWaiter(Waiter w){
+	public String getRoleName(){
+		return roleName;
+	}
+	
+	public void addWaiter(Restaurant3Waiter w){
 		waiters.add(w);
-		stateChanged();
+		//stateChanged(); FIXFIXFIX THIS IS A RAUNCHY HACK
 	}
 	
 	//MESSAGES *********************************
-	public void msgIWantFood(Customer c){
+	public void msgIWantFood(Restaurant3Customer c){
 		waitingCustomers.add(c);
 		print(name + ": customer " + c.getName() + " added");
 		stateChanged();
@@ -89,7 +97,7 @@ public class Restaurant3HostRole extends Agent {
 
 	//SCHEDULER ***************************************
 	@Override
-	protected boolean pickAndExecuteAnAction() {
+	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		if(!waitingCustomers.isEmpty() && !waiters.isEmpty()){
 			print(name + ": about to seat a customer");
@@ -106,7 +114,7 @@ public class Restaurant3HostRole extends Agent {
 	}
 	
 	//ACTIONS **************************************
-	public void SeatCustomer(Customer c, Table table, Waiter w){
+	public void SeatCustomer(Restaurant3Customer c, Table table, Restaurant3Waiter w){
 		print(name + ": requesting waiter " + w.getName() + " to seat customer " + c.getName());
 		w.msgSeatCustomerAtTable(c, table.tableNum);
 		table.isOccupied = true;

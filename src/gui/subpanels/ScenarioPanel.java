@@ -282,7 +282,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		for (int i = 1; i <= 35; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
 			//FIX
-			PersonGui pgui = new PersonGui(p, 40, 170);
+			PersonGui pgui = new PersonGui(p, 40, 170, this.cityAnimPanel);
 			p.gui = pgui;
 			p.homeNumber = i;
 			people.add(p);
@@ -728,8 +728,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the walking person
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
+<<<<<<< HEAD
 		walking.walking = true;
 		PersonGui pgui = new PersonGui(walking, 20, 170);
+=======
+		PersonGui pgui = new PersonGui(walking, 40, 170, this.cityAnimPanel);
+>>>>>>> 224e7f1451046c0ce922d1a9762dd9bebc8cd95d
 		walking.gui = pgui;
 		people.add(walking);
 		peopleGuis.add(walking.gui);
@@ -1363,7 +1367,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the walking person
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
-		PersonGui pgui = new PersonGui(walking, 40, 170);
+		PersonGui pgui = new PersonGui(walking, 40, 170, this.cityAnimPanel);
 		walking.gui = pgui;
 		people.add(walking);
 		peopleGuis.add(pgui);
@@ -1404,7 +1408,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the person taking the bus
 		PersonAgent busPerson = new PersonAgent("Person taking the Bus", cityMap, 900);
-		PersonGui busPersonGui = new PersonGui(busPerson, 40, 170);
+		PersonGui busPersonGui = new PersonGui(busPerson, 40, 170, this.cityAnimPanel);
 		busPerson.gui = busPersonGui;
 		people.add(busPerson);
 		peopleGuis.add(busPersonGui);
@@ -1427,7 +1431,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Create the person taking the bus
 		PersonAgent carPerson = new PersonAgent("Person taking a Car", cityMap, 1000000);
-		PersonGui carPersonGui = new PersonGui(carPerson, 40, 170);
+		PersonGui carPersonGui = new PersonGui(carPerson, 40, 170, this.cityAnimPanel);
 		carPerson.gui = carPersonGui;
 		people.add(carPerson);
 		peopleGuis.add(carPersonGui);

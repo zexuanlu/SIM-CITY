@@ -74,6 +74,13 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public Image h2 = img4.getImage();
     public ImageIcon img5 = new ImageIcon(this.getClass().getResource("image/house3.png"));
     public Image h3 = img5.getImage();
+    public ImageIcon img6 = new ImageIcon(this.getClass().getResource("image/house4.png"));
+    public Image h4 = img6.getImage();
+    public ImageIcon img7 = new ImageIcon(this.getClass().getResource("image/house5.png"));
+    public Image h5 = img7.getImage();
+    public ImageIcon img8 = new ImageIcon(this.getClass().getResource("image/restaurant.png"));
+    public Image rest = img8.getImage();
+    
     
     public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
     public HouseAnimationPanel house2Panel = new HouseAnimationPanel(2);
@@ -155,7 +162,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 homes.add(house5Panel);
                 
                 // Creating the apartment animation panel
-                for (int i = 5; i < 5; ++i) {
+
+                for (int i = 5; i < 25; ++i) {
                         apartments.add(new ApartmentAnimationPanel(i));
                 }
                 
@@ -338,6 +346,9 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.drawImage(h1, 450, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h2, 450, 370, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h3, 520, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h4, 590, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(h5, 660, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(rest, 200, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         
         //Hover Text
             g2.setColor(Color.BLACK);

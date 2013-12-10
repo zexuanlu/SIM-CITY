@@ -14,15 +14,18 @@ import person.PersonAgent;
  */
 public class Restaurant4CookGui implements Gui{
 
+<<<<<<< HEAD
 	private Restaurant4CookRole agent = null;
 	private boolean isPresent = false;
+=======
+	private boolean isPresent = true;
+>>>>>>> 224e7f1451046c0ce922d1a9762dd9bebc8cd95d
 	private ArrayList<FoodGui> foods = new ArrayList<FoodGui>();
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
 	public Restaurant4CookGui(Restaurant4CookRole c){ //HostAgent m) {
-		agent = c;
 		xPos = 440;
 		yPos = 250;
 		xDestination = 435;

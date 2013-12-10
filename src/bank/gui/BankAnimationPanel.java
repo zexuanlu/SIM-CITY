@@ -21,16 +21,21 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
 	private final int WINDOWX = 540;
     private final int WINDOWY = 480;
     static final int TIMERCOUNT = 20;
-    static final int TELLERBOOTHSIZE = 20;
-    static final int TELLERBOOTHX = 80;
-    static final int TELLERBOOTHY = 360;
-    static final int HOSTDESKWIDTH = 20;
+    static final int TELLERBOOTHSIZE = 60;
+    static final int TELLERBOOTHX = 60;
+    static final int TELLERBOOTHY = 350;
+    static final int HOSTDESKWIDTH = 51;
     static final int HOSTDESKHEIGHT = 60;
-    static final int HOSTDESKX = 450;
-    static final int HOSTDESKY = 50;
+    static final int HOSTDESKX = 430;
+    static final int HOSTDESKY = 90;
 
     public List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
 
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("image/hostDesk.png"));
+    public Image m1 = img.getImage();
+    public ImageIcon img2 = new ImageIcon(this.getClass().getResource("image/tellerDesk.png"));
+    public Image m2 = img2.getImage();
+    
     public BankAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
     	Dimension d = new Dimension(WINDOWX, WINDOWY);
@@ -57,11 +62,13 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.BLACK);
         for(int i = 0; i < 5; i++){
             g2.setColor(Color.BLACK);
-        	g2.fillRect(TELLERBOOTHX + 80*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE);
+            g2.drawImage(m2, TELLERBOOTHX + 80*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE, null);
+        	//g2.fillRect(TELLERBOOTHX + 80*i, TELLERBOOTHY, TELLERBOOTHSIZE, TELLERBOOTHSIZE);
         }
 
+        g2.drawImage(m1, HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT, null);
         g2.setColor(Color.RED);
-        g2.fillRect(HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT);
+        //g2.fillRect(HOSTDESKX, HOSTDESKY, HOSTDESKWIDTH, HOSTDESKHEIGHT);
 
         synchronized(guis){
 	        for(Gui gui : guis) {

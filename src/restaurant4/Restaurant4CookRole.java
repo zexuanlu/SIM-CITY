@@ -34,6 +34,7 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	private boolean checkStand = false;
 	public Restaurant4CookGui gui;
 	private int GrillNum = 0;
+	private int endOfDay = 0;
 	private Map<String, MyFood> cookTimes = Collections.synchronizedMap(new HashMap<String, MyFood>());
 	public List<Food> foodlist = Collections.synchronizedList(new ArrayList<Food>());
 	boolean needTocookOrder = false;
@@ -162,6 +163,10 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 			checkBill();
 			return true;
 		}
+		if(endOfDay == 2){
+			workDayOver();
+			return true;
+		}
 		return false;
 	}
 
@@ -248,6 +253,12 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 			rc.msgBillChecked(price);
 		else
 			rc.msgBillChecked(price);
+	}
+	
+	private void workDayOver(){
+		endOfDay = 0;
+		getPerson().msgGoOffWork(this, 0.00);
+		gui.setPresent(false);
 	}
 	
 	// The animation DoXYZ() routines
@@ -337,5 +348,10 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 
 	public void setMarketCashier(MarketCashierRole r) {
 		mc = r;
+	}
+
+	public void msgWorkDayOver() {
+		endOfDay++;
+		stateChanged();
 	}
 }

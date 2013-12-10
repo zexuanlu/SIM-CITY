@@ -119,7 +119,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	
 	// All the gui semaphores
 	private Semaphore atFridge = new Semaphore(0, true);
-	private Semaphore atFrontDoor = new Semaphore(0, true);
+	public Semaphore atFrontDoor = new Semaphore(0, true);
 	private Semaphore waitForReturn = new Semaphore(0, true);
 	private Semaphore atStove = new Semaphore(0, true);
 	private Semaphore atTable = new Semaphore(0, true);
@@ -134,6 +134,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 * 
 	 */
 	public void updateVitals(int hunger, int timer) {
+		if(((PersonAgent)person).getName().equals("Person 5"))
+			Do(hunger + " : " + hungerThreshold + " OINEOIGOSGHES");
 		if (hunger >= hungerThreshold) {
 			if(state == MyState.Cooking)
 				return;
@@ -141,7 +143,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 				if(mp.type == MyPriority.Type.Hunger)
 					return;
 			 }
-		}
 			// Add eating to the list of priorities that the resident has
 		toDoList.add(new MyPriority(MyPriority.Task.NeedToEat, MyPriority.Type.Hunger));
 			
@@ -151,6 +152,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		print("I'm hungry.");
 		
 		stateChanged();
+		}
 	}
 
 	public void msgFoodDone() {
@@ -323,6 +325,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 				}
 			}
 		}
+		aptGui.DoGoToHome();
 		return false;
 	}
 	
@@ -370,9 +373,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
         }, 540000);
 	}
 		
-	private void checkFridge(MyPriority p) {
-		toDoList.remove(p);
-		
+	private void checkFridge(MyPriority p) {		
 		DoGoToFridge();
 
 		if (myFridge.isEmpty()) { // Checks to see if the list is empty
@@ -385,12 +386,11 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has food. I can cook now!"));
 			print("My fridge has food. I can cook now!");
-		}	
+		}
+		toDoList.remove(p);
 	}
 
 	private void decideMarketOrGoOut(MyPriority p) {
-		toDoList.remove(p);
-
 		if (person.msgCheckWallet() < minRestaurantMoney) { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToMarket, MyPriority.Type.Hunger)); 
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
@@ -407,6 +407,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			
 			print("I have enough money to go to the restaurant, and go to the market when I have time.");
 		}
+		toDoList.remove(p);
 	}
 	
 	private void goToRestaurant(MyPriority p) {
@@ -445,9 +446,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		DoGoToFridge();
 	}
 
-	private void cookFood(MyPriority p) {
-		toDoList.remove(p);
-		
+	private void cookFood(MyPriority p) {		
 		DoGoToFridge();
 
 		int max = -1;
@@ -477,17 +476,17 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
 			print("My fridge has no more " + maxChoice + ".");
 		}
-		
+		toDoList.remove(p);
+		state = MyState.Cooking;
 		DoCookFood(maxChoice);
 	}
 	
 
 	private void eatFood(MyPriority p) {
-		toDoList.remove(p);
-
-		DoGetCookedFood();
-        
 		person.setHungerLevel(0);
+		state = MyState.Awake;
+		toDoList.remove(p);
+		DoGetCookedFood();
 	}
 
 	private void washDishes(MyPriority p) {

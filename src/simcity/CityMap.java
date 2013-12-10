@@ -2,6 +2,7 @@ package simcity;
 import java.util.*;
 import java.awt.Dimension;
 
+import person.Bank;
 import person.Location;
 import person.PersonAgent.HomeType;
 import person.Position;
@@ -14,6 +15,7 @@ import simcity.interfaces.Bus;
 
 public class CityMap {
 	//	Map<String,Dimension> simMap = new HashMap<String,Dimension>();
+	List<Integer>push = new ArrayList<Integer>();
 
 	//bus information
 	int WIDTHTOTAL = 740; 
@@ -34,12 +36,19 @@ public class CityMap {
 	public CityMap(List<Location> locations){
 		map = locations;
 		ateOutLast = false;
+
+		push.add(-20);
+		push.add(0);
+		push.add(20);
+
+
 	}
 
 	public CityMap(){
 
 	}
 	public BusRoute generateBusInformation(int finalx, int finaly, int originx, int originy){
+
 		BusRoute b = new BusRoute();
 		BusStop destStop = getClosestStop(finalx, finaly);
 		b.destination = getStopName(destStop);
@@ -57,6 +66,12 @@ public class CityMap {
 	}
 
 	public Position getNearestStreet(int x, int y){
+		int buffer = push.get(0);
+		push.remove(0);
+		push.add(buffer);
+
+
+
 		//on horizontal road
 		int tempX = 0; 
 		int tempY = 0; 
@@ -67,9 +82,15 @@ public class CityMap {
 				tempX = Math.abs(x - 340);
 				tempY = Math.abs(y - 180);
 				if (tempX < tempY){ //on vertical road
+					if (y>20){
+						return new Position(340,y+buffer);
+					}
 					return new Position(340, y);
 				}
 				else { //on horizontal road
+					if (x>20){
+						return new Position(x+buffer, 180);
+					}
 					return new Position(x, 180);
 				}
 			}
@@ -77,12 +98,18 @@ public class CityMap {
 				tempX = Math.abs(x - 340);
 				tempY = Math.abs(y - 280);
 				if (tempX < tempY){ //on vertical road
+					if (y<440){
+						return new Position(340,y+buffer);
+					}
 					return new Position(340, y);
 				}
 				else { //on horizontal road
+					if (x>20){
+						return new Position(x+buffer,260);
+					}
 					return new Position(x, 260);
 				}
-				
+
 			}
 		}
 		else {//rightside
@@ -107,16 +134,16 @@ public class CityMap {
 				}
 			}
 		}
-		
-		
-		
-//		
-//		if (x < WIDTHTOTAL/2){
-//			return(new Position(x,Street1));
-//		}
-//		else {
-//			return (new Position(Street2,y));
-//		}
+
+
+
+		//		
+		//		if (x < WIDTHTOTAL/2){
+		//			return(new Position(x,Street1));
+		//		}
+		//		else {
+		//			return (new Position(Street2,y));
+		//		}
 	}
 
 	public String getStopName(BusStop b){
@@ -209,16 +236,60 @@ public class CityMap {
 		}
 		return ll;
 	}
+	public Location getRestaurant(int choice){
+		Location l = null;
+		switch(choice) {
+		case 1:
+			l = get(LocationType.Restaurant1);
+			break;
+		case 2: 
+			l = get(LocationType.Restaurant2);
+			break;
+		case 3:
+			l = get(LocationType.Restaurant3);
+			break;
+		case 4:
+			l = get(LocationType.Restaurant4);
+			break;
+		case 5: 
+			l = get(LocationType.Restaurant5);
+			break;
+		case 6:
+			l = get(LocationType.Restaurant6);
+			break;
+		}
+		return l;
+	}
 	public Location eatOutOrIn(){
-		Location l = chooseRandom(LocationType.Restaurant1);
+
+		Random chooser = new Random();
+		int i = chooser.nextInt(6);
+		Location l  = getRestaurant(i);
+		if(history.size() == 6){
+			history.clear();
+		}
+		while(l.isClosed()){ 
+			i = chooser.nextInt(6);
+			l  = getRestaurant(i);
+		}
 		if(!history.contains(l)){
 			history.add(l);
 		}
+		System.out.println("Going to " + l.getName());
 		ateOutLast = true;
+
 		return l;
 	}
+	public Location get(LocationType lt){
+		Location ll = null;
+		for(Location l : map){
+			if(l.type == lt){
+				ll = l;
+			}
+		}
+		return ll;
+	}
 	public Location getByType(LocationType lt){
-
 		Location destination = new Location();
 		for(Location l : map){
 			if(l.type == lt){
@@ -228,6 +299,7 @@ public class CityMap {
 		return destination;
 	}
 	public Position findNearestBusStop(Position p){
+
 		PriorityQueue<Position> nearest = new PriorityQueue<Position>();
 		List<Location> busStops = getListOfType(LocationType.BusStop);
 		for(Location l : busStops){
@@ -250,6 +322,22 @@ public class CityMap {
 		return distance;
 	}
 
+	public Bank pickABank(int x, int y){
+		Bank temp = ((Bank)chooseByName("Banco Popular"));
+		Bank temp2 = ((Bank)chooseByName("Banco Popular 2"));
+		if(temp.isClosed() && temp2.isClosed())
+			return null;
+		else if(temp2.isClosed())
+			return temp;
+		else if(temp.isClosed())
+			return temp2;
+		else if(distanceTo(x,y,temp) > distanceTo(x,y,temp2))
+			return temp2;
+		else 
+			return temp;
+
+	}
+
 	public Location chooseByName(String name){ //sync? i dont think anyone will mess with this list after init
 		Location choice = null;
 		for(Location l : map){
@@ -262,7 +350,7 @@ public class CityMap {
 	public Location chooseRandom(LocationType type) {
 		Random chooser = new Random();
 		int i = chooser.nextInt(map.size());
-		
+
 		Location l = map.get(i);
 		if(l.type == type){
 			return l;

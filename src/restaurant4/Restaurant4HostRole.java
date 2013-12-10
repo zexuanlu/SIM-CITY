@@ -26,6 +26,7 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 	private String name;
 	//Used to tell the customers if the restaurant is full
 	private boolean informed = true;
+	private boolean endOfDay = false;
 
 	public Restaurant4HostRole(String name, Person pa) {
 		super(pa);
@@ -190,6 +191,10 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 			return true;
 			
 		}
+		if(waitingCustomers.isEmpty() && endOfDay){
+			closeRestaurant();
+			return true;
+		}
 		return false;
 	}
 
@@ -248,6 +253,15 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 			waiter.waiter.msgCannotGoOnBreak();
 		}
 	}
+	
+	private void closeRestaurant(){
+		for(MyWaiter w : waiters){
+			w.waiter.msgWorkDayOver();
+		}
+		endOfDay = false;
+		getPerson().msgGoOffWork(this, 0.00);
+	}
+	
 	// The animation DoXYZ() routines
 
 	//utilities
@@ -307,6 +321,10 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 	@Override
 	public String getRoleName() {
 		return "Restaurant 4 Host";
+	}
+	public void msgEndOfDay(){
+		endOfDay = true;
+		stateChanged();
 	}
 }
 

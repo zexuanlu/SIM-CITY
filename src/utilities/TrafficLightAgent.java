@@ -12,32 +12,29 @@ public class TrafficLightAgent extends Agent {
 
 	public List<MyCar> myCar = Collections.synchronizedList(new ArrayList<MyCar>());
 	public List<MyBus> myBus = Collections.synchronizedList(new ArrayList<MyBus>());
-	public List<MyTruck> myTruck = Collections.synchronizedList(new ArrayList<MyTruck>());
 	public List<MyPeople> myPeople = Collections.synchronizedList(new ArrayList<MyPeople>());
 
 	private boolean Hlight = false;
 	private boolean Vlight = true;
 	private boolean Plight = false;
-	
+
 	private int lightCount = 0;
-	 Timer timer = new Timer();
+	Timer timer = new Timer();
 
 	////////////////////////////////////////////////////remember synchronized list!!!!!!!!!!!!!!!!!!!!
-	
+
 	public TrafficLightAgent(){
-	//	 timer.scheduleAtFixedRate(new RemindTask(), 0, 
-		//	        1 * 1000); //subsequent rate
-		 
-		 
-			timer.schedule(new TimerTask() {
-				public void run() {
-					RemindTask();
-				}
-			},
-				2000);//
-		 
+
+
+		timer.schedule(new TimerTask() {
+			public void run() {
+				RemindTask();
+			}
+		},
+		2000);//
+
 	}
-	
+
 	public class MyCar {
 		CarAgent car;
 		state s;
@@ -99,15 +96,6 @@ public class TrafficLightAgent extends Agent {
 		stateChanged();
 	}
 
-	public void msgCheckLight(MarketTruck truck, int x, int y){
-		if (x<= 1 && x >= 3){
-			myTruck.add(new MyTruck(truck, state.updown));
-		}
-		else if (y<= 1 && y >= 3){
-			myTruck.add(new MyTruck(truck, state.leftright));
-		}
-		stateChanged();
-	}
 
 	public void msgCheckLight(Person p){
 
@@ -124,7 +112,7 @@ public class TrafficLightAgent extends Agent {
 			GoVertical();
 			return true;
 		}
-		
+
 		if(Hlight){
 			GoHorizontal();
 			return true;
@@ -138,29 +126,24 @@ public class TrafficLightAgent extends Agent {
 	}
 
 	private void GoHorizontal(){
-		for(MyTruck t: myTruck){
-			if(t.s == state.leftright){
-				//message truck
-				myTruck.remove(t);
-			}
-		}
-		
+
 		synchronized(myBus){
-		for(MyBus bus: myBus){
-			if(bus.s == state.leftright){
-				bus.bus.msgLightGreen();
-				bus.s = state.done; 
-			//	myBus.remove(bus);
-			}
+			for(MyBus bus: myBus){
+				if(bus.s == state.leftright){
+					bus.bus.msgLightGreen();
+					bus.s = state.done; 
+					//	myBus.remove(bus);
+				}
 			}
 		}
-		
-		
-		for(MyCar car: myCar){
-			if(car.s == state.leftright){
-				car.car.msgLightGreen();
-				car.s = state.done; 
-				//myCar.remove(car);
+
+		synchronized(myCar){
+			for(MyCar car: myCar){
+				if(car.s == state.leftright){
+					car.car.msgLightGreen();
+					car.s = state.done; 
+					//myCar.remove(car);
+				}
 			}
 		}
 
@@ -168,82 +151,80 @@ public class TrafficLightAgent extends Agent {
 	}
 
 	private void GoVertical(){	
-		for(MyTruck t: myTruck){
-			if(t.s == state.updown){
-				//message truck
-				myTruck.remove(t);
-			}
-		}
 		synchronized(myBus){
 			for(MyBus bus: myBus){
 				if(bus.s == state.updown){
 					bus.bus.msgLightGreen();
 					bus.s = state.done; 
 
-//					myBus.remove(bus);
+					//					myBus.remove(bus);
 				}
 			}
 		}
-		for(MyCar car: myCar){
-			if(car.s == state.updown){
-				car.car.msgLightGreen();
-				car.s = state.done; 				
-				//myCar.remove(car);
+		synchronized(myCar){
+			for(MyCar car: myCar){
+				if(car.s == state.updown){
+					car.car.msgLightGreen();
+					car.s = state.done; 				
+					//myCar.remove(car);
+				}
 			}
 		}
 
 	}
 
 	private void PeopleGo(){
-		for(MyPeople p: myPeople){
-			//message people
-			myPeople.remove(p);
+		synchronized(myPeople){
+			for(MyPeople p: myPeople){
+				//message people
+				myPeople.remove(p);
+			}
 		}
 	}
-	
-		public void RemindTask() {
-			System.out.println("TrafficLightAgent remind task "+ lightCount);
-		
-			Hlight = false;
-			Vlight= false;
+
+	public void RemindTask() {
+		System.out.println("TrafficLightAgent remind task "+ lightCount);
+
+		Hlight = false;
+		Vlight= false;
+		Plight = false;
+
+		try { Thread.sleep(1000); }
+		catch (Exception e){}
+
+		int s = lightCount;
+		if(lightCount < 2){
+			lightCount ++;
+		}
+		else{
+			lightCount = 0;
+		}
+		if(lightCount == 0){ //horizontal
+			Hlight = true;
+			Vlight = false;
 			Plight = false;
-			
-			try { Thread.sleep(1000); }
-			catch (Exception e){}
-			
-			int s = lightCount;
-			if(lightCount < 2){
-				lightCount ++;
-			}
-			else{
-				lightCount = 0;
-			}
-			if(lightCount == 0){ //horizontal
-				Hlight = true;
-				Vlight = false;
-				Plight = false;
-			}
-			else if(lightCount == 1){ //person
-				Hlight = false;
-				Vlight = false;
-				Plight = true;
-			}
-			else if(lightCount == 2){ //vertical
-				Hlight = false;
-				Vlight = true;
-				Plight = false;
-			}
-			
-			timer.schedule(new TimerTask() {
-				public void run() {
-					RemindTask();
-				}
-			},
-				2500);//
-			
-			stateChanged();
-			
 		}
-		
+		else if(lightCount == 1){ //person
+			Hlight = false;
+			Vlight = false;
+			Plight = true;
+		}
+		else if(lightCount == 2){ //vertical
+			Hlight = false;
+			Vlight = true;
+			Plight = false;
+		}
+
+		timer.schedule(new TimerTask() {
+			public void run() {
+				RemindTask();
+			}
+		},
+		2500);//
+
+		stateChanged();
+
 	}
+
+}
 

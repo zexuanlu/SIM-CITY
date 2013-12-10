@@ -21,6 +21,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	protected breakState bs;
 	protected Semaphore movement;
 	protected Semaphore ordering;
+	protected boolean endOfDay = false;
 	
 	public Restaurant4AbstractWaiter(Person pa) {
 		super(pa);
@@ -103,6 +104,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 				return;
 			}
 		}
+	}
+	
+	public void msgWorkDayOver(){
+		endOfDay = true;
+		stateChanged();
 	}
 	
 	//Received from the gui telling the waiter to try to go on break
@@ -216,6 +222,10 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 			if(bs == breakState.willBreak && customers.isEmpty()){
 				goOnBreak();
 				return false;
+			}
+			if(customers.isEmpty() && endOfDay){
+				workDayOver();
+				return true;
 			}
 		}
 		catch(ConcurrentModificationException cme){
@@ -358,6 +368,21 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		cust.s = state.sitting;
 		cust.c.msgHereIsCheck(cust.price, cashier);
 		gui.GoToLocation("Home");
+	}
+	
+	private void workDayOver(){
+		cashier.msgWorkDayOver();
+		cook.msgWorkDayOver();
+		gui.GoToLocation("Home");
+		try{
+			movement.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
+		endOfDay = false;
+		getPerson().msgGoOffWork(this, 0.00);
+		gui.setPresent(false);
 	}
 	
 	//Getters and Setters

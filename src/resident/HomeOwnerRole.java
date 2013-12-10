@@ -111,7 +111,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	
 	// All the gui semaphores
 	private Semaphore atFridge = new Semaphore(0, true);
-	private Semaphore atFrontDoor = new Semaphore(0, true);
+	public Semaphore atFrontDoor = new Semaphore(0, true);
 	private Semaphore waitForReturn = new Semaphore(0, true);
 	private Semaphore atStove = new Semaphore(0, true);
 	private Semaphore atTable = new Semaphore(0, true);
@@ -317,6 +317,7 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 				}
 			}
 		}
+		homeGui.DoGoToHome();
 		return false;
 	}
 		

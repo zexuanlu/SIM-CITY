@@ -67,6 +67,11 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 		waiters.add(w);
 	}
 	// Messages
+	public void msgEndOfDay(){
+		for(MyWaiter w : waiters){
+			//w.goOffWork
+		}
+	}
 	public void msgAvailable(Restaurant2Waiter w){
 		for(int i=0; i < waiters.size(); i++){
 			MyWaiter mw = waiters.get(i);
