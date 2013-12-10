@@ -369,9 +369,13 @@ public class PersonAgent extends Agent implements Person{
 
 		for(SimEvent nextEvent : toDo){
 			if(nextEvent.importance == EventImportance.OneTimeEvent){
-				if(!atHome)
-					goToLocation(nextEvent.location);
-				goToAndDoEvent(nextEvent);
+				if(!nextEvent.location.isClosed()){
+					if(!atHome)
+						goToLocation(nextEvent.location);
+					goToAndDoEvent(nextEvent);
+					return true;
+				}
+				toDo.remove(nextEvent);
 				return true;
 			}
 		}
@@ -1226,19 +1230,20 @@ public class PersonAgent extends Agent implements Person{
 		boolean addedAnEvent = false;
 
 		Bank b = cityMap.pickABank(gui.xPos, gui.yPos);//(Bank)cityMap.getByType(LocationType.Bank);
-
-		if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
-			SimEvent needMoney = new SimEvent("withdraw", b, EventType.CustomerEvent);
-			if(!containsEvent("withdraw")){ 
-				toDo.add(needMoney);
-				addedAnEvent = true;
+		if(b != null){
+			if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
+				SimEvent needMoney = new SimEvent("withdraw", b, EventType.CustomerEvent);
+				if(!containsEvent("withdraw")){ 
+					toDo.add(needMoney);
+					addedAnEvent = true;
+				}
 			}
-		}
-		if(wallet.getOnHand() >= 1400){ //deposit cash
-			SimEvent needDeposit = new SimEvent("deposit", b, EventType.CustomerEvent);
-			if(!containsEvent("deposit")){
-				toDo.add(needDeposit);
-				addedAnEvent = true;
+			if(wallet.getOnHand() >= 1400){ //deposit cash
+				SimEvent needDeposit = new SimEvent("deposit", b, EventType.CustomerEvent);
+				if(!containsEvent("deposit")){
+					toDo.add(needDeposit);
+					addedAnEvent = true;
+				}
 			}
 		}
 		if(wallet.getOnHand() >= 2500 && car == null){

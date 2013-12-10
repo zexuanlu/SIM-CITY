@@ -325,9 +325,15 @@ public class CityMap {
 	public Bank pickABank(int x, int y){
 		Bank temp = ((Bank)chooseByName("Banco Popular"));
 		Bank temp2 = ((Bank)chooseByName("Banco Popular 2"));
-		if(distanceTo(x,y,temp) > distanceTo(x,y,temp2))
+		if(temp.isClosed() && temp2.isClosed())
+			return null;
+		else if(temp2.isClosed())
+			return temp;
+		else if(temp.isClosed())
 			return temp2;
-		else
+		else if(distanceTo(x,y,temp) > distanceTo(x,y,temp2))
+			return temp2;
+		else 
 			return temp;
 
 	}

@@ -119,7 +119,7 @@ public class SimCityGUI extends JFrame {
         
         //Restaurant 1 GUIs
         public WaiterGui wg = new WaiterGui(waiter1);
-        public CookGui cg = new CookGui(cook1, null);
+        public CookGui cg = new CookGui(cook1);
         
         //Restaurant 3 GUIs
         public Restaurant3CookGui ck3g = new Restaurant3CookGui(cook3);
@@ -550,7 +550,8 @@ public class SimCityGUI extends JFrame {
                         aStarTraversal = new AStarTraversal(grid);
                 		aStarTraversal.originalgrid = origgrid; 
                         PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
-                        PersonGui pgui = new PersonGui(p, x, y);
+                        PersonGui pgui = new PersonGui(p, x, y, cityAnimPanel);
+                        //pgui.setAnimationPanel(cityAnimPanel);
                         x = x+40; 
                         p.setGui(pgui);
                         System.out.println(""+i);
@@ -816,7 +817,7 @@ public class SimCityGUI extends JFrame {
         }
         
         public void addPerson(PersonAgent p) {
-                PersonGui pgui = new PersonGui(p,100,100);
+                PersonGui pgui = new PersonGui(p,100,100, this.cityAnimPanel);
                 p.setGui(pgui);
                 p.setAnimationPanel(cityAnimPanel);
                 people.add(p);
@@ -832,7 +833,7 @@ public class SimCityGUI extends JFrame {
     		AStarTraversal aStarTraversal = new AStarTraversal(grid);
 
     		PersonAgent p  = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
-            PersonGui pgui = new PersonGui(p,-20, -20);
+            PersonGui pgui = new PersonGui(p,-20, -20, this.cityAnimPanel);
             p.setGui(pgui);
             p.setAnimationPanel(cityAnimPanel);
             cityAnimPanel.addGui(pgui);
@@ -849,7 +850,7 @@ public class SimCityGUI extends JFrame {
             caragent.gotoPosition(720, 180, 100, 180);
             
         	p  = new PersonAgent("Crash dummy2", citymap, aStarTraversal, 500.00);
-        	pgui = new PersonGui(p,-20,-20);
+        	pgui = new PersonGui(p,-20,-20, cityAnimPanel);
             p.setGui(pgui);
             p.setAnimationPanel(cityAnimPanel);
             cityAnimPanel.addGui(pgui);

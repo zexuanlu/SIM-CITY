@@ -29,4 +29,6 @@ public interface Restaurant4Waiter {
 
 	public abstract void msgSeatCustomer(Restaurant4Customer customer, int tableNumber, Restaurant4Host host,String string);
 
+	public abstract void msgWorkDayOver();
+
 }

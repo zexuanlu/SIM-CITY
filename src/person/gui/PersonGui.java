@@ -2,11 +2,15 @@ package person.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import person.PersonAgent;
 import person.Position;
 import utilities.Gui;
 import utilities.TrafficLightAgent;
+import gui.panels.CityAnimationPanel;
 
 public class PersonGui implements Gui{
 	
@@ -17,13 +21,17 @@ public class PersonGui implements Gui{
 	private boolean arrived; 
 	public boolean isPresent;
 	public boolean atLight;
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
+	public Image pImg = img.getImage();
+	CityAnimationPanel cPanel;
 
-	public PersonGui(PersonAgent agent, int posx, int posy) {
+	public PersonGui(PersonAgent agent, int posx, int posy, CityAnimationPanel cap) {
 		xPos = posx; 
 		yPos = posy; 
 		xDestination = xPos; 
 		yDestination = yPos; 
 		this.agent = agent;
+		this.cPanel = cap;
 		arrived = false;
 		isPresent = true;
 	}
@@ -52,11 +60,16 @@ public class PersonGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.BLUE);
-		g.fillRect(xPos, yPos, 10, 10);
+		//g.setColor(Color.BLUE);
+		//g.fillRect(xPos, yPos, 10, 10);
+		g.drawImage(pImg, xPos, yPos, 10, 10, cPanel);
 		g.drawString(agent.getName(), xPos-14, yPos-5);
 	}
 
+	public void setAnimationPanel(CityAnimationPanel cap){
+		this.cPanel = cap;
+	}
+	
 	public boolean isPresent() {
 		if(isPresent){
 			return true;
