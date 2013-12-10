@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Restaurant3AnimationPanel extends JPanel implements ActionListener {
 
 	//Dimensions
-	static final int WIDTH = 530;
+	static final int WIDTH = 540;
 	static final int HEIGHT = 480;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
 	
@@ -52,9 +52,9 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 	
 	public Restaurant3AnimationPanel() {
 		//Set up panel
-		this.setPreferredSize(size);
-		this.setMaximumSize(size);
-		this.setMinimumSize(size);
+		setSize(size);
+    	setVisible(true);
+		this.setBorder(BorderFactory.createTitledBorder("Restaurant 3"));
 		
 		//Start timer for animation
 		//animTimer.start();
