@@ -597,7 +597,6 @@ public class SimCityGUI extends JFrame {
                         x = x+20; 
 
                         PersonGui pgui = new PersonGui(p, x, y, cityAnimPanel);
-                        x = x+40; 
                         p.setGui(pgui);
                         System.out.println(""+i);
                         if(i < 21){
