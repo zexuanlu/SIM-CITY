@@ -226,6 +226,9 @@ public class PersonAgent extends Agent implements Person{
 				r.setActive(false);
 			}
 		}
+		if(hour % 3 == 0){
+			hunger++;
+		}
 		stateChanged();
 	}
 	public void msgAtDest(int x, int y){
@@ -1248,6 +1251,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(hunger > 3 && !containsEvent("Go Eat") && !cityMap.ateOutLast){
+			System.err.println("Going to eat!");
 			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
 			addedAnEvent = true;
 		}

@@ -237,6 +237,7 @@ public class CityMap {
 		return ll;
 	}
 	public Location eatOutOrIn(){
+		
 		Random chooser = new Random();
 		int i = chooser.nextInt(6);
 		
@@ -244,22 +245,22 @@ public class CityMap {
 		
 		switch(i) {
 		case 1:
-			l = chooseRandom(LocationType.Restaurant1);
+			l = get(LocationType.Restaurant1);
 		break;
 		case 2: 
-			l = chooseRandom(LocationType.Restaurant2);
+			l = get(LocationType.Restaurant2);
 		break;
 		case 3:
-			l = chooseRandom(LocationType.Restaurant3);
+			l = get(LocationType.Restaurant3);
 		break;
 		case 4:
-			l = chooseRandom(LocationType.Restaurant4);
+			l = get(LocationType.Restaurant4);
 		break;
 		case 5: 
-			l = chooseRandom(LocationType.Restaurant5);
+			l = get(LocationType.Restaurant5);
 		break;
 		case 6:
-			l = chooseRandom(LocationType.Restaurant6);
+			l = get(LocationType.Restaurant6);
 		break;
 		}
 		if(history.size() == 6){
@@ -271,6 +272,15 @@ public class CityMap {
 		System.out.println("Going to " + l.getName());
 		ateOutLast = true;
 		return l;
+	}
+	public Location get(LocationType lt){
+		Location ll = null;
+		for(Location l : map){
+			if(l.type == lt){
+				ll = l;
+			}
+		}
+		return ll;
 	}
 	public Location getByType(LocationType lt){
 		Location destination = new Location();
