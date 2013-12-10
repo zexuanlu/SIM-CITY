@@ -2,6 +2,7 @@ package restaurant4;
 
 import agent.Role;
 import restaurant4.interfaces.*;
+import restaurant4.test.mock.EventLog;
 
 import java.util.*;
 
@@ -18,12 +19,15 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	public List<Check> checks = Collections.synchronizedList(new ArrayList<Check>());
 	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
 	private String name;
+	private int endOfDay = 0;
 	//Lets the Cashier check the prices of items
 	private Map<String, Double> foodPrices = Collections.synchronizedMap(new HashMap<String, Double>());
+	public EventLog log;
 
 	public Restaurant4CashierRole(String name, Person pa) {
 		super(pa);
 		this.name = name;
+		log = new EventLog();
 		foodPrices.put("Shrimp", 8.99);
 		foodPrices.put("Scallops", 7.99);
 		foodPrices.put("Lobster", 14.99);
@@ -121,6 +125,10 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 				return true;
 			}
 		}
+		if(endOfDay == 2){
+			workDayOver();
+			return true;
+		}
 		return false;
 	}
 
@@ -155,6 +163,11 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 
 	private void payBill(Bill b){
 		b.mc.msgBillFromTheAir(b.amount);
+	}
+	
+	private void workDayOver(){
+		endOfDay = 0;
+		getPerson().msgGoOffWork(this, 0.00);
 	}
 	//utilities
 	
@@ -197,5 +210,10 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	@Override
 	public String getRoleName() {
 		return "Restaurant 4 Cashier";
+	}
+
+	public void msgWorkDayOver() {
+		endOfDay++;
+		stateChanged();
 	}
 }

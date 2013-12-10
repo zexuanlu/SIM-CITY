@@ -44,7 +44,7 @@ public class BankTellerRole extends Role implements BankTeller {
 		roleName = "Bank Teller";
 		this.name = name;
 		log = new EventLog();
-		tasks = new ArrayList<Task>();
+		tasks = Collections.synchronizedList(new ArrayList<Task>());
 		s = state.none;
 	}
 	
@@ -69,7 +69,9 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void msgINeedAccount(BankCustomer bc){
 		log.add(new LoggedEvent("Received msgINeedAccount from BankCustomer"));
 		this.bc = bc;
-		tasks.add(new Task("openAccount"));
+		synchronized(tasks){
+			tasks.add(new Task("openAccount"));
+		}
 		stateChanged();
 	}
 	
@@ -84,7 +86,9 @@ public class BankTellerRole extends Role implements BankTeller {
 		log.add(new LoggedEvent("Received msgDepositMoney from BankCustomer"));
 		Do("Received request for deposit");
 		this.bc = bc;
-		tasks.add(new Task("deposit", amount, accountNumber));
+		synchronized(tasks){
+			tasks.add(new Task("deposit", amount, accountNumber));
+		}
 		stateChanged();
 	}
 	
@@ -98,7 +102,9 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void msgWithdrawMoney(BankCustomer bc, double amount, int accountNumber){
 		log.add(new LoggedEvent("Received msgWithdrawMoney from BankCustomer"));
 		this.bc = bc;
-		tasks.add(new Task("withdraw", amount, accountNumber));
+		synchronized(tasks){
+			tasks.add(new Task("withdraw", amount, accountNumber));
+		}
 		stateChanged();
 	}
 	
@@ -112,14 +118,18 @@ public class BankTellerRole extends Role implements BankTeller {
 	public void msgINeedLoan(BankCustomer bc, double amount, int accountNumber){
 		log.add(new LoggedEvent("Received msgINeedLoan from BankCustomer"));
 		this.bc = bc;
-		tasks.add(new Task("getLoan", amount, accountNumber));
+		synchronized(tasks){
+			tasks.add(new Task("getLoan", amount, accountNumber));
+		}	
 		stateChanged();
 	}
 	
 	public void msgThisIsAHoldup(BankCustomer bc, double amount){
 		log.add(new LoggedEvent("Received msgThisIsAHoldUp from BankCustomer"));
 		this.bc = bc;
-		tasks.add(new Task("robBank", amount, -1));
+		synchronized(tasks){
+			tasks.add(new Task("robBank", amount, -1));
+		}
 		stateChanged();
 	}
 	
@@ -131,13 +141,15 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public void msgAccountCreated(int accountNumber, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgAccountCreated from BankDatabase"));
-		for(Task t : tasks){
-			if(t.type.equals("openAccount")){
-				Do("Account Number " + accountNumber + " Created");
-				t.accountNumber = accountNumber;
-				t.ts = taskState.completed;
-				stateChanged();
-				return;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.type.equals("openAccount")){
+					Do("Account Number " + accountNumber + " Created");
+					t.accountNumber = accountNumber;
+					t.ts = taskState.completed;
+					stateChanged();
+					return;
+				}
 			}
 		}
 	}
@@ -150,12 +162,14 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public void msgDepositDone(double balance, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgDepositDone from BankDatabase"));
-		for(Task t : tasks){
-			if(t.type.equals("deposit")){
-				t.balance = balance;
-				t.ts = taskState.completed;
-				stateChanged();
-				return;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.type.equals("deposit")){
+					t.balance = balance;
+					t.ts = taskState.completed;
+					stateChanged();
+					return;
+				}
 			}
 		}
 	}
@@ -169,13 +183,15 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public void msgWithdrawDone(double balance, double money, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgWithdrawDone from BankDatabase"));
-		for(Task t : tasks){
-			if(t.type.equals("withdraw")){
-				t.balance = balance;
-				t.amount = money;
-				t.ts = taskState.completed;
-				stateChanged();
-				return;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.type.equals("withdraw")){
+					t.balance = balance;
+					t.amount = money;
+					t.ts = taskState.completed;
+					stateChanged();
+					return;
+				}
 			}
 		}
 	}
@@ -189,13 +205,15 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public void msgLoanGranted(double money, double debt, BankCustomer bc){
 		log.add(new LoggedEvent("Received msgLoanGranted from BankDatabase"));
-		for(Task t : tasks){
-			if(t.type.equals("getLoan")){
-				t.amount = money;
-				t.ts = taskState.completed;
-				t.balance = debt;
-				stateChanged();
-				return;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.type.equals("getLoan")){
+					t.amount = money;
+					t.ts = taskState.completed;
+					t.balance = debt;
+					stateChanged();
+					return;
+				}
 			}
 		}
 	}
@@ -208,22 +226,26 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public void msgRequestFailed(BankCustomer bc, String type){
 		log.add(new LoggedEvent("Received msgRequestFailed from BankDatabase"));
-		for(Task t : tasks){
-			if(t.type.equals(type)){
-				t.ts = taskState.failed;
-				stateChanged();
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.type.equals(type)){
+					t.ts = taskState.failed;
+					stateChanged();
+				}
 			}
 		}
 	}
 	
 	public void msgHereIsMoney(double amount){
 		log.add(new LoggedEvent("Received msgHereIsMoney from BankDatabase"));
-		for(Task t : tasks){
-			if(t.type.equals("robBank")){
-				t.amount = amount;
-				t.ts = taskState.completed;
-				stateChanged();
-				return;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.type.equals("robBank")){
+					t.amount = amount;
+					t.ts = taskState.completed;
+					stateChanged();
+					return;
+				}
 			}
 		}
 	}
@@ -271,33 +293,39 @@ public class BankTellerRole extends Role implements BankTeller {
 			return true;
 		}
 		//If there is a task that failed
-		for(Task t : tasks){
-			if(t.ts == taskState.failed){
-				RequestFailed(t);
-				return true;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.ts == taskState.failed){
+					RequestFailed(t);
+					return true;
+				}
 			}
 		}
 		//If there is a task that has been completed
-		for(Task t : tasks){
-			if(t.ts == taskState.completed){
-				switch(t.type){
-				case "openAccount": accountMade(t); return true;
-				case "deposit": depositMade(t); return true;
-				case "withdraw": withdrawMade(t); return true;
-				case "getLoan": loanMade(t); return true;
-				case "robBank": bankRobbed(t); return true;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.ts == taskState.completed){
+					switch(t.type){
+					case "openAccount": accountMade(t); return true;
+					case "deposit": depositMade(t); return true;
+					case "withdraw": withdrawMade(t); return true;
+					case "getLoan": loanMade(t); return true;
+					case "robBank": bankRobbed(t); return true;
+					}
 				}
 			}
 		}
 		//If there is a task that was requested
-		for(Task t : tasks){
-			if(t.ts == taskState.requested){
-				switch(t.type){
-				case "openAccount": openAccount(t); return true;
-				case "deposit": deposit(t); return true;
-				case "withdraw": withdraw(t); return true;
-				case "getLoan": getLoan(t); return true;
-				case "robBank": robbery(t); return true;
+		synchronized(tasks){
+			for(Task t : tasks){
+				if(t.ts == taskState.requested){
+					switch(t.type){
+					case "openAccount": openAccount(t); return true;
+					case "deposit": deposit(t); return true;
+					case "withdraw": withdraw(t); return true;
+					case "getLoan": getLoan(t); return true;
+					case "robBank": robbery(t); return true;
+					}
 				}
 			}
 		}

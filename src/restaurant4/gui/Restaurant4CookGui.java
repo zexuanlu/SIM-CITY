@@ -12,7 +12,6 @@ import java.util.*;
  */
 public class Restaurant4CookGui implements Gui{
 
-	private Restaurant4CookRole agent = null;
 	private boolean isPresent = true;
 	private ArrayList<FoodGui> foods = new ArrayList<FoodGui>();
 
@@ -20,7 +19,6 @@ public class Restaurant4CookGui implements Gui{
 	private int xDestination, yDestination;
 
 	public Restaurant4CookGui(Restaurant4CookRole c){ //HostAgent m) {
-		agent = c;
 		xPos = 440;
 		yPos = 250;
 		xDestination = 435;

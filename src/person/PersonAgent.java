@@ -100,11 +100,9 @@ public class PersonAgent extends Agent implements Person{
 
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
-
+	
 	private Semaphore going = new Semaphore(0, true);
-	//private Semaphore transport = new Semaphore(0, true);
 	private Semaphore wait = new Semaphore(0, true);
-	//private Semaphore driving = new Semaphore(0, true);
 
 	public PersonAgent (String name, CityMap cm, double money){
 		super();
@@ -228,6 +226,9 @@ public class PersonAgent extends Agent implements Person{
 				r.setActive(false);
 			}
 		}
+		if(hour % 3 == 0){
+			hunger++;
+		}
 		stateChanged();
 	}
 	public void msgAtDest(int x, int y){
@@ -248,7 +249,8 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 
-	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
+	public void msgAtDest(Position destination){ 
+		//From the gui. now we can send the correct entrance message to the location manager
 		//print("Received the message AtDest");
 		//gui.setPresent(false);
 		currentLocation = destination;
@@ -369,9 +371,13 @@ public class PersonAgent extends Agent implements Person{
 
 		for(SimEvent nextEvent : toDo){
 			if(nextEvent.importance == EventImportance.OneTimeEvent){
-				if(!atHome)
-					goToLocation(nextEvent.location);
-				goToAndDoEvent(nextEvent);
+				if(!nextEvent.location.isClosed()){
+					if(!atHome)
+						goToLocation(nextEvent.location);
+					goToAndDoEvent(nextEvent);
+					return true;
+				}
+				toDo.remove(nextEvent);
 				return true;
 			}
 		}
@@ -1443,19 +1449,20 @@ public class PersonAgent extends Agent implements Person{
 		boolean addedAnEvent = false;
 
 		Bank b = cityMap.pickABank(gui.xPos, gui.yPos);//(Bank)cityMap.getByType(LocationType.Bank);
-
-		if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
-			SimEvent needMoney = new SimEvent("withdraw", b, EventType.CustomerEvent);
-			if(!containsEvent("withdraw")){ 
-				toDo.add(needMoney);
-				addedAnEvent = true;
+		if(b != null){
+			if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
+				SimEvent needMoney = new SimEvent("withdraw", b, EventType.CustomerEvent);
+				if(!containsEvent("withdraw")){ 
+					toDo.add(needMoney);
+					addedAnEvent = true;
+				}
 			}
-		}
-		if(wallet.getOnHand() >= 1400){ //deposit cash
-			SimEvent needDeposit = new SimEvent("deposit", b, EventType.CustomerEvent);
-			if(!containsEvent("deposit")){
-				toDo.add(needDeposit);
-				addedAnEvent = true;
+			if(wallet.getOnHand() >= 1400){ //deposit cash
+				SimEvent needDeposit = new SimEvent("deposit", b, EventType.CustomerEvent);
+				if(!containsEvent("deposit")){
+					toDo.add(needDeposit);
+					addedAnEvent = true;
+				}
 			}
 		}
 		if(wallet.getOnHand() >= 2500 && car == null){
@@ -1467,6 +1474,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(hunger > 3 && !containsEvent("Go Eat") && !cityMap.ateOutLast){
+			System.err.println("Going to eat!");
 			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
 			addedAnEvent = true;
 		}

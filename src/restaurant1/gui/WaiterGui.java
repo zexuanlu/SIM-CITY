@@ -9,6 +9,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class WaiterGui implements Gui {
@@ -34,6 +36,8 @@ public class WaiterGui implements Gui {
     public static final int yTable = 250;
     public static final int x1Table = 300;
     public static final int y1Table = 150;
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+    public Image wImg = img.getImage();
     
     public WaiterGui(Restaurant1WaiterRole agent) {
         this.agent = agent;
@@ -116,7 +120,7 @@ public class WaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, distance, distance);
+        g.drawImage(wImg, xPos, yPos, distance, distance, null);
         if(agent instanceof Restaurant1WaiterRole){
         	g.drawString(((PersonAgent)((Restaurant1WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
         }

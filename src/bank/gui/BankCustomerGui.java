@@ -5,6 +5,8 @@ import bank.BankCustomerRole;
 import java.awt.*;
 import java.util.*;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 import simcity.astar.Position;
 import utilities.Gui;
@@ -24,6 +26,9 @@ public class BankCustomerGui implements Gui{
 
 	private int xPos, yPos;
 	private int xDestination, yDestination;
+	
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/bankCustomer.png"));
+    public Image m1 = img.getImage();
 
 	public BankCustomerGui(BankCustomerRole c){//, BankAnimationPanel gui){ //HostAgent m) {
 		bc = c;
@@ -76,7 +81,8 @@ public class BankCustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
-		g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(m1, xPos, yPos, 20, 20, null);
+		//g.fillRect(xPos, yPos, 20, 20);
 		g.drawString(((PersonAgent)bc.getPerson()).getName(), xPos-14, yPos-5);
 	}
 

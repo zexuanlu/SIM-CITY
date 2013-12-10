@@ -22,7 +22,7 @@ public class Restaurant3WaiterGui implements Gui {
 		private enum Command {noCommand, GoToHomePosition, TakeCustomerToTable, 
 			GoToTable, GoToCook, TakeFoodToCustomer};	//EDIT
 		private Command command=Command.noCommand;
-		private boolean isPresent = false;
+		public boolean isPresent = false;
 		
 		//Positions
 		private int cookPosX = Restaurant3AnimationPanel.oStandX - width;
