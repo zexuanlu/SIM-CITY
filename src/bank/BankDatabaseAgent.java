@@ -19,7 +19,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 	//Data
 	public EventLog log;//Used for testing
 	public Map<Integer,Account> accounts;//A map of all of the accounts mapped to the account numbers
-	public List<Request> requests = new ArrayList<Request>();//A list of requests from the tellers
+	public List<Request> requests = Collections.synchronizedList(new ArrayList<Request>());//A list of requests from the tellers
 	public Double totalMoney;
 	Timer timer = new Timer();
 	
