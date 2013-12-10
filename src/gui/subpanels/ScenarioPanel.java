@@ -586,7 +586,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Cook.setRevolvingStand(rs2);
   		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		//rest2Host.addWaiter(rest2Waiter);
+  		rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
@@ -1602,5 +1602,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			robber.msgAddEvent(robBank);
 		robber.gui.setPresent(true);
 		robber.startThread();
+}
+////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////WEEKEND SCENARIO//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Weekend behavior scenario : People will go to the casino 
+	 * one person will win enough money to go buy a car after playing
+	 */
+	public void weekendBehaviorScenario() {
+		
 	}
 }

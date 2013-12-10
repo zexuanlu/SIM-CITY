@@ -109,6 +109,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
     	for(myRestaurant rest: restaurant){
     		if(rest.number == restnum){
     			if(rest.r.isClosed()){
@@ -124,6 +125,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
     			}
     			else{
     		    	cook.msgHereisYourFood(this, foodlist);
+    		    	
     		    	return;
     			}
     		}

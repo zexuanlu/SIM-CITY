@@ -151,7 +151,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	}
 	
 	public void msgHereisOrder(MarketCustomer customer, List<Food> food){
-		mycustomer.add(new Mycustomer(customer, food));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		mycustomer.add(new Mycustomer(customer, temp));
 		stateChanged();
 	}
 
@@ -176,7 +180,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	// end of in market scenario
 
 	public void MsgIwantFood(RestaurantCook cook, RestaurantCashier ca, List<Food> food, int number){
-		myrest.add(new Myrest(cook, ca, food, number));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		myrest.add(new Myrest(cook, ca, temp, number));
 		stateChanged();
 	}
 
@@ -192,7 +200,11 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	
 	public void msgDevliveryFail(MarketTruck t, RestaurantCook cook, List<Food> food, Restaurant r, int restnum){
 		truck.add(t);
-		pendingOrder.add(new PendingOrder(cook, food, r, restnum));
+		List<Food> temp = new ArrayList<Food>();
+		for (Food f : food) {
+			temp.add(new Food(f.choice, f.amount));
+		}
+		pendingOrder.add(new PendingOrder(cook, temp, r, restnum));
 		stateChanged();
 	}
 
