@@ -109,7 +109,7 @@ public class PersonAgent extends Agent implements Person{
 		this.name = name;
 		this.cityMap = cm;
 		this.wallet = new Wallet(money, 0);//hacked in
-		this.hunger = 4;
+		this.hunger = 0;
 		currentTime = 7;
 	}
 	public PersonAgent (String name, CityMap cm, AStarTraversal astar2, double money){
@@ -119,7 +119,7 @@ public class PersonAgent extends Agent implements Person{
 		astar = astar2; 
 		this.wallet = new Wallet(money, 0);//hacked in
 
-		this.hunger = 4;
+		this.hunger = 0;
 		currentTime = 7;
 		this.astar = astar;
 	}
@@ -130,7 +130,7 @@ public class PersonAgent extends Agent implements Person{
 		super();
 		this.name = name;
 		this.wallet = new Wallet(600.00, 0);//hacked in
-		this.hunger = 4;
+		this.hunger = 0;
 	}
 
 	/* Utilities */
@@ -221,6 +221,8 @@ public class PersonAgent extends Agent implements Person{
 		currentTime = hour;
 		for(MyRole r : roles){
 			if(r.role instanceof HomeOwnerRole || r.role instanceof ApartmentTenantRole){
+				if(r.isActive)
+					atHome = true;
 				r.setActive(false);
 			}
 		}
@@ -254,6 +256,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public void msgAtDest(Position destination,CarAgent c){ // From the gui. now we can send the correct entrance message to the location manager
 		print("Received the message AtDest from car");
+		going.release();
 		gui.setPresent(true);
 		currentLocation = destination;
 		dowalkto(destination.getX(),destination.getY());
@@ -327,8 +330,34 @@ public class PersonAgent extends Agent implements Person{
 		}
 
 		for(SimEvent nextEvent : toDo){
-			//print("Priority is " + nextEvent.importance + " Time = " + currentTime + " : " + nextEvent.startTime);
 			if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
+				if(atHome){
+					Do("In the loop!");
+					for(MyRole r : roles){
+						if(r.role instanceof HomeOwnerRole){
+							((HomeOwnerRole)r.role).homeGui.DoGoToFrontDoor();
+							try{
+								((HomeOwnerRole)r.role).atFrontDoor.acquire();
+							}
+							catch(InterruptedException ie){
+								ie.printStackTrace();
+							}
+							((HomeOwnerRole)r.role).homeGui.setPresent(false);
+						}
+						else if(r.role instanceof ApartmentTenantRole){
+							((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
+							try{
+								((ApartmentTenantRole)r.role).atFrontDoor.acquire();
+							}
+							catch(InterruptedException ie){
+								ie.printStackTrace();
+							}
+							((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
+						}
+							
+					}
+					atHome = false;
+				}			
 				print("Activating a recurring event");
 				goToLocation(nextEvent.location);
 				goToAndDoEvent(nextEvent);
@@ -1218,7 +1247,11 @@ public class PersonAgent extends Agent implements Person{
 				addedAnEvent = true;
 			}
 		}
-		if(!addedAnEvent && !containsEvent("Go home") && !cityMap.ateOutLast){
+		if(hunger > 3 && !containsEvent("Go Eat") && !cityMap.ateOutLast){
+			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
+			addedAnEvent = true;
+		}
+		if(!addedAnEvent && !containsEvent("Go home")){
 			SimEvent goHome = null;
 			if(homeNumber > 4){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
@@ -1228,10 +1261,6 @@ public class PersonAgent extends Agent implements Person{
 			}
 			toDo.add(goHome);
 			addedAnEvent = true;
-		}
-		else if(hunger > 3 && !addedAnEvent){
-			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
-			addedAnEvent = true;	
 		}
 		return addedAnEvent;
 		//buy a car
@@ -1301,8 +1330,7 @@ public class PersonAgent extends Agent implements Person{
 		//car.goToPosition(p.getX(), p.getY());
 		//}
 		//else{ 
-		if(testMode){ return; }
-		gui.DoGoTo(loc.getPosition()); //}
+		if(testMode){ return; }//}
 		if(car != null){
 			car.myGui.isPresent = true;
 			gui.isPresent = false;
@@ -1311,7 +1339,15 @@ public class PersonAgent extends Agent implements Person{
 			print ("origin position "+p.getX() + " " + p.getY());
 			print("goingto position " + l.getX() + " " + l.getY());
 			print("gotoposition from person");
+			going.drainPermits();
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
+			try {
+				going.acquire();
+			} 
+			catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			gui.DoGoTo(loc.getPosition()); 
 		}
 		else{ gui.DoGoTo(loc.getPosition()); }
 	}

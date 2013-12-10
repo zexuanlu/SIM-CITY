@@ -182,6 +182,7 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 			return true;
 		}
 		if ( event == AgentEvent.doneLeaving){
+			person.setHungerLevel(0);
 			person.msgFinishedEvent(this);
 			event = AgentEvent.none;
 			return true;

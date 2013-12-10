@@ -119,7 +119,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	
 	// All the gui semaphores
 	private Semaphore atFridge = new Semaphore(0, true);
-	private Semaphore atFrontDoor = new Semaphore(0, true);
+	public Semaphore atFrontDoor = new Semaphore(0, true);
 	private Semaphore waitForReturn = new Semaphore(0, true);
 	private Semaphore atStove = new Semaphore(0, true);
 	private Semaphore atTable = new Semaphore(0, true);
