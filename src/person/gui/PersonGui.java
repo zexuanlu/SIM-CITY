@@ -60,9 +60,8 @@ public class PersonGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		//g.setColor(Color.BLUE);
-		//g.fillRect(xPos, yPos, 10, 10);
 		g.drawImage(pImg, xPos, yPos, 10, 10, cPanel);
+		g.setColor(Color.BLUE);
 		g.drawString(agent.getName(), xPos-14, yPos-5);
 	}
 

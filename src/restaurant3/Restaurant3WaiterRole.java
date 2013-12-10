@@ -22,7 +22,7 @@ public class Restaurant3WaiterRole extends Restaurant3AbstractWaiter implements 
 	Restaurant3Cashier cashier;
 	
 	//References to GUI stuff
-	Restaurant3WaiterGui waiterGui;
+	public Restaurant3WaiterGui waiterGui;
 
 	//List to hold customers
 	List<MyCustomer> myCustomers

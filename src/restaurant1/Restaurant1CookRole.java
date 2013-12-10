@@ -253,6 +253,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	}
 
 	public void TruckBack(){
+		cashier.msgYouCanPayNow(marketCashier, foodlist);
 		truck.msgGoBack();
 		sendTruckBack = false;
 	}

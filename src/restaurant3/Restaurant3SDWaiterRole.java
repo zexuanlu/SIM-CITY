@@ -21,7 +21,7 @@ public class Restaurant3SDWaiterRole extends Restaurant3AbstractWaiter implement
 	public Restaurant3Cashier cashier;
 	
 	//References to GUI stuff
-	Restaurant3WaiterGui waiterGui;
+	public Restaurant3WaiterGui waiterGui;
 
 	//List to hold customers
 	List<MyCustomer> myCustomers
