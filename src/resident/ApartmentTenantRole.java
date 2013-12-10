@@ -134,8 +134,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	 * 
 	 */
 	public void updateVitals(int hunger, int timer) {
-		if(((PersonAgent)person).getName().equals("Person 5"))
-			Do(hunger + " : " + hungerThreshold + " OINEOIGOSGHES");
 		if (hunger >= hungerThreshold) {
 			if(state == MyState.Cooking)
 				return;

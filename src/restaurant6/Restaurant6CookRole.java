@@ -196,14 +196,14 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		numNeeded = 3;
 		
 		// Sets all inventory to threshold
-		Restaurant6Food chicken = foods.get("Chicken");
-		chicken.setAmount(1);
-		Restaurant6Food steak = foods.get("Steak");
-		steak.setAmount(1);
-		Restaurant6Food salad = foods.get("Salad");
-		salad.setAmount(1);
-		Restaurant6Food pizza = foods.get("Pizza");
-		pizza.setAmount(1);
+		Restaurant6Food gt = foods.get("Green Tea Ice Cream");
+		gt.setAmount(1);
+		Restaurant6Food mc = foods.get("Mint Chip Ice Cream");
+		mc.setAmount(1);
+		Restaurant6Food rr = foods.get("Rocky Road Ice Cream");
+		rr.setAmount(1);
+		Restaurant6Food ma = foods.get("Mocha Almond Fudge Ice Cream");
+		ma.setAmount(1);
 	
 		stateChanged();
 	}
@@ -215,14 +215,14 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		numNeeded = 8;
 		
 		// Sets all inventory to threshold
-		Restaurant6Food chicken = foods.get("Chicken");
-		chicken.setAmount(1);
-		Restaurant6Food steak = foods.get("Steak");
-		steak.setAmount(1);
-		Restaurant6Food salad = foods.get("Salad");
-		salad.setAmount(1);
-		Restaurant6Food pizza = foods.get("Pizza");
-		pizza.setAmount(1);
+		Restaurant6Food gt = foods.get("Green Tea Ice Cream");
+		gt.setAmount(1);
+		Restaurant6Food mc = foods.get("Mint Chip Ice Cream");
+		mc.setAmount(1);
+		Restaurant6Food rr = foods.get("Rocky Road Ice Cream");
+		rr.setAmount(1);
+		Restaurant6Food ma = foods.get("Mocha Almond Fudge Ice Cream");
+		ma.setAmount(1);
 	
 		stateChanged();
 	}
