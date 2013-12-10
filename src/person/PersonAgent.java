@@ -98,11 +98,9 @@ public class PersonAgent extends Agent implements Person{
 
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
-
+	
 	private Semaphore going = new Semaphore(0, true);
-	//private Semaphore transport = new Semaphore(0, true);
 	private Semaphore wait = new Semaphore(0, true);
-	//private Semaphore driving = new Semaphore(0, true);
 
 	public PersonAgent (String name, CityMap cm, double money){
 		super();
@@ -249,7 +247,8 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 
-	public void msgAtDest(Position destination){ // From the gui. now we can send the correct entrance message to the location manager
+	public void msgAtDest(Position destination){ 
+		//From the gui. now we can send the correct entrance message to the location manager
 		//print("Received the message AtDest");
 		//gui.setPresent(false);
 		currentLocation = destination;

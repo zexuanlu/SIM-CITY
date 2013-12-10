@@ -5,19 +5,23 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import person.Location.LocationType;
 import person.interfaces.Person;
+import simcity.CityMap;
 import utilities.TimeCard;
  //msgEndOfDay()
 public class SimWorldClock {
 	private Timer clock = new Timer();
 	public List<PersonAgent> people;
+	public CityMap cityMap;
 	public List<TimeCard> timeCards;
 	private int currentHour;
 	public int endOfDay;
 
-	public SimWorldClock(int currentHour, List<PersonAgent> people){
+	public SimWorldClock(int currentHour, List<PersonAgent> people, CityMap cm){
 		this.currentHour = currentHour;
 		timeCards = new ArrayList<TimeCard>();
+		cityMap = cm;
 		this.people = people;
 		for(PersonAgent person : people){
 			person.msgNewHour(currentHour);
@@ -35,6 +39,7 @@ public class SimWorldClock {
 			person.msgNewHour(currentHour);
 		}
 		if(currentHour == 22){
+			closeUp();
 			for(TimeCard timeCard : timeCards){
 				timeCard.msgEndOfDay();
 			}
@@ -43,6 +48,13 @@ public class SimWorldClock {
 			currentHour++;
 		}
 		else{ currentHour = 1; }
+	}
+	public void closeUp(){
+		for(Location l : cityMap.map){
+			if( l.type != LocationType.Apartment && l.type != LocationType.Home){
+				l.isClosed = true;
+			}
+		}
 	}
 	public void addPerson(PersonAgent p){
 		people.add(p);

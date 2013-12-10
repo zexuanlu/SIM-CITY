@@ -711,7 +711,7 @@ public class SimCityGUI extends JFrame {
                 waiter3.setCashier(cashier3);
                 cook3.setCashier(cashier3);
                 cook3.setMarketCashier(marketcashierrole);
-                host3.addWaiter(waiter3);
+                //host3.addWaiter(waiter3);
                 
 
                 // Messages landlord with initial tenants
@@ -745,7 +745,7 @@ public class SimCityGUI extends JFrame {
                 truck.setCashier(marketcashierrole);
                 marketcashierrole.addTruck(truck);
                 /*Create the SimWorldClock with the starting time and the list of people*/
-                simclock = new SimWorldClock(8,people);
+                simclock = new SimWorldClock(8,people, citymap);
                 simclock.timeCards.add(bank.getTimeCard());
                 simclock.timeCards.add(market.getTimeCard());
                 simclock.timeCards.add(rest1.getTimeCard());
