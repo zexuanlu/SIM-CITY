@@ -316,6 +316,7 @@ public class SimCityGUI extends JFrame {
         		//build the animation areas
         		try {
         			for (int y=0;y<30;y++){  //Create dead position
+        				grid[36][23].release();
         				origgrid[36][23].release();
         			}
         			for (int x=0;x<17;x++){
