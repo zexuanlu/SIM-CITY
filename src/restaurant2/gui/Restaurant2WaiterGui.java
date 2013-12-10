@@ -97,7 +97,7 @@ public class Restaurant2WaiterGui implements Gui {
 			agent.msgBackHome();
 			//agent.getHost().msgAvailable(agent);
 		}
-		if(xPos == 550)
+		if(xPos == 330)
 		{
 			agent.msgAtCook();
 		}

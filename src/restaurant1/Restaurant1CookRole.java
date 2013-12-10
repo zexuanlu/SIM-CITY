@@ -36,6 +36,8 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	private Semaphore AR = new Semaphore(0,true);
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
 
+	
+	private boolean TT = true;
 
 	public Restaurant1CookRole(String name, Person pa) {
 		super(pa);
@@ -131,6 +133,11 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
+		if(TT){
+			foodlist.add(new Food("Steak", 10));
+			Orderfoodislow();
+		}
+		
 		if(opening){
 			Orderfoodislow();
 			return true;
@@ -213,6 +220,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	}
 
 	public void Orderfoodislow(){
+		TT = false;
 		opening = false;
 		int s = count;
 		Do("We need more food!");
@@ -254,11 +262,13 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 
 	public void TruckBack(){
 		truck.msgGoBack();
+		System.out.println("Trucking going back");
+		cashier.msgYouCanPayNow(marketCashier, foodlist);
 		sendTruckBack = false;
 	}
 
 	public void setMarketCashier(MarketCashierRole r) {
-		
+		this.marketCashier = r;
 	}
 
 }

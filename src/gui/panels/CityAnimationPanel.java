@@ -62,6 +62,14 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public Restaurant5AnimationPanel rest5Panel = new Restaurant5AnimationPanel();
     public Restaurant6AnimationPanel rest6Panel = new Restaurant6AnimationPanel();
     
+    //Texture images
+    public ImageIcon texImg = new ImageIcon(this.getClass().getResource("image/businessbgrnd.png"));
+    public Image businessbgTex = texImg.getImage();
+    public ImageIcon texImg2 = new ImageIcon(this.getClass().getResource("image/ground.png"));
+    public Image resbgTex = texImg2.getImage();
+    
+    
+    //Building images
     public ImageIcon img = new ImageIcon(this.getClass().getResource("image/market1.png"));
     public Image m1 = img.getImage();
     public ImageIcon img1 = new ImageIcon(this.getClass().getResource("image/bank.png"));
@@ -80,6 +88,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public Image h5 = img7.getImage();
     public ImageIcon img8 = new ImageIcon(this.getClass().getResource("image/restaurant.png"));
     public Image rest = img8.getImage();
+    public ImageIcon img9 = new ImageIcon(this.getClass().getResource("image/apartments.png"));
+    public Image apts = img9.getImage();
+    public ImageIcon img10 = new ImageIcon(this.getClass().getResource("image/casino.png"));
+    public Image csino = img10.getImage();
+    
     
     
     public HouseAnimationPanel house1Panel = new HouseAnimationPanel(1);
@@ -163,7 +176,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 
                 // Creating the apartment animation panel
 
-                for (int i = 5; i < 25; ++i) {
+                for (int i = 5; i < 65; ++i) {
                         apartments.add(new ApartmentAnimationPanel(i));
                 }
                 
@@ -304,6 +317,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WIDTH, HEIGHT );
 
+        //Quadrant textures
+        g2.drawImage(businessbgTex, 0, 0, 330, 170, null);	//TOP LEFT
+        g2.drawImage(businessbgTex, 440, 0, 340, 170, null);	//TOP RIGHT
+        g2.drawImage(resbgTex, 450, 290, 300, 190, null);	//BOTTOM RIGHT
+        g2.drawImage(resbgTex, 0, 290, 330, 190, null);
+        
         //Here is the table
         g2.setColor(Color.GRAY);
         g2.fill(bank);
@@ -342,13 +361,23 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.drawImage(b, 60, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(b, 660, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(m1, 130, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(m2, 450, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(m1, 450, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h1, 450, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h2, 450, 370, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h3, 520, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h4, 590, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
         g2.drawImage(h5, 660, 290, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
-        g2.drawImage(rest, 200, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);
+        g2.drawImage(rest, 200, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);	//Restaurant1
+        g2.drawImage(rest, 270, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);	//Restaurant2
+        g2.drawImage(rest, 270, 40, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);	//Restaurant3
+        g2.drawImage(rest, 520, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);	//Restaurant4
+        g2.drawImage(rest, 590, 110, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);	//Restaurant5
+        g2.drawImage(rest, 450, 40, BUILDINGSIZE, BUILDINGSIZE, BuildPanel);	//Restaurant6
+        g2.drawImage(apts, 20, 290, BUILDINGSIZE+10, BUILDINGSIZE+10, BuildPanel);	//Apartment1
+        g2.drawImage(apts, 100, 290, BUILDINGSIZE+10, BUILDINGSIZE+10, BuildPanel);	//Apartment2
+        g2.drawImage(apts, 180, 290, BUILDINGSIZE+10, BUILDINGSIZE+10, BuildPanel);	//Apartment3
+        g2.drawImage(apts, 260, 290, BUILDINGSIZE+10, BUILDINGSIZE+10, BuildPanel);	//Apartment4
+        g2.drawImage(csino, 260, 370, BUILDINGSIZE+10, BUILDINGSIZE+10, BuildPanel);
         
         //Hover Text
             g2.setColor(Color.BLACK);

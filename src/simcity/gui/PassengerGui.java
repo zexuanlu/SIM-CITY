@@ -2,6 +2,9 @@ package simcity.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import person.PersonAgent;
 import simcity.PassengerRole; 
@@ -14,6 +17,8 @@ public class PassengerGui implements Gui {
 	private GuiState guistate; 
 	private PassengerRole passenger; 
 	public int xPos, yPos, xDestination, yDestination; 
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
+	public Image pImg = img.getImage();
 
 	
 
@@ -28,8 +33,8 @@ public class PassengerGui implements Gui {
 	public void draw(Graphics2D g) {  
 		
 		if (guistate != GuiState.onBus){
+	       g.drawImage(pImg, xPos, yPos, 10, 10, null);
 	       g.setColor(Color.BLUE);
-	       g.fillRect(xPos,yPos,10,10);
 			g.drawString(((PersonAgent)passenger.person).getName(), xPos-14, yPos-5);
 		}
     }

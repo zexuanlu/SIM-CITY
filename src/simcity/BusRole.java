@@ -120,10 +120,13 @@ public class BusRole extends Agent implements Bus {
 	}
 	
 	public void msgLeaving(Passenger p){
+		synchronized(passengers){
+		
 		for (myPassenger mp:passengers){
 			if (mp.p == p){
 				mp.state = PersonState.leaving;
 			}
+		}
 		}
 		stateChanged();
 	}
