@@ -32,6 +32,10 @@ import market.*;
 import restaurant1.*;
 import restaurant1.gui.CookGui;
 import restaurant1.gui.WaiterGui;
+import restaurant3.*;
+import restaurant3.gui.Restaurant3CookGui;
+import restaurant3.gui.Restaurant3CustomerGui;
+import restaurant3.gui.Restaurant3WaiterGui;
 import restaurant4.*;
 import person.Location;
 import resident.ApartmentLandlordRole;
@@ -92,6 +96,14 @@ public class SimCityGUI extends JFrame {
         public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
         public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
         
+        //RESTAURANT 3 ROLES
+        public Restaurant3HostRole host3 = new Restaurant3HostRole("Host 3", initPerson);
+        public Restaurant3CookRole cook3 = new Restaurant3CookRole("Cook 3", initPerson);
+        public Restaurant3CashierRole cashier3 = new Restaurant3CashierRole("Cashier 3", initPerson);
+        public Restaurant3CustomerRole customer3 = new Restaurant3CustomerRole("Customer 3", initPerson);
+        public Restaurant3WaiterRole waiter3 = new Restaurant3WaiterRole("Waiter 3", initPerson);
+        public Restaurant3SDWaiterRole sdwaiter3 = new Restaurant3SDWaiterRole("SDWaiter 3", initPerson);
+        
         public Restaurant4HostRole host4 = new Restaurant4HostRole("Host 4", initPerson);
         public Restaurant4CookRole cook4 = new Restaurant4CookRole("Cook 4", initPerson);
         public Restaurant4CashierRole cashier4 = new Restaurant4CashierRole("Cashier 4", initPerson);
@@ -105,8 +117,14 @@ public class SimCityGUI extends JFrame {
         
         public MarketEmployeeGui meg = new MarketEmployeeGui(marketemployeerole);
         
+        //Restaurant 1 GUIs
         public WaiterGui wg = new WaiterGui(waiter1);
         public CookGui cg = new CookGui(cook1, null);
+        
+        //Restaurant 3 GUIs
+        public Restaurant3CookGui ck3g = new Restaurant3CookGui(cook3);
+        public Restaurant3WaiterGui w3g = new Restaurant3WaiterGui(waiter3);
+        public Restaurant3WaiterGui sdw3g = new Restaurant3WaiterGui(sdwaiter3);
         
         public HomeOwnerGui hg1 = new HomeOwnerGui(homeOwnerRole1);
         public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
@@ -183,31 +201,31 @@ public class SimCityGUI extends JFrame {
 
                 Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
                                 new Position(120, 170), LocationType.Bank);
-                Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-                                new Position(130, 170), LocationType.Market);
-                Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
-                Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
-                Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
+                Market market = new Market("Pokemart", marketcashierrole, new TimeCard(),           		
+                                new Position(180, 170), LocationType.Market);
+                Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(240, 170), LocationType.Restaurant1);
+                Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(320, 170), LocationType.Restaurant2);
+                Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 100), LocationType.Restaurant3);
                 
                 // Second quadrant locations
                 Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
-                                new Position(640, 130), LocationType.Bank);
+                                new Position(660, 170), LocationType.Bank);
                 Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
-                                new Position(430, 130), LocationType.Market);
+                                new Position(460, 170), LocationType.Market);
                 // FIX HOST ROLES
                 Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
-                Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(590, 170), LocationType.Restaurant2);
-                Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(440, 40), LocationType.Restaurant3);                
+                Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(600, 170), LocationType.Restaurant2);
+                Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(450, 100), LocationType.Restaurant3);                
                 
                 // Third quadrant locations
                 Home home1 = new Home("Home 1", homeOwnerRole1, 
-                                new Position(440, 290), 1, LocationType.Home);
+                                new Position(460, 280), 1, LocationType.Home);
                 Home home2 = new Home("Home 2", homeOwnerRole2, 
-                                new Position(440, 370), 2, LocationType.Home);
+                                new Position(440, 380), 2, LocationType.Home);
                 Home home3 = new Home("Home 3", homeOwnerRole3, 
                                 new Position(520, 280), 3, LocationType.Home);
                 Home home4 = new Home("Home 4", homeOwnerRole4, 
-                                new Position(590, 280), 4, LocationType.Home);
+                                new Position(600, 280), 4, LocationType.Home);
                 // FIX
                 Home home5 = new Home("Home 5", homeOwnerRole4, 
                                 new Position(660, 280), 4, LocationType.Home);
@@ -215,45 +233,51 @@ public class SimCityGUI extends JFrame {
                 // Fourth quadrant locations
                 // First apartment complex
                 Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
-                                new Position(20, 280), 5, LocationType.Apartment);
+                                new Position(80, 280), 5, LocationType.Apartment);
                 Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
-                                new Position(20, 280), 6, LocationType.Apartment);
+                                new Position(80, 280), 6, LocationType.Apartment);
                 Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
-                                new Position(20, 280), 7, LocationType.Apartment);
+                                new Position(80, 280), 7, LocationType.Apartment);
                 Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
-                                new Position(20, 280), 8, LocationType.Apartment);
+                                new Position(80, 280), 8, LocationType.Apartment);
+                
+                
                 Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
-                                new Position(20, 280), 9, LocationType.Apartment);
+                                new Position(80, 280), 9, LocationType.Apartment);
                 Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
-                                new Position(20, 280), 10, LocationType.Apartment);
+                                new Position(80, 280), 10, LocationType.Apartment);
                 Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
-                                new Position(20, 280), 11, LocationType.Apartment);
+                                new Position(80, 280), 11, LocationType.Apartment);
                 Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
-                                new Position(20, 280), 12, LocationType.Apartment);
+                                new Position(80, 280), 12, LocationType.Apartment);
                 Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
-                                new Position(20, 280), 13, LocationType.Apartment);
+                                new Position(80, 280), 13, LocationType.Apartment);
+                
+                
                 Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
-                                new Position(20, 280), 14, LocationType.Apartment);
+                                new Position(80, 280), 14, LocationType.Apartment);
                 Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
-                                new Position(20, 280), 15, LocationType.Apartment);
+                                new Position(80, 280), 15, LocationType.Apartment);
                 Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
-                                new Position(20, 280), 16, LocationType.Apartment);
+                                new Position(80, 280), 16, LocationType.Apartment);
                 Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
-                                new Position(20, 280), 17, LocationType.Apartment);
+                                new Position(80, 280), 17, LocationType.Apartment);
                 Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
-                                new Position(20, 280), 18, LocationType.Apartment);
+                                new Position(80, 280), 18, LocationType.Apartment);
                 Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
-                                new Position(20, 280), 19, LocationType.Apartment);
+                                new Position(80, 280), 19, LocationType.Apartment);
                 Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
-                                new Position(20, 280), 20, LocationType.Apartment);
+                                new Position(80, 280), 20, LocationType.Apartment);
                 
                 // Second apartment complex
                 Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
-                                new Position(100, 280), 21, LocationType.Apartment);
+                                new Position(160, 280), 21, LocationType.Apartment);
                 
                 
                 rest1.setCashier(cashier1);
                 rest1.setCook(cook1);
+                rest3.setCashier(cashier3);
+                rest3.setCook(cook3);
                 rest4.setCashier(cashier4);
                 rest4.setCook(cook4);
                 
@@ -424,13 +448,28 @@ public class SimCityGUI extends JFrame {
                 marketemployeerole.setGui(meg);
                 cityAnimPanel.marketPanel.addGui(meg);
                 
+                //SETTING RESTAURANT 1 GUIS
+                //Rest 1 waiter gui
                 wg.isPresent = false;
                 waiter1.setGui(wg);
                 cityAnimPanel.rest1Panel.addGui(wg);
                 
+                //Rest 1 cook gui
                 cg.isPresent = false;
                 cook1.setGui(cg);
                 cityAnimPanel.rest1Panel.addGui(cg);
+                
+                //SETTING RESTAURANT 3 GUIS
+                //Rest 3 waiter gui
+                waiter3.setGui(w3g);
+                cityAnimPanel.rest3Panel.addGui(w3g);
+                
+                sdwaiter3.setGui(sdw3g);
+                cityAnimPanel.rest3Panel.addGui(sdw3g);
+                
+                //Rest 3 cook gui
+                cook3.setGui(ck3g);
+                cityAnimPanel.rest3Panel.addGui(ck3g);
                 
                 hg1.isPresent = false;
                 homeOwnerRole1.setGui(hg1);
@@ -612,6 +651,7 @@ public class SimCityGUI extends JFrame {
                 }
                 
                 rest1.getTimeCard().startThread();
+                rest3.getTimeCard().startThread();
                 market.getTimeCard().startThread();
                 bank.getTimeCard().startThread();
                 bankdatabase.startThread();
@@ -628,12 +668,16 @@ public class SimCityGUI extends JFrame {
                  * */
                 SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
                 SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
+                SimEvent hostGoToRestaurant3 = new SimEvent(rest3, 8, EventType.HostEvent);	//CHANGE EVENT?
                 SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
                 SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CookEvent);
+                SimEvent cookGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CookEvent);	//CHANGE EVENT?
                 SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
                 SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CashierEvent);
+                SimEvent cashierGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CashierEvent);
                 SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
                 SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 14, EventType.SDWaiterEvent);
+                SimEvent waiterGoToRestaurant3 = new SimEvent(rest3, 8, EventType.WaiterEvent);	//CHANGE EVENT?
                 SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
                 SimEvent tellerGoToBank2 = new SimEvent(bank, 14, EventType.TellerEvent);
                 SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
@@ -660,6 +704,14 @@ public class SimCityGUI extends JFrame {
                 waiter1.setCashier(cashier1);
                 cook1.setMarketCashier(marketcashierrole);
                 cook1.setCashier(cashier1);
+                
+                //Set Restaurant 3 agent references
+                waiter3.setHost(host3);
+                waiter3.setCook(cook3);
+                waiter3.setCashier(cashier3);
+                cook3.setCashier(cashier3);
+                cook3.setMarketCashier(marketcashierrole);
+                host3.addWaiter(waiter3);
                 
 
                 // Messages landlord with initial tenants
@@ -697,6 +749,7 @@ public class SimCityGUI extends JFrame {
                 simclock.timeCards.add(bank.getTimeCard());
                 simclock.timeCards.add(market.getTimeCard());
                 simclock.timeCards.add(rest1.getTimeCard());
+                simclock.timeCards.add(rest3.getTimeCard());
                 for (PersonAgent p: people){
                         p.setcitygui(this);
                        p.startThread();

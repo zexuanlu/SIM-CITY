@@ -20,7 +20,7 @@ public class Restaurant3CustomerGui implements Gui {
 	int xPos, yPos;
 	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 	String food;
 	String eating;
 	
