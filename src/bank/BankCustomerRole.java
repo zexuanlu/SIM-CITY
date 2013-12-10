@@ -1,6 +1,7 @@
 package bank;
 
 import bank.interfaces.*;
+import person.PersonAgent;
 import person.interfaces.*;
 import agent.*;
 import bank.test.mock.*;

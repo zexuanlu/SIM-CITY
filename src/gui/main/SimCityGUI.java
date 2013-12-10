@@ -852,7 +852,7 @@ public class SimCityGUI extends JFrame {
 
                 simclock.timeCards.add(rest3.getTimeCard());
                 for (PersonAgent p: people){
-                        p.setcitygui(this);
+                     p.setcitygui(this);
                      p.startThread();
                 }
                 

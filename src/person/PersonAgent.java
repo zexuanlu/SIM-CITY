@@ -142,6 +142,7 @@ public class PersonAgent extends Agent implements Person{
 		this.hunger = 0;
 		currentTime = 7;
 		this.astar = astar;
+		PersonAgent.tracePanel.print("Initializing", this);
 	}
 	public PersonAgent () {
 		super();
