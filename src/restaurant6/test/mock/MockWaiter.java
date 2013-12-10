@@ -82,5 +82,13 @@ public class MockWaiter extends Mock implements Restaurant6Waiter {
 	public void goOnBreak(boolean allowedToGoOnBreak) {
 	}
 
+	/**
+	 * Host tells the waiter that it's time to go home
+	 */
+	public void msgEndOfDay(double restPay) {
+		log.add(new LoggedEvent("Waiter received message that it's time to go home!"));
+		System.out.println("Waiter received message that it's time to go home!");
+	}
+
 
 }

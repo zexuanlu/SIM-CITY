@@ -8,6 +8,8 @@ import java.util.concurrent.Semaphore;
 
 import person.interfaces.Person;
 import restaurant6.interfaces.Restaurant6Waiter;
+import restaurant6.test.mock.EventLog;
+import restaurant6.test.mock.LoggedEvent;
 import utilities.restaurant.RestaurantHost;
 
 
@@ -19,12 +21,21 @@ import utilities.restaurant.RestaurantHost;
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
 public class Restaurant6HostRole extends Role implements RestaurantHost {
+	
+		// Log for JUnit testing
+		public EventLog log = new EventLog();
         
         // A global for the number of tables
         static final int NTABLES = 3;
         
         // Creates a collection of tables
         public Collection<Restaurant6Table> tables;
+        
+        // Boolean to determine off work
+        public boolean offWork = false;
+        
+        // To contain how much money is paid
+        public double restPay = 1000;         
 
         private String name; 
         
@@ -54,7 +65,7 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
         }
         
         // Creates a list of waiters that the host can access
-        private List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
+        public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
         
         // Class of MyCustomer
         private static class MyCustomer {
@@ -126,6 +137,15 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
         }
         
         // Messages
+        // Message from the timecard that it's time to go off work
+        public void msgGoOffWork(Restaurant6HostRole h, double money) {
+        	offWork = true;
+        	restPay = money;
+        	log.add(new LoggedEvent("It's the end of the day! Time to tell all my worker bees to go home."));
+        	print("It's the end of the day! Time to tell all my worker bees to go home.");
+        	stateChanged();
+        }
+        
         // Called by CustomerAgent to indicate hungry 
         public void msgIWantFood(Restaurant6CustomerRole cust) {
             arrivedCustomers.add(new MyCustomer(cust, cust.getCustomerName()));
@@ -301,6 +321,14 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
                                                 }
                                         }
                                 }
+                /*
+                 * If it's the end of the day and there are no more customer's, the host wil message
+                 * all workers saying it's time to go off work.
+                 */
+                if (waitingCustomers.isEmpty() && offWork) {
+                	endWorkDay();
+                	return true;
+                }
                         
                 return false;
                 //we have tried all our rules and found
@@ -308,7 +336,16 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
                 //and wait.
         }
 
-        // Actions        
+        // Actions   
+        // Tells all of the host's current waiters to go off work
+        private void endWorkDay() {
+        	for (MyWaiter w : waiters) {
+        		w.waiter.msgEndOfDay(restPay);
+        	}
+        	this.person.msgGoOffWork(this, restPay);
+        	offWork = false;
+        }
+        
         // Tells the customer that the restaurant is full
         private void tellCustomerRestaurantFull(MyCustomer cust) {
             print("I'm sorry, our restaurant is full.");

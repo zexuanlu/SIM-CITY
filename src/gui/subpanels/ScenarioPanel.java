@@ -225,7 +225,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			else if (chosen.getText().trim().equals("One not working person")) {
 				// Here we will run the scenario where all restaurants order from the market
-				//FIX
 				runOnePersonScenario();
 				
 				System.err.println("One not working person");
@@ -298,7 +297,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 				people.get(i-1).addRole(temp, "Bank Teller");
 			}
 			else if (i >= 5 && i < 7) {
-				BankHostRole temp = new BankHostRole(people.get(i-1), "BANK TELLER");
+				BankHostRole temp = new BankHostRole(people.get(i-1), "BANK HOST");
 				roles.add(temp);
 				people.get(i-1).addRole(temp, "Bank Host");
 			}
@@ -414,6 +413,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			}
 			++i;
 		}
+		
 		
 		/**
 		 * SETTING BANK GUIS AND MARKET GUIS TO CITY ANIMATION PANEL

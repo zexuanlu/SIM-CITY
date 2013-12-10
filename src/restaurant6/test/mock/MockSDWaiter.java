@@ -66,5 +66,9 @@ public class MockSDWaiter extends Mock implements Restaurant6Waiter {
 	public void goOnBreak(boolean allowedToGoOnBreak) {
 	}
 
+	public void msgEndOfDay(double restPay) {
+		log.add(new LoggedEvent("Shared Data Waiter received message to go off work!"));
+	}
+
 
 }

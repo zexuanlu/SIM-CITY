@@ -77,4 +77,10 @@ public interface Restaurant6Waiter {
 	 * @param allowedToGoOnBreak
 	 */
 	public abstract void goOnBreak(boolean allowedToGoOnBreak);
+
+	/**
+	 * Host tells the waiter that it's time to go home
+	 * @param restPay
+	 */
+	public abstract void msgEndOfDay(double restPay);
 }
