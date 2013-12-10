@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+
 import restaurant5.gui.Restaurant5WaiterGui;
 import restaurant5.interfaces.Waiter5;
 import agent.Role; 
@@ -142,6 +143,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 
 	
 	public void msgorderDone(String choice, int table){		
+
 		for (myCustomer mc:customers){
 			if (mc.choice == choice && mc.tablenum == table && mc.s == CustomerState.cooking){
 				mc.s = CustomerState.cooked;
@@ -362,9 +364,16 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 
 	protected void clearTable(myCustomer mc){
 		print("Waiter table free" + mc.tablenum);
+		atOrigin.drainPermits(); 
+		waiterGui.DoLeaveCustomer();
+		try {
+			atOrigin.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		mc.s = CustomerState.done; 
 		myHost.msgTableFree(this, mc.tablenum);
-		waiterGui.DoLeaveCustomer();
 		
 	}
 	
@@ -434,6 +443,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		}catch (InterruptedException e){
 			e.printStackTrace();
 		}
+		print("giveorder here");
 		c.s = CustomerState.gotfood; ///////USED TO BE SERVED
 		stateChanged();
 	}

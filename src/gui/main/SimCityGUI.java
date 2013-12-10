@@ -612,8 +612,10 @@ public class SimCityGUI extends JFrame {
                         p.setAnimationPanel(cityAnimPanel);
                 }
                 
-                for (int i=6;i<26;i++){
+                for (int i=0;i<26;i++){	
+                	if (i != 2  && i!=4 && i != 10 && i!= 20 &&  i != 25){
                         people.get(i).msgAddMoney(-200);
+                	}
                 }
                 
                 people.get(0).addRole(bankhostrole, "Bank Host");
@@ -625,7 +627,7 @@ public class SimCityGUI extends JFrame {
                 people.get(1).roles.get(1).role.switchPerson(people.get(1));
                 people.get(2).addRole(banktellerrole1, "Bank Teller");
                 people.get(2).roles.get(0).role.switchPerson(people.get(2));
-                people.get(2).addRole(homeOwnerRole3, "Home Owner");
+                people.get(2).addRole(homeOwnerRole3, "Home Owner");  
                 people.get(2).roles.get(1).role.switchPerson(people.get(2));
                 people.get(3).addRole(banktellerrole1, "Bank Teller");
                 people.get(3).addRole(homeOwnerRole4, "Home Owner");
@@ -757,8 +759,8 @@ public class SimCityGUI extends JFrame {
                 SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
                 SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
                 SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
-                
-                
+          
+                SimEvent goEatRest5 = new SimEvent("goEat", rest5, EventType.CustomerEvent);
                 SimEvent res5hostGoToRestaurant = new SimEvent(rest5, 8, EventType.HostEvent);
                 SimEvent res5hostGoToRestaurant2 = new SimEvent(rest5, 14, EventType.HostEvent);
                 SimEvent res5cookGoToRestaurant = new SimEvent(rest5, 8, EventType.CookEvent);
@@ -766,7 +768,7 @@ public class SimCityGUI extends JFrame {
                 SimEvent res5cashierGoToRestaurant = new SimEvent(rest5, 8, EventType.CashierEvent);
                 SimEvent res5cashierGoToRestaurant2 = new SimEvent(rest5, 14, EventType.CashierEvent);
                 SimEvent res5waiterGoToRestaurant = new SimEvent(rest5, 8, EventType.WaiterEvent);
-                
+  
 
 
                 bankhostrole.addTeller(banktellerrole1);
@@ -790,6 +792,7 @@ public class SimCityGUI extends JFrame {
                 waiter5.setCashier(cashier5);
                 waiter5.setCook(cook5);
                 host5.addWaiter(waiter5);
+                cook5.setMarketCashier(marketcashierrole);
                 cook5.setRevolvingStand(revolvingstand5);
     
                 //Set Restaurant 3 agent references
@@ -828,6 +831,7 @@ public class SimCityGUI extends JFrame {
                 people.get(15).toDo.add(waiterGoToRestaurant2);
                 people.get(16).toDo.add(hostGoToRestaurant);
                 people.get(17).toDo.add(hostGoToRestaurant2);
+                people.get(18).toDo.add(goEatRest5);
                 people.get(22).toDo.add(res5hostGoToRestaurant);
                 people.get(23).toDo.add(res5waiterGoToRestaurant);
                 people.get(24).toDo.add(res5cashierGoToRestaurant);
@@ -846,7 +850,7 @@ public class SimCityGUI extends JFrame {
                 simclock.timeCards.add(rest3.getTimeCard());
                 for (PersonAgent p: people){
                         p.setcitygui(this);
-                       p.startThread();
+                     p.startThread();
                 }
                 
                 // Sets the sim world clock to the interaction panel's so events can be created with correct start time

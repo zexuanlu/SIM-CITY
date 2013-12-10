@@ -43,7 +43,7 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 			s = _s;
 		}
 	}
-	private enum CustomerState {waiting, restaurantfull, gettingseated, eating, done, toserve};
+	private enum CustomerState {waiting, restaurantfull, gettingseated, eating, done, toserve, donePerson};
 	
 	
 	public Restaurant5HostAgent(String name, PersonAgent p) {
@@ -88,11 +88,12 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 	}
 	
 	public void msgLeaving(Restaurant5CustomerAgent c){
-		
+		print("msgleaving");
 		synchronized(customers){
 			for (myCustomer m:customers){
 				if (m.c == c){
 					m.s = CustomerState.done; 
+					stateChanged();
 					//customers.remove(m);
 				}
 			}
@@ -109,6 +110,7 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 	}
 	
 	public void msgTableFree(Waiter5 w, int table) {
+		print("msgTableFree");
 		Restaurant5CustomerAgent c = null; 
 		synchronized(tables){
 			for (Restaurant5Table _table : tables) {
@@ -118,10 +120,16 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 				}
 			}
 		}
-		if (c != null){
-			customers.remove(c);
+		synchronized(customers){
+			for (myCustomer m:customers){
+				if (m.c == c){
+					m.s = CustomerState.done; 
+					stateChanged();
+					return; 
+					//customers.remove(m);
+				}
+			}
 		}
-		stateChanged();
 	}
 
 	/**
@@ -134,6 +142,19 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */
+		
+		if (!customers.isEmpty()){
+			synchronized(customers){
+			for (myCustomer mc:customers){
+				if (mc.s == CustomerState.done){
+					notifyPerson(mc);
+					return true; 
+				}
+			}
+			}
+		}
+		
+		
 		for (myWaiter _w: waiterQ){
 			if (_w.s == WaiterState.asked){
 				handleBreak(_w);
@@ -166,6 +187,7 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 				for (myCustomer mc:customers){
 					if (mc.s == CustomerState.restaurantfull || mc.s == CustomerState.waiting){
 						tellCustomerFull(mc);
+						return true; 
 					}
 				}
 				}
@@ -215,6 +237,13 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 		stateChanged();
 	}
 
+	
+	public void notifyPerson(myCustomer mc){
+		print ("notifyPerson called");
+		mc.s = CustomerState.donePerson; 
+		mc.c.person.msgFinishedEvent(mc.c);
+	}
+	
 
 	//Accessors 
 	
@@ -259,6 +288,7 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 		return name; 
 	}
 	
+
 	
 }
 

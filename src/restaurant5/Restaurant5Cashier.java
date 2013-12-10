@@ -35,15 +35,15 @@ public class Restaurant5Cashier extends Role implements Cashier5{
 	}
 	
 	private class MarketBill {
-		Market5 market; 
+		MarketCashier market; 
 		int Bill; 
 		MarketState mstate; 
-		MarketBill(Market5 m, int b){
+		MarketBill(MarketCashier m, int b){
 			market = m;
 			Bill = b; 
 		}
 	}
-	private enum MarketState {toPay, flaked, Pay, Done}; 
+	private enum MarketState {toPay, flaked, Pay, Done, waitForCook}; 
 	private enum BillState {computing, computed, givenMoney, paid,flaked};
 	
 	
@@ -61,15 +61,29 @@ public class Restaurant5Cashier extends Role implements Cashier5{
 
 //Messages 
 public void msgmarketbill(Market5 m, int Bill){
-	MarketBill marketbill = new MarketBill(m,Bill);
-	marketbill.mstate = MarketState.toPay; 
-	marketbills.add(marketbill);
-	stateChanged();
+	//MarketBill marketbill = new MarketBill(m,Bill);
+	//marketbill.mstate = MarketState.toPay; 
+	//marketbills.add(marketbill);
+	//stateChanged();
 }
 
 
+public void msgReceivedFood(){
+	for (MarketBill mb: marketbills){
+		if (mb.mstate == MarketState.waitForCook){
+			mb.mstate = MarketState.toPay; 
+			stateChanged(); 
+			return; 
+		}
+	}
+}
+
 public void msgPleasepaytheBill(MarketCashier c, double bills){
-	//IMPLEMENT THIS SHIT
+	int b = (int) bills; 
+	MarketBill marketbill = new MarketBill(c,b);
+	marketbill.mstate = MarketState.waitForCook; 
+	marketbills.add(marketbill);
+	stateChanged();
 }
 	
 public void msgcomputeBill(Waiter5 w1, Customer5 c1, String choice){
@@ -145,14 +159,16 @@ private void payMarketBill(MarketBill b){
 		Cash = Cash - b.Bill; 
 		b.mstate = MarketState.Done; 
 		print ("Cashier here is payment to Market of "+ b.Bill);
-		b.market.msghereispayment(b.Bill, b.Bill); 	
+	//	b.market.msghereispayment(b.Bill, b.Bill); 	
+		b.market.msgBillFromTheAir(b.Bill);
 	}
 	else if (Cash < b.Bill){
 		int paid = Cash; 
 		Cash = 0; //send all that you can
 		b.mstate = MarketState.Done; 
 		print ("Cashier couldn't pay all of Bill but paid only " + paid); 
-		b.market.msghereispayment(b.Bill, paid);
+		//b.market.msghereispayment(b.Bill, paid);
+		b.market.msgBillFromTheAir(paid);
 	}
 }
 

@@ -283,7 +283,6 @@ public class Restaurant5CustomerAgent extends Role implements Customer5 {
 		5000);
 	}
 	
-
 	private void LeaveRestaurant(){
 		//customerGui.DoExitRestaurant();
 		customerGui.Leave();

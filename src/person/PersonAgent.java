@@ -953,13 +953,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		
-		
-		
-		
-		
-		
 	
-		
 		
 		////////////////////////////////REST 5 EVENTS//////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Restaurant5){
@@ -967,7 +961,6 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 Customer")){
-						System.out.println("HIT HERE");
 						((Restaurant5CustomerAgent)mr.role).customerGui.setPresent(true);
 						((Restaurant5CustomerAgent)mr.role).gotHungry();
 						mr.setActive(true);
@@ -978,9 +971,13 @@ public class PersonAgent extends Agent implements Person{
 				}
 				print("Customer not found");
 				Restaurant5CustomerAgent cRole = new Restaurant5CustomerAgent(this.name, this);
+				cRole.setCashier((Restaurant5Cashier)rest.getCashier());
 				MyRole newRole = new MyRole(cRole, "Rest 5 Customer");
 				newRole.setActive(true);
+				Restaurant5FoodGui fgui = new Restaurant5FoodGui(); 
+				cRole.setFoodGui(fgui);
 				roles.add(newRole);
+				
 				Restaurant5CustomerGui cg = new Restaurant5CustomerGui(cRole);
 				cg.isPresent = true;
 				cRole.setGui(cg);

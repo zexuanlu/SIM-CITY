@@ -1,10 +1,12 @@
 package restaurant5;
 
 import agent.Role;
+import market.interfaces.*; 
 import restaurant5.gui.Restaurant5CookGui;
 import restaurant5.interfaces.Waiter5; 
 import utilities.restaurant.RestaurantCook;
 import person.PersonAgent; 
+import market.Food; 
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -23,8 +25,8 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	PersonAgent myPerson; 
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
+	private MarketCashier marketCashier; 
 	public Restaurant5RevolvingStand revolvingstand; 
-	public MarketCashierRole marketCashier;
 	private Queue<Integer> grillnumber = new LinkedList<Integer>(); 
 	private Queue<Integer> platenumber = new LinkedList<Integer>(); 
 
@@ -66,6 +68,8 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 			s = _s;
 			choice = _choice;
 			table = _table;
+			
+			
 		}
 		public Order(Waiter5 _w,String _choice,int _table){
 			w = _w;
@@ -118,7 +122,17 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		platenumber.add(1);
 		platenumber.add(2);
 		platenumber.add(3);
-		}
+		
+		timer.schedule(new TimerTask() {
+			public void run() {
+				checkstand = true;
+				stateChanged();
+			}
+		},
+			2000);
+    
+    
+    }
     
     
 		
@@ -129,14 +143,17 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	}
 	
 	public void msgpickedupfood(Waiter5 w, String choice, int table){
+		Order m = null; 
 		synchronized(guilist){
 			for (Order o: guilist){
 				if (o.w == w && o.choice.equals(choice) && o.table == table){
-					guilist.remove(o);
+					m = o;
 					cookGui.pickedupOrder(o.grillnumber);
 				}
 			}
 		}
+		guilist.remove(m);
+
 	}
 	
 	
@@ -291,7 +308,12 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		if (markets.size()!=0){
 			m.s = OrderState.ordered;
 			print ("Cook ordered food that is low");
-			pickaMarket().msgOrderFood(m.order);
+			//pickaMarket().msgOrderFood(m.order);
+			List<market.Food> orderfood = new ArrayList<market.Food>();
+			for (Map.Entry<String, Integer> entry: m.order.entrySet()){
+				orderfood.add(new market.Food(entry.getKey(), entry.getValue()));
+			}			
+			marketCashier.MsgIwantFood(this, cashier, orderfood, 5);//put in list of food
 		}
 	}
 	
@@ -447,8 +469,9 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		
 	}
 
-	public void setMarketCashier(MarketCashierRole r) {
-		marketCashier = r;
+	
+	public void setMarketCashier(MarketCashierRole mc){
+		marketCashier = mc; 
 	}
 	
 }
