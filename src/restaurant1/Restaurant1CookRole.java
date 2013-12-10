@@ -143,11 +143,12 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
 		if(TT){
+			TT = false;
 			foodlist.add(new Food("Steak", 10));
 			Orderfoodislow();
 		}
 		
-		if(checkStand){
+		if(opening){
 			Orderfoodislow();
 			return true;
 		}
@@ -155,7 +156,7 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			TruckBack();
 			return true;
 		}
-		if(!revStand.isEmpty()) {
+		if(checkStand) {
 			TakeOrderFromStand();
 			return true;
 		}
@@ -229,7 +230,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	}
 
 	public void Orderfoodislow(){
-		TT = false;
 		opening = false;
 		int s = count;
 		Do("We need more food!");
