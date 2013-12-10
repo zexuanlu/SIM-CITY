@@ -6,7 +6,6 @@ import gui.main.SimCityGUI;
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
-
 import restaurant5.*; 
 import restaurant5.gui.*; 
 import person.Location.LocationType;
@@ -1247,10 +1246,20 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.SDWaiterEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 SDWaiter")){
-//FIX FIX FIX FIX FIX ///////////////
+						((Restaurant5SDWaiterAgent)mr.role).waiterGui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
 					}
 					else {
-						((Restaurant4SDWaiterRole)mr.role).gui.isPresent = true;
+						((Restaurant5SDWaiterAgent)mr.role).waiterGui.isPresent = true;
 						rest.getTimeCard().msgBackToWork(this, mr.role);
 						try{
 							wait.acquire();
@@ -1263,13 +1272,13 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				Restaurant4SDWaiterRole sdRole = new Restaurant4SDWaiterRole(this.name, this);
-				MyRole newRole = new MyRole(sdRole, "Rest 4 SDWaiter");
+				Restaurant5SDWaiterAgent sdRole = new Restaurant5SDWaiterAgent(this.name, this);
+				MyRole newRole = new MyRole(sdRole, "Rest 5 SDWaiter");
 				newRole.setActive(true);
 				roles.add(newRole);
-				Restaurant4WaiterGui wg = new Restaurant4WaiterGui((Restaurant4SDWaiterRole)newRole.role, 0, 0);
+				Restaurant5WaiterGui wg = new Restaurant5WaiterGui((WaiterBase5)newRole.role);
 				wg.isPresent = true;
-				cap.rest4Panel.addGui(wg);
+				cap.rest5Panel.addGui(wg);
 				rest.getTimeCard().msgBackToWork(this, newRole.role);
 				try{
 					wait.acquire();
@@ -1280,6 +1289,7 @@ public class PersonAgent extends Agent implements Person{
 				gui.setPresent(false);
 				return;
 			}
+
 
 			else if(e.type == EventType.CookEvent){
 				for(MyRole mr : roles){
