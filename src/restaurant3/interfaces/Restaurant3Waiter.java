@@ -1,6 +1,8 @@
 package restaurant3.interfaces;
 
-public interface Restaurant3Waiter {
+import utilities.restaurant.RestaurantWaiter;
+
+public interface Restaurant3Waiter extends RestaurantWaiter{
 	//Messages from host
 	public void msgSeatCustomerAtTable(Restaurant3Customer c, int table);
 	

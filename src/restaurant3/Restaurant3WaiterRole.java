@@ -397,5 +397,11 @@ public class Restaurant3WaiterRole extends Restaurant3AbstractWaiter implements 
 			}
 		}, 1000);
 	}
+
+	@Override
+	public void goOnBreak() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

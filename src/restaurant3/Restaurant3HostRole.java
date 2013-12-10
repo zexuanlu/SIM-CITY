@@ -11,7 +11,9 @@ import person.PersonAgent;
 import restaurant3.interfaces.Restaurant3Customer;
 import restaurant3.interfaces.Restaurant3Waiter;
 
-public class Restaurant3HostRole extends Role {
+import utilities.restaurant.RestaurantHost;
+
+public class Restaurant3HostRole extends Role implements RestaurantHost{
 	//MEMBER DATA
 	public static final int NTABLES = 3;
 	private String name;
