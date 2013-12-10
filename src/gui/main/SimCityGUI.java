@@ -215,41 +215,45 @@ public class SimCityGUI extends JFrame {
                 // Fourth quadrant locations
                 // First apartment complex
                 Apartment apt1 = new Apartment("Apartment 1", aptTenants.get(0), 
-                                new Position(20, 280), 5, LocationType.Apartment);
+                                new Position(80, 280), 5, LocationType.Apartment);
                 Apartment apt2 = new Apartment("Apartment 2", aptTenants.get(1), 
-                                new Position(20, 280), 6, LocationType.Apartment);
+                                new Position(80, 280), 6, LocationType.Apartment);
                 Apartment apt3 = new Apartment("Apartment 3", aptTenants.get(2), 
-                                new Position(20, 280), 7, LocationType.Apartment);
+                                new Position(80, 280), 7, LocationType.Apartment);
                 Apartment apt4 = new Apartment("Apartment 4", aptTenants.get(3), 
-                                new Position(20, 280), 8, LocationType.Apartment);
+                                new Position(80, 280), 8, LocationType.Apartment);
+                
+                
                 Apartment apt5 = new Apartment("Apartment 5", aptTenants.get(4), 
-                                new Position(20, 280), 9, LocationType.Apartment);
+                                new Position(80, 280), 9, LocationType.Apartment);
                 Apartment apt6 = new Apartment("Apartment 6", aptTenants.get(5), 
-                                new Position(20, 280), 10, LocationType.Apartment);
+                                new Position(80, 280), 10, LocationType.Apartment);
                 Apartment apt7 = new Apartment("Apartment 7", aptTenants.get(6), 
-                                new Position(20, 280), 11, LocationType.Apartment);
+                                new Position(80, 280), 11, LocationType.Apartment);
                 Apartment apt8 = new Apartment("Apartment 8", aptTenants.get(7), 
-                                new Position(20, 280), 12, LocationType.Apartment);
+                                new Position(80, 280), 12, LocationType.Apartment);
                 Apartment apt9 = new Apartment("Apartment 9", aptTenants.get(8), 
-                                new Position(20, 280), 13, LocationType.Apartment);
+                                new Position(80, 280), 13, LocationType.Apartment);
+                
+                
                 Apartment apt10 = new Apartment("Apartment 10", aptTenants.get(10), 
-                                new Position(20, 280), 14, LocationType.Apartment);
+                                new Position(80, 280), 14, LocationType.Apartment);
                 Apartment apt11 = new Apartment("Apartment 11", aptTenants.get(11), 
-                                new Position(20, 280), 15, LocationType.Apartment);
+                                new Position(80, 280), 15, LocationType.Apartment);
                 Apartment apt12 = new Apartment("Apartment 12", aptTenants.get(12), 
-                                new Position(20, 280), 16, LocationType.Apartment);
+                                new Position(80, 280), 16, LocationType.Apartment);
                 Apartment apt13 = new Apartment("Apartment 13", aptTenants.get(13), 
-                                new Position(20, 280), 17, LocationType.Apartment);
+                                new Position(80, 280), 17, LocationType.Apartment);
                 Apartment apt14 = new Apartment("Apartment 14", aptTenants.get(14), 
-                                new Position(20, 280), 18, LocationType.Apartment);
+                                new Position(80, 280), 18, LocationType.Apartment);
                 Apartment apt15 = new Apartment("Apartment 15", aptTenants.get(15), 
-                                new Position(20, 280), 19, LocationType.Apartment);
+                                new Position(80, 280), 19, LocationType.Apartment);
                 Apartment apt16 = new Apartment("Apartment 16", aptTenants.get(16), 
-                                new Position(20, 280), 20, LocationType.Apartment);
+                                new Position(80, 280), 20, LocationType.Apartment);
                 
                 // Second apartment complex
                 Apartment apt17 = new Apartment("Apartment 17", aptTenants.get(17), 
-                                new Position(100, 280), 21, LocationType.Apartment);
+                                new Position(160, 280), 21, LocationType.Apartment);
                 
                 
                 rest1.setCashier(cashier1);
