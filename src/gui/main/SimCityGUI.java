@@ -184,30 +184,30 @@ public class SimCityGUI extends JFrame {
                 Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
                                 new Position(120, 170), LocationType.Bank);
                 Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
-                                new Position(130, 170), LocationType.Market);
-                Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
-                Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
-                Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
+                                new Position(180, 170), LocationType.Market);
+                Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(240, 170), LocationType.Restaurant1);
+                Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(320, 170), LocationType.Restaurant2);
+                Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 100), LocationType.Restaurant3);
                 
                 // Second quadrant locations
                 Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
-                                new Position(640, 130), LocationType.Bank);
+                                new Position(660, 170), LocationType.Bank);
                 Market market2 = new Market("Pokemart 2", marketcashierrole, new TimeCard(), 
-                                new Position(430, 130), LocationType.Market);
+                                new Position(460, 170), LocationType.Market);
                 // FIX HOST ROLES
                 Restaurant rest4 = new Restaurant("Rest 4", host4, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
-                Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(590, 170), LocationType.Restaurant2);
-                Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(440, 40), LocationType.Restaurant3);                
+                Restaurant rest5 = new Restaurant("Rest 5", host1, new TimeCard(), new Position(600, 170), LocationType.Restaurant2);
+                Restaurant rest6 = new Restaurant("Rest 6", host1, new TimeCard(), new Position(450, 100), LocationType.Restaurant3);                
                 
                 // Third quadrant locations
                 Home home1 = new Home("Home 1", homeOwnerRole1, 
-                                new Position(440, 290), 1, LocationType.Home);
+                                new Position(460, 280), 1, LocationType.Home);
                 Home home2 = new Home("Home 2", homeOwnerRole2, 
-                                new Position(440, 370), 2, LocationType.Home);
+                                new Position(440, 380), 2, LocationType.Home);
                 Home home3 = new Home("Home 3", homeOwnerRole3, 
                                 new Position(520, 280), 3, LocationType.Home);
                 Home home4 = new Home("Home 4", homeOwnerRole4, 
-                                new Position(590, 280), 4, LocationType.Home);
+                                new Position(600, 280), 4, LocationType.Home);
                 // FIX
                 Home home5 = new Home("Home 5", homeOwnerRole4, 
                                 new Position(660, 280), 4, LocationType.Home);
