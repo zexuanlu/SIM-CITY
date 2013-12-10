@@ -2,6 +2,7 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import utilities.Gui; 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;

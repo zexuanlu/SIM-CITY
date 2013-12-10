@@ -85,4 +85,8 @@ public class Restaurant2FoodItemGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+
+    public void setPresent(boolean b){
+    //	isPresent = b; 
+    }
 }

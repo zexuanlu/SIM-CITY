@@ -94,4 +94,8 @@ public class Restaurant5HostGui implements Gui {
     public int getYPos() {
         return yPos;
     }
+    
+    public void setPresent(boolean b){
+    //	isPresent = b; 
+    }
 }

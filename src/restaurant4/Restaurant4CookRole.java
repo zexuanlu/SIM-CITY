@@ -364,4 +364,8 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		endOfDay++;
 		stateChanged();
 	}
+	
+	public utilities.Gui getGui(){
+		return this.gui; 
+	}
 }

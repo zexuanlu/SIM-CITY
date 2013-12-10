@@ -326,5 +326,9 @@ public class Restaurant4HostRole extends Role implements Restaurant4Host{
 		endOfDay = true;
 		stateChanged();
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }
 

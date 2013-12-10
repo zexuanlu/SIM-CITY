@@ -223,6 +223,10 @@ public String getRoleName(){
 	return "Restaurant 5 Cashier";
 }
 
+public utilities.Gui getGui(){
+	return null; 
+}
+
 private void getMoneyFromBank(){
 	bank.msgWithdrawMoney(this, (1000.00-Cash), accountNumber);
 	try{

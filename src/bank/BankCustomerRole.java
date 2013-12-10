@@ -356,4 +356,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return this.gui; 
+	}
 }

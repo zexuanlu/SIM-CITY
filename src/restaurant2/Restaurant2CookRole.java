@@ -510,5 +510,9 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	public void setMarketCashier(MarketCashierRole r) {
 		marketCashier = r;
 	}
+	
+	public utilities.Gui getGui(){
+		return cookGui; 
+	}
 }
 

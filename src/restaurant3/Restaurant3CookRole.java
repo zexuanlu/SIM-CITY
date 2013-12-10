@@ -254,4 +254,8 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public utilities.Gui getGui(){
+		return cookGui;
+	}
 }

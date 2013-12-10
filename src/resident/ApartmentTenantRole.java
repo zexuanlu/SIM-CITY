@@ -657,4 +657,8 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return aptGui; 
+	}
 }

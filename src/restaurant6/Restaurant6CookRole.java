@@ -613,6 +613,10 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	public void setMarketCashier(MarketCashierRole r) {
 		marketCashier = r;
 	}
+	
+	public utilities.Gui getGui(){
+		return cookGui; 
+	}
 
 }
 

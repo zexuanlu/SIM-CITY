@@ -2,11 +2,10 @@ package person;
 
 import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
-
+import restaurant5.gui.Restaurant5FoodGui; 
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
-
 import restaurant5.*; 
 import restaurant5.gui.*; 
 import person.Location.LocationType;
@@ -319,6 +318,10 @@ public class PersonAgent extends Agent implements Person{
 		for(MyRole role : roles){
 			if(role.role == r){
 				role.setActive(false);
+				utilities.Gui ug = role.role.getGui();
+				if (ug != null){
+					ug.setPresent(false);
+				}
 			}
 		}
 		if(!testMode){
@@ -1188,6 +1191,7 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 		}
+		
 		//////////////////////////REST 5 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant5){
 			Restaurant rest = (Restaurant)e.location;
@@ -1204,7 +1208,10 @@ public class PersonAgent extends Agent implements Person{
 				}
 				print("Customer not found");
 				Restaurant5CustomerAgent cRole = new Restaurant5CustomerAgent(this.name, this);
+				Restaurant5FoodGui fgui = new Restaurant5FoodGui();
+				cRole.setFoodGui(fgui);
 				MyRole newRole = new MyRole(cRole, "Rest 5 Customer");
+				
 				newRole.setActive(true);
 				roles.add(newRole);
 				Restaurant5CustomerGui cg = new Restaurant5CustomerGui(cRole);
@@ -1285,7 +1292,19 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.SDWaiterEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 SDWaiter")){
-
+						((Restaurant5SDWaiterAgent)mr.role).waiterGui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+					else {
 						((Restaurant5SDWaiterAgent)mr.role).waiterGui.isPresent = true;
 						rest.getTimeCard().msgBackToWork(this, mr.role);
 						try{
@@ -1316,6 +1335,7 @@ public class PersonAgent extends Agent implements Person{
 				gui.setPresent(false);
 				return;
 			}
+
 
 			else if(e.type == EventType.CookEvent){
 				for(MyRole mr : roles){
@@ -2112,6 +2132,7 @@ public class PersonAgent extends Agent implements Person{
 				roles.add(newRole);
 				if(!testMode){
 					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
+					pg.setPresent(true);
 					print("gui xpos is " + gui.xPos + " " + gui.yPos);
 					((PassengerRole)newRole.role).setGui(pg);
 					cap.addGui(pg);
