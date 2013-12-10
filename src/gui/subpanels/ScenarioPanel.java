@@ -45,10 +45,10 @@ import utilities.Gui;
 import utilities.TimeCard;
 
 /**
- * This panel allows the user to interact with a person
- * in SimCity
+ * This will allow the user to run different scenarios, both normative and non-normative.
+ * @author jenniezhou
+ *
  */
-
 public class ScenarioPanel extends JPanel implements ActionListener{
 
 	private SimCityGUI simCityGui; 
@@ -106,6 +106,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	private JButton normOnePerson = new JButton("One not working person");
 	private JButton normThreePeople = new JButton("Three not working people");
 	private JButton normFiftyPeople = new JButton("Full 50-person scenario");
+	private JButton weekendBehavior = new JButton("Weekend Behavior");
 
 	private JButton robBank = new JButton("Robber robs Bank");
 	private JButton carAccident = new JButton("Vehicle collision");
@@ -125,10 +126,10 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		cntrlPanel = cp;
 		
 		// Sets button size
-		Dimension buttonDim = new Dimension(170, 10);
+		Dimension buttonDim = new Dimension(170, 7);
 		
 		// PANEL SETUP
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(new GridLayout(3,1));
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		this.setBackground(Color.GRAY);
 		
@@ -143,6 +144,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		normOnePerson.addActionListener(this);
 		normThreePeople.addActionListener(this);
 		normFiftyPeople.addActionListener(this);
+		weekendBehavior.addActionListener(this);
 		run.addActionListener(this);
 
 		// COMPONENT INITIALIZATIONS
@@ -156,7 +158,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		
 		// Formatting panel setup		
 		restartPanel.setBorder(BorderFactory.createTitledBorder("Resetting Scenarios"));
-		restartPanel.setLayout(new GridLayout(3, 1));
+		restartPanel.setLayout(new GridLayout(4, 1));
 		restartPanel.setBackground(Color.GRAY);
 		restartPanel.setPreferredSize(fpSize);
 		restartPanel.setMaximumSize(fpSize);
@@ -181,6 +183,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		restartScenarios.add(normOnePerson);
 		restartScenarios.add(normThreePeople);
 		restartScenarios.add(normFiftyPeople);
+		restartScenarios.add(weekendBehavior);
 		
 		robBank.setMaximumSize(buttonDim);
 		carAccident.setMaximumSize(buttonDim);
@@ -188,6 +191,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		normOnePerson.setMaximumSize(buttonDim);
 		normThreePeople.setMaximumSize(buttonDim);
 		normFiftyPeople.setMaximumSize(buttonDim);
+		weekendBehavior.setMaximumSize(buttonDim);
 		
 		for (JButton b : addOnScenarios) {
 			addOnPanel.add(b);
@@ -239,6 +243,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 				// Here we will run the scenario where all restaurants order from the market
 				//FIX
 				System.err.println("50-person scenario");
+			}
+			else if (chosen.getText().trim().equals("Weekend Behavior")) {
+				// FIX
+				System.err.println("Weekend Behavior");
+
 			}
 			run.setEnabled(false);
 			chosen.setOpaque(false);

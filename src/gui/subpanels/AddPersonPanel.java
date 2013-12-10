@@ -20,6 +20,8 @@ import person.PersonAgent.HomeType;
 import person.gui.PersonGui;
 import resident.ApartmentLandlordRole;
 import resident.HomeOwnerRole;
+import restaurant6.Restaurant6SDWaiterRole;
+import restaurant6.Restaurant6WaiterRole;
 import simcity.astar.AStarTraversal;
 
 /**
@@ -73,9 +75,10 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 		// ROLES TO ADD
 		roles.add(new JCheckBox("Bank Host"));
 		roles.add(new JCheckBox("Bank Teller"));
+		roles.add(new JCheckBox("SD Waiter"));
+		roles.add(new JCheckBox("Regular Waiter"));
 		roles.add(new JCheckBox("Market Cashier"));
 		roles.add(new JCheckBox("Market Employee"));
-		roles.add(new JCheckBox("Apartment Landlord"));
 		
 		// ADD COMPONENTS
 		// Name info
@@ -134,8 +137,8 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 			pa.addRole(new MarketEmployeeRole(pa, pa.getName()), "Market Employee");
 		}
 		else {
-			System.out.println("Role of Apartment Landlord added to " + pa.getName());
-			pa.addRole(new ApartmentLandlordRole(pa.getName(), pa.homeNumber, pa), "Apt Landlord");
+			System.out.println("Role of Shared Data Waiter added to " + pa.getName());
+			pa.addRole(new Restaurant6SDWaiterRole(pa.getName(), pa), "Rest 6 SDWaiter");
 		}
 		
 		pa.startThread();
@@ -143,9 +146,8 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 	
 	public void addCustomPerson(){
 		// ArrayList<Role> selectedRoles
-		AStarTraversal aStarTraversal = new AStarTraversal(simcitygui.grid);
 		System.out.println("Custom button clicked");
-		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, aStarTraversal, 2000);
+		PersonAgent pa = new PersonAgent(nameText.getText(), simcitygui.citymap, 900);
 		pa.homeNumber = ++residentNum;
 		pa.homeType = HomeType.Apartment;
 		simcitygui.addPerson(pa);
@@ -156,7 +158,8 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 				if(role.getText().equals("Bank Host")){
 					//pa.addRole(simcitygui.bankhostrole);
 					System.out.println("Role of Bank Host added to " + pa.getName());
-					pa.addRole(new BankHostRole(pa, pa.getName()), "Bank Host");
+					//SimEvent hostGoToBank = new SimEvent("Go to work", simcitygui.citymap.bank, )
+					//pa.addRole(new BankHostRole(pa, pa.getName()), "Bank Host");
 				}
 				if(role.getText().equals("Bank Teller")){
 					// selectedRoles.add(Role 2)
@@ -174,10 +177,15 @@ public class AddPersonPanel extends JPanel implements ActionListener{
 					System.out.println("Role of Market Employee added to " + pa.getName());
 					pa.addRole(new MarketEmployeeRole(pa, pa.getName()), "Market Employee");
 				}
-				if(role.getText().equals("Apartment Landlord")){
+				if(role.getText().equals("SD Waiter")){
 					// selectedRoles.add(Role 7)
-					System.out.println("Role of Apartment Landlord added to " + pa.getName());
-					pa.addRole(new ApartmentLandlordRole(pa.getName(), pa.homeNumber, pa), "Apt Landlord");
+					System.out.println("Role of Shared Data Waiter for Rest 6 added to " + pa.getName());
+					pa.addRole(new Restaurant6SDWaiterRole(pa.getName(), pa), "Rest 6 SDWaiter");
+				}
+				if(role.getText().equals("Regular Waiter")){
+					// selectedRoles.add(Role 7)
+					System.out.println("Role of Waiter for Rest 6 added to " + pa.getName());
+					pa.addRole(new Restaurant6WaiterRole(pa.getName(), pa), "Rest 6 Waiter");
 				}
 			}
 		}

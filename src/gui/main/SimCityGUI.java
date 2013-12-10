@@ -875,7 +875,7 @@ public class SimCityGUI extends JFrame {
         }
         
         public void addPerson(PersonAgent p) {
-                PersonGui pgui = new PersonGui(p,100,100, cityAnimPanel);
+                PersonGui pgui = new PersonGui(p,40,170, cityAnimPanel);
                 p.setGui(pgui);
                 p.setAnimationPanel(cityAnimPanel);
                 people.add(p);
