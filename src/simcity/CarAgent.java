@@ -238,7 +238,7 @@ public class CarAgent extends Agent {
               catch (Exception e){}
               attempts ++;
     		  gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
-              aStar.crashed();
+         //     aStar.crashed();
               
           }
       }

@@ -182,7 +182,7 @@ public class SimCityGUI extends JFrame {
                 // First quadrant locations
 
                 Bank bank = new Bank("Banco Popular", new TimeCard(), bankhostrole, 
-                                new Position(60, 170), LocationType.Bank);
+                                new Position(120, 170), LocationType.Bank);
                 Market market = new Market("Pokemart", marketcashierrole, new TimeCard(), 
                                 new Position(130, 170), LocationType.Market);
                 Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
@@ -528,7 +528,7 @@ public class SimCityGUI extends JFrame {
                         //p.setcitygui(this);
                 }
                 
-                for (int i=5;i<22;i++){
+                for (int i=6;i<22;i++){
                         people.get(i).msgAddMoney(-200);
                 }
                 
@@ -707,6 +707,46 @@ public class SimCityGUI extends JFrame {
                 cityCtrlPanel.scenarioPanel.setCityAnim(cityAnimPanel);
         		cityCtrlPanel.scenarioPanel.setSimCityGUI(this);
         		cityCtrlPanel.scenarioPanel.setClock(simclock);
+        
+        
+//        		PersonAgent p  = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
+//                PersonGui pgui = new PersonGui(p,-20, -20);
+//                p.setGui(pgui);
+//                p.setAnimationPanel(cityAnimPanel);
+//                cityAnimPanel.addGui(pgui);
+//                simclock.addPerson(p);
+//        		p.msgAddMoney(-400);
+//        		AStarTraversal aStarTrav = new AStarTraversal(grid);
+//        		aStarTrav.originalgrid = origgrid; 
+//                CarAgent caragent = new CarAgent(aStarTrav, p);
+//                caragent.percentCrash = 100; 
+//                CarGui cgui = new CarGui(caragent,720,460);
+//                caragent.setGui(cgui);
+//                cityAnimPanel.addGui(cgui);
+//                caragent.startThread();
+//                caragent.gotoPosition(60, 180, 640, 180);
+//                
+//            	p  = new PersonAgent("Crash dummy2", citymap, aStarTraversal, 500.00);
+//            	pgui = new PersonGui(p,-20,-20);
+//                p.setGui(pgui);
+//                p.setAnimationPanel(cityAnimPanel);
+//                cityAnimPanel.addGui(pgui);
+//                simclock.addPerson(p);
+//        		p.msgAddMoney(-400);
+//        		aStarTrav = new AStarTraversal(grid);
+//        		aStarTrav.originalgrid = origgrid; 
+//                caragent = new CarAgent(aStarTrav, p);
+//                caragent.percentCrash = 100; 
+//                cgui = new CarGui(caragent,720,460);
+//                caragent.setGui(cgui);
+//                cityAnimPanel.addGui(cgui);
+//                caragent.startThread();
+//                caragent.gotoPosition(80, 180, 640, 180);
+        
+        
+        
+        
+        
         }
 
         public CarAgent createCar(PersonAgent p){

@@ -86,7 +86,8 @@ public class AStarTraversal extends GraphTraversal
 	if (y==9){ //left and down
 		for(int i = -1; i < 1; i++) {//increment for x direction
 		    for (int j = 0; j <= 1; j++) {//increment for y direction
-			    if (true){
+			    if (i==0 || j==0){
+			    	
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
@@ -116,7 +117,7 @@ public class AStarTraversal extends GraphTraversal
 	if (y==10){
 		for(int i = -1; i < 1; i++) {//increment for x direction
 		    for (int j = -1; j <= 2; j++) {//increment for y direction
-			    if (true){
+			    if (i==0 ||j==0){
 					//create the potential next position
 					int nextX=x+i;
 					int nextY=y+j;
@@ -178,7 +179,7 @@ public class AStarTraversal extends GraphTraversal
 	else if (y==12){//only check right or up & down
 	for (int i=0;i<2;i++){
 		for (int j = -1; j<2;j++){
-			if ((j==0)|| (i==0 && j!=0)){
+			if ((j==0)|| (i==0)){
 				//create the potential next position
 				int nextX=x+i;
 				int nextY=y+j;
