@@ -52,7 +52,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.green);
         g2.fillRect(250, 260, 240, 20);
 
-
+        
         for(Gui gui : guis) {
             if (gui.isPresent()) {
                 gui.draw(g2);
