@@ -161,7 +161,7 @@ public class CarAgent extends Agent {
     	 
          currentPosition.release(aStar.getOrigGrid());
          currentPosition = new Position(originx/scale, originy/scale);
-    //     currentPosition.moveInto(aStar.getOrigGrid());
+         currentPosition.moveInto(aStar.getOrigGrid());
          originalPosition = currentPosition;
  
          int numx = originx/scale;
@@ -214,7 +214,7 @@ public class CarAgent extends Agent {
       gotPermit = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
 
       //Did not get lock. Lets make n attempts.
-      while (!gotPermit && attempts < 5) {
+      while (!gotPermit && attempts < 6) {
              //System.out.println("[Gaut] " + guiWaiter.getName() + " got NO permit for " + tmpPath.toString() + " on attempt " + attempts);
 
              //Wait for 1sec and try again to get lock.          
@@ -238,7 +238,7 @@ public class CarAgent extends Agent {
               catch (Exception e){}
               attempts ++;
     		  gotPermit   = new Position(tmpPath.getX(), tmpPath.getY()).moveInto(aStar.getOrigGrid());
-         //     aStar.crashed();
+              aStar.crashed();
               
           }
       }
