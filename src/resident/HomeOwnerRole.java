@@ -257,7 +257,6 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	 *
 	 */
 	public boolean pickAndExecuteAnAction() {
-		Do("Person Scheduler!");
 		if (person.getTime() >= 22 && state == MyState.Awake) {
 			sleep();
 			return true;

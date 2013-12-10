@@ -323,6 +323,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 				}
 			}
 		}
+		aptGui.DoGoToHome();
 		return false;
 	}
 	
