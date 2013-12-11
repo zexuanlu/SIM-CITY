@@ -11,6 +11,13 @@ import restaurant4.interfaces.*;
 import agent.Role;
 import person.interfaces.Person;
 
+/**
+ * The class that both waiters inherit from. This contains all the shared
+ * functions and data between the two.
+ * 
+ * @author Joseph Boman
+ *
+ */
 public abstract class Restaurant4AbstractWaiter extends Role implements Restaurant4Waiter {
 
 	public List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
@@ -20,7 +27,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	protected String name;
 	protected Restaurant4Menu menu = new Restaurant4Menu();
 	public Restaurant4WaiterGui gui;
-	protected boolean endOfDay = false;
+	protected boolean endOfDay = false;//Used in the end of day scenario
 	protected breakState bs = breakState.none;
 	protected Semaphore movement = new Semaphore(0, true);
 	protected Semaphore ordering = new Semaphore(0, true);
@@ -30,6 +37,14 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	}
 	
 	//Messages
+	/**
+	 * Received from the host telling the waiter to seat a customer.
+	 * 
+	 * @param cust the customer to be seated
+	 * @param table the number of the table to seat the customer at
+	 * @param h the host of the restaurant
+	 * @param location the current location of the customer
+	 */
 	public void msgSeatCustomer(Restaurant4Customer cust, int table, Restaurant4Host h, String location) {
 		MyCustomer temp = new MyCustomer(cust, table, location);
 		temp.s = state.waiting;
