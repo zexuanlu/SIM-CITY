@@ -120,8 +120,9 @@ public class PersonAgent extends Agent implements Person{
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
 	public SimCityGUI simcitygui;
+	
+	public TrafficLightAgent trafficlight;
 
-	private TrafficLightAgent trafficlight;
 	private boolean atlight = false;
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
@@ -249,7 +250,7 @@ public class PersonAgent extends Agent implements Person{
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 		}
 		else if(homeNumber == -1){
-			
+
 		}
 		toDo.add(goHome);
 		stateChanged();
@@ -403,17 +404,22 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgAtLight(){
+		if (name.equals("Walking Person")){
+			print("msgatlight");
+		}
 		atlight = true;
+		stateChanged();
 	}
 
 	public void ToGo(){
-		gui.ToGo();
+		gui.atlight = false; 
 	}
 
 	/* Scheduler */
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		
 		if(!atCasino){
 			for(MyRole r : roles){
 				if(r.isActive){
@@ -483,6 +489,9 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* Actions */
+
+	
+	
 	public void msgDie(){
 		gui.setPresent(false);
 		print("I have died :(");
@@ -491,12 +500,15 @@ public class PersonAgent extends Agent implements Person{
 		trafficlight.msgCheckLight(this);
 	}
 
+
 	private void goToAndDoEvent(SimEvent e){		
 		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant1){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
-				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
+				if(!testMode){
+					PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
+				}
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Customer")){
 						((Restaurant1CustomerRole)mr.role).customerGui.setPresent(true);
@@ -766,7 +778,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 				}
 				Restaurant2WaiterRole wRole = new Restaurant2WaiterRole(this.name, this); 
-				MyRole newRole = new MyRole(wRole, "Rest 2 Waiter");
+				MyRole newRole = new MyRole(wRole, "Rest 4 Waiter");
 				newRole.setActive(true);
 				roles.add(newRole);
 				Restaurant2WaiterGui wg = new Restaurant2WaiterGui((Restaurant2WaiterRole)newRole.role);
@@ -2237,7 +2249,9 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void goToLocation(Location loc){
-		PersonAgent.tracePanel.print("Going to " + loc.getName(), this);
+		if(!testMode){
+			PersonAgent.tracePanel.print("Going to " + loc.getName(), this);
+		}
 		Do(loc.position.toString() + ":" + loc.getName());
 		if (!walking) {
 			if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
@@ -2290,7 +2304,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
-
+		print(name + " " + "DOWALKTO");
 		gui.walkto(originx, originy);
 		//currentLocation.setX(originx);
 		//currentLocation.setY(originy);

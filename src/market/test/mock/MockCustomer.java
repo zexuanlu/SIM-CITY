@@ -48,4 +48,12 @@ public class MockCustomer extends Mock implements MarketCustomer{
 		log.add(new LoggedEvent("Receive order"));
 	}
 
+
+
+	@Override
+	public void msgDoneLeaving() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

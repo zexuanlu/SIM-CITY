@@ -318,6 +318,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
 		walking.walking = true;
 		PersonGui pgui = new PersonGui(walking, 20, 170, this.cityAnimPanel);
+		pgui.light = simCityGui.trafficlightagent; 
 		walking.gui = pgui;
 		walking.setHungerLevel(5);
 		people.add(walking);
@@ -694,9 +695,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest3SDWaiter.setCashier(rest3Cashier);
   		rest3Host.addWaiter(rest3Waiter);
   		rest3Host.addWaiter(rest3SDWaiter);
-  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest3Cook.cashier = rest3Cashier;
-  		rest3Cashier.accountNumber = 6;
+  		rest3Cashier.accountNumber = 3;
   		rest3Cashier.bank = bankdatabase;
   		bankdatabase.addRestaurantAccount(rest3Cashier, 5000.00, 3);
   		
@@ -734,6 +735,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         truck.setGui(truckGui);
         truck.startThread();
         cityAnimPanel.addGui(truckGui);
+       
         
         // Setting second truck
         MarketTruckAgent truck2 = new MarketTruckAgent(2);
@@ -1838,7 +1840,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 				
 				people.get(38).msgAddEvent(waiter2GoToRestaurant);
 				people.get(39).msgAddEvent(sWaiter2GoToRestaurant);
-			
+				
 				people.get(40).msgAddEvent(host4GoToRestaurant);
 				people.get(41).msgAddEvent(sHost4GoToRestaurant);
 				
@@ -1979,19 +1981,21 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			cityAnimPanel.addGui(pgui);
 			p.setAnimationPanel(cityAnimPanel);
 		}
-		TrafficLightAgent trafficlight = new TrafficLightAgent();
-		trafficlight.startThread();
+		
+	//	tfc.startThread();
+	
 		// Create the walking person
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
 		walking.walking = true;
+
 		PersonGui pgui = new PersonGui(walking, 20, 170, this.cityAnimPanel);
+		pgui.light = simCityGui.trafficlightagent; 
 		walking.gui = pgui;
 		//walking.setHungerLevel(5);
 		people.add(walking);
 		peopleGuis.add(walking.gui);
 		cityAnimPanel.addGui(walking.gui);
 		walking.setAnimationPanel(cityAnimPanel);
-		walking.setTrafficLight(trafficlight);
 		
 		
 		// Create the person taking the bus
@@ -2067,6 +2071,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(17).addRole(rest2Cashier, "Rest 2 Cashier");
 		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
 		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
+//		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
+//		people.get(19).addRole(rest2Waiter, "Waiter 2 Shift 1");
 		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 2 Shift 1", people.get(19));
 		people.get(19).addRole(rest2Waiter, "Rest 2 Waiter");
 		
@@ -2331,9 +2337,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2SDWaiter.setHost(rest2Host);
   		Restaurant2RevolvingStand rs2 = new Restaurant2RevolvingStand();
   		rest2Cook.setRevolvingStand(rs2);
-  		rest2SDWaiter.revolver = rs2;
+  		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		rest2Host.addWaiter(rest2Waiter);
+  		//rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
@@ -2436,6 +2442,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		
   		// Setting truck
   		MarketTruckAgent truck = new MarketTruckAgent(1);
+  		((MarketCashierRole)roles.get(6)).addTruck(truck);
+  		truck.setCashier(((MarketCashierRole)roles.get(6)));
         MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
         truck.setGui(truckGui);
         truck.startThread();
@@ -2443,6 +2451,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
         // Setting second truck
         MarketTruckAgent truck2 = new MarketTruckAgent(2);
+  		((MarketCashierRole)roles.get(7)).addTruck(truck2);
+  		truck2.setCashier(((MarketCashierRole)roles.get(7)));
         MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
         truck2.setGui(truck2Gui);
         truck2.startThread();

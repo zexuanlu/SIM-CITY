@@ -23,7 +23,7 @@ public class Restaurant3WaiterGui implements Gui {
 		private int height = 20;
 
 		Restaurant3Waiter agent = null;
-		int home = 10;
+		int home = 30;
 		int xDestination = home;
 		int yDestination = home;
 		int xPos, yPos;
@@ -41,8 +41,8 @@ public class Restaurant3WaiterGui implements Gui {
 		String wtrRole = "Restaurant 3 Waiter";
 		String sdwRole = "Restaurant 3 SDWaiter";
 
-		//public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
-		//public Image image = img.getImage();
+		public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+		public Image image = img.getImage();
 		
 	public Restaurant3WaiterGui(Restaurant3Waiter w) {
 		agent = w;
@@ -90,6 +90,7 @@ public class Restaurant3WaiterGui implements Gui {
 	public void draw(Graphics2D g) {
 		g.setColor(Color.pink);
 		g.drawString(order, xPos, yPos+height+height);
+		g.drawImage(image, xPos, yPos, height, width, null);
 		if(agent instanceof Restaurant3WaiterRole){
 			g.drawString(((PersonAgent)((Restaurant3WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		}
@@ -97,7 +98,6 @@ public class Restaurant3WaiterGui implements Gui {
 			g.drawString(((PersonAgent)((Restaurant3SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		}
 		//g.fillRect(xPos, yPos, width, height);
-		//g.drawImage(image, xPos, yPos, height, width, null);
 	}
 
 	@Override

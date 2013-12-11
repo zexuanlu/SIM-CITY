@@ -15,5 +15,5 @@ public interface MarketCustomer {
 
 	public abstract void msgHereisYourOrder(List<Food> order);
 	
-	
+	public void msgDoneLeaving();
 }

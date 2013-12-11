@@ -185,6 +185,7 @@ public class MarketCashierRole extends Role implements MarketCashier{
 			temp.add(new Food(f.choice, f.amount));
 		}
 		myrest.add(new Myrest(cook, ca, temp, number));
+		System.err.println("Get"+ truck.size());
 		stateChanged();
 	}
 
@@ -213,7 +214,9 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		
 		
 		if(!truck.isEmpty()){
+			System.err.println("Hey"+ myrest.size());
 			for(Myrest rest: myrest){
+				
 				if(rest.s1 == state1.ordering){
 					TakeOrderFromCook(rest, truck.get(0));
 					return true;
@@ -269,7 +272,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	void TakeOrder(Mycustomer customer){
 		customer.s = state.ordered;
-		Do("Hey!!!!!!!");
 		customer.bill = DoCalculateBill(customer, customer.order);
 		customer.c.msgPleasePay(customer.bill);
 		int s = employeeCount;
@@ -279,7 +281,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		else{
 			employeeCount = 0;
 		}
-		Do("Here!!!!!!!");
 		employee.get(s).msgCollectOrer(customer.c, customer.collectedOrder);
 	}
 

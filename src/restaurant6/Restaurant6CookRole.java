@@ -418,7 +418,8 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		}
 		
 		if (!tempOrder.items.isEmpty()) {
-			markets.get(0).MsgIwantFood(this, this.cashier, tempOrder.items, 6);
+			marketCashier.MsgIwantFood(this, this.cashier, tempOrder.items, 6);
+			System.err.println("Ordering food!");
 			// Tell the cashier what you ordered so they can verify
 			cashier.msgOrderedFood(tempOrder.items);
 			orderPlaced = true;
