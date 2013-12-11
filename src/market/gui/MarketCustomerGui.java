@@ -2,6 +2,9 @@ package market.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import person.PersonAgent;
 import utilities.Gui;
@@ -16,6 +19,9 @@ public class MarketCustomerGui implements Gui {
 	private int xTable =140, yTable = 240;
 	private boolean atTable = false;
 	private boolean isPresent;
+	
+	ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	Image image = img.getImage();
 	
 	public MarketCustomerGui(MarketCustomerRole agent){
 		this.agent = agent;
@@ -52,8 +58,7 @@ public class MarketCustomerGui implements Gui {
 	@Override
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, distance, distance);
+        g.drawImage(image, xPos, yPos, distance, distance, null);
         g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 

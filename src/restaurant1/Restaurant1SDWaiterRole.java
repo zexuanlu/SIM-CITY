@@ -14,6 +14,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 
 	//note that tables is typed with Collection semantics.
 		//Later we will see how it is implemented
+	public boolean offWork = false; 
 		public int tablenum;
 		public String name;
 		private Semaphore atTable = new Semaphore(0,true);
@@ -152,6 +153,16 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			stateChanged();
 		}
 		
+		public void msgGoOffWork(){
+			offWork = true; 
+			if (offWork == true){
+				print("offWork is true");
+			}
+			print("Restaurantabstractwaiter offwork");
+			stateChanged(); 
+		}
+
+		
 		public void msgatCook(){
 			atCook.release();
 			stateChanged();
@@ -209,7 +220,32 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 	            so that table is unoccupied and customer is waiting.
 	            If so seat him at the table.
 			 */	
+			
+			print("SCHEDULER CALLED");
+
 			try{
+				
+				if (offWork == true){
+					print("offWork is true sched");
+				}
+				else {
+					print ("offWork is false sched");
+				}
+				
+				
+				if (offWork){
+					//ALSO HAVE TO CHECK NO CUSTOMERES NOT DONE
+
+					if (customer.size()==0){
+						goOffWork(); 
+						return true; 
+					}	
+				}
+				
+				
+				
+				
+				
 			for(mycustomer customers: customer){
 				if(customers.s == state.waiting){
 				if (isBack == true) {
@@ -271,12 +307,13 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 					return true;
 				}
 			}
-			
+			print("end of scheduler");
 			
 			}
 			catch(ConcurrentModificationException e){
 				return false;
 			}
+		
 			return false;
 			//we have tried all our rules and found
 			//nothing to do. So return false to main loop of abstract agent
@@ -284,7 +321,14 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		}
 
 		// Actions
-		
+		private void goOffWork(){
+			offWork = false; 			
+			print("Restaurant1Waiter offWork");
+			
+			cashier.msgGoOffWork(); 
+			cook.msgGoOffWork(); 
+			this.person.msgGoOffWork(this, 0);	
+		}
 		
 
 		private void seatCustomer(mycustomer customer, int table) {

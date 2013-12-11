@@ -27,7 +27,9 @@ import person.interfaces.Person;
  * Restaurant customer agent.
  */
 public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
-
+	public boolean offWork; 
+	public int offWorkMess; 
+	
 	// agent correspondents
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public List<MyCustomer> customers = Collections.synchronizedList(new ArrayList<MyCustomer>());
@@ -58,6 +60,14 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 		prices.put("Pound Cake", 2);
 
 		wallet = 800;
+	}
+	
+	public void msgGoOffWork(){
+		offWorkMess++; 
+	//	if (offWorkMess == 2){
+			offWork = true; 
+			stateChanged(); 
+	//	}
 	}
 
 	// Messages
@@ -123,11 +133,23 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 					return true;
 				}
 			}
+			
+			if (offWork){
+				goOffWork();
+				return true; 
+			}
 		}
 		return false;
 	}
 
 	// Actions
+	
+	
+	private void goOffWork(){
+		offWork = false; 
+		offWorkMess = 0; 
+		this.person.msgGoOffWork(this,0);
+	}
 
 	private void thankCustomer(Bill b){
 		if(b.customer.getName() != "flake lord"){

@@ -229,7 +229,7 @@ public class BusRole extends Agent implements Bus {
 				public void run() {
 					msgtimetoLeave();
 				}
-			},5000);			
+			},2000);			
 		}
 		
 		
@@ -424,7 +424,6 @@ public class BusRole extends Agent implements Bus {
 		    
 		    
 		    
-		    
 			try {
 				atSlot.acquire();
 			} catch (InterruptedException e) {
@@ -439,6 +438,10 @@ public class BusRole extends Agent implements Bus {
 	    
 	    public void setTrafficLightAgent(TrafficLightAgent tla){
 	    	trafficlightagent = tla; 
+	    }
+	    
+	    public BusGui getGui(){
+	    	return busgui; 
 	    }
 	    
 		

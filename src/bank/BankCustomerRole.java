@@ -94,6 +94,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgAccountMade(int accountNumber){
 		log.add(new LoggedEvent("Received msgAccountMade from BankTeller"));
+		((PersonAgent)person).accountNumber = accountNumber;
 		this.accountNumber = accountNumber;
 		this.s = state.atTeller;
 		stateChanged();
