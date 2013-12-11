@@ -17,7 +17,7 @@ public class Casino extends Location{
 	Timer duration;
 	Random luckyWinner;
 	List<PersonAgent> gamblers;
-	int lengthOfStay = 1000;
+	int lengthOfStay = 10000;
 	public boolean hasStarted; 
 
 	public Casino(List<PersonAgent> gamblers, String name, Position p, LocationType lt){
