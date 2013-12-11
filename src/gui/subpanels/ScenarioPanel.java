@@ -1205,17 +1205,17 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		/**
 		 * CREATING APARTMENT TENANT ROLES
 		 */
-		for (int i = 5; i < 69; ++i) {
-			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", i+1, people.get(i));
-			aptTenants.add(temp);
-			people.get(i).addRole(temp, "Apt Tenant");
-		}
-		
-		for (int l = 69; l < 80; ++l) {
-			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", 60, people.get(l));
-			aptTenants.add(temp);
-			people.get(l).addRole(temp, "Apt Tenant");
-		}
+//		for (int i = 5; i < 69; ++i) {
+//			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", i+1, people.get(i));
+//			aptTenants.add(temp);
+//			people.get(i).addRole(temp, "Apt Tenant");
+//		}
+//		
+//		for (int l = 69; l < 80; ++l) {
+//			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", 60, people.get(l));
+//			aptTenants.add(temp);
+//			people.get(l).addRole(temp, "Apt Tenant");
+//		}
         
         int t = 5;
         for (PersonAgent p : people) {
@@ -1234,14 +1234,14 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		/**
 		 * CREATING APARTMENT TENANT GUIS
 		 */
-//		for (ApartmentTenantRole apt : aptTenants) {
-//			aptGuis.add(new ApartmentTenantGui(apt));
-//		}
-//        
-//        // Loops through apartment tenant roles and sets to respective GUI
-//        for (ApartmentTenantRole r : aptTenants) {
-//        	r.setGui(aptGuis.get(aptTenants.indexOf(r)));
-//        }
+		for (ApartmentTenantRole apt : aptTenants) {
+			aptGuis.add(new ApartmentTenantGui(apt));
+		}
+        
+        // Loops through apartment tenant roles and sets to respective GUI
+        for (ApartmentTenantRole r : aptTenants) {
+        	r.setGui(aptGuis.get(aptTenants.indexOf(r)));
+        }
 		
 		/** 
 		 * GUI CREATION AND INITIALIZATION
