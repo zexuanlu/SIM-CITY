@@ -5,6 +5,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class HomeOwnerGui implements Gui {
@@ -34,6 +36,10 @@ public class HomeOwnerGui implements Gui {
     public HomeCookingState state;
     
     private String choice;
+    
+    //Images
+    ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
+    Image image = img.getImage();
     
     public HomeOwnerGui(HomeOwnerRole c) {
     	homeOwner = c;
@@ -84,7 +90,7 @@ public class HomeOwnerGui implements Gui {
 	
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
-        g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(image, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)homeOwner.getPerson()).getName(), xPos-14, yPos+30);
         
         String foodChoice = null;

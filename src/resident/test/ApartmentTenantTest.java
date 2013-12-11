@@ -221,7 +221,7 @@ public class ApartmentTenantTest extends TestCase {
 		assertTrue(tenant.log.getLastLoggedEvent().toString().contains("Done washing dishes!"));
 		
 		// Invokes scheduler. Should return false because no task.
-		assertFalse(tenant.pickAndExecuteAnAction());
+		assertTrue(tenant.pickAndExecuteAnAction());
 	}
 	
 	/**
@@ -325,8 +325,8 @@ public class ApartmentTenantTest extends TestCase {
 		assertEquals("Tenant has seven logged events now.", 7, tenant.log.size());
 		assertTrue(tenant.log.getLastLoggedEvent().toString().contains("Done washing dishes!"));
 		
-		// Invokes scheduler. Should return false because no task.
-		assertFalse(tenant.pickAndExecuteAnAction());
+		// Invokes scheduler. Should return true
+		assertTrue(tenant.pickAndExecuteAnAction());
 	}
 	
 	/**

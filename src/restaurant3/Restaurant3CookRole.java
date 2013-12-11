@@ -22,10 +22,10 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	public boolean offWork; 
 	int marketNum = 1;
 	boolean startTimer = true;
-	private Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
+	public Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
 	//Agent references
-	Restaurant3CashierRole cashier;
+	public Restaurant3CashierRole cashier;
 	MarketCashierRole marketCashier;
 	MarketTruck truck;
 	

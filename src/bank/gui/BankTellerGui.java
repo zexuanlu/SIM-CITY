@@ -25,6 +25,7 @@ public class BankTellerGui implements Gui{
 	BankAnimationPanel gui;
 
 	private int xPos, yPos;
+	
 	private int xDestination, yDestination;
 
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/worker.png"));

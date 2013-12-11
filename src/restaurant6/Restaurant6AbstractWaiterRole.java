@@ -463,7 +463,7 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
 				} catch (ConcurrentModificationException e) {
 					return false;
 				}
-						return true;
+						return false;
 			}	
 			if (offWork) {
 				goHome();
