@@ -61,7 +61,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 		//Set up panel
 		setSize(size);
     	setVisible(true);
-		this.setBorder(BorderFactory.createTitledBorder("Restaurant 3"));
+		this.setBorder(BorderFactory.createTitledBorder(" Restaurant 3 "));
 		
 		//Start timer for animation
 		//animTimer.start();

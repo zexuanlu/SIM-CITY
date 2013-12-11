@@ -37,6 +37,9 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     
     ImageIcon img2 = new ImageIcon(this.getClass().getResource("bedfloor.png"));
     Image image2 = img2.getImage();
+    
+    ImageIcon img3 = new ImageIcon(this.getClass().getResource("aptbed.png"));
+    Image image3 = img3.getImage();
 
     public ApartmentAnimationPanel(int an) {
     	aptNum = an;
@@ -93,8 +96,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
         g2.drawImage(image2, 230, 10, 300, 450, null);
         
         // Drawing the bed
-        g2.setColor(Color.PINK);
-        g2.fillRect(300, 200, 50, 100);
+        g2.drawImage(image3, 300, 200, 50, 100, null);
 
         for(Gui gui : guis) {
             if (gui.isPresent()) {
