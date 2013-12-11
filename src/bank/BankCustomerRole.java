@@ -204,12 +204,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		//If the customer has a teller, go to the teller's location
 		if(s == state.haveTeller){
 			goToLocation(destination);
-			System.err.println("Imma going to " + destination);
 			s = state.atTeller;
-			System.err.println("My state is " + s);
 			destination = null;
-			System.err.println("I has no destination");
-			Do("Has a teller");
 			return true;
 		}
 		//If the customer has a teller, but no account
@@ -245,7 +241,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	private void informHost(){
 		goToLocation("Host");
-		Do("Requesting a Teller");
 		bh.msgINeedTeller(this);
 		s = state.waiting;
 	}
@@ -254,7 +249,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 * Sends a message to the teller asking him to open an account
 	 */
 	private void openAccount(){
-		Do("Requesting account");
 		bt.msgINeedAccount(this);
 		s = state.waiting;
 	}
@@ -267,19 +261,15 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	private void bankingAction(Task t){
 		if(t.type.equals("deposit")){
-			Do("Requesting deposit");
 			bt.msgDepositMoney(this, t.amount, accountNumber);
 		}
 		if(t.type.equals("withdraw")){
-			Do("Requesting withdrawal");
 			bt.msgWithdrawMoney(this, t.amount, accountNumber);
 		}
 		if(t.type.equals("getLoan")){
-			Do("Requesting loan");
 			bt.msgINeedLoan(this, t.amount, accountNumber);
 		}
 		if(t.type.equals("robBank")){
-			Do("Robbing bank");
 			bt.msgThisIsAHoldup(this, t.amount);
 		}
 		tasks.remove(t);
@@ -306,7 +296,6 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	private void goToLocation(String location){
 		if(gui != null && location != null){
 			gui.DoGoToLocation(location);
-			Do("Moving to " + location);
 			try{
 				movement.acquire();
 			}

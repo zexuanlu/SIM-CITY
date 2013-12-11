@@ -129,6 +129,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 			print("Stock: " + f.choice + " = " + foodInventory.get(f.choice).amount);
 		}
 		sendTruckBack = true;
+		truck.msgGoBack();
 		stateChanged();
 	}
 	
@@ -153,7 +154,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 			return true;
 		}
 		//Send truck back
-		if(sendTruckBack == true) {
+		if(sendTruckBack) {
 			truckBack();
 			return true;
 		}
@@ -162,6 +163,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 			for(Entry<String, MyFood> f : foodInventory.entrySet()){
 				checkRestock(f);
 			}
+			restock = false;
 			return true;
 		}
 		//Check if there is an order on the revolving stand
