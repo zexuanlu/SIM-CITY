@@ -12,6 +12,8 @@ import restaurant5.interfaces.Market5;
 import agent.Role;
 
 public class Restaurant5Cashier extends Role implements Cashier5{
+	public boolean offWork = false; 
+	public int offWorkMess = 0; 
 	Menu5 myMenu = new Menu5(); 
 	String name; 
 	int Cash; 
@@ -70,6 +72,16 @@ public void msgmarketbill(Market5 m, int Bill){
 	//marketbill.mstate = MarketState.toPay; 
 	//marketbills.add(marketbill);
 	//stateChanged();
+}
+
+
+public void msgGoOffWork(){
+	print ("cook off work");
+	offWorkMess ++; 
+	if (offWorkMess == 2){
+		offWork = true; 
+		stateChanged();
+	}
 }
 
 
@@ -154,6 +166,10 @@ public boolean pickAndExecuteAnAction() {
 			}
 		}
 	}
+	
+	if (offWork){
+		goOffWork();
+	}
 	return false;
 	//we have tried all our rules and found
 	//nothing to do. So return false to main loop of abstract agent
@@ -179,6 +195,15 @@ private void payMarketBill(MarketBill b){
 		b.market.msgBillFromTheAir(paid);
 	}
 }
+
+
+private void goOffWork(){
+	print("cashier go off work");
+	offWork = false; 
+	//this.person.msgFinishedEvent(this);
+	this.person.msgGoOffWork(this, 0);
+}
+
 
 
 private void computeBill(Bill b){

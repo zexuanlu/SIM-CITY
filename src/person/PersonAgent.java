@@ -348,6 +348,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
+				role.role.getGui().setPresent(false);
 				role.setActive(false);
 			}
 		}

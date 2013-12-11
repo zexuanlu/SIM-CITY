@@ -18,7 +18,6 @@ import java.util.TimerTask;
  */
 public class Restaurant5CustomerAgent extends Role implements Customer5 {
 	private Semaphore atRestaurant = new Semaphore(0,true);
-	PersonAgent myPerson; 
 	private enum State{
 		paid, waitingforCheck, nothing, waitinginRestaurant,hungry,following, seated,ordered,eating,done
 	}
@@ -48,7 +47,6 @@ public class Restaurant5CustomerAgent extends Role implements Customer5 {
 	 */
 	public Restaurant5CustomerAgent(String name, PersonAgent p){
 		super(p);
-		myPerson = p; 
 		this.name = name;
 		if (name.equals("Broke")){
 			myMoney = 6; 

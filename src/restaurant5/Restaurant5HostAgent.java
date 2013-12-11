@@ -17,6 +17,7 @@ import java.util.*;
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
 public class Restaurant5HostAgent extends Role implements RestaurantHost {
+	public boolean offWork = false; 
     LinkedList<myWaiter> waiterQ = new LinkedList<myWaiter>();
     public class myWaiter {
     	myWaiter(Waiter5 _w, WaiterState _s){
@@ -27,7 +28,7 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
     	public Waiter5 w;
     	public WaiterState s; 
     }
-    PersonAgent myPerson; 
+    
     private enum WaiterState {ready,onBreak, denied,asked};
 	private int NTABLES = 3; //hard coded table shit
 	private List<myCustomer> customers;
@@ -45,10 +46,11 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 	}
 	private enum CustomerState {waiting, restaurantfull, gettingseated, eating, done, toserve, donePerson};
 	
+
+	
 	
 	public Restaurant5HostAgent(String name, PersonAgent p) {
 		super(p);
-		myPerson = p; 
 		customers = Collections.synchronizedList(new ArrayList<myCustomer>());
 		this.name = name; 
 		// make some tables
@@ -60,6 +62,13 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 
 	// Messages
 
+	public void msgEndOfDay(){
+		print("host received msg end of day");
+		offWork = true; 
+		stateChanged(); 
+	}
+	
+	
 	public void msgOffBreak(Waiter5 w){
 		
 		for (myWaiter _w:waiterQ){
@@ -126,10 +135,10 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 					m.s = CustomerState.done; 
 					stateChanged();
 					return; 
-					//customers.remove(m);
 				}
 			}
 		}
+	
 	}
 
 	/**
@@ -194,6 +203,16 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 			}
 		}
 		
+		if (offWork){
+			for (myCustomer mc: customers){
+				if (mc.s != CustomerState.donePerson){
+					return false; 
+				}
+			}
+			goOffWork();
+			return true; 
+		}
+		
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -201,6 +220,20 @@ public class Restaurant5HostAgent extends Role implements RestaurantHost {
 	}
 	
 	// Actions
+	private void goOffWork(){
+		//msgthewaiters
+		offWork = false; 
+		//send it to the waiters
+		for (myWaiter mw: waiterQ){
+			mw.w.msgGoOffWork();
+		}
+		
+	//	this.person.msgFinishedEvent(this); 
+		this.person.msgGoOffWork(this, 0);
+
+	}
+	
+	
 	private void tellCustomerFull(myCustomer mc){
 		mc.s = CustomerState.toserve; 
 		print ("Host Restaurant Full");

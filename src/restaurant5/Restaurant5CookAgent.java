@@ -22,7 +22,9 @@ import market.interfaces.MarketTruck;
 //the HostAgent. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
 public class Restaurant5CookAgent extends Role implements RestaurantCook {
-	PersonAgent myPerson; 
+	public boolean offWork = false; 
+	public int offWorkMess = 0; 
+	
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
 	private MarketCashier marketCashier; 
@@ -103,7 +105,6 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	
     public Restaurant5CookAgent(String name, PersonAgent p) {
 		super(p);
-		myPerson = p; 
 		this.name = name; 
 		revolvingstand = new Restaurant5RevolvingStand();
 		//type, cookingtimes, low, capacity, amount
@@ -133,6 +134,14 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
     
     }
     
+    public void msgGoOffWork(){
+    	print ("cook off work");
+    	offWorkMess ++; 
+    	if (offWorkMess == 2){
+    		offWork = true; 
+    		stateChanged();
+    	}
+    }
     
 		
 	public void msgHereIsOrder(Waiter5 w, String choice, int table) {
@@ -235,6 +244,11 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 				}
 			}
 		}
+		
+		if (offWork){
+			goOffWork();
+			return true; 
+		}
 
 		
 		cookGui.gotoPlate(); 
@@ -245,7 +259,10 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	}
 	// Actions
 
-	
+	private void goOffWork(){
+		offWork = false; 
+		this.person.msgGoOffWork(this, 0);
+	}
 
 	private void plateIt(Order o){
 	//	doPlating(o); //hack animation
