@@ -7,6 +7,8 @@ package gui.panels;
  * 
  */
 
+import gui.subpanels.TracePanel;
+
 import javax.swing.*; 
 
 import market.gui.MarketTruckGui; 
@@ -51,6 +53,7 @@ import java.util.Map;
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
     private BuildingAnimationPanel BuildPanel;
+    public TracePanel tracePanel;
     public BankAnimationPanel bankPanel = new BankAnimationPanel();
     public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
     public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
@@ -104,7 +107,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     private List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
     private List<radialButton> buttons = Collections.synchronizedList(new ArrayList<radialButton>());
     private List<HouseAnimationPanel> homes = new ArrayList<HouseAnimationPanel>();
-    public List<ApartmentAnimationPanel> apartments = new ArrayList<ApartmentAnimationPanel>();
+    public List<ApartmentAnimationPanel> apartment1 = new ArrayList<ApartmentAnimationPanel>();
+    public List<ApartmentAnimationPanel> apartment2 = new ArrayList<ApartmentAnimationPanel>();
+    public List<ApartmentAnimationPanel> apartment3 = new ArrayList<ApartmentAnimationPanel>();
+    public List<ApartmentAnimationPanel> apartment4 = new ArrayList<ApartmentAnimationPanel>();
+    
     private Map<String, Location> locations = new HashMap<String, Location>();
     private Image bufferImage;
     private Dimension bufferSize;
@@ -176,8 +183,20 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 
                 // Creating the apartment animation panel
 
-                for (int i = 5; i < 65; ++i) {
-                        apartments.add(new ApartmentAnimationPanel(i));
+                for (int i = 5; i <= 20; ++i) {
+                	apartment1.add(new ApartmentAnimationPanel(i));
+                }
+                
+                for (int i = 21; i <= 36; ++i) {
+                	apartment2.add(new ApartmentAnimationPanel(i));
+                }
+                
+                for (int i = 37; i <= 52; ++i) {
+                	apartment3.add(new ApartmentAnimationPanel(i));
+                }
+                
+                for (int i = 53; i <= 68; ++i) {
+                	apartment4.add(new ApartmentAnimationPanel(i));
                 }
                 
                 panels.add(bankPanel);
@@ -298,9 +317,36 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                                                    BuildPanel.remove(BuildPanel.getComponent(0));
                                            }
                                            BuildPanel.repaint();
-                                           BuildPanel.add(apartments.get(apartmentComplex1Components.indexOf(apt)));
+                                           BuildPanel.add(apartment1.get(apartmentComplex1Components.indexOf(apt)));
                                    }
-                            }
+                            } 
+                           for (Rectangle2D apt : apartmentComplex2Components) {
+                                if (me.getButton() == 1 && apt.contains(me.getX(), me.getY())) {
+                                    if (BuildPanel.getComponentCount() > 0) {
+                                            BuildPanel.remove(BuildPanel.getComponent(0));
+                                    }
+                                    BuildPanel.repaint();
+                                    BuildPanel.add(apartment2.get(apartmentComplex2Components.indexOf(apt)));
+                                }
+                           }
+                            for (Rectangle2D apt : apartmentComplex3Components) {
+                                    if (me.getButton() == 1 && apt.contains(me.getX(), me.getY())) {
+                                            if (BuildPanel.getComponentCount() > 0) {
+                                                    BuildPanel.remove(BuildPanel.getComponent(0));
+                                            }
+                                            BuildPanel.repaint();
+                                            BuildPanel.add(apartment3.get(apartmentComplex3Components.indexOf(apt)));
+                                    }
+                             }
+                            for (Rectangle2D apt : apartmentComplex4Components) {
+                                if (me.getButton() == 1 && apt.contains(me.getX(), me.getY())) {
+                                        if (BuildPanel.getComponentCount() > 0) {
+                                                BuildPanel.remove(BuildPanel.getComponent(0));
+                                        }
+                                        BuildPanel.repaint();
+                                        BuildPanel.add(apartment4.get(apartmentComplex4Components.indexOf(apt)));
+                                }
+                         }
                    }
         }
 
@@ -316,12 +362,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WIDTH, HEIGHT );
-
-        //Quadrant textures
-        g2.drawImage(businessbgTex, 0, 0, 330, 170, null);	//TOP LEFT
-        g2.drawImage(businessbgTex, 440, 0, 340, 170, null);	//TOP RIGHT
-        g2.drawImage(resbgTex, 450, 290, 300, 190, null);	//BOTTOM RIGHT
-        g2.drawImage(resbgTex, 0, 290, 330, 190, null);
         
         //Here is the table
         g2.setColor(Color.GRAY);
@@ -345,6 +385,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(restaurant5);
         g2.fill(restaurant6);
         g2.fill(restaurant4);
+
+        //Quadrant textures
+        g2.drawImage(businessbgTex, 0, 0, 330, 170, null);	//TOP LEFT
+        g2.drawImage(businessbgTex, 440, 0, 340, 170, null);	//TOP RIGHT
+        g2.drawImage(resbgTex, 450, 290, 300, 190, null);	//BOTTOM RIGHT
+        g2.drawImage(resbgTex, 0, 290, 330, 190, null);
 
         // Draw out the sidewalks 
         g2.setColor(Color.WHITE);
@@ -524,11 +570,27 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     		gui.updatePosition();
         }
 
-        for (ApartmentAnimationPanel apt : apartments) {
+        for (ApartmentAnimationPanel apt : apartment1) {
                 for (Gui gui : apt.guis) {
                         gui.updatePosition();
                 }
         }
+        for (ApartmentAnimationPanel apt : apartment2) {
+            for (Gui gui : apt.guis) {
+                    gui.updatePosition();
+            }
+        }
+        for (ApartmentAnimationPanel apt : apartment3) {
+            for (Gui gui : apt.guis) {
+                    gui.updatePosition();
+            }
+        }
+        for (ApartmentAnimationPanel apt : apartment4) {
+            for (Gui gui : apt.guis) {
+                    gui.updatePosition();
+            }
+        }
+        
         for(Gui gui : house1Panel.guis){
                 gui.updatePosition();
         }
@@ -547,8 +609,17 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         for(JPanel p : homes){
                 p.repaint();
         }
-        for(JPanel p : apartments){
+        for(JPanel p : apartment1){
                 p.repaint();
+        }
+        for(JPanel p : apartment2){
+            p.repaint();
+        }
+        for(JPanel p : apartment3){
+            p.repaint();
+        }
+        for(JPanel p : apartment4){
+            p.repaint();
         }
         synchronized(guis){
                 for(Gui gui : guis) {
@@ -616,11 +687,27 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     }
     
     public ApartmentAnimationPanel getAptGui(int aptNum){
-            for(ApartmentAnimationPanel a : apartments){
-                    if(a.aptNum == aptNum){
-                            return a;
-                    }
+            for(ApartmentAnimationPanel a : apartment1){
+                if(a.aptNum == aptNum){
+                        return a;
+                }
             }
+            for(ApartmentAnimationPanel a : apartment2){
+                if(a.aptNum == aptNum){
+                        return a;
+                }
+            }
+            for(ApartmentAnimationPanel a : apartment3){
+                if(a.aptNum == aptNum){
+                        return a;
+                }
+            }
+            for(ApartmentAnimationPanel a : apartment4){
+                if(a.aptNum == aptNum){
+                        return a;
+                }
+            }
+            
             return null;
     }
     
@@ -652,7 +739,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                            if(!locations.get("Banco Popular 2").isClosed())
                                    temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Banco Popular 2"));
                            else
-                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Banco Popular2"));
+                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Banco Popular 2"));
                            buttons.add(temp);
                    }
                    else if (me.getButton() == 3 && market.contains(me.getX(), me.getY())){
@@ -740,9 +827,14 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 }
                 else if(me.getButton() == 3 && buttons.get(0).button.contains(me.getX(), me.getY())){
                         buttons.get(0).location.setClosed(!buttons.get(0).location.isClosed());
+                        if(!buttons.get(0).location.isClosed())
+                        	tracePanel.print(buttons.get(0).location.getName() + " is now open", null);
+                        else
+                        	tracePanel.print(buttons.get(0).location.getName() + " is now closed", null);
                 }
-                else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
-                        ((Restaurant)buttons.get(3).location).getCook().msgEmptyStock();
+                if(buttons.size() > 1 && me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
+                        ((Restaurant)buttons.get(1).location).getCook().msgEmptyStock();
+                        tracePanel.print("Emptying stock of " + buttons.get(0).location.getName(), null);
                 }
                 buttons.clear();
         }

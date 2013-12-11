@@ -11,6 +11,7 @@ public interface Waiter5 extends RestaurantWaiter {
 	public abstract void msgoffBreak();
 //	public abstract void msgWanttoGoonBreak();
 	public abstract void msggoOnBreak();
+	public abstract void msgGoOffWork();
 	public abstract void msgcantgoOnBreak();
 	public abstract void msgOutof(String choice, int table);
 	public abstract void msgReadytoOrder(Restaurant5CustomerAgent cust);

@@ -13,7 +13,7 @@ public abstract class Agent {
     Semaphore pause = new Semaphore(0, true);
     boolean paused = false;
     private AgentThread agentThread;
-    protected static TracePanel tracePanel;
+    public static TracePanel tracePanel;
 
     protected Agent() {
     }

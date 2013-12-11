@@ -1,12 +1,13 @@
 package gui.main;
 
 import gui.panels.*;
+import gui.subpanels.TracePanel;
 import utilities.TrafficLightAgent; 
 
 import javax.swing.*;
+
 import restaurant5.*; 
 import restaurant5.gui.*;
-
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketTruckGui; 
 import person.Apartment;
@@ -194,6 +195,7 @@ public class SimCityGUI extends JFrame {
         public BusStopGui bs7gui = new BusStopGui(busstop7, 440, 420);
         public BusStopGui bs8gui = new BusStopGui(busstop8, 330, 420);        
         public MarketTruckAgent truck;
+		public TracePanel tracePanel;
 
         public SimCityGUI() {
                 
@@ -534,11 +536,11 @@ public class SimCityGUI extends JFrame {
                 homeOwnerRole4.setGui(hg4);
                 cityAnimPanel.house4Panel.addGui(hg4);
                 
-                // Loops through the apartment guis to add them to their animation panels
-                for (ApartmentTenantGui aptGui : aptGuis) {
-                        aptGui.isPresent = false;
-                        cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
-                }
+//                // Loops through the apartment guis to add them to their animation panels
+//                for (ApartmentTenantGui aptGui : aptGuis) {
+//                        aptGui.isPresent = false;
+//                        cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+//                }
                 
                 // Loops through apartment tenant roles and sets to respective GUI
                 for (ApartmentTenantRole r : aptTenants) {
@@ -801,6 +803,7 @@ public class SimCityGUI extends JFrame {
                 waiter1.setCashier(cashier1);
                 cook1.setMarketCashier(marketcashierrole);
                 cook1.setCashier(cashier1);
+                cashier1.bank = bankdatabase; 
                 
                 waiter5.setHost(host5);
                 waiter5.setCashier(cashier5);
@@ -811,6 +814,8 @@ public class SimCityGUI extends JFrame {
                 sdwaiter5.setCook(cook5);
                 sdwaiter5.setStand(revolvingstand5);
                 
+                
+        
                 
                 host5.addWaiter(waiter5);
                 host5.addWaiter(sdwaiter5);
@@ -874,7 +879,8 @@ public class SimCityGUI extends JFrame {
                 truck.setRestaurant(rest5, 5);
                 truck.setRestaurant(rest6, 6);
                 /*Create the SimWorldClock with the starting time and the list of people*/
-                simclock = new SimWorldClock(8,people, citymap);
+                simclock = new SimWorldClock(8,people, citymap, 6000);
+                simclock.tracePanel = tracePanel;
                 simclock.timeCards.add(bank.getTimeCard());
                 simclock.timeCards.add(market.getTimeCard());
                 simclock.timeCards.add(rest1.getTimeCard());
@@ -882,7 +888,7 @@ public class SimCityGUI extends JFrame {
                 simclock.timeCards.add(rest3.getTimeCard());
                 
                 for (PersonAgent p: people){
-                        p.setcitygui(this);
+                     p.setcitygui(this);
                      p.startThread();
                 }
                 

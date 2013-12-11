@@ -1,7 +1,5 @@
 package restaurant4.gui;
 
-import restaurant1.Restaurant1SDWaiterRole;
-import restaurant1.Restaurant1WaiterRole;
 import restaurant4.Restaurant4AbstractWaiter;
 import restaurant4.Restaurant4SDWaiterRole;
 import restaurant4.Restaurant4WaiterRole;
