@@ -1,5 +1,8 @@
 package restaurant1.test.mock;
 
+import java.util.List;
+
+import market.Food;
 import market.interfaces.MarketCashier;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
@@ -26,6 +29,24 @@ public class MockRestaurantCashier extends Mock implements Restaurant1Cashier{
 
 	@Override
 	public void msgPleasepaytheBill(MarketCashier c, double bills) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgAddMoney(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgGoOffWork() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void msgYouCanPayNow(MarketCashier c, List<Food> food) {
 		// TODO Auto-generated method stub
 		
 	}
