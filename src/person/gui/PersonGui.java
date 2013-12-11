@@ -33,6 +33,10 @@ public class PersonGui implements Gui{
 	private int xtr = 440, ytr = 170;
 	private int xbl = 330, ybl = 280;
 	private int xbr = 440, ybr = 280;
+	
+	
+	private int xtemp;
+	private int ytemp;
 
 	public PersonGui(PersonAgent agent, int posx, int posy, CityAnimationPanel cap) {
 		xPos = posx; 
@@ -49,7 +53,6 @@ public class PersonGui implements Gui{
 		this.agent = agent;
 		arrived = false;
 		isPresent = false;
-		atLight = false;
 	}
 	public void updatePosition() {
 		boolean moved = false;
@@ -99,16 +102,21 @@ public class PersonGui implements Gui{
 				agent.msgAtDest(new Position(xPos, yPos));
 			}
 		}
-		else if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
-			agent.msgAtLight();
-			try {
-				atlight.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println("Released at the stop light "+agent.getName());
-		}
+//		 if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
+//			System.err.println("YO");
+//			arrived = true;
+//			xtemp = xDestination;
+//			ytemp = yDestination;
+//			xDestination = xtl;
+//			yDestination = ytl;
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 //		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
 //			agent.msgAtLight();
 //			try {
@@ -166,7 +174,9 @@ public class PersonGui implements Gui{
 	}
 	
 	public void ToGo(){
-		atlight.release();
+		xDestination = xtemp;
+		yDestination = ytemp;
+		arrived = false;
 	}
 	
 	public void walkto(int x, int y){
