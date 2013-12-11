@@ -137,10 +137,10 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
     public void msgGoOffWork(){
     	print ("cook off work");
     	offWorkMess ++; 
-    	if (offWorkMess == 2){
+  //  	if (offWorkMess == 2){
     		offWork = true; 
     		stateChanged();
-    	}
+    //	}
     }
     
 		
@@ -261,6 +261,7 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 
 	private void goOffWork(){
 		offWork = false; 
+		offWorkMess = 0; 
 		this.person.msgGoOffWork(this, 0);
 	}
 

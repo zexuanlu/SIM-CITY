@@ -342,14 +342,18 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
-		print("Received the message go off work");
+		print("Received the message go off work from " + r.toString());
 		wallet.setOnHand(pay);
 		if(!testMode){
 			gui.isPresent = true;
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
-				role.role.getGui().setPresent(false);
+				utilities.Gui ug = role.role.getGui(); 
+				if (ug!=null){
+					print ("I found the gui in msggooffwork");
+					ug.setPresent(false);
+				}
 				role.setActive(false);
 			}
 		}

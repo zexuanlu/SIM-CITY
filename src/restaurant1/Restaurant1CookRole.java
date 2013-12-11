@@ -21,6 +21,9 @@ import market.MarketCashierRole;
 //Add case in scheduler to tell markettruck to go back
 
 public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
+	public boolean offWork = false; 
+	public int offWorkMess = 0; 
+	
 	public CookGui cookGui = null;
 	private Restaurant1Cashier cashier;
 	private MarketTruck truck;
@@ -121,6 +124,17 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		opening = true;
 		stateChanged();
 	}
+	
+	
+	
+	public void msgGoOffWork(){
+		offWorkMess ++; 
+	//	if (offWorkMess == 2){
+			offWork = true; 
+			stateChanged(); 
+		//}
+	}
+
 
 	public void msgHereisYourFood(MarketTruck t, List<Food> fList){
 		this.truck = t;
@@ -172,10 +186,25 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 				return true;
 			}
 		}	
+		
+		if (offWork){
+			//CHECK NOTHING TO DO FO REALS
+			goOffWork(); 
+			return true; 
+		}
 
 		return false;
 	}
 
+	
+	private void goOffWork(){
+		print("restaurant1cookrole go off work");
+		offWork = false; 
+		offWorkMess = 0; 
+		this.person.msgGoOffWork(this, 0);
+	}
+	
+	
 	public void Docooking(final Order o){
 		MyFood f = food.get(o.choice);
 		if(f.amount == 0){

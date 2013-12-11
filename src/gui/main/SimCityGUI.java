@@ -674,11 +674,11 @@ public class SimCityGUI extends JFrame {
                 people.get(13).addRole(cook1, "Rest 1 Cook");
                 people.get(13).addRole(aptTenants.get(9), "Apt Tenant");
                 people.get(13).roles.get(1).role.switchPerson(people.get(13));
-                people.get(14).addRole(waiter1, "Rest 1 Waiter");
+                people.get(14).addRole(waiter1, "Rest 1 SDWaiter");
                 people.get(14).roles.get(0).role.switchPerson(people.get(14));
                 people.get(14).addRole(aptTenants.get(10), "Apt Tenant");
                 people.get(14).roles.get(1).role.switchPerson(people.get(14));
-                people.get(15).addRole(waiter1, "Rest 1 Waiter");
+                people.get(15).addRole(waiter1, "Rest 1 SDWaiter");
                 people.get(15).addRole(aptTenants.get(11), "Apt Tenant");
                 people.get(15).roles.get(1).role.switchPerson(people.get(15));
                 

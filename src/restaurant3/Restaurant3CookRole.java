@@ -19,6 +19,7 @@ import java.util.concurrent.Semaphore;
 public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//MEMBER DATA
 	String name;
+	public boolean offWork; 
 	int marketNum = 1;
 	private Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
@@ -32,6 +33,11 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	
 	//GUI references
 	public Restaurant3CookGui cookGui;
+	
+	public void msgGoOffWork(){
+		offWork = true;
+		stateChanged();
+	}
 	
 	//Private class for food information
 	private class MyFood{
@@ -162,9 +168,20 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 				return true;
 			}
 		}
+		
+		if (offWork){
+			goOffWork();
+			return true; 
+		}
 		return false;
 	}
 
+	
+	
+	public void goOffWork(){
+		offWork = false; 
+		this.person.msgGoOffWork(this, 0);
+	}
 	//ACTIONS *************************************
 	public void takeOrderFromStand(){
 		Restaurant3Order o = null;

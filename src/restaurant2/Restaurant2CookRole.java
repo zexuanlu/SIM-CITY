@@ -24,7 +24,9 @@ import person.interfaces.Person;
  * Restaurant customer agent.
  */
 public class Restaurant2CookRole extends Role implements RestaurantCook {
-
+	public int offWorkMess = 0; 
+	public boolean offWork; 
+	
 	Timer timer = new Timer();
 	Timer clear = new Timer();
 	Timer checkStand = new Timer();
@@ -68,6 +70,17 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		cookTimes.put("Salad", 750);
 		cookTimes.put("Pound Cake", 900);
 	}
+	
+	
+	public void msgGoOffWork(){
+		print ("REST COOK 2 msgGoOffWork");
+		offWorkMess++; 
+	//	if (offWorkMess == 2){
+			offWork = true; 
+			stateChanged(); 
+	//	}
+	}
+	
 	public void setMarket(MarketAgent a, MarketAgent b, MarketAgent c){
 		market = new MyMarket(a, "market");
 		/*mm1 = new MyMarket(a, "mm1");
@@ -143,7 +156,6 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		Do("GUL IM COOKIN");
 		checkInventory();//check inventory every time we iterate to make sure were stocked
 		if(!revolver.isEmpty()){
 			takeFromStand();
@@ -164,10 +176,24 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 				}
 			}
 		}
+		
+		if (offWork){
+			goOffWork();
+			return true; 
+		}
 		return false;
 	}
 
 	// Actions
+	
+	private void goOffWork(){
+		offWork = false; 
+		offWorkMess = 0; 
+		print("GO OFF WORK IN RESTAURANT 2");
+		this.person.msgGoOffWork(this,0);
+	}
+	
+	
 	private void clearPosition(final int position){
 		clear.schedule(new TimerTask(){
 			public void run(){

@@ -322,6 +322,7 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	protected void goOffWork(){
 		//inform cashier and the cook
+		print("Waiterbase 5 go off work called");
 		offWork = false; 
 		myCashier.msgGoOffWork(); 
 		myCook.msgGoOffWork();

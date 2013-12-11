@@ -6,6 +6,7 @@ import agent.Role;
 import person.interfaces.Person;
 
 public abstract class Restaurant1AbstractWaiter extends Role {
+		
 
 	public enum state 
 	{available, waiting, seated, readytoorder, askedtoorder, attable, ordered, gotocook, orderready,outoffood, eating,atcook, checkingbill, bringbill, bringattable, starteating, done};
@@ -16,5 +17,7 @@ public abstract class Restaurant1AbstractWaiter extends Role {
 	}
 	
 	public String name;
+	
+
 }	
 

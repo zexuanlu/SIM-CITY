@@ -13,7 +13,10 @@ import market.Food;
 import market.interfaces.MarketCashier;
 
 public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
-
+	public boolean offWork = false; 
+	public int offWorkMess = 0; 
+	
+	
 	String name;
 	public List<Check> check = Collections.synchronizedList(new ArrayList<Check>());
 	public List<Bill> bill = Collections.synchronizedList(new ArrayList<Bill>());
@@ -97,6 +100,14 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		C.s = state.payingcheck;
 		stateChanged();
 	}
+	
+	public void msgGoOffWork(){
+		offWorkMess ++; 
+	//	if (offWorkMess == 2){
+			offWork = true; 
+			stateChanged(); 
+		//}
+	}
 
 	public void msgPleasepaytheBill(MarketCashier c, double bills){
 		bill.add(new Bill(c, bills));
@@ -147,9 +158,24 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 				}
 			}
 		}
+		if (offWork){
+			//CHECK NOTHING TO DO FO REALS
+			goOffWork(); 
+			return true; 
+		}
+
 		return false;
 	}
 
+	
+	private void goOffWork(){
+		print("restaurantcashier go offwork");
+
+		offWork = false; 
+		offWorkMess = 0; 
+		this.person.msgGoOffWork(this, 0);
+	}
+	
 	public void DoPayBill(){
 		Bill b = bill.get(0);
 		if(money > b.pay){

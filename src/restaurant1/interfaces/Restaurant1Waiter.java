@@ -11,6 +11,7 @@ public interface Restaurant1Waiter {
 	
 	public abstract void msgAnimationDoneAtTable(Restaurant1Customer customer);
 	
+	public abstract void msgGoOffWork();
 	public abstract void msgorderisready(Restaurant1Customer customer, String choice, int table);
 	
 	public abstract void msgorderiscooked(int table);
