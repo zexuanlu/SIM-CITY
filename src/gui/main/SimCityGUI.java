@@ -84,6 +84,7 @@ public class SimCityGUI extends JFrame {
         public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO2", 2);
         public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
         public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
+        public HomeOwnerRole homeOwnerRole5 = new HomeOwnerRole(initPerson, "HM05", 5);
         
         public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT5", 5, initPerson);
 
@@ -95,7 +96,6 @@ public class SimCityGUI extends JFrame {
         
         public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
         public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);
-        public Restaurant1CustomerRole cust1 = new Restaurant1CustomerRole("Customer 1", initPerson);
         public Restaurant1CashierRole cashier1 = new Restaurant1CashierRole("Cashier 1", initPerson);
         public Restaurant1SDWaiterRole waiter1 = new Restaurant1SDWaiterRole("Waiter 1", initPerson);
         
@@ -148,6 +148,7 @@ public class SimCityGUI extends JFrame {
         public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
         public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
         public HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
+        public HomeOwnerGui hg5 = new HomeOwnerGui(homeOwnerRole5);
         
         public CityMap citymap; 
 
@@ -224,7 +225,7 @@ public class SimCityGUI extends JFrame {
                                 new Position(180, 170), LocationType.Market);
                 Restaurant rest1 = new Restaurant("Rest 1", host1, new TimeCard(), new Position(240, 170), LocationType.Restaurant1);
                 Restaurant rest2 = new Restaurant("Rest 2", host1, new TimeCard(), new Position(320, 170), LocationType.Restaurant2);
-                Restaurant rest3 = new Restaurant("Rest 3", host1, new TimeCard(), new Position(330, 100), LocationType.Restaurant3);
+                Restaurant rest3 = new Restaurant("Rest 3", host3, new TimeCard(), new Position(330, 100), LocationType.Restaurant3);
                 
                 // Second quadrant locations
                 Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), bankhostrole, 
@@ -246,8 +247,8 @@ public class SimCityGUI extends JFrame {
                 Home home4 = new Home("Home 4", homeOwnerRole4, 
                                 new Position(600, 280), 4, LocationType.Home);
                 // FIX
-                Home home5 = new Home("Home 5", homeOwnerRole4, 
-                                new Position(660, 280), 4, LocationType.Home);
+                Home home5 = new Home("Home 5", homeOwnerRole5, 
+                                new Position(660, 280), 5, LocationType.Home);
                 
                 // Fourth quadrant locations
                 // First apartment complex
@@ -323,6 +324,7 @@ public class SimCityGUI extends JFrame {
                 locations.add(home2);
                 locations.add(home3);
                 locations.add(home4);
+                locations.add(home5);
                 locations.add(apt1);
                 locations.add(apt2);
                 locations.add(apt3);

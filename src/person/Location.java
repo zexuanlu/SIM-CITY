@@ -13,10 +13,11 @@ public class Location {
         							Restaurant4, Restaurant5, Restaurant6, 
         							Bank2, Market2, Casino};
         public LocationType type;
-        protected boolean isClosed;
+        public boolean isClosed;
         protected int Quadrant;
         public Position position; 
         public Location(String name, LocationType type, Position p){
+        		this.isClosed = false;
                 this.name = name;
                 this.type = type;
                 this.position = p;

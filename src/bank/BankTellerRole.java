@@ -124,6 +124,12 @@ public class BankTellerRole extends Role implements BankTeller {
 		stateChanged();
 	}
 	
+	/**
+	 * Received from a bank customer when he is robbing the bank.
+	 * 
+	 * @param bc the customer who is the robber
+	 * @param amount the amount of money he is demanding
+	 */
 	public void msgThisIsAHoldup(BankCustomer bc, double amount){
 		log.add(new LoggedEvent("Received msgThisIsAHoldUp from BankCustomer"));
 		this.bc = bc;
@@ -235,7 +241,12 @@ public class BankTellerRole extends Role implements BankTeller {
 			}
 		}
 	}
-	
+	/**
+	 * Received from the Bank Database when it is giving him 
+	 * the amount demanded by the robber
+	 * 
+	 * @param amount the amount of money demanded
+	 */
 	public void msgHereIsMoney(double amount){
 		log.add(new LoggedEvent("Received msgHereIsMoney from BankDatabase"));
 		synchronized(tasks){
@@ -438,6 +449,13 @@ public class BankTellerRole extends Role implements BankTeller {
 		tasks.remove(t);
 	}
 	
+	/**
+	 * Has a 30 percent chance of calling the cops and scaring 
+	 * off the robber, and a 70 percent chance of giving in to the 
+	 * robber's demands
+	 * 
+	 * @param t the task that was requested
+	 */
 	private void robbery(Task t){
 		if(cowardice == 0)
 			cowardice = (int)(Math.random() * (100 - 1) + 1);
@@ -452,6 +470,12 @@ public class BankTellerRole extends Role implements BankTeller {
 		cowardice = 0;
 	}
 	
+	/**
+	 * Messages the bank robber to let him know that the 
+	 * money he demanded is here
+	 * 
+	 * @param t the task that was completed
+	 */
 	private void bankRobbed(Task t){
 		bc.msgHereIsMoney(t.amount);
 		tasks.remove(t);

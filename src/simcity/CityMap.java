@@ -220,8 +220,11 @@ public class CityMap {
 	}
 	public Location getHome(int homeNumber){
 		Location ll = null;
-		if(homeNumber < 5){
+		if(homeNumber <= 5){
 			for(Location l : map){
+				System.err.println(l.getName() + " " + l.type);
+				if(l.type == LocationType.Home)
+					System.err.println(((Home)l).getNumber());
 				if(l.type == LocationType.Home && ((Home) l).getNumber() == homeNumber){
 					ll = l;
 				}
