@@ -430,9 +430,8 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			for(SimEvent nextEvent : toDo){
-				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					System.err.println("THIS IS THE EVENT AND IT IS "+nextEvent.location.isClosed);
-					if(!nextEvent.location.isClosed()){
+				if(nextEvent.importance == EventImportance.OneTimeEvent) {
+					 if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){if(!nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
 						goToAndDoEvent(nextEvent);
@@ -441,6 +440,7 @@ public class PersonAgent extends Agent implements Person{
 					toDo.remove(nextEvent);
 					return true;
 				}
+			}
 			}
 			return checkVitals();
 		}

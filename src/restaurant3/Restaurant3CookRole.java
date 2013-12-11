@@ -20,10 +20,10 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//MEMBER DATA
 	String name;
 	int marketNum = 1;
-	private Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
+	public Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
 	//Agent references
-	Restaurant3CashierRole cashier;
+	public Restaurant3CashierRole cashier;
 	MarketCashierRole marketCashier;
 	MarketTruck truck;
 	
