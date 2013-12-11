@@ -120,6 +120,7 @@ public class MarketTruckAgent extends Agent implements MarketTruck{
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
+                    MarketTruckAgent.tracePanel.print("Delivery Fail to restaurant "+ restnum, this);
     				cashier.msgDevliveryFail(this, cook, foodlist, rest.r, rest.number);
     				return;
     			}
