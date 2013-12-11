@@ -432,7 +432,6 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					System.err.println("THIS IS THE EVENT AND IT IS "+nextEvent.location.isClosed);
 					if(!nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);

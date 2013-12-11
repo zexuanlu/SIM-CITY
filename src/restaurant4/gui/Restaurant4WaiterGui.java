@@ -31,8 +31,8 @@ public class Restaurant4WaiterGui implements Gui {
     private int xPos, yPos;//default waiter position
     private int xDestination, yDestination;//default start position
     
-    public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
-    public Image image = img.getImage();
+    //public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+    //public Image image = img.getImage();
     
     public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, int x, int y) {
         this.agent = agent;;
@@ -77,7 +77,7 @@ public class Restaurant4WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
         //g.fillRect(xPos, yPos, 20, 20);
-        g.drawImage(image, xPos, yPos, 20, 20, null);
+        //g.drawImage(image, xPos, yPos, 20, 20, null);
         
         if(agent instanceof Restaurant4WaiterRole){
         	g.drawString(((PersonAgent)((Restaurant4WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);

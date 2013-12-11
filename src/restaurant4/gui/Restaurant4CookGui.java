@@ -24,8 +24,8 @@ public class Restaurant4CookGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	
-	public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
-	public Image image = img.getImage();
+	//public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+	//public Image image = img.getImage();
 
 	public Restaurant4CookGui(Restaurant4CookRole c){ //HostAgent m) {
 		xPos = 440;
@@ -54,7 +54,7 @@ public class Restaurant4CookGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
 		//g.fillRect(xPos, yPos, 20, 20);
-		g.drawImage(image, xPos, yPos, 20, 20, null);
+		//g.drawImage(image, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		
 		for(FoodGui fg : foods){
