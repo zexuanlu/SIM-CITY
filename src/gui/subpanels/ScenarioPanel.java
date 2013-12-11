@@ -51,7 +51,8 @@ import utilities.TimeCard;
  */
 public class ScenarioPanel extends JPanel implements ActionListener{
 
-	private SimCityGUI simCityGui; 
+	private SimCityGUI simCityGui;
+	public TracePanel tracePanel;
 	
 	// Reference to the sim world clock
 	private SimWorldClock clock;
@@ -904,6 +905,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest4.getTimeCard());
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
+		
+		tracePanel.print("Starting 1 Walking Person Scenario", null);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// THREE PERSON SCENARIO////////////////////////////
@@ -1216,9 +1219,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
         
         // Second quadrant locations
-        Bank bank2 = new Bank("Bank 2", new TimeCard(), (BankHostRole)roles.get(5), 
+        Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
                         new Position(660, 170), LocationType.Bank);
-        Market market2 = new Market("Market 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
+        Market market2 = new Market("Pokemart 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
                         new Position(460, 170), LocationType.Market);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
@@ -1605,6 +1608,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest4.getTimeCard());
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
+		
+		tracePanel.print("Starting 3 Person Scenario", null);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////ROBBER SCENARIO///////////////////////////////////
@@ -1633,6 +1638,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			robber.msgAddEvent(robBank);
 		robber.gui.setPresent(true);
 		robber.startThread();
+		
+		tracePanel.print("Starting Robber Scenario", null);
 }
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////WEEKEND SCENARIO//////////////////////////////////
@@ -1647,5 +1654,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		for(PersonAgent p : people){
 			p.msgAddEvent(goToCasino);
 		}
+		tracePanel.print("Starting Weekend Scenario", null);
 	}
 }

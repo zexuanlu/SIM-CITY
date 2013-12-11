@@ -188,6 +188,10 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 		}
 	}
 	
+	public utilities.Gui getGui(){
+		return null; 
+
+	}
 	private void getMoneyFromBank(){
 		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
 		try{

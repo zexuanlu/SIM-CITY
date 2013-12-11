@@ -559,4 +559,10 @@ public class BankTellerRole extends Role implements BankTeller {
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return this.gui; 
+	}
+	
+	
 }

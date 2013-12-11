@@ -191,14 +191,19 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 		return roleName;
 	}
 	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 
 	private void getMoneyFromBank(){
-		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
-		try{
-			getMoney.acquire();
-		}
-		catch(InterruptedException ie){
-			ie.printStackTrace();
+		if(bank != null){
+			bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
+			try{
+				getMoney.acquire();
+			}
+			catch(InterruptedException ie){
+				ie.printStackTrace();
+			}
 		}
 	}
 	

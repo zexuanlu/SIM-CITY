@@ -2,11 +2,10 @@ package person;
 
 import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
-
+import restaurant5.gui.Restaurant5FoodGui; 
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
-
 import restaurant5.*; 
 import restaurant5.gui.*; 
 import person.Location.LocationType;
@@ -144,6 +143,7 @@ public class PersonAgent extends Agent implements Person{
 		this.hunger = 0;
 		currentTime = 7;
 		this.astar = astar;
+		PersonAgent.tracePanel.print("Initializing", this);
 	}
 	public PersonAgent () {
 		super();
@@ -320,6 +320,10 @@ public class PersonAgent extends Agent implements Person{
 		for(MyRole role : roles){
 			if(role.role == r){
 				role.setActive(false);
+				utilities.Gui ug = role.role.getGui();
+				if (ug != null){
+					ug.setPresent(false);
+				}
 			}
 		}
 		if(!testMode){
@@ -347,6 +351,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
+				role.role.getGui().setPresent(false);
 				role.setActive(false);
 			}
 		}
@@ -391,7 +396,6 @@ public class PersonAgent extends Agent implements Person{
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
 					if(atHome){
-						Do("In the loop!");
 						for(MyRole r : roles){
 							if(r.role instanceof HomeOwnerRole){
 								((HomeOwnerRole)r.role).homeGui.DoGoToFrontDoor();
@@ -447,6 +451,7 @@ public class PersonAgent extends Agent implements Person{
 		if(e.location.type == LocationType.Restaurant1){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Customer")){
 						((Restaurant1CustomerRole)mr.role).customerGui.setPresent(true);
@@ -477,6 +482,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Restaurant Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Host")){          
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -506,6 +512,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.WaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Waiter")){  
 						((Restaurant1WaiterRole)mr.role).waiterGui.setPresent(true);
@@ -540,6 +547,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.SDWaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 SDWaiter")){
 						((Restaurant1SDWaiterRole)mr.role).waiterGui.isPresent = true;
@@ -574,6 +582,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CookEvent){
+				PersonAgent.tracePanel.print("Restaurant Cook at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Cook")){                                                       
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -605,6 +614,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Restaurant Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Cashier")){                                                       
 						rest.getTimeCard().msgBackToWork(this, (Restaurant1CashierRole)mr.role);
@@ -637,6 +647,7 @@ public class PersonAgent extends Agent implements Person{
 		else if(e.location.type == LocationType.Restaurant2){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 Customer")){
 						((Restaurant2CustomerRole)mr.role).customerGui.setPresent(true);
@@ -663,6 +674,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Restaurant Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 Host")){          
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -692,6 +704,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.WaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 Waiter")){  
 						((Restaurant2WaiterRole)mr.role).waiterGui.setPresent(true);
@@ -726,6 +739,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.SDWaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 SDWaiter")){
 						((Restaurant2SDWaiterRole)mr.role).waiterGui.setPresent(true);
@@ -760,6 +774,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CookEvent){
+				PersonAgent.tracePanel.print("Restaurant Cook at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 Cook")){                                                       
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -791,6 +806,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Restaurant Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 2 Cashier")){                                                       
 						rest.getTimeCard().msgBackToWork(this, (Restaurant2CashierRole)mr.role);
@@ -823,6 +839,7 @@ public class PersonAgent extends Agent implements Person{
 		else if(e.location.type == LocationType.Restaurant3){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 3 Customer")){
 						((Restaurant3CustomerRole)mr.role).custGui.setPresent(true);
@@ -848,6 +865,7 @@ public class PersonAgent extends Agent implements Person{
 				toDo.remove(e);
 			}
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Restaurant Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 3 Host")){          
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -876,6 +894,7 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 			else if(e.type == EventType.WaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 3 Waiter")){  
 						((Restaurant3WaiterRole)mr.role).waiterGui.setPresent(true);
@@ -909,6 +928,7 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 			else if(e.type == EventType.SDWaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 3 SDWaiter")){
 
@@ -944,6 +964,7 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 			else if(e.type == EventType.CookEvent){
+				PersonAgent.tracePanel.print("Restaurant Cook at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 3 Cook")){                                                       
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -974,6 +995,7 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Restaurant Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 3 Cashier")){                                                       
 						rest.getTimeCard().msgBackToWork(this, (Restaurant3CashierRole)mr.role);
@@ -1006,6 +1028,7 @@ public class PersonAgent extends Agent implements Person{
 		else if(e.location.type == LocationType.Restaurant4){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 4 Customer")){
 						((Restaurant4CustomerRole)mr.role).customerGui.setPresent(true);
@@ -1034,6 +1057,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Restaurant Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 4 Host")){          
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -1063,6 +1087,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.WaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					Do("Checking Role " + mr.type);
 					if(mr.type.equals("Rest 4 Waiter")){  
@@ -1099,6 +1124,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.SDWaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					Do("Checking Role " + mr.type);
 					if(mr.type.equals("Rest 4 SDWaiter")){
@@ -1135,6 +1161,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CookEvent){
+				PersonAgent.tracePanel.print("Restaurant Cook at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 4 Cook")){                                                       
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -1166,6 +1193,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Restaurant Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 4 Cashier")){                                                       
 						rest.getTimeCard().msgBackToWork(this, (Restaurant4CashierRole)mr.role);
@@ -1194,10 +1222,12 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 		}
+
 		//////////////////////////REST 5 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant5){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 Customer")){
 						((Restaurant5CustomerAgent)mr.role).customerGui.setPresent(true);
@@ -1210,7 +1240,10 @@ public class PersonAgent extends Agent implements Person{
 				}
 				print("Customer not found");
 				Restaurant5CustomerAgent cRole = new Restaurant5CustomerAgent(this.name, this);
+				Restaurant5FoodGui fgui = new Restaurant5FoodGui();
+				cRole.setFoodGui(fgui);
 				MyRole newRole = new MyRole(cRole, "Rest 5 Customer");
+
 				newRole.setActive(true);
 				roles.add(newRole);
 				Restaurant5CustomerGui cg = new Restaurant5CustomerGui(cRole);
@@ -1226,6 +1259,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Restaurant Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 Host")){          
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -1255,6 +1289,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.WaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 Waiter")){  
 						((Restaurant5WaiterAgent)mr.role).waiterGui.isPresent = true;
@@ -1289,9 +1324,22 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.SDWaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 SDWaiter")){
-
+						((Restaurant5SDWaiterAgent)mr.role).waiterGui.isPresent = true;
+						rest.getTimeCard().msgBackToWork(this, mr.role); 
+						try{
+							wait.acquire();
+						}
+						catch(InterruptedException ie){
+							ie.printStackTrace();
+						}
+						mr.setActive(true);
+						gui.setPresent(false);
+						return;
+					}
+					else {
 						((Restaurant5SDWaiterAgent)mr.role).waiterGui.isPresent = true;
 						rest.getTimeCard().msgBackToWork(this, mr.role);
 						try{
@@ -1323,7 +1371,9 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 
+
 			else if(e.type == EventType.CookEvent){
+				PersonAgent.tracePanel.print("Restaurant Cook at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 Cook")){                                                       
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -1355,6 +1405,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Restaurant Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 5 Cashier")){                                                       
 						rest.getTimeCard().msgBackToWork(this, (Restaurant5Cashier)mr.role);
@@ -1387,6 +1438,7 @@ public class PersonAgent extends Agent implements Person{
 		if(e.location.type == LocationType.Restaurant6){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 6 Customer")){
 						((Restaurant6CustomerRole)mr.role).customerGui.setPresent(true);
@@ -1415,6 +1467,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Restaurant Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 6 Host")){          
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -1443,6 +1496,7 @@ public class PersonAgent extends Agent implements Person{
 			}		
 
 			else if(e.type == EventType.WaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 6 Waiter")){  
 						((Restaurant6WaiterRole)mr.role).waiterGui.isPresent = true;
@@ -1476,6 +1530,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.SDWaiterEvent){
+				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 6 SDWaiter")){
 
@@ -1510,6 +1565,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CookEvent){
+				PersonAgent.tracePanel.print("Restaurant Cook at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 6 Cook")){                                                       
 						rest.getTimeCard().msgBackToWork(this, mr.role);
@@ -1539,6 +1595,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Restaurant Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 6 Cashier")){                                                       
 						rest.getTimeCard().msgBackToWork(this, (Restaurant6CashierRole)mr.role);
@@ -1572,6 +1629,7 @@ public class PersonAgent extends Agent implements Person{
 		if(e.location.type == LocationType.Bank){ //if our event happens at a bank
 			Bank bank = (Bank)e.location;
 			if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
+				PersonAgent.tracePanel.print("Bank Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
@@ -1611,6 +1669,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.TellerEvent){
+				PersonAgent.tracePanel.print("Bank Teller at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Teller")){ 
 						gui.setPresent(false);
@@ -1649,9 +1708,9 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Bank Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Host")){
-						print("Messaging the Time Card!");
 						bank.getTimeCard().msgBackToWork(this, mr.role); 
 						try{
 							wait.acquire();
@@ -1685,6 +1744,7 @@ public class PersonAgent extends Agent implements Person{
 		else if(e.location.type == LocationType.Bank2){ //if our event happens at a bank
 			Bank bank = (Bank)e.location;
 			if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
+				PersonAgent.tracePanel.print("Bank Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
@@ -1719,6 +1779,7 @@ public class PersonAgent extends Agent implements Person{
 
 			else if(e.type == EventType.TellerEvent){
 				for(MyRole mr : roles){
+					PersonAgent.tracePanel.print("Bank Teller at " + e.location.getName(), this);
 					if(mr.type.equals("Bank Teller")){ 
 						gui.setPresent(false);
 						bank.getTimeCard().msgBackToWork(this, mr.role);
@@ -1754,6 +1815,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.HostEvent){
+				PersonAgent.tracePanel.print("Bank Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Host")){
 						print("Messaging the Time Card!");
@@ -1792,6 +1854,7 @@ public class PersonAgent extends Agent implements Person{
 			Market market = (Market)e.location;
 
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Market Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Market Customer")){
 						((MarketCustomerRole)mr.role).msgHello(wallet.getOnHand(), shoppingBag);
@@ -1819,6 +1882,7 @@ public class PersonAgent extends Agent implements Person{
 
 			else if(e.type == EventType.EmployeeEvent){
 				for(MyRole mr : roles){
+					PersonAgent.tracePanel.print("Market Employee at " + e.location.getName(), this);
 					if(mr.type.equals("Market Employee")){
 						market.getTimeCard().msgBackToWork(this, mr.role);
 						try{
@@ -1853,6 +1917,7 @@ public class PersonAgent extends Agent implements Person{
 
 			else if(e.type == EventType.CashierEvent){
 				for(MyRole mr : roles){
+					PersonAgent.tracePanel.print("Market Cashier at " + e.location.getName(), this);
 					if(mr.type.equals("Market Cashier")){
 						market.getTimeCard().msgBackToWork(this, mr.role);
 						try{
@@ -1887,6 +1952,7 @@ public class PersonAgent extends Agent implements Person{
 			Market market = (Market)e.location;
 
 			if(e.type == EventType.CustomerEvent){
+				PersonAgent.tracePanel.print("Market Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Market Customer")){
 						((MarketCustomerRole)mr.role).msgHello(wallet.getOnHand(), shoppingBag);
@@ -1913,6 +1979,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.EmployeeEvent){
+				PersonAgent.tracePanel.print("Market Employee at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Market Employee")){
 						market.getTimeCard().msgBackToWork(this, mr.role);
@@ -1947,6 +2014,7 @@ public class PersonAgent extends Agent implements Person{
 			}
 
 			else if(e.type == EventType.CashierEvent){
+				PersonAgent.tracePanel.print("Market Cashier at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Market Cashier")){
 						market.getTimeCard().msgBackToWork(this, mr.role);
@@ -1977,6 +2045,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		//////////////////////// CASINO //////////////////////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Casino){
+			PersonAgent.tracePanel.print("Casino Player at " + e.location.getName(), this);
 			gui.setPresent(false);
 			toDo.remove(e);
 			atCasino = true;
@@ -1985,7 +2054,10 @@ public class PersonAgent extends Agent implements Person{
 		/////////////////////// HOME EVENTS /////////////////////////////////////////////////////////////////
 
 		else if(e.location.type == LocationType.Home){
-			atHome = true;
+			if(!atHome){
+				PersonAgent.tracePanel.print("At Home", this);
+				atHome = true;
+			}
 			if(e.type == EventType.HomeOwnerEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Home Owner")){
@@ -2012,7 +2084,10 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		else if(e.location.type == LocationType.Apartment){
-			atHome = true;
+			if(!atHome){
+				PersonAgent.tracePanel.print("At Apartment", this);
+				atHome = true;
+			}
 			if(e.type == EventType.AptTenantEvent){
 				for(MyRole mr : roles){
 					if(mr.type.equals("Apt Tenant")){
@@ -2110,7 +2185,7 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void goToLocation(Location loc){
-
+		PersonAgent.tracePanel.print("Going to " + loc.getName(), this);
 		Do(loc.position.toString() + ":" + loc.getName());
 		if (!walking) {
 			if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
@@ -2122,6 +2197,7 @@ public class PersonAgent extends Agent implements Person{
 				roles.add(newRole);
 				if(!testMode){
 					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
+					pg.setPresent(true);
 					print("gui xpos is " + gui.xPos + " " + gui.yPos);
 					((PassengerRole)newRole.role).setGui(pg);
 					cap.addGui(pg);

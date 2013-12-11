@@ -285,5 +285,9 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		this.marketCashier = r;
 	}
 
+	public utilities.Gui getGui(){
+		return cookGui; 
+	}
+	
 }
 

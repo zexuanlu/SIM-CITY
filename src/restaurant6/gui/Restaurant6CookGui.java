@@ -188,4 +188,8 @@ public class Restaurant6CookGui implements Gui {
     	xDestination = homeX;
     	yDestination = homeY;
     }
+    
+    public void setPresent(boolean b){
+    	isPresent = b; 
+    }
 }

@@ -1,12 +1,13 @@
 package gui.main;
 
 import gui.panels.*;
+import gui.subpanels.TracePanel;
 import utilities.TrafficLightAgent; 
 
 import javax.swing.*;
+
 import restaurant5.*; 
 import restaurant5.gui.*;
-
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketTruckGui; 
 import person.Apartment;
@@ -116,6 +117,7 @@ public class SimCityGUI extends JFrame {
         public Restaurant5Cashier cashier5 = new Restaurant5Cashier("Cashier 5", initPerson);
         public Restaurant5CookAgent cook5 = new Restaurant5CookAgent("Cook 5", initPerson); 
         public Restaurant5WaiterAgent waiter5 = new Restaurant5WaiterAgent("Waiter 5", initPerson);
+        public Restaurant5SDWaiterAgent sdwaiter5 = new Restaurant5SDWaiterAgent("Waiter 5SD", initPerson);
         
         /*
          * Role gui's must be initialized in SimCityGui with the role as happens below
@@ -128,6 +130,7 @@ public class SimCityGUI extends JFrame {
         public MarketEmployeeGui meg = new MarketEmployeeGui(marketemployeerole);
      
         public Restaurant5WaiterGui wgui5 = new Restaurant5WaiterGui(waiter5);
+        public Restaurant5WaiterGui sdwaiter5gui = new Restaurant5WaiterGui(sdwaiter5);
         public Restaurant5CookGui cgui5 = new Restaurant5CookGui(cook5);
         
         
@@ -193,6 +196,7 @@ public class SimCityGUI extends JFrame {
         public BusStopGui bs7gui = new BusStopGui(busstop7, 440, 420);
         public BusStopGui bs8gui = new BusStopGui(busstop8, 330, 420);        
         public MarketTruckAgent truck;
+		public TracePanel tracePanel;
 
         public SimCityGUI() {
                 
@@ -296,6 +300,8 @@ public class SimCityGUI extends JFrame {
                         new Position(160, 280), 24, LocationType.Apartment);
                 Apartment apt21 = new Apartment("Apartment 21", aptTenants.get(21), 
                         new Position(160, 280), 25, LocationType.Apartment);
+                Apartment apt22 = new Apartment("Apartment 22", aptTenants.get(22), 
+                        new Position(160, 280), 26, LocationType.Apartment);
                 
                 
                 
@@ -480,6 +486,10 @@ public class SimCityGUI extends JFrame {
                 waiter5.setGui(wgui5);
                 cityAnimPanel.rest5Panel.addGui(wgui5);
                 
+                sdwaiter5gui.isPresent = false; 
+                sdwaiter5.setGui(sdwaiter5gui);
+                cityAnimPanel.rest5Panel.addGui(sdwaiter5gui);
+                
                 cgui5.isPresent = false; 
                 cook5.setGui(cgui5);
                 cityAnimPanel.rest5Panel.addGui(cgui5);
@@ -586,7 +596,7 @@ public class SimCityGUI extends JFrame {
 //                for (int i=1; i<6; i++){
                 int x = 40; 
                 int y = 280; 
-                for (int i=0; i<26; i++){
+                for (int i=0; i<27; i++){
                         aStarTraversal = new AStarTraversal(grid);
                 		aStarTraversal.originalgrid = origgrid; 
                         PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
@@ -608,7 +618,7 @@ public class SimCityGUI extends JFrame {
                         p.setAnimationPanel(cityAnimPanel);
                 }
                 
-                for (int i=0;i<26;i++){	
+                for (int i=0;i<27;i++){	
                 	if (i != 2  && i!=4 && i != 10 && i!= 20 &&  i != 25){
                         people.get(i).msgAddMoney(-200);
                 	}
@@ -712,6 +722,10 @@ public class SimCityGUI extends JFrame {
                 people.get(25).addRole(aptTenants.get(21), "Apt Tenant");
                 people.get(25).roles.get(1).role.switchPerson(people.get(25));
                 
+                people.get(26).addRole(sdwaiter5, "Rest 5 SDWaiter");
+                people.get(26).roles.get(0).role.switchPerson(people.get(26));
+                people.get(26).addRole(aptTenants.get(22), "Apt Tenant");
+                people.get(26).roles.get(1).role.switchPerson(people.get(26));
 
                 for(int i = 18; i < 26; i++){
                         people.get(i).wallet.setOnHand(0.00);
@@ -765,6 +779,8 @@ public class SimCityGUI extends JFrame {
                 SimEvent res5cashierGoToRestaurant = new SimEvent(rest5, 8, EventType.CashierEvent);
                 SimEvent res5cashierGoToRestaurant2 = new SimEvent(rest5, 14, EventType.CashierEvent);
                 SimEvent res5waiterGoToRestaurant = new SimEvent(rest5, 8, EventType.WaiterEvent);
+                
+                SimEvent res5SDwaiterGoToRestaurant = new SimEvent(rest5, 8, EventType.SDWaiterEvent);
   
 
 
@@ -784,11 +800,22 @@ public class SimCityGUI extends JFrame {
                 waiter1.setCashier(cashier1);
                 cook1.setMarketCashier(marketcashierrole);
                 cook1.setCashier(cashier1);
+                cashier1.bank = bankdatabase; 
                 
                 waiter5.setHost(host5);
                 waiter5.setCashier(cashier5);
                 waiter5.setCook(cook5);
+                
+                sdwaiter5.setHost(host5);
+                sdwaiter5.setCashier(cashier5);
+                sdwaiter5.setCook(cook5);
+                sdwaiter5.setStand(revolvingstand5);
+                
+                
+        
+                
                 host5.addWaiter(waiter5);
+                host5.addWaiter(sdwaiter5);
                 cook5.setMarketCashier(marketcashierrole);
                 cook5.setRevolvingStand(revolvingstand5);
     
@@ -833,6 +860,7 @@ public class SimCityGUI extends JFrame {
                 people.get(23).toDo.add(res5waiterGoToRestaurant);
                 people.get(24).toDo.add(res5cashierGoToRestaurant);
                 people.get(25).toDo.add(res5cookGoToRestaurant);
+                people.get(26).toDo.add(res5SDwaiterGoToRestaurant);
                 
                 
                 truck.setCashier(marketcashierrole);
@@ -844,7 +872,8 @@ public class SimCityGUI extends JFrame {
                 truck.setRestaurant(rest5, 5);
                 truck.setRestaurant(rest6, 6);
                 /*Create the SimWorldClock with the starting time and the list of people*/
-                simclock = new SimWorldClock(8,people, citymap);
+                simclock = new SimWorldClock(8,people, citymap, 6000);
+                simclock.tracePanel = tracePanel;
                 simclock.timeCards.add(bank.getTimeCard());
                 simclock.timeCards.add(market.getTimeCard());
                 simclock.timeCards.add(rest1.getTimeCard());
@@ -852,7 +881,7 @@ public class SimCityGUI extends JFrame {
 
                 simclock.timeCards.add(rest3.getTimeCard());
                 for (PersonAgent p: people){
-                        p.setcitygui(this);
+                     p.setcitygui(this);
                      p.startThread();
                 }
                 

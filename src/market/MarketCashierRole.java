@@ -387,4 +387,8 @@ public class MarketCashierRole extends Role implements MarketCashier{
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }

@@ -42,7 +42,7 @@ public class Restaurant5WaiterGui implements Gui {
     boolean showIcon = false; 
     boolean leaveIcon = false; 
     
-    private int standX = 430; 
+    private int standX = 380; 
     private int standY = 20; 
     
     
@@ -85,7 +85,7 @@ public class Restaurant5WaiterGui implements Gui {
         if (xPos == waitingX && yPos == waitingY){
         	agent.msgatOrigin();
         }
-        if (xPos == 430 && yPos == 80){
+        if (xPos == 380 && yPos == 80){
         	agent.msgatCook();
         }
         if (xPos == -20 && yPos == 200){
@@ -188,7 +188,7 @@ public class Restaurant5WaiterGui implements Gui {
     }
     
     public void DoGoToCook(){
-    	xDestination = 430;
+    	xDestination = 380;
     	yDestination = 80; 
     }
     
@@ -203,5 +203,9 @@ public class Restaurant5WaiterGui implements Gui {
 
     public int getYPos() {
         return yPos;
+    }
+    
+    public void setPresent(boolean b){
+    	isPresent = b; 
     }
 }

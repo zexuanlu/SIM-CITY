@@ -1,6 +1,7 @@
 package agent;
 
 import java.io.*;
+import utilities.Gui; 
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -99,4 +100,8 @@ public abstract class Role {
     }
     
     public abstract String getRoleName();
+
+
+	public abstract Gui getGui();
+	
 }

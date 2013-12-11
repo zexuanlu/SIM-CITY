@@ -26,7 +26,7 @@ public class Restaurant1RevolvingStand extends Object{
 		System.out.println("Item put in stand is "+count);
 		if(count == 1) {
 			System.out.println("\tNot Empty, notify");
-			notify();                               // Not empty, notify a 
+			//notify();                               // Not empty, notify a 
 			// waiting consumer
 		}
 	}

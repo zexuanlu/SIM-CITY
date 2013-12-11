@@ -439,6 +439,7 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		this.gui = gui;
 	}
 
+
 	public static class MyCustomer {
 		Restaurant4Customer c;
 		int table;

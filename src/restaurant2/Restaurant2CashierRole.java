@@ -346,7 +346,10 @@ public class Restaurant2CashierRole extends Role implements Restaurant2Cashier{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 	private void getMoneyFromBank(){
 		bank.msgWithdrawMoney(this, (1000.00-wallet), accountNumber);
 		try{
