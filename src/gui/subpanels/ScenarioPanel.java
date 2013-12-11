@@ -1928,9 +1928,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
 
-		for (PersonAgent p : people) {
-			p.startThread();
-		}
+//		for (PersonAgent p : people) {
+//			p.startThread();
+//		}
+		
+		people.get(0).startThread();
+		people.get(2).startThread();
 		
 		// Starts the thread of each timecard
 		bank.getTimeCard().startThread();
