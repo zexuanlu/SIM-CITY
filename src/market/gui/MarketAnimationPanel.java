@@ -19,11 +19,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
 
     public List<Gui> guis = new ArrayList<Gui>();
     
-    public ImageIcon img = new ImageIcon(this.getClass().getResource("shelf.png"));
-    public Image image = img.getImage();
+    //public ImageIcon img = new ImageIcon(this.getClass().getResource("shelf.png"));
+    //public Image image = img.getImage();
     
-    public ImageIcon img1 = new ImageIcon(this.getClass().getResource("cashier.png"));
-    public Image image1 = img1.getImage();
+    //public ImageIcon img1 = new ImageIcon(this.getClass().getResource("cashier.png"));
+    //public Image image1 = img1.getImage();
 
     public MarketAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -52,7 +52,7 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
 //        g2.setColor(Color.BLUE);
 //        g2.fillRect(100, 160, 80, 80);
         
-        g2.drawImage(image1, 100, 160, 80, 80, null);
+        //g2.drawImage(image1, 100, 160, 80, 80, null);
         
         g2.setColor(Color.green);
         g2.fillRect(250, 120, 240, 20);
@@ -60,8 +60,8 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(Color.green);
         g2.fillRect(250, 260, 240, 20);
         
-        g2.drawImage(image, 250, 120, 240, 20, null);
-        g2.drawImage(image, 250, 260, 240, 20, null);
+        //g2.drawImage(image, 250, 120, 240, 20, null);
+        //g2.drawImage(image, 250, 260, 240, 20, null);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {

@@ -94,6 +94,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgAccountMade(int accountNumber){
 		log.add(new LoggedEvent("Received msgAccountMade from BankTeller"));
+		((PersonAgent)person).accountNumber = accountNumber;
 		this.accountNumber = accountNumber;
 		this.s = state.atTeller;
 		stateChanged();
@@ -226,7 +227,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			leaveBank();
 			return true;
 		}
-		//If you have a destination to go to
+		//If you have a destination to go to that isn't a teller
 		if(destination != null && !destination.contains("Teller")){
 			goToLocation(destination);
 			destination = null;

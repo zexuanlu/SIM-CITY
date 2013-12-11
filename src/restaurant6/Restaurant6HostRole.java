@@ -138,6 +138,7 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
         
         // Messages
         // Message from the timecard that it's time to go off work
+
         public void msgEndOfDay(Restaurant6HostRole h, double money) {
         	offWork = true;
         	restPay = money;
@@ -146,6 +147,8 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
         	stateChanged();
         }
         
+        
+//        
         // Called by CustomerAgent to indicate hungry 
         public void msgIWantFood(Restaurant6CustomerRole cust) {
             arrivedCustomers.add(new MyCustomer(cust, cust.getCustomerName()));

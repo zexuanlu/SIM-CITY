@@ -10,4 +10,6 @@ public interface Restaurant1Cook extends RestaurantCook{
 	public abstract void msghereisorder(Restaurant1Waiter w, String choice, int table);
 	public abstract void msgHereisYourFood(MarketTruck t, List<Food> fList);
 	public abstract void msgEmptyStock();
+	public abstract void msgGoOffWork(); 
+
 }

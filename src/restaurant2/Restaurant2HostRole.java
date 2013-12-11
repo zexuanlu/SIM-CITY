@@ -22,7 +22,8 @@ import person.interfaces.Person;
 public class Restaurant2HostRole extends Role implements RestaurantHost {
 	static final int NTABLES = 4;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
-	//with List semantics.
+	//with List semantics
+	public boolean offWork = false; 
 	public List<MyCustomer> waitingCustomers = Collections.synchronizedList(new ArrayList<MyCustomer>());
 	public List<MyWaiter> waiters = Collections.synchronizedList(new ArrayList<MyWaiter>());
 	public Collection<Table> tables;
@@ -68,10 +69,11 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 	}
 	// Messages
 	public void msgEndOfDay(){
-		for(MyWaiter w : waiters){
-			//w.goOffWork
-		}
+		offWork = true; 
+		stateChanged(); 
 	}
+	
+	
 	public void msgAvailable(Restaurant2Waiter w){
 		for(int i=0; i < waiters.size(); i++){
 			MyWaiter mw = waiters.get(i);
@@ -143,6 +145,7 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
+		
 		synchronized(waiters){
 			for(MyWaiter w : waiters)
 			{
@@ -171,6 +174,13 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 				}
 			}
 		}
+		
+		if (offWork){
+			if (waitingCustomers.isEmpty()){
+				goOffWork();
+				return true; 
+			}
+		}
 
 		return false;
 		//we have tried all our rules and found
@@ -179,6 +189,14 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 	}
 
 	// Actions
+	
+	private void goOffWork(){
+		offWork = false; 
+		for(MyWaiter mw: waiters){
+			mw.waiter.msgGoOffWork();
+		}
+		this.person.msgGoOffWork(this, 0);
+	}
 
 	private void notifyOfWaitTime(){
 		for(MyCustomer mc : waitingCustomers)

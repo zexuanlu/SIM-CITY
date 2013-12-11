@@ -15,6 +15,7 @@ import utilities.restaurant.RestaurantHost;
 
 public class Restaurant3HostRole extends Role implements RestaurantHost{
 	//MEMBER DATA
+	public boolean offWork; 
 	public static final int NTABLES = 3;
 	private String name;
 	private int nextWaiter = 0;
@@ -72,6 +73,12 @@ public class Restaurant3HostRole extends Role implements RestaurantHost{
 		return roleName;
 	}
 	
+	public void msgEndOfDay(){
+		print("Restaurant3hostrole end of day");
+		offWork = true; 
+		stateChanged();
+	}
+	
 	public void addWaiter(Restaurant3Waiter w){
 		waiters.add(w);
 		//stateChanged(); FIXFIXFIX THIS IS A RAUNCHY HACK
@@ -111,10 +118,25 @@ public class Restaurant3HostRole extends Role implements RestaurantHost{
 				}
 			}
 		}
+		
+		
+		if (offWork && waitingCustomers.isEmpty()){
+			GoOffWork(); 
+			return true; 
+		}
 		return false;
 	}
 	
 	//ACTIONS **************************************
+	private void GoOffWork(){
+		offWork = false; 
+		for (Restaurant3Waiter mw: waiters){
+			mw.msgGoOffWork(); 
+		}
+		this.person.msgGoOffWork(this, 0);
+	}
+	
+	
 	public void SeatCustomer(Restaurant3Customer c, Table table, Restaurant3Waiter w){
 		print(name + ": requesting waiter " + w.getName() + " to seat customer " + c.getName());
 		w.msgSeatCustomerAtTable(c, table.tableNum);

@@ -285,8 +285,22 @@ public class Restaurant3WaiterRole extends Restaurant3AbstractWaiter implements 
 			}
 		}
 		
+		if (offWork){
+			goOffWork();
+			return true; 
+		}
+		
 		return false;
 	}
+	
+	private void goOffWork(){
+		offWork = false; 
+		cashier.msgGoOffWork(); 
+		cook.msgGoOffWork();
+		
+		this.person.msgGoOffWork(this,0);
+	}
+	
 	
 	//ACTIONS ***************************************
 	public void seatCustomer(MyCustomer c){

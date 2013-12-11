@@ -108,6 +108,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public Wallet wallet;
 	private int currentTime; 
+	public int accountNumber = -1;
 
 	public Position currentLocation; 
 	public Position dest = new Position(50, 50);
@@ -237,12 +238,15 @@ public class PersonAgent extends Agent implements Person{
 		print("Back home");
 	}
 	public void msgGoHome(){
+		Do("Going home from casino to a"+homeType);
 		atCasino = false;
 		SimEvent goHome = null;
-		if(homeType == HomeType.Home){
+		if(homeNumber <= 5){
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
 		}
-		else if(homeType == HomeType.Apartment){
+		else{
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 		}
 		toDo.add(goHome);
@@ -333,6 +337,7 @@ public class PersonAgent extends Agent implements Person{
 				if (ug != null){
 					ug.setPresent(false);
 				}
+				break;
 			}
 		}
 		if(!testMode){
@@ -353,17 +358,20 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
-		print("Received the message go off work");
+		print("Received the message go off work from " + r.toString());
 		wallet.setOnHand(pay);
 		if(!testMode){
 			gui.isPresent = true;
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
-				if(r.getGui() != null){
-					role.role.getGui().setPresent(false);
-					role.setActive(false);
+				utilities.Gui ug = role.role.getGui(); 
+				if (ug!=null){
+					print ("I found the gui in msggooffwork");
+					ug.setPresent(false);
 				}
+
+				role.setActive(false);
 			}
 		}
 		stateChanged();
@@ -450,8 +458,7 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					System.err.println("THIS IS THE EVENT AND IT IS "+nextEvent.location.isClosed);
-					if(!nextEvent.location.isClosed()){
+					if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
 						goToAndDoEvent(nextEvent);
@@ -1672,8 +1679,7 @@ public class PersonAgent extends Agent implements Person{
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 100000.00);
 						mr.setActive(true);
 						gui.setPresent(false);
-						((BankCustomerRole)mr.role).gui.setPresent(true);
-						toDo.remove(e);
+						((BankCustomerRole)mr.role).gui.setPresent(true);						toDo.remove(e);
 						return;
 					}
 				}
@@ -1681,6 +1687,8 @@ public class PersonAgent extends Agent implements Person{
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
 				bcr.bh = bank.getHost();
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
@@ -1778,11 +1786,13 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
 				PersonAgent.tracePanel.print("Bank Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
-					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
+					if(mr.type.equals("Bank Customer 2")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
+						else if(e.directive.equals("robBank"))
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 10000.00);
 						mr.setActive(true);
 						gui.setPresent(false);
 						((BankCustomerRole)mr.role).gui.setPresent(true);
@@ -1792,17 +1802,21 @@ public class PersonAgent extends Agent implements Person{
 				}
 				System.err.println("Creating new role");
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
-				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
+				MyRole newRole = new MyRole(bcr, "Bank Customer 2"); //make a new MyRole
 				bcr.bh = bank.getHost();
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
-				cap.bankPanel.addGui(bcg);
+				cap.bankPanel2.addGui(bcg);
 				if(e.directive.equals("deposit"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
+				else if(e.directive.equals("robBank"))
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10000.00);
 				gui.setPresent(false);
 				((BankCustomerRole)newRole.role).gui.setPresent(true);
 				toDo.remove(e); //remove the event from the queue
@@ -1986,7 +2000,7 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){
 				PersonAgent.tracePanel.print("Market Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
-					if(mr.type.equals("Market Customer")){
+					if(mr.type.equals("Market Customer 2")){
 						((MarketCustomerRole)mr.role).msgHello(wallet.getOnHand(), shoppingBag);
 						mr.setActive(true);
 						gui.setPresent(true);
@@ -1996,13 +2010,13 @@ public class PersonAgent extends Agent implements Person{
 					}
 				}
 				MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
-				MyRole newRole = new MyRole(mcr, "Market Customer");
+				MyRole newRole = new MyRole(mcr, "Market Customer 2");
 				mcr.setCashier(market.getCashier());
 				newRole.setActive(true);
 				roles.add(newRole);
 				MarketCustomerGui mcg = new MarketCustomerGui((MarketCustomerRole)newRole.role);
 				((MarketCustomerRole)newRole.role).setGui(mcg);
-				cap.marketPanel.addGui(mcg);
+				cap.marketPanel2.addGui(mcg);
 				mcg.setPresent(true);
 				((MarketCustomerRole)newRole.role).msgHello(wallet.getOnHand(), shoppingBag);
 				gui.setPresent(false);
@@ -2078,6 +2092,7 @@ public class PersonAgent extends Agent implements Person{
 		//////////////////////// CASINO //////////////////////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Casino){
 			PersonAgent.tracePanel.print("Casino Player at " + e.location.getName(), this);
+			((Casino)e.location).startTimer();
 			gui.setPresent(false);
 			toDo.remove(e);
 			atCasino = true;

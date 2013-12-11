@@ -38,8 +38,8 @@ public class Restaurant2WaiterGui implements Gui {
 
 	private boolean arrived = false;
 	private boolean isPresent = false;
-	private ImageIcon icon = new ImageIcon(this.getClass().getResource("worker.png"));
-	private Image image = icon.getImage();
+	//private ImageIcon icon = new ImageIcon(this.getClass().getResource("worker.png"));
+	//private Image image = icon.getImage();
 	private int skin; 
 	private String text = " "; 
 	
@@ -60,15 +60,15 @@ public class Restaurant2WaiterGui implements Gui {
 		if(path.equals("clear"))
 		{
 			path = "src/resources/white.jpg";
-			icon = new ImageIcon(path);
-			image = icon.getImage();
+			//icon = new ImageIcon(path);
+			//image = icon.getImage();
 		}
 		else
 		{
 			path = "src/resources/"+path+".jpg";
 			System.out.println(path);
-			icon = new ImageIcon(path);
-			image = icon.getImage();
+			//icon = new ImageIcon(path);
+			//image = icon.getImage();
 		}
 
 	}
@@ -119,7 +119,7 @@ public class Restaurant2WaiterGui implements Gui {
 		}
 		g.fillRect(xPos, yPos, 20, 20);
 		//g.drawString(text, xPos, yPos);	
-		g.drawImage(image, xPos, yPos, 20, 20, null);
+		//g.drawImage(image, xPos, yPos, 20, 20, null);
 		
 		
 		if(agent instanceof Restaurant2WaiterRole){

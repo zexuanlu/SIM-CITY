@@ -111,6 +111,12 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the truck when it is delivering food
+	 * 
+	 * @param truck the truck delivering the food
+	 * @param food the list of food
+	 */
 	public void msgHereisYourFood(MarketTruck truck, List<Food> food){
 		this.truck = truck;
 		for(Entry<String, MyFood> entry : cookTimes.entrySet()){
@@ -124,6 +130,11 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		stateChanged();
 	}
 
+	/**
+	 * Received from the cashier when he needs a bill to be checked
+	 * 
+	 * @param price the price of the bill
+	 */
 	public void msgCheckBill(double price){
 		checkcookOrders.add(price);
 		stateChanged();
@@ -132,7 +143,7 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		
+		//Sends the truck back to the market
 		if(sendTruckBack){
 			sendTruckBack();
 			return true;

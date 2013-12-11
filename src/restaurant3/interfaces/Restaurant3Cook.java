@@ -10,7 +10,7 @@ import utilities.restaurant.RestaurantCook;
 public interface Restaurant3Cook extends RestaurantCook {
 	//Messages from GUI
 	public void msgAtFrRelease();
-	
+	public void msgGoOffWork();
 	//Messages from waiter
 	public void msgNewOrder(Restaurant3Waiter w, int table, String choice);
 	

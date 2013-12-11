@@ -60,6 +60,14 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		stateChanged();
 	}
 	
+	/**
+	 * Received from Restaurant Cashier at the end of the day to 
+	 * deposit left over money
+	 * 
+	 * @param rc the Restaurant Cashier
+	 * @param money the amount to be deposited
+	 * @param accountNumber the account number of the account
+	 */
 	public void msgDepositMoney(RestaurantCashier rc, double money, int accountNumber){
 		requests.add(new Request(rc, "deposit", accounts.get(accountNumber), money));
 		log.add(new LoggedEvent("Received msgDepositMoney from RestaurantCashier"));
@@ -80,6 +88,14 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		stateChanged();
 	}
 	
+	/**
+	 * Received from a restaurant cashier who needs to withdraw money
+	 * at any time during the day
+	 * 
+	 * @param rc the restaurant cashier
+	 * @param money the amount to be withdrawn
+	 * @param accountNumber the account number of the account
+	 */
 	public void msgWithdrawMoney(RestaurantCashier rc, double money, int accountNumber){
 		requests.add(new Request(rc, "withdraw", accounts.get(accountNumber), money));
 		log.add(new LoggedEvent("Received msgWithdrawMoney from RestaurantCashier"));
@@ -154,7 +170,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		 * If the account has debt, half of the deposit goes to paying off the debt
 		 */
 		if(r.type.equals("deposit")){
-			if(r.bc == null && r.rc == r.a.cashier){
+			if(r.bc == null){
 				totalMoney += r.amount;
 				r.a.balance += r.amount;
 				if(r.rc != null)
@@ -189,7 +205,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		 * If they have less than the amount, withdraws everything
 		 */
 		if(r.type.equals("withdraw")){
-			if(r.bc == null && r.rc == r.a.cashier){
+			if(r.bc == null){
 				totalMoney -= r.amount;
 				r.a.balance -= r.amount;
 				if(r.rc != null)
@@ -326,6 +342,8 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		totalMoney += balance;
 	}
 
+	//Used to create restaurant accounts at program start
+	//After all, the restaurants are well established companies with accounts
 	public void addRestaurantAccount(RestaurantCashier cashier, double balance, int accountNumber){
 		accounts.put(accountNumber, new Account(cashier, balance, accountNumber));
 		totalMoney += balance;
