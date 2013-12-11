@@ -158,11 +158,11 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
-		if(TT){
-			TT = false;
-			foodlist.add(new Food("Steak", 10));
-			Orderfoodislow();
-		}
+//		if(TT){
+//			TT = false;
+//			foodlist.add(new Food("Steak", 10));
+//			Orderfoodislow();
+//		}
 		
 		if(opening){
 			Orderfoodislow();
@@ -307,7 +307,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 
 	public void TruckBack(){
 		truck.msgGoBack();
-		System.out.println("Trucking going back");
 		cashier.msgYouCanPayNow(marketCashier, foodlist);
 		sendTruckBack = false;
 	}
