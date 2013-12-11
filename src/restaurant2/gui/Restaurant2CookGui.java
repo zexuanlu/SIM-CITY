@@ -31,7 +31,7 @@ public class Restaurant2CookGui implements Gui {
     public static final int yGrillPos4 = 120;
     private boolean arrived;
     private boolean arrivedAtHome;
-    private boolean isPresent = false;
+    public boolean isPresent = false;
 	private String orderText = " "; 
 	private ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
 	private Image ck = img.getImage();

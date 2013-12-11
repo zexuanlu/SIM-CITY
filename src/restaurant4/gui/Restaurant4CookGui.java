@@ -17,7 +17,7 @@ import person.PersonAgent;
 public class Restaurant4CookGui implements Gui{
 
 	private Restaurant4CookRole agent = null;
-	private boolean isPresent = false;
+	public boolean isPresent = false;
 
 	private ArrayList<FoodGui> foods = new ArrayList<FoodGui>();
 
