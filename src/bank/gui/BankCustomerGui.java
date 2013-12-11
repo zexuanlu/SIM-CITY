@@ -27,7 +27,7 @@ public class BankCustomerGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	
-	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/bankCustomer.png"));
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/customer.png"));
     public Image m1 = img.getImage();
 
 	public BankCustomerGui(BankCustomerRole c){//, BankAnimationPanel gui){ //HostAgent m) {

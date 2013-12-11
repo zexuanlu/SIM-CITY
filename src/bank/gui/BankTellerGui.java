@@ -27,7 +27,7 @@ public class BankTellerGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 
-	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/teller.png"));
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/worker.png"));
     public Image m1 = img.getImage();
 	
 	public BankTellerGui(BankTellerRole t){//, BankAnimationPanel gui){ //HostAgent m) {

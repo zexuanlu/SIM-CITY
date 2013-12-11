@@ -31,6 +31,10 @@ public class Restaurant2AnimationPanel extends JPanel implements ActionListener 
     private Dimension bufferSize;
 
     public List<Gui> guis = new ArrayList<Gui>();
+    ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable2.png"));
+    Image timg = table.getImage();
 
     public Restaurant2AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -53,12 +57,14 @@ public class Restaurant2AnimationPanel extends JPanel implements ActionListener 
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
         
+        //draw floor
+        g2.drawImage(this.floorimg, 0, 0, WINDOWX, WINDOWY, null);
+        
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(tablex, tabley, tableW, tableW);//200 and 250 need to be table params
-        g2.fillRect(tablex2, tabley2, tableW, tableW);
-        g2.fillRect(tablex3, tabley3, tableW, tableW);
-        g2.fillRect(tablex4, tabley4, tableW, tableW);
+        g2.drawImage(timg, tablex, tabley, tableW, tableW, null);
+        g2.drawImage(timg, tablex2, tabley2, tableW, tableW, null);
+        g2.drawImage(timg, tablex3, tabley3, tableW, tableW, null);
+        g2.drawImage(timg, tablex4, tabley4, tableW, tableW, null);
         g2.setColor(Color.GRAY);
         g2.fillRect(CookStationx, CookStationy, 25, 133);
         g2.fillRect(GrillStationx, GrillStationy, 25, 133);
