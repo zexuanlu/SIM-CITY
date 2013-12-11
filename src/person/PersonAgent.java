@@ -120,7 +120,7 @@ public class PersonAgent extends Agent implements Person{
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
 	public SimCityGUI simcitygui;
-	
+
 	private TrafficLightAgent trafficlight;
 	private boolean atlight = false;
 
@@ -165,7 +165,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setTrafficLight(TrafficLightAgent tl){
 		this.trafficlight = tl;
 	}
-	
+
 	public void setName(String name){this.name = name;}
 
 	public String getName(){ return this.name; }
@@ -237,17 +237,19 @@ public class PersonAgent extends Agent implements Person{
 	public void msgAtHome(){
 		print("Back home");
 	}
-	public void msgGoHome(){
-		Do("Going home from casino to a"+homeType);
-		atCasino = false;
+	public void msgGoHome(String sender){
+		if(sender.equals("Casino")){
+			atCasino = false;
+		}
 		SimEvent goHome = null;
 		if(homeNumber <= 5){
-			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
 		}
-		else{
-			Do("Going home from casino to a"+homeType);
+		else if(homeNumber > 5 && homeNumber != -1){
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
+		}
+		else if(homeNumber == -1){
+			
 		}
 		toDo.add(goHome);
 		stateChanged();
@@ -399,15 +401,15 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(false);
 		this.stopThread();
 	}
-	
+
 	public void msgAtLight(){
 		atlight = true;
 	}
-	
+
 	public void ToGo(){
 		gui.ToGo();
 	}
-	
+
 	/* Scheduler */
 
 	@Override
@@ -472,25 +474,23 @@ public class PersonAgent extends Agent implements Person{
 			}
 			return checkVitals();
 		}
-		
-//		if(atlight){
-//			checklight();
-//		}
-		
+
+		if(atlight){
+			checklight();
+		}
+
 		return false;
 	}
-	
+
+	/* Actions */
 	public void msgDie(){
 		gui.setPresent(false);
 		print("I have died :(");
 	}
-
-	/* Actions */
-	
 	private void checklight(){
 		trafficlight.msgCheckLight(this);
 	}
-	
+
 	private void goToAndDoEvent(SimEvent e){		
 		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant1){
@@ -2189,7 +2189,14 @@ public class PersonAgent extends Agent implements Person{
 		 * find locations on the fly via look up 
 		 */
 		boolean addedAnEvent = false;
-
+		if(wallet.getOnHand() >= 2500 && car == null){
+			Market m = (Market)cityMap.getByType(LocationType.Market);
+			SimEvent buyCar = new SimEvent("Go buy a car", m,EventType.CustomerEvent);
+			if(!containsEvent("Go buy a car")){
+				toDo.add(buyCar);
+				addedAnEvent = true;
+			}
+		}
 		Bank b = cityMap.pickABank(gui.xPos, gui.yPos);//(Bank)cityMap.getByType(LocationType.Bank);
 		if(b != null){
 			if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
@@ -2205,14 +2212,6 @@ public class PersonAgent extends Agent implements Person{
 					toDo.add(needDeposit);
 					addedAnEvent = true;
 				}
-			}
-		}
-		if(wallet.getOnHand() >= 2500 && car == null){
-			Market m = (Market)cityMap.getByType(LocationType.Market);
-			SimEvent buyCar = new SimEvent("Go buy a car", m,EventType.CustomerEvent);
-			if(!containsEvent("Go buy a car")){
-				toDo.add(buyCar);
-				addedAnEvent = true;
 			}
 		}
 		if(hunger > 3 && !containsEvent("Go Eat") && !cityMap.ateOutLast){

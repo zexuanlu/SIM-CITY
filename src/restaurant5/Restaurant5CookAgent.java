@@ -23,7 +23,8 @@ import market.interfaces.MarketTruck;
 //is proceeded as he wishes.
 public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	public boolean offWork = false; 
-	public int offWorkMess = 0; 
+	public int offWorkMess = 0;
+	private boolean needToCookOrder = false;
 	
 	public enum CookState {none, checkStand};
 	CookState cookstate; 
@@ -31,6 +32,7 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	public Restaurant5RevolvingStand revolvingstand; 
 	private Queue<Integer> grillnumber = new LinkedList<Integer>(); 
 	private Queue<Integer> platenumber = new LinkedList<Integer>(); 
+	private List<market.Food> foodlist = new ArrayList<market.Food>();
 
 	boolean opened = true; 	
 	boolean checkstand = false; 
@@ -102,6 +104,8 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 
 	// Sets cashier
 	public Restaurant5Cashier cashier;
+	private MarketTruck truck;
+	private boolean sendTruckBack = false;
 	
     public Restaurant5CookAgent(String name, PersonAgent p) {
 		super(p);
@@ -210,6 +214,14 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	 */
 	public boolean pickAndExecuteAnAction() {
 	
+		if(needToCookOrder){
+			orderFoodthatisLow();
+			return true;
+		}
+		if(sendTruckBack){
+			sendTruckBack();
+			return true;
+		}
 		if (opened){ 
 			orderFoodthatisLow();
 			return true; 
@@ -261,6 +273,11 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	}
 	// Actions
 
+	private void sendTruckBack() {
+		truck.msgGoBack();
+		truck = null;
+	}
+
 	private void goOffWork(){
 		offWork = false; 
 		offWorkMess = 0; 
@@ -300,16 +317,23 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	
 	private void orderFoodthatisLow(){
 		opened = false; 
-		Map <String, Integer> shoppingList = new HashMap<String, Integer>();
-		for (Food _f: foods.values()){
-			if (_f.amount <= _f.low){
-				shoppingList.put(_f.type,_f.capacity -_f.amount);
+		needToCookOrder = false;
+		if(foodlist != null){
+			Map <String, Integer> shoppingList = new HashMap<String, Integer>();
+			for (Food _f: foods.values()){
+				if (_f.amount <= _f.low){
+					shoppingList.put(_f.type,_f.capacity -_f.amount);
+				}
+			}
+			if (shoppingList.size() != 0){
+				marketOrder m = new marketOrder(shoppingList,OrderState.ordered);
+				marketOrders.add(m);
+				orderFood(m);
 			}
 		}
-		if (shoppingList.size() != 0){
-			marketOrder m = new marketOrder(shoppingList,OrderState.ordered);
-			marketOrders.add(m);
-			orderFood(m);
+		else{
+			marketCashier.MsgIwantFood(this, cashier, foodlist, 5);
+			foodlist = null;
 		}
 	}
 	
@@ -456,16 +480,26 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 	//FIX
 	@Override
 	public void msgHereisYourFood(MarketTruck t, List<market.Food> fList) {
-		// TODO Auto-generated method stub
-		
+		truck = t;
+		for (market.Food f : fList){
+			foods.get(f.choice).amount += f.amount;
+		}
+		sendTruckBack = true;
+		stateChanged();
 	}
 
 
 
 	@Override
 	public void msgEmptyStock() {
-		// TODO Auto-generated method stub
-		
+		foodlist = new ArrayList<market.Food>();
+		for (String key : foods.keySet()){
+			Food f = foods.get(key);
+			 f.amount = 0;
+			 foodlist.add(new market.Food(f.type, f.capacity-f.amount));
+		}
+		needToCookOrder = true;
+		stateChanged();		
 	}
 
 	

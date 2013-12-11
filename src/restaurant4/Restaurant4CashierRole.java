@@ -201,6 +201,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 */
 	private void payBill(Bill b){
 		b.mc.msgBillFromTheAir(b.amount);
+		bills.remove(b);
 	}
 	
 	/**
