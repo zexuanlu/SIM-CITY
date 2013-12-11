@@ -7,6 +7,8 @@ package gui.panels;
  * 
  */
 
+import gui.subpanels.TracePanel;
+
 import javax.swing.*; 
 
 import market.gui.MarketTruckGui; 
@@ -51,6 +53,7 @@ import java.util.Map;
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
     private BuildingAnimationPanel BuildPanel;
+    public TracePanel tracePanel;
     public BankAnimationPanel bankPanel = new BankAnimationPanel();
     public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
     public MarketAnimationPanel marketPanel = new MarketAnimationPanel();
@@ -316,12 +319,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WIDTH, HEIGHT );
-
-        //Quadrant textures
-        g2.drawImage(businessbgTex, 0, 0, 330, 170, null);	//TOP LEFT
-        g2.drawImage(businessbgTex, 440, 0, 340, 170, null);	//TOP RIGHT
-        g2.drawImage(resbgTex, 450, 290, 300, 190, null);	//BOTTOM RIGHT
-        g2.drawImage(resbgTex, 0, 290, 330, 190, null);
         
         //Here is the table
         g2.setColor(Color.GRAY);
@@ -345,6 +342,12 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         g2.fill(restaurant5);
         g2.fill(restaurant6);
         g2.fill(restaurant4);
+
+        //Quadrant textures
+        g2.drawImage(businessbgTex, 0, 0, 330, 170, null);	//TOP LEFT
+        g2.drawImage(businessbgTex, 440, 0, 340, 170, null);	//TOP RIGHT
+        g2.drawImage(resbgTex, 450, 290, 300, 190, null);	//BOTTOM RIGHT
+        g2.drawImage(resbgTex, 0, 290, 330, 190, null);
 
         // Draw out the sidewalks 
         g2.setColor(Color.WHITE);
@@ -652,7 +655,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                            if(!locations.get("Banco Popular 2").isClosed())
                                    temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Close", locations.get("Banco Popular 2"));
                            else
-                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Banco Popular2"));
+                                   temp = new radialButton(new Ellipse2D.Double((int)bank2.getX()-10, (int)bank2.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Banco Popular 2"));
                            buttons.add(temp);
                    }
                    else if (me.getButton() == 3 && market.contains(me.getX(), me.getY())){
@@ -740,9 +743,14 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 }
                 else if(me.getButton() == 3 && buttons.get(0).button.contains(me.getX(), me.getY())){
                         buttons.get(0).location.setClosed(!buttons.get(0).location.isClosed());
+                        if(!buttons.get(0).location.isClosed())
+                        	tracePanel.print(buttons.get(0).location.getName() + " is now open", null);
+                        else
+                        	tracePanel.print(buttons.get(0).location.getName() + " is now closed", null);
                 }
-                else if(buttons.size() > 2 && me.getButton() == 3 && buttons.get(3).button.contains(me.getX(), me.getY())){
-                        ((Restaurant)buttons.get(3).location).getCook().msgEmptyStock();
+                if(buttons.size() > 1 && me.getButton() == 3 && buttons.get(1).button.contains(me.getX(), me.getY())){
+                        ((Restaurant)buttons.get(1).location).getCook().msgEmptyStock();
+                        tracePanel.print("Emptying stock of " + buttons.get(0).location.getName(), null);
                 }
                 buttons.clear();
         }

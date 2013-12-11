@@ -4,6 +4,7 @@ import agent.Role;
 import bank.interfaces.BankDatabase;
 import restaurant4.interfaces.*;
 import restaurant4.test.mock.EventLog;
+import restaurant4.test.mock.LoggedEvent;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -54,6 +55,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * @param waiter the waiter who submitted the check
 	 */
 	public void msgINeedCheck(String choice, Restaurant4Customer customer, Restaurant4Waiter waiter){
+		log.add(new LoggedEvent("Received msgINeedCheck from Waiter"));
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -74,6 +76,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * @param money the amount of money the customer is using
 	 */
 	public void msgPayingForFood(Restaurant4Customer customer, double money){
+		log.add(new LoggedEvent("Received msgPayingForFood from Customer"));
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){

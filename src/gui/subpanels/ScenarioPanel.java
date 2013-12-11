@@ -51,7 +51,8 @@ import utilities.TimeCard;
  */
 public class ScenarioPanel extends JPanel implements ActionListener{
 
-	private SimCityGUI simCityGui; 
+	private SimCityGUI simCityGui;
+	public TracePanel tracePanel;
 	
 	// Reference to the sim world clock
 	private SimWorldClock clock;
@@ -904,6 +905,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest4.getTimeCard());
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
+		
+		tracePanel.print("Starting 1 Walking Person Scenario", null);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// THREE PERSON SCENARIO////////////////////////////
@@ -1605,6 +1608,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		clock.timeCards.add(rest4.getTimeCard());
 		clock.timeCards.add(rest5.getTimeCard());
 		clock.timeCards.add(rest6.getTimeCard());
+		
+		tracePanel.print("Starting 3 Person Scenario", null);
 	}
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////ROBBER SCENARIO///////////////////////////////////
@@ -1633,6 +1638,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			robber.msgAddEvent(robBank);
 		robber.gui.setPresent(true);
 		robber.startThread();
+		
+		tracePanel.print("Starting Robber Scenario", null);
 }
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////WEEKEND SCENARIO//////////////////////////////////
@@ -1647,5 +1654,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		for(PersonAgent p : people){
 			p.msgAddEvent(goToCasino);
 		}
+		tracePanel.print("Starting Weekend Scenario", null);
 	}
 }

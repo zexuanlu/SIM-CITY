@@ -1,5 +1,7 @@
 package person;
 
+import gui.subpanels.TracePanel;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -19,6 +21,7 @@ public class SimWorldClock {
 	private int currentHour;
 	public int endOfDay;
 	public int dayOfTheWeek;
+	public TracePanel tracePanel;
 
 	public SimWorldClock(int currentHour, List<PersonAgent> people, CityMap cm, int time){
 		this.currentHour = currentHour;
@@ -38,6 +41,7 @@ public class SimWorldClock {
 		}, 0, hourLength); // one minute per hour 
 	}
 	private void updateWorldClock(){
+		tracePanel.print("Time is now " + currentHour, null);
 		System.out.println("Time is now " + currentHour );
 		for(PersonAgent person : people){
 			person.msgNewHour(currentHour);

@@ -1,12 +1,13 @@
 package gui.main;
 
 import gui.panels.*;
+import gui.subpanels.TracePanel;
 import utilities.TrafficLightAgent; 
 
 import javax.swing.*;
+
 import restaurant5.*; 
 import restaurant5.gui.*;
-
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketTruckGui; 
 import person.Apartment;
@@ -195,6 +196,7 @@ public class SimCityGUI extends JFrame {
         public BusStopGui bs7gui = new BusStopGui(busstop7, 440, 420);
         public BusStopGui bs8gui = new BusStopGui(busstop8, 330, 420);        
         public MarketTruckAgent truck;
+		public TracePanel tracePanel;
 
         public SimCityGUI() {
                 
@@ -868,6 +870,7 @@ public class SimCityGUI extends JFrame {
                 truck.setRestaurant(rest6, 6);
                 /*Create the SimWorldClock with the starting time and the list of people*/
                 simclock = new SimWorldClock(8,people, citymap, 6000);
+                simclock.tracePanel = tracePanel;
                 simclock.timeCards.add(bank.getTimeCard());
                 simclock.timeCards.add(market.getTimeCard());
                 simclock.timeCards.add(rest1.getTimeCard());

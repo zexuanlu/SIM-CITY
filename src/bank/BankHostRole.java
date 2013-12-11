@@ -22,7 +22,7 @@ public class BankHostRole extends Role implements BankHost {
 	String name;
 	public EventLog log;//Used for testing
 	public List<BankCustomer> waitingCustomers;//A list of customers who are waiting
-	private int waitCount = 0;
+	private boolean wait = false;
 	public List<MyTeller> tellers;//A list of all the tellers in the bank
 	public BankHostGui gui = null;//Used for animation
 	public boolean atDesk;//Used for animation
@@ -61,7 +61,7 @@ public class BankHostRole extends Role implements BankHost {
 	public void msgINeedTeller(BankCustomer bc) {
 		log.add(new LoggedEvent("Received msgINeedTeller from Bank Customer"));
 		waitingCustomers.add(bc);
-		waitCount++;
+		wait = true;
 		stateChanged();
 	}
 
@@ -107,10 +107,10 @@ public class BankHostRole extends Role implements BankHost {
 				}
 			}
 			//Used to track people arriving and tell them
-			if(waitCount > 0){
+			if(wait){
 				waitHere();
-				waitCount--;
-				return false;
+				wait = false;
+				return true;
 			}
 		}
 		//If it's the end of the day and you're another day older

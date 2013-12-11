@@ -32,6 +32,7 @@ public class CashierTest extends TestCase
 	 */
 	public void setUp() throws Exception{
 		super.setUp();		
+		person = new MockPerson("Person");
 		cashier = new Restaurant4CashierRole("cashier", person);
 		customer = new MockCustomer("mockcustomer");
 		customer2 = new MockCustomer("mockcustomer2");
@@ -47,24 +48,24 @@ public class CashierTest extends TestCase
 		//setUp() runs first before this test!
 		
 		customer.cashier = cashier;//You can do almost anything in a unit test.			
-		
+		cashier.msgAddMoney(1000.00);
 		//Check Preconditions
 		assertEquals("Cashier should have 0 Checks in it. It doesn't", cashier.checks.size(), 0);
 		assertEquals("Cashier should have an empty event log. Instead it reads "+ cashier.log.toString(), 0, cashier.log.size());
 		
-		cashier.msgINeedCheck("Steak", customer, waiter);
+		cashier.msgINeedCheck("Lobster", customer, waiter);
 		assertTrue("Cashier should have logged \"msgINeedCheck\" but didn't. His log reads instead: " 
 				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Received msgINeedCheck"));
 		assertEquals("Cashier should have 1 check in it. It doesn't", cashier.checks.size(), 1);
 		assertTrue("The state of the single check should be requested. It isn't.", cashier.checks.get(0).s == state.requested);
 		assertTrue("The bill contains the right customer", cashier.checks.get(0).cust == customer);
-		assertTrue("The type of the bill should be Steak. It isn't.", cashier.checks.get(0).type == "Steak");
+		assertEquals("The type of the bill should be Lobster. It isn't.", cashier.checks.get(0).type, "Lobster");
 		
 		assertTrue("Cashier's scheduler should have returned true. It didn't.", cashier.pickAndExecuteAnAction());
 		assertTrue("Waiter should have logged \"msgHereIsCheck\" but didn't. His log reads instead: " 
 				+ waiter.log.getLastLoggedEvent().toString(), waiter.log.containsString("Received msgHereIsCheck"));
 		assertTrue("The state of the check should be owed. It isn't.", cashier.checks.get(0).s == state.owed);
-		assertTrue("The price of the bill should be 15.99 dollars. It isn't.", cashier.checks.get(0).price == 15.99);
+		assertTrue("The price of the bill should be 15.99 dollars. It isn't.", cashier.checks.get(0).price == 14.99);
 		
 		cashier.msgPayingForFood(customer, 40.00);
 		assertEquals("The check should have a money value of 40.00. It doesn't.", cashier.checks.get(0).money, 40.00);
@@ -87,38 +88,39 @@ public class CashierTest extends TestCase
 		customer.cashier = cashier;
 		customer2.cashier = cashier;
 		customer3.cashier = cashier;
+		cashier.msgAddMoney(1000.00);
 		
 		assertEquals("Cashier should have 0 Bills in it. It doesn't", cashier.bills.size(), 0);
 		assertEquals("Cashier should have 0 Checks in it. It doesn't", cashier.checks.size(), 0);		
 		assertEquals("Cashier should have an empty event log. Instead it reads "+ cashier.log.toString(), 0, cashier.log.size());
 	
-		cashier.msgINeedCheck("Salad", customer, waiter);
+		cashier.msgINeedCheck("Crab", customer, waiter);
 		assertTrue("Cashier should have logged \"msgINeedCheck\" but didn't. His log reads instead: " 
 				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Received msgINeedCheck"));
 		assertEquals("Cashier should have 1 check in it. It doesn't", cashier.checks.size(), 1);
 		assertTrue("The state of the single check should be requested. It isn't.", cashier.checks.get(0).s == state.requested);
 		assertTrue("The bill contains the right customer", cashier.checks.get(0).cust == customer);
-		assertTrue("The type of the bill should be Salad. It isn't.", cashier.checks.get(0).type == "Salad");
+		assertTrue("The type of the bill should be Salad. It isn't.", cashier.checks.get(0).type == "Crab");
 		
-		cashier.msgINeedCheck("Chicken", customer2, waiter);
+		cashier.msgINeedCheck("Scallops", customer2, waiter);
 		assertTrue("Cashier should have logged \"msgINeedCheck\" but didn't. His log reads instead: " 
 				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Received msgINeedCheck"));
 		assertEquals("Cashier should have 2 checks in it. It doesn't", cashier.checks.size(), 2);
 		assertTrue("The state of the single check should be requested. It isn't.", cashier.checks.get(1).s == state.requested);
 		assertTrue("The bill contains the right customer", cashier.checks.get(1).cust == customer2);
-		assertTrue("The type of the bill should be Chicken. It isn't.", cashier.checks.get(1).type == "Chicken");
+		assertTrue("The type of the bill should be Chicken. It isn't.", cashier.checks.get(1).type == "Scallops");
 	
 		assertTrue("Cashier's scheduler should return true. It didn't.", cashier.pickAndExecuteAnAction());
 		assertTrue("Waiter should have logged \"msgHereIsCheck\" but didn't. His log reads instead: " 
 				+ waiter.log.getLastLoggedEvent().toString(), waiter.log.containsString("Received msgHereIsCheck"));
 		assertTrue("The state of the check should be owed. It isn't.", cashier.checks.get(0).s == state.owed);
-		assertTrue("The price of the bill should be 5.99 dollars. It isn't.", cashier.checks.get(0).price == 5.99);
+		assertTrue("The price of the bill should be 5.99 dollars. It isn't.", cashier.checks.get(0).price == 13.99);
 	
 		assertTrue("Cashier's scheduler should return true. It didn't.", cashier.pickAndExecuteAnAction());
 		assertTrue("Waiter should have logged \"msgHereIsCheck\" but didn't. His log reads instead: " 
 				+ waiter.log.getLastLoggedEvent().toString(), waiter.log.containsString("Received msgHereIsCheck"));
 		assertTrue("The state of the check should be owed. It isn't.", cashier.checks.get(1).s == state.owed);
-		assertTrue("The price of the bill should be 10.99 dollars. It isn't.", cashier.checks.get(1).price == 10.99);
+		assertTrue("The price of the bill should be 10.99 dollars. It isn't.", cashier.checks.get(1).price == 7.99);
 	
 		cashier.msgPayingForFood(customer2, 30.00);
 		assertEquals("The check should have a money value of 30.00. It doesn't.", cashier.checks.get(1).money, 30.00);
@@ -126,13 +128,13 @@ public class CashierTest extends TestCase
 				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Received msgPayingForFood"));
 		assertTrue("The state of the check should now be paid. It isn't.", cashier.checks.get(1).s == state.paid);
 	
-		cashier.msgINeedCheck("Steak", customer3, waiter);
+		cashier.msgINeedCheck("Shrimp", customer3, waiter);
 		assertTrue("Cashier should have logged \"msgINeedCheck\" but didn't. His log reads instead: " 
 				+ cashier.log.getLastLoggedEvent().toString(), cashier.log.containsString("Received msgINeedCheck"));
 		assertEquals("Cashier should have 1 check in it. It doesn't", cashier.checks.size(), 3);
 		assertTrue("The state of the single check should be requested. It isn't.", cashier.checks.get(2).s == state.requested);
 		assertTrue("The bill contains the right customer", cashier.checks.get(2).cust == customer3);
-		assertTrue("The type of the bill should be Steak. It isn't.", cashier.checks.get(2).type == "Steak");
+		assertTrue("The type of the bill should be Steak. It isn't.", cashier.checks.get(2).type == "Shrimp");
 	
 		assertTrue("Cashier's scheduler should have returned true. It didn't.", cashier.pickAndExecuteAnAction());
 		assertTrue("Customer should have logged \"msgHereIsChange\" but didn't. His log reads instead: " 
@@ -143,7 +145,7 @@ public class CashierTest extends TestCase
 		assertTrue("Waiter should have logged \"msgHereIsCheck\" but didn't. His log reads instead: " 
 				+ waiter.log.getLastLoggedEvent().toString(), waiter.log.containsString("Received msgHereIsCheck"));
 		assertTrue("The state of the check should be owed. It isn't.", cashier.checks.get(2).s == state.owed);
-		assertTrue("The price of the bill should be 8.99 dollars. It isn't.", cashier.checks.get(2).price == 15.99);
+		assertTrue("The price of the bill should be 8.99 dollars. It isn't.", cashier.checks.get(2).price == 8.99);
 	
 		cashier.msgPayingForFood(customer3, 20.00);
 		assertEquals("The check should have a money value of 20.00. It doesn't.", cashier.checks.get(2).money, 20.00);
