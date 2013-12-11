@@ -351,8 +351,10 @@ public class PersonAgent extends Agent implements Person{
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
-				role.role.getGui().setPresent(false);
-				role.setActive(false);
+				if(r.getGui() != null){
+					role.role.getGui().setPresent(false);
+					role.setActive(false);
+				}
 			}
 		}
 		stateChanged();
@@ -430,6 +432,7 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
+					System.err.println("THIS IS THE EVENT AND IT IS "+nextEvent.location.isClosed);
 					if(!nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
@@ -2169,7 +2172,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		if(!addedAnEvent && !containsEvent("Go home")){
 			SimEvent goHome = null;
-			if(homeNumber > 4){
+			if(homeNumber > 5){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 			}
 			else{

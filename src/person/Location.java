@@ -17,6 +17,7 @@ public class Location {
         protected int Quadrant;
         public Position position; 
         public Location(String name, LocationType type, Position p){
+        		this.isClosed = false;
                 this.name = name;
                 this.type = type;
                 this.position = p;

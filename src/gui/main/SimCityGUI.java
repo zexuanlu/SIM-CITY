@@ -84,6 +84,7 @@ public class SimCityGUI extends JFrame {
         public HomeOwnerRole homeOwnerRole2 = new HomeOwnerRole(initPerson, "HMO2", 2);
         public HomeOwnerRole homeOwnerRole3 = new HomeOwnerRole(initPerson, "HMO3", 3);
         public HomeOwnerRole homeOwnerRole4 = new HomeOwnerRole(initPerson, "HMO4", 4);
+        public HomeOwnerRole homeOwnerRole5 = new HomeOwnerRole(initPerson, "HM05", 5);
         
         public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT5", 5, initPerson);
 
@@ -148,6 +149,7 @@ public class SimCityGUI extends JFrame {
         public HomeOwnerGui hg2 = new HomeOwnerGui(homeOwnerRole2);
         public HomeOwnerGui hg3 = new HomeOwnerGui(homeOwnerRole3);
         public HomeOwnerGui hg4 = new HomeOwnerGui(homeOwnerRole4);
+        public HomeOwnerGui hg5 = new HomeOwnerGui(homeOwnerRole5);
         
         public CityMap citymap; 
 
@@ -246,8 +248,8 @@ public class SimCityGUI extends JFrame {
                 Home home4 = new Home("Home 4", homeOwnerRole4, 
                                 new Position(600, 280), 4, LocationType.Home);
                 // FIX
-                Home home5 = new Home("Home 5", homeOwnerRole4, 
-                                new Position(660, 280), 4, LocationType.Home);
+                Home home5 = new Home("Home 5", homeOwnerRole5, 
+                                new Position(660, 280), 5, LocationType.Home);
                 
                 // Fourth quadrant locations
                 // First apartment complex
@@ -323,6 +325,7 @@ public class SimCityGUI extends JFrame {
                 locations.add(home2);
                 locations.add(home3);
                 locations.add(home4);
+                locations.add(home5);
                 locations.add(apt1);
                 locations.add(apt2);
                 locations.add(apt3);
@@ -537,11 +540,11 @@ public class SimCityGUI extends JFrame {
                 homeOwnerRole4.setGui(hg4);
                 cityAnimPanel.house4Panel.addGui(hg4);
                 
-                // Loops through the apartment guis to add them to their animation panels
-                for (ApartmentTenantGui aptGui : aptGuis) {
-                        aptGui.isPresent = false;
-                        cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
-                }
+//                // Loops through the apartment guis to add them to their animation panels
+//                for (ApartmentTenantGui aptGui : aptGuis) {
+//                        aptGui.isPresent = false;
+//                        cityAnimPanel.apartments.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+//                }
                 
                 // Loops through apartment tenant roles and sets to respective GUI
                 for (ApartmentTenantRole r : aptTenants) {
@@ -606,8 +609,11 @@ public class SimCityGUI extends JFrame {
                         PersonGui pgui = new PersonGui(p, x, y, cityAnimPanel);
                         p.setGui(pgui);
                         System.out.println(""+i);
+                        System.out.println(citymap.getHome(i+1));
                         if(i < 21){
-                                p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
+                        	int u = citymap.getHome(i+1).position.getX();
+                        	int v = citymap.getHome(i+1).position.getY();
+                                p.gui.setStart(u, v);
                                 p.homeNumber = i+1;
                         }
                         else
