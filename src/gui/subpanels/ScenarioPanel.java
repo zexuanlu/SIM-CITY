@@ -1404,7 +1404,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         	else if (k >= 37 && k < 53) {
         		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(240, 280), k, LocationType.Apartment));
         	}
-        	else if (k >= 54 && k < 70) {
+        	else if (k >= 53 && k <= 70) {
         		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(330, 300), k, LocationType.Apartment));
         	}
         	++k;

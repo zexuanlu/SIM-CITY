@@ -49,7 +49,7 @@ public class PersonGui implements Gui{
 		this.agent = agent;
 		arrived = false;
 		isPresent = false;
-		atLight = false;
+		//atLight = false;
 	}
 	public void updatePosition() {
 		boolean moved = false;

@@ -458,7 +458,10 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){
+					Do("The next event is "+nextEvent.location.type);
+					if(nextEvent.location.type == LocationType.Home || 
+							nextEvent.location.type == LocationType.Apartment || 
+							!nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
 						goToAndDoEvent(nextEvent);
