@@ -105,6 +105,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public Wallet wallet;
 	private int currentTime; 
+	public int accountNumber = -1;
 
 	public Position currentLocation; 
 	public Position dest = new Position(50, 50);
@@ -432,8 +433,7 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					System.err.println("THIS IS THE EVENT AND IT IS "+nextEvent.location.isClosed);
-					if(!nextEvent.location.isClosed()){
+					if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
 						goToAndDoEvent(nextEvent);
@@ -1651,6 +1651,8 @@ public class PersonAgent extends Agent implements Person{
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
 				bcr.bh = bank.getHost();
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
@@ -1768,6 +1770,8 @@ public class PersonAgent extends Agent implements Person{
 				bcr.bh = bank.getHost();
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
 				cap.bankPanel2.addGui(bcg);
