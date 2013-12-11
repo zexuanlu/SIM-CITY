@@ -31,6 +31,14 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     private Dimension bufferSize;
 
     public List<Gui> guis = new ArrayList<Gui>();
+    
+    //Images
+    //Images
+    ImageIcon img = new ImageIcon(this.getClass().getResource("aptfloor.png"));
+    Image image = img.getImage();
+    
+    ImageIcon img2 = new ImageIcon(this.getClass().getResource("bedfloor.png"));
+    Image image2 = img2.getImage();
 
     public HouseAnimationPanel(int n) {
     	houseNumber = n; 
@@ -57,6 +65,9 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
         
+        //draw main floor
+        g2.drawImage(image, 0, 0, WINDOWX, WINDOWY, null);
+        
         // Drawing the grill
         g2.setColor(Color.DARK_GRAY);
         g2.fillRect(stoveX, stoveY, 20, 20);
@@ -80,6 +91,8 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         // Drawing the bedroom
         g2.setColor(Color.LIGHT_GRAY);
         g2.fillRect(0, 230, 640, 450);
+        
+        g2.drawImage(image2, 0, 230, 640, 450, null);
         
         // Drawing the bed
         g2.setColor(Color.PINK);

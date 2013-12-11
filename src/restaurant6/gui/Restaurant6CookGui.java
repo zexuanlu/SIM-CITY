@@ -24,8 +24,8 @@ public class Restaurant6CookGui implements Gui {
     private int homeX = 420;
     private int homeY = 60;
     
-    //public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
-    //Image image = img.getImage();
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+    Image image = img.getImage();
     
     private static class MyGrill {
     	private int grillXPos;
@@ -64,13 +64,14 @@ public class Restaurant6CookGui implements Gui {
     private String choice;
 
     public void drawCook(Graphics2D g) { 
+    	g.drawImage(image, xPos, yPos, 20, 20, null);
+    	
     	if (cookGuiState == GuiState.GettingIngredients) {
     		g.setColor(Color.BLACK);
     		
     		String customerChoice = choice;
     		customerChoice = customerChoice.substring(0, 1);
     		
-    		g.fillRect(xPos, yPos, 20, 20);
     		g.drawString(customerChoice, xPos, yPos);
     	}
     	if (cookGuiState == GuiState.GotCookedFood) {		
@@ -79,7 +80,6 @@ public class Restaurant6CookGui implements Gui {
     		String customerChoice = choice;
     		customerChoice = customerChoice.substring(0, 2);
     		
-    		g.fillRect(xPos, yPos, 20, 20);
     		g.drawString(customerChoice, xPos, yPos);
     	}   		
     }
