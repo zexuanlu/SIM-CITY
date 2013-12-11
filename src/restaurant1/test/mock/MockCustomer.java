@@ -86,14 +86,15 @@ public class MockCustomer extends Mock implements Restaurant1Customer {
 		
 	}
 
+
 	@Override
-	public void msgordercooked() {
+	public void msgAnimationFinishedLeaveRestaurant() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgAnimationFinishedLeaveRestaurant() {
+	public void msgordercooked(Restaurant1Cashier ca) {
 		// TODO Auto-generated method stub
 		
 	}

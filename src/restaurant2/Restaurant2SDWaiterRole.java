@@ -79,7 +79,7 @@ public class Restaurant2SDWaiterRole extends Restaurant2AbstractWaiterRole{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.err.println("FREE AT LAST");
+		//System.err.println("FREE AT LAST");
 		synchronized(MyCustomers){
 			for(MyCustomer mc : MyCustomers){
 				if(mc.getOrder() != "none"){
