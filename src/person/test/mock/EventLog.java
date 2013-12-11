@@ -77,7 +77,6 @@ public class EventLog {
 		}
 		return null;
 	}
-
 	/**
 	 * @return the most recently LoggedEvent
 	 */
