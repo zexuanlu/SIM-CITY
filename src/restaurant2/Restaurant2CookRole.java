@@ -240,12 +240,14 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 
 	private void  checkInventory(){
 
-		if(!foodlist.isEmpty()){
+		if(foodlist != null && !foodlist.isEmpty()){
 			marketCashier.MsgIwantFood(this, cashier, foodlist, 2);
 			foodlist.clear();
 			needTocookOrder = false;
 			return;
 		}
+		boolean b = false;
+		if(b){
 		List<String> marketOrders = new ArrayList<String>();
 		Map<String, Integer> itemsAndQuantityNeeded = new HashMap<String, Integer>();
 		int numSteak = inventory.getInventory("Steak");
@@ -309,6 +311,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 					}
 				}
 			}
+		}
 		}
 	}
 	private void goToGrill(int position, Restaurant2Order o){

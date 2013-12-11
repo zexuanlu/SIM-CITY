@@ -250,7 +250,7 @@ public class PersonAgent extends Agent implements Person{
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 		}
 		else if(homeNumber == -1){
-			
+
 		}
 		toDo.add(goHome);
 		stateChanged();
@@ -506,7 +506,9 @@ public class PersonAgent extends Agent implements Person{
 		if(e.location.type == LocationType.Restaurant1){
 			Restaurant rest = (Restaurant)e.location;
 			if(e.type == EventType.CustomerEvent){
-				PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
+				if(!testMode){
+					PersonAgent.tracePanel.print("Restaurant Customer at " + e.location.getName(), this);
+				}
 				for(MyRole mr : roles){
 					if(mr.type.equals("Rest 1 Customer")){
 						((Restaurant1CustomerRole)mr.role).customerGui.setPresent(true);
@@ -2247,7 +2249,9 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	private void goToLocation(Location loc){
-		PersonAgent.tracePanel.print("Going to " + loc.getName(), this);
+		if(!testMode){
+			PersonAgent.tracePanel.print("Going to " + loc.getName(), this);
+		}
 		Do(loc.position.toString() + ":" + loc.getName());
 		if (!walking) {
 			if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus

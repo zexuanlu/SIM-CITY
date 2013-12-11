@@ -691,7 +691,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest3SDWaiter.setCashier(rest3Cashier);
   		rest3Host.addWaiter(rest3Waiter);
   		rest3Host.addWaiter(rest3SDWaiter);
-  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest3Cook.cashier = rest3Cashier;
   		rest3Cashier.accountNumber = 6;
   		rest3Cashier.bank = bankdatabase;
