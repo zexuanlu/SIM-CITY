@@ -22,6 +22,7 @@ import agent.*;
 import person.gui.PersonGui;
 import person.interfaces.Person;
 import person.test.mock.EventLog;
+import person.test.mock.LoggedEvent;
 import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
@@ -86,7 +87,7 @@ import simcity.gui.PassengerGui;
  * @author Joseph Boman
  */
 public class PersonAgent extends Agent implements Person{
-	private EventLog log = new EventLog();
+	public EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
 	private boolean atHome = false;
 	private boolean atCasino = false;
@@ -116,7 +117,7 @@ public class PersonAgent extends Agent implements Person{
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
 	public SimCityGUI simcitygui;
-	
+
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
@@ -327,6 +328,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgReadyToWork(Role r){
+		log.add(new LoggedEvent("Recieved msgReadyToWork"));
 		wait.release();
 		print("Received msgReadyToWork");
 		for(MyRole role : roles){
@@ -378,65 +380,65 @@ public class PersonAgent extends Agent implements Person{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		if(!atCasino){
-		for(MyRole r : roles){
-			if(r.isActive){
-				boolean b;
-				b =  r.role.pickAndExecuteAnAction();
-				return b;
+			for(MyRole r : roles){
+				if(r.isActive){
+					boolean b;
+					b =  r.role.pickAndExecuteAnAction();
+					return b;
+				}
 			}
-		}
 
-		for(SimEvent nextEvent : toDo){
-			if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
-				if(atHome){
-					Do("In the loop!");
-					for(MyRole r : roles){
-						if(r.role instanceof HomeOwnerRole){
-							((HomeOwnerRole)r.role).homeGui.DoGoToFrontDoor();
-							try{
-								((HomeOwnerRole)r.role).atFrontDoor.acquire();
+			for(SimEvent nextEvent : toDo){
+				if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
+					if(atHome){
+						Do("In the loop!");
+						for(MyRole r : roles){
+							if(r.role instanceof HomeOwnerRole){
+								((HomeOwnerRole)r.role).homeGui.DoGoToFrontDoor();
+								try{
+									((HomeOwnerRole)r.role).atFrontDoor.acquire();
+								}
+								catch(InterruptedException ie){
+									ie.printStackTrace();
+								}
+								((HomeOwnerRole)r.role).homeGui.setPresent(false);
 							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
+							else if(r.role instanceof ApartmentTenantRole){
+								((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
+								try{
+									((ApartmentTenantRole)r.role).atFrontDoor.acquire();
+								}
+								catch(InterruptedException ie){
+									ie.printStackTrace();
+								}
+								((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
 							}
-							((HomeOwnerRole)r.role).homeGui.setPresent(false);
+
 						}
-						else if(r.role instanceof ApartmentTenantRole){
-							((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
-							try{
-								((ApartmentTenantRole)r.role).atFrontDoor.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
-						}
-
-					}
-					atHome = false;
-				}			
-				print("Activating a recurring event");
-				goToLocation(nextEvent.location);
-				goToAndDoEvent(nextEvent);
-				return true;
-			}
-		}
-
-		for(SimEvent nextEvent : toDo){
-			if(nextEvent.importance == EventImportance.OneTimeEvent){
-				if(!nextEvent.location.isClosed()){
-					if(!atHome)
-						goToLocation(nextEvent.location);
+						atHome = false;
+					}			
+					print("Activating a recurring event");
+					goToLocation(nextEvent.location);
 					goToAndDoEvent(nextEvent);
 					return true;
 				}
-				toDo.remove(nextEvent);
-				return true;
 			}
+
+			for(SimEvent nextEvent : toDo){
+				if(nextEvent.importance == EventImportance.OneTimeEvent){
+					if(!nextEvent.location.isClosed()){
+						if(!atHome)
+							goToLocation(nextEvent.location);
+						goToAndDoEvent(nextEvent);
+						return true;
+					}
+					toDo.remove(nextEvent);
+					return true;
+				}
+			}
+			return checkVitals();
 		}
-		return checkVitals();
-		}
-	return false;
+		return false;
 	}
 
 	/* Actions */
@@ -463,10 +465,14 @@ public class PersonAgent extends Agent implements Person{
 				Restaurant1CustomerGui cg = new Restaurant1CustomerGui(cRole, null);
 				cg.isPresent = true;
 				cRole.setGui(cg);
-				cap.rest1Panel.addGui(cg);
+				if(!testMode){
+					cap.rest1Panel.addGui(cg);
+				}
 				cRole.setHost(((Restaurant1Host)rest.getHost()));
 				cRole.gotHungry();
-				gui.setPresent(false);
+				if(!testMode){
+					gui.setPresent(false);
+				}
 				toDo.remove(e);
 			}
 
@@ -1589,7 +1595,9 @@ public class PersonAgent extends Agent implements Person{
 				roles.add(newRole); 
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
-				cap.bankPanel.addGui(bcg);
+				if(!testMode){
+					cap.bankPanel.addGui(bcg);
+				}
 				if(e.directive.equals("deposit"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
@@ -1633,7 +1641,9 @@ public class PersonAgent extends Agent implements Person{
 				BankTellerGui btg = new BankTellerGui(btr);
 				btr.setGui(btg);
 				btr.gui.setPresent(true);
-				cap.bankPanel.addGui(btg);
+				if(!testMode){
+					cap.bankPanel.addGui(btg);
+				}
 				gui.setPresent(false);
 				return;
 			}

@@ -39,11 +39,11 @@ public class PersonRestaurantEntrance extends TestCase{
 		person.setName("Grant");
 		host = new MockHostRole("Grant");
 		rest = new Restaurant("Restaurant", new Restaurant1HostRole("DUMMY", dummyPerson), p, LocationType.Restaurant1);
-		goToRestaurant = new SimEvent(rest, 1, EventType.CustomerEvent);
+		goToRestaurant = new SimEvent(rest, 9, EventType.CustomerEvent);
 		person.testMode = true;
 	}	
 	@Test
-	public void testEntrance() {
+	public void testRestaurantCustomerEntrance() {
 		//Pre : Check event queue and activeRole
 		
 		assertTrue("The person we are testing (person) should have no events at creation, it does", person.toDo.isEmpty());
