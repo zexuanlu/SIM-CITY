@@ -67,6 +67,7 @@ public class TrafficLightAgent extends Agent {
 
 	public class MyPeople {
 		Person p;
+		state s; 
 
 		MyPeople(Person p){
 			this.p = p;
@@ -82,7 +83,6 @@ public class TrafficLightAgent extends Agent {
 		else if (y<= 280 && y >= 180){
 			myCar.add(new MyCar(c, state.leftright));
 		}
-		System.out.println("myCar size is "+myCar.size());
 		stateChanged();
 	}
 
@@ -119,6 +119,7 @@ public class TrafficLightAgent extends Agent {
 		}
 
 		if(Plight){
+			print("hit here in peoplego");
 			PeopleGo();
 			return true;
 		}
@@ -174,16 +175,20 @@ public class TrafficLightAgent extends Agent {
 	}
 
 	private void PeopleGo(){
+
 		synchronized(myPeople){
+			
 			for(MyPeople p: myPeople){
+			//	if(p.s != state.done){
+
 				p.p.ToGo();
-				myPeople.remove(p);
+				p.s = state.done;
+			//	}
 			}
 		}
 	}
 
 	public void RemindTask() {
-		System.out.println("TrafficLightAgent remind task "+ lightCount);
 
 		Hlight = false;
 		Vlight= false;
