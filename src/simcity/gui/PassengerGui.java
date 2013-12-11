@@ -56,7 +56,7 @@ public class PassengerGui implements Gui {
     	
         
         if (xPos == xDestination && yPos == yDestination && guistate == GuiState.gotoStop){
-        	System.out.println("Bus Gui msg at bus stop");
+        	
         	passenger.msgAtBusStop();
         	guistate = GuiState.atStop; 
         }

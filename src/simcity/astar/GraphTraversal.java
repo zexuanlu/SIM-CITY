@@ -30,10 +30,6 @@ public abstract class GraphTraversal
 	    //else expand the graph on the node that was just removed
 	    while(true) {
 		if(nodes.size() == 0) {//failed to find a path
-		    printMessage("Failed to find a path from " +
-				 startingState.toString()  +
-				 " to " + endingState.toString() +
-				 ", sorry.", null);
 		    return null;
 		} else {
 		    //printCurrentList();
@@ -50,7 +46,6 @@ public abstract class GraphTraversal
 	}
 
 	public void printMessage(String message, Node n) {
-		System.out.print("\n" + message);
 		if (n != null)	System.out.print(n);
 	}
 	public abstract Node createStartNode(Object state);
