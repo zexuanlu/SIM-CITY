@@ -10,9 +10,8 @@ import agent.Role;
 import person.PersonAgent; 
 
 public abstract class WaiterBase5 extends Role implements Waiter5{
-	
+	public boolean offWork = false; 
 	protected String name;
-	public PersonAgent myPerson; 
 	protected Restaurant5HostAgent myHost; 
 	public Restaurant5Cashier myCashier; 
 	protected Restaurant5CookAgent myCook; 	
@@ -48,7 +47,6 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 	
 	public WaiterBase5(String name, PersonAgent p) {
 		super(p);
-		myPerson = p; 
 	}
 	
 	public void msgDoneEating(Restaurant5CustomerAgent c){
@@ -68,6 +66,11 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 			}
 		}	
 		stateChanged();
+	}
+	
+	public void msgGoOffWork(){
+		offWork = true; 
+		stateChanged(); 
 	}
 	
 	public abstract void msgatStand();
@@ -289,6 +292,19 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 				return true;
 			}
 		}
+		 
+		if (offWork){ //check also that all customers are done
+			for (myCustomer mc: customers){
+				if (mc.s != CustomerState.done){
+					return false; 
+				}
+			}
+			
+			goOffWork();
+			return true; 
+		}
+		
+		
 		}
 		catch(ConcurrentModificationException e){
 			return false; 
@@ -299,19 +315,25 @@ public abstract class WaiterBase5 extends Role implements Waiter5{
 		//nothing to do. So return false to main loop of abstract agent
 		//and wait.
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	
 	//Action
+	
+	protected void goOffWork(){
+		//inform cashier and the cook
+		offWork = false; 
+		myCashier.msgGoOffWork(); 
+		myCook.msgGoOffWork();
+		
+		
+		waiterGui.DoLeaveCustomer();
+	//	this.person.msgFinishedEvent(this);
+		this.person.msgGoOffWork(this, 0);
+
+	
+	}
+	
 	protected void goOffBreak(){
 		waiterState = wState.ready; 
 		myHost.msgOffBreak(this);

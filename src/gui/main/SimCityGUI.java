@@ -800,6 +800,7 @@ public class SimCityGUI extends JFrame {
                 waiter1.setCashier(cashier1);
                 cook1.setMarketCashier(marketcashierrole);
                 cook1.setCashier(cashier1);
+                cashier1.bank = bankdatabase; 
                 
                 waiter5.setHost(host5);
                 waiter5.setCashier(cashier5);
@@ -810,6 +811,8 @@ public class SimCityGUI extends JFrame {
                 sdwaiter5.setCook(cook5);
                 sdwaiter5.setStand(revolvingstand5);
                 
+                
+        
                 
                 host5.addWaiter(waiter5);
                 host5.addWaiter(sdwaiter5);

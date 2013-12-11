@@ -27,6 +27,7 @@ public class SimWorldClock {
 		this.currentHour = currentHour;
 		timeCards = new ArrayList<TimeCard>();
 		hourLength = time;
+		hourLength = 2000; 
 		cityMap = cm;
 		this.people = people;
 		dayOfTheWeek = 1;
@@ -38,6 +39,7 @@ public class SimWorldClock {
 			public void run() {
 				updateWorldClock();
 			}
+
 		}, 0, hourLength); // one minute per hour 
 	}
 	private void updateWorldClock(){
