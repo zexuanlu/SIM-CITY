@@ -114,3 +114,4 @@
   + Some tests were removed from Person due to the lack of a GUI in the tests
   + Because CarAgent is so integrated with A* and it's GUI it was unable to be JUNIT tested
   + For Transportation, focused more on A* and GUI than on JUNIT testing
+  + Paths to gui icon images may be currupt on pull, copy images from src folder to respective bin folders (i.e. 		    src/restaurant1/gui -> bin/restaurant1/gui)
