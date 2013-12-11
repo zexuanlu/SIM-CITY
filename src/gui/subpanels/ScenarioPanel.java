@@ -1457,6 +1457,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
  	    */
  	   // Setting truck
   		MarketTruckAgent truck = new MarketTruckAgent(1);
+  		((MarketCashierRole)roles.get(6)).addTruck(truck);
+  		truck.setCashier((MarketCashierRole)roles.get(6));
         MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
         truck.setGui(truckGui);
         truck.startThread();
@@ -1464,6 +1466,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
         // Setting second truck
         MarketTruckAgent truck2 = new MarketTruckAgent(2);
+ 		((MarketCashierRole)roles.get(7)).addTruck(truck);
+  		truck.setCashier((MarketCashierRole)roles.get(7));
         MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
         truck2.setGui(truck2Gui);
         truck2.startThread();
@@ -2447,6 +2451,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		
   		// Setting truck
   		MarketTruckAgent truck = new MarketTruckAgent(1);
+  		((MarketCashierRole)roles.get(6)).addTruck(truck);
+  		truck.setCashier(((MarketCashierRole)roles.get(6)));
         MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
         truck.setGui(truckGui);
         truck.startThread();
@@ -2454,6 +2460,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
         // Setting second truck
         MarketTruckAgent truck2 = new MarketTruckAgent(2);
+  		((MarketCashierRole)roles.get(7)).addTruck(truck2);
+  		truck2.setCashier(((MarketCashierRole)roles.get(7)));
         MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
         truck2.setGui(truck2Gui);
         truck2.startThread();
