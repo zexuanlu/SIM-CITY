@@ -3,9 +3,11 @@ package person;
 import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
 import restaurant5.gui.Restaurant5FoodGui; 
+
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
 import restaurant5.*; 
 import restaurant5.gui.*; 
 import person.Location.LocationType;
@@ -78,6 +80,7 @@ import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.astar.AStarTraversal;
 import simcity.gui.PassengerGui;
+import utilities.TrafficLightAgent;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
  * The PersonAgent, once a decision has been made, will switch to the appropriate role to carry out the task given in the event
@@ -116,7 +119,9 @@ public class PersonAgent extends Agent implements Person{
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
 	public SimCityGUI simcitygui;
-
+	
+	private TrafficLightAgent trafficlight;
+	private boolean atlight = false;
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
@@ -156,6 +161,10 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* Utilities */
+	public void setTrafficLight(TrafficLightAgent tl){
+		this.trafficlight = tl;
+	}
+	
 	public void setName(String name){this.name = name;}
 
 	public String getName(){ return this.name; }
@@ -382,6 +391,15 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(false);
 		this.stopThread();
 	}
+	
+	public void msgAtLight(){
+		atlight = true;
+	}
+	
+	public void ToGo(){
+		gui.ToGo();
+	}
+	
 	/* Scheduler */
 
 	@Override
@@ -445,10 +463,21 @@ public class PersonAgent extends Agent implements Person{
 			}
 			return checkVitals();
 		}
+		
+		if(atlight){
+			checklight();
+		}
+		
 		return false;
 	}
+	
 
 	/* Actions */
+	
+	private void checklight(){
+		trafficlight.msgCheckLight(this);
+	}
+	
 	private void goToAndDoEvent(SimEvent e){		
 		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant1){
