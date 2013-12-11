@@ -39,6 +39,7 @@ public class Restaurant2AnimationPanel extends JPanel implements ActionListener 
     public Restaurant2AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
+        this.setBorder(BorderFactory.createTitledBorder(" Restaurant 2 "));
         
         bufferSize = this.getSize();
  
