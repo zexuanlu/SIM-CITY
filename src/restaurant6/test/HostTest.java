@@ -43,7 +43,7 @@ public class HostTest extends TestCase {
 			assertEquals("Host should have 2 waiters in list.",  2, host.waiters.size());
 			
 			// Message the host that it's the end of the day
-			host.msgGoOffWork(host, 1000);
+			host.msgEndOfDay(host, 1000);
 			
 			// Checks that host has correct data 
 			assertEquals("Host should change end of day boolean to true.", true, host.offWork);

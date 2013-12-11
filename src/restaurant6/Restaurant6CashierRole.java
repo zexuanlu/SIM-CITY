@@ -148,7 +148,6 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	// Here there will be a message from the market detailing list of items that the cook ordered
 	public void msgPleasepaytheBill(MarketCashier m, double in) {
 		// Checks the list of orders from the market against the reference list created earlier
-		
 		// If it matches, then pay the market
 		
 		markets.add(new MyMarket(m, in));
@@ -180,10 +179,6 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		if(money < 500.00){
-			getMoneyFromBank();
-			return true;
-		}
 		/*Checks if the checks list is empty. If the check's state has yet 
 		 * to be computed, calculate the amount that the customer owes. 
 		 * If the customer is paying for the check right now, then get the money
@@ -191,6 +186,7 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 		 */
 		if (!checks.isEmpty()) {
 			for (Restaurant6Check c : checks) {
+				System.err.println("SCHEDULER");
 				if (c.getCheckState() == CheckState.toBeComputed) {
 					computeCheck(c); 
 					return true;
@@ -215,6 +211,11 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 			return true;
 		}
 			
+		if(money < 500.00){
+			getMoneyFromBank();
+			return true;
+		}
+		
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -317,12 +318,12 @@ public class Restaurant6CashierRole extends Role implements Restaurant6Cashier {
 
 	private void getMoneyFromBank(){
 		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
-		try{
-			getMoney.acquire();
-		}
-		catch(InterruptedException ie){
-			ie.printStackTrace();
-		}
+//		try{
+//			getMoney.acquire();
+//		}
+//		catch(InterruptedException ie){
+//			ie.printStackTrace();
+//		}
 	}
 	
 	public void msgAddMoney(double amount) {
