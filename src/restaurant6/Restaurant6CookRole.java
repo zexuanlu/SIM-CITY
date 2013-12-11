@@ -143,6 +143,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		standTimer.schedule(new TimerTask() {
 			public void run() {
 				msgCheckStand();
+				if(person != null)
 				stateChanged();
 			}
 		}, (3000)); 
@@ -182,7 +183,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	
 	// Message telling cook to check the revolving stand
 	public void msgCheckStand() {
-		print("I have to go check the revolving stand for orders!");
+//		print("I have to go check the revolving stand for orders!");
 		log.add(new LoggedEvent("I have to go check the revolving stand for orders!"));		
 		checkingStand = true;
 		stateChanged();
@@ -463,7 +464,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	 * Checks the stand for any new orders. Will wait until order appears
 	 */
 	private void checkStand() {
-		print("Checking stand..");
+//		print("Checking stand..");
 		log.add(new LoggedEvent("Checking stand.."));
 		
 //		if (cookGui != null) {

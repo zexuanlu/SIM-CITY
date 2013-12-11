@@ -237,7 +237,7 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	
 	private void checkStand(){
 		checkStand = false;
-		Do("Checking stand");
+//		Do("Checking stand");
 		Order o = stand.removeOrder();
 		if(o != null){
 			cookOrder order = new cookOrder(o);
