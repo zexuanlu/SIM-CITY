@@ -555,9 +555,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
         // Second quadrant locations
         Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
-                        new Position(660, 170), LocationType.Bank);
+                        new Position(660, 170), LocationType.Bank2);
         Market market2 = new Market("Pokemart 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
-                        new Position(460, 170), LocationType.Market);
+                        new Position(460, 170), LocationType.Market2);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
         Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 100), LocationType.Restaurant6);                
@@ -832,13 +832,13 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// Go to bank to deposit money
 		SimEvent withdrawBank2 = new SimEvent("withdraw", bank2, EventType.CustomerEvent);
 		
-//		walking.msgAddEvent(eatAtHome);
-//		walking.msgAddEvent(depositFromBank1);
-//		walking.msgAddEvent(goToMarket1);
-//		walking.msgAddEvent(goToRest1);
-//		walking.msgAddEvent(goToRest2);
-//		walking.msgAddEvent(goToRest4);
-//		walking.msgAddEvent(goToRest5);
+		walking.msgAddEvent(eatAtHome);
+		walking.msgAddEvent(depositFromBank1);
+		walking.msgAddEvent(goToMarket1);
+		walking.msgAddEvent(goToRest1);
+		walking.msgAddEvent(goToRest2);
+		walking.msgAddEvent(goToRest4);
+		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
 		walking.msgAddEvent(goToMarket2);
 		walking.msgAddEvent(withdrawBank2);
@@ -2156,9 +2156,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
         // Second quadrant locations
         Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
-                        new Position(660, 170), LocationType.Bank);
+                        new Position(660, 170), LocationType.Bank2);
         Market market2 = new Market("Pokemart 2", (MarketCashierRole)roles.get(7), new TimeCard(), 
-                        new Position(460, 170), LocationType.Market);
+                        new Position(460, 170), LocationType.Market2);
         Restaurant rest4 = new Restaurant("Rest 4", rest4Host, new TimeCard(), new Position(520, 170), LocationType.Restaurant4);
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
         Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 100), LocationType.Restaurant6);                
