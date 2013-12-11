@@ -427,6 +427,8 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
         
         //Hover Text
             g2.setColor(Color.BLACK);
+
+            
         if(s == state.bank1){
                 g2.drawString("Bank 1", (int)bank.getX()+10, (int)bank.getY()+35);
         }

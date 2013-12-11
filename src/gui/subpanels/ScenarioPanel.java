@@ -1874,7 +1874,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			cityAnimPanel.addGui(pgui);
 			p.setAnimationPanel(cityAnimPanel);
 		}
-		
+		TrafficLightAgent trafficlight = new TrafficLightAgent();
+		trafficlight.startThread();
 		// Create the walking person
 		PersonAgent walking = new PersonAgent("Walking Person", cityMap, 900);
 		walking.walking = true;
@@ -1884,6 +1885,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		peopleGuis.add(walking.gui);
 		cityAnimPanel.addGui(walking.gui);
 		walking.setAnimationPanel(cityAnimPanel);
+		walking.setTrafficLight(trafficlight);
+		
 		
 		// Create the person taking the bus
 		PersonAgent busPerson = new PersonAgent("Person taking the Bus", cityMap, 900);
