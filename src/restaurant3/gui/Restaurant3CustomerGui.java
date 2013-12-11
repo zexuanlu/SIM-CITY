@@ -2,8 +2,11 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
 import utilities.Gui; 
+
 import java.awt.Image;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
@@ -22,11 +25,12 @@ public class Restaurant3CustomerGui implements Gui {
 	int xDestination = origin;
 	int yDestination = origin;
 	int xPos, yPos;
-	private enum Command {noCommand, GoToSeat, LeaveRestaurant};
+	private enum Command {noCommand, goToInterrimY, GoToSeat, LeaveRestaurant};
 	private Command command=Command.noCommand;
 	public boolean isPresent = false;
 	String food;
 	String eating;
+	private Semaphore atInt = new Semaphore(0, true);
 	
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
 	public Image image = img.getImage();
@@ -52,6 +56,9 @@ public class Restaurant3CustomerGui implements Gui {
 			yPos--;
 
 		if (xPos == xDestination && yPos == yDestination) {
+			if(command == Command.goToInterrimY){
+				atInt.release();
+			}
 			if (command==Command.GoToSeat) {
 				agent.msgAtTableRelease();
 			}
@@ -108,7 +115,16 @@ public class Restaurant3CustomerGui implements Gui {
 			row = table/3;
 		}
         xDestination = (((table-1)%3)+1)*100;
-        yDestination = row*100;
+        yDestination = row*100 - height;
+        command = Command.goToInterrimY;
+        atInt.drainPermits();
+        try{
+        	atInt.acquire();
+        }
+        catch(InterruptedException e){
+        	e.printStackTrace();
+        }
+        yDestination += height;
         
         command = Command.GoToSeat;
 	}
@@ -116,6 +132,8 @@ public class Restaurant3CustomerGui implements Gui {
 	public void DoLeaveRestaurant(){
 		xDestination = origin;
 		yDestination = origin;
+		
+		command = Command.LeaveRestaurant;
 	}
 
 }

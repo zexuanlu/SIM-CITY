@@ -14,9 +14,6 @@ public interface Restaurant3Cook extends RestaurantCook {
 	//Messages from waiter
 	public void msgNewOrder(Restaurant3Waiter w, int table, String choice);
 	
-	//Messages from sd waiter
-	public void msgAddedOrderToRevolvingStand();
-	
 	//Messages from market components
 	public void msgHereisYourFood(MarketTruck t, List<Food> fList);
 	

@@ -123,13 +123,15 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 		platenumber.add(2);
 		platenumber.add(3);
 		
-		timer.schedule(new TimerTask() {
+		if (this.person != null) {
+			timer.schedule(new TimerTask() {
 			public void run() {
 				checkstand = true;
 				stateChanged();
 			}
 		},
 			2000);
+		}
     
     
     }

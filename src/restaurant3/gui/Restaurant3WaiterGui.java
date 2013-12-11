@@ -2,13 +2,17 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
 import utilities.Gui; 
+
 import java.awt.Image;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
 import restaurant1.Restaurant1CustomerRole;
 import restaurant3.Restaurant3WaiterRole;
+import restaurant3.Restaurant3SDWaiterRole;
 import restaurant3.interfaces.Restaurant3Waiter;
 import person.PersonAgent;
 
@@ -23,10 +27,11 @@ public class Restaurant3WaiterGui implements Gui {
 		int xDestination = home;
 		int yDestination = home;
 		int xPos, yPos;
-		private enum Command {noCommand, GoToHomePosition, TakeCustomerToTable, 
+		private enum Command {noCommand, goToInterrimY, goToInterrimX, GoToHomePosition, TakeCustomerToTable, 
 			GoToTable, GoToCook, TakeFoodToCustomer};	//EDIT
 		private Command command=Command.noCommand;
 		public boolean isPresent = false;
+		private Semaphore atInt = new Semaphore(0, true);
 		
 		//Positions
 		private int cookPosX = Restaurant3AnimationPanel.oStandX - width;
@@ -58,6 +63,9 @@ public class Restaurant3WaiterGui implements Gui {
 			yPos--;
 
 		if (xPos == xDestination && yPos == yDestination) {
+			if(command == Command.goToInterrimY || command == Command.goToInterrimX){
+				atInt.release();
+			}
 			if (command==Command.GoToHomePosition) {
 				agent.msgAtTableRelease();
 			}
@@ -82,8 +90,11 @@ public class Restaurant3WaiterGui implements Gui {
 	public void draw(Graphics2D g) {
 		g.setColor(Color.pink);
 		g.drawString(order, xPos, yPos+height+height);
-		if(agent instanceof Restaurant3Waiter){
+		if(agent instanceof Restaurant3WaiterRole){
 			g.drawString(((PersonAgent)((Restaurant3WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
+		}
+		if(agent instanceof Restaurant3SDWaiterRole){
+			g.drawString(((PersonAgent)((Restaurant3SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		}
 		//g.fillRect(xPos, yPos, width, height);
 		g.drawImage(image, xPos, yPos, height, width, null);
@@ -107,7 +118,15 @@ public class Restaurant3WaiterGui implements Gui {
 	}
 	
 	public void DoGoToHomePosition(){
-		xDestination = home;
+		xDestination = this.home;
+		goToInterrimX();
+     	atInt.drainPermits();
+     	try{
+     		atInt.acquire();
+     	}
+     	catch(InterruptedException e){
+     		e.printStackTrace();
+     	}
 		yDestination = home;
 		command = Command.GoToHomePosition;
 	}
@@ -141,12 +160,28 @@ public class Restaurant3WaiterGui implements Gui {
 			row = table/3;
 		}
         xDestination = (((table-1)%3)+1)*100 - 20;
+        goToInterrimX();
+     	atInt.drainPermits();
+     	try{
+     		atInt.acquire();
+     	}
+     	catch(InterruptedException e){
+     		e.printStackTrace();
+     	}
         yDestination = row*100 - 20;
         
         command = Command.GoToTable;
 	}
 	
 	public void DoGoToCook(){
+		goToInterrimY();
+		atInt.drainPermits();
+		try{
+			atInt.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
 		xDestination = cookPosX;
 		yDestination = cookPosY;
 		
@@ -161,9 +196,27 @@ public class Restaurant3WaiterGui implements Gui {
 		else {
 			row = table/3;
 		}
-        xDestination = (((table-1)%3)+1)*100 - 20;
+     	xDestination = (((table-1)%3)+1)*100 - 20;
+     	goToInterrimX();
+     	atInt.drainPermits();
+     	try{
+     		atInt.acquire();
+     	}
+     	catch(InterruptedException e){
+     		e.printStackTrace();
+     	}
         yDestination = row*100 - 20;
         
         command = Command.TakeFoodToCustomer;
+	}
+	
+	//Interrim positions
+	public void goToInterrimY(){
+		yDestination = cookPosY;
+		command = Command.goToInterrimY;
+	}
+	
+	public void goToInterrimX(){
+		command = Command.goToInterrimX;
 	}
 }

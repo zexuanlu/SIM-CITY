@@ -256,7 +256,15 @@ public class Restaurant3CustomerRole extends Role implements Restaurant3Customer
 		state = aState.idle;
 		event = cEvent.none;
 		custGui.DoLeaveRestaurant();	//GUI CODE
-	
+		atTable.drainPermits();
+		try{
+			atTable.acquire();
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
+		person.msgFinishedEvent(this);
+		custGui.setPresent(false);
 	}
 	
 	public utilities.Gui getGui(){
