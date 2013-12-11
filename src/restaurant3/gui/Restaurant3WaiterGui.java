@@ -41,8 +41,8 @@ public class Restaurant3WaiterGui implements Gui {
 		String wtrRole = "Restaurant 3 Waiter";
 		String sdwRole = "Restaurant 3 SDWaiter";
 
-		public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
-		public Image image = img.getImage();
+		//public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+		//public Image image = img.getImage();
 		
 	public Restaurant3WaiterGui(Restaurant3Waiter w) {
 		agent = w;
@@ -97,7 +97,7 @@ public class Restaurant3WaiterGui implements Gui {
 			g.drawString(((PersonAgent)((Restaurant3SDWaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
 		}
 		//g.fillRect(xPos, yPos, width, height);
-		g.drawImage(image, xPos, yPos, height, width, null);
+		//g.drawImage(image, xPos, yPos, height, width, null);
 	}
 
 	@Override

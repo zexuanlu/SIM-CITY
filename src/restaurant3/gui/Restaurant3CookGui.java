@@ -38,8 +38,8 @@ public class Restaurant3CookGui implements Gui{
 	private Command command = Command.noCommand;
 	public boolean isPresent = false;
 	
-	private ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
-	private Image image = img.getImage();
+	//private ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+	//private Image image = img.getImage();
 	
 	public Restaurant3CookGui(Restaurant3CookRole ck) {
 		agent = ck;
@@ -79,7 +79,7 @@ public class Restaurant3CookGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.MAGENTA);
 		//g.fillRect(xPos, yPos, width, height);
-		g.drawImage(image, xPos, yPos, 20, 20, null);
+		//g.drawImage(image, xPos, yPos, 20, 20, null);
 	}
 
 	@Override

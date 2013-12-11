@@ -3,9 +3,11 @@ package person;
 import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
 import restaurant5.gui.Restaurant5FoodGui; 
+
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
 import restaurant5.*; 
 import restaurant5.gui.*; 
 import person.Location.LocationType;
@@ -21,6 +23,7 @@ import agent.*;
 import person.gui.PersonGui;
 import person.interfaces.Person;
 import person.test.mock.EventLog;
+import person.test.mock.LoggedEvent;
 import resident.ApartmentLandlordRole;
 import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
@@ -77,6 +80,7 @@ import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.astar.AStarTraversal;
 import simcity.gui.PassengerGui;
+import utilities.TrafficLightAgent;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
  * The PersonAgent, once a decision has been made, will switch to the appropriate role to carry out the task given in the event
@@ -85,7 +89,7 @@ import simcity.gui.PassengerGui;
  * @author Joseph Boman
  */
 public class PersonAgent extends Agent implements Person{
-	private EventLog log = new EventLog();
+	public EventLog log = new EventLog();
 	public boolean testMode = false; //enabled for tests to skip semaphores
 	private boolean atHome = false;
 	private boolean atCasino = false;
@@ -104,6 +108,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public Wallet wallet;
 	private int currentTime; 
+	public int accountNumber = -1;
 
 	public Position currentLocation; 
 	public Position dest = new Position(50, 50);
@@ -116,6 +121,8 @@ public class PersonAgent extends Agent implements Person{
 
 	public SimCityGUI simcitygui;
 	
+	private TrafficLightAgent trafficlight;
+	private boolean atlight = false;
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
@@ -155,6 +162,10 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* Utilities */
+	public void setTrafficLight(TrafficLightAgent tl){
+		this.trafficlight = tl;
+	}
+	
 	public void setName(String name){this.name = name;}
 
 	public String getName(){ return this.name; }
@@ -227,12 +238,15 @@ public class PersonAgent extends Agent implements Person{
 		print("Back home");
 	}
 	public void msgGoHome(){
+		Do("Going home from casino to a"+homeType);
 		atCasino = false;
 		SimEvent goHome = null;
-		if(homeType == HomeType.Home){
+		if(homeNumber <= 5){
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
 		}
-		else if(homeType == HomeType.Apartment){
+		else{
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 		}
 		toDo.add(goHome);
@@ -323,6 +337,7 @@ public class PersonAgent extends Agent implements Person{
 				if (ug != null){
 					ug.setPresent(false);
 				}
+				break;
 			}
 		}
 		if(!testMode){
@@ -331,6 +346,7 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgReadyToWork(Role r){
+		log.add(new LoggedEvent("Recieved msgReadyToWork"));
 		wait.release();
 		print("Received msgReadyToWork");
 		for(MyRole role : roles){
@@ -342,14 +358,19 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
-		print("Received the message go off work");
+		print("Received the message go off work from " + r.toString());
 		wallet.setOnHand(pay);
 		if(!testMode){
 			gui.isPresent = true;
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
-				role.role.getGui().setPresent(false);
+				utilities.Gui ug = role.role.getGui(); 
+				if (ug!=null){
+					print ("I found the gui in msggooffwork");
+					ug.setPresent(false);
+				}
+
 				role.setActive(false);
 			}
 		}
@@ -378,72 +399,92 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(false);
 		this.stopThread();
 	}
+	
+	public void msgAtLight(){
+		atlight = true;
+	}
+	
+	public void ToGo(){
+		gui.ToGo();
+	}
+	
 	/* Scheduler */
 
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		if(!atCasino){
-		for(MyRole r : roles){
-			if(r.isActive){
-				boolean b;
-				b =  r.role.pickAndExecuteAnAction();
-				return b;
+			for(MyRole r : roles){
+				if(r.isActive){
+					boolean b;
+					b =  r.role.pickAndExecuteAnAction();
+					return b;
+				}
 			}
-		}
 
-		for(SimEvent nextEvent : toDo){
-			if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
-				if(atHome){
-					for(MyRole r : roles){
-						if(r.role instanceof HomeOwnerRole){
-							((HomeOwnerRole)r.role).homeGui.DoGoToFrontDoor();
-							try{
-								((HomeOwnerRole)r.role).atFrontDoor.acquire();
+			for(SimEvent nextEvent : toDo){
+				if(nextEvent.startTime == currentTime && nextEvent.importance == EventImportance.RecurringEvent){ //if we have an event and its time to start or were in the process ofgetting there
+					if(atHome){
+						for(MyRole r : roles){
+							if(r.role instanceof HomeOwnerRole){
+								((HomeOwnerRole)r.role).homeGui.DoGoToFrontDoor();
+								try{
+									((HomeOwnerRole)r.role).atFrontDoor.acquire();
+								}
+								catch(InterruptedException ie){
+									ie.printStackTrace();
+								}
+								((HomeOwnerRole)r.role).homeGui.setPresent(false);
 							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
+							else if(r.role instanceof ApartmentTenantRole){
+								((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
+								try{
+									((ApartmentTenantRole)r.role).atFrontDoor.acquire();
+								}
+								catch(InterruptedException ie){
+									ie.printStackTrace();
+								}
+								((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
 							}
-							((HomeOwnerRole)r.role).homeGui.setPresent(false);
+
 						}
-						else if(r.role instanceof ApartmentTenantRole){
-							((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
-							try{
-								((ApartmentTenantRole)r.role).atFrontDoor.acquire();
-							}
-							catch(InterruptedException ie){
-								ie.printStackTrace();
-							}
-							((ApartmentTenantRole)r.role).aptGui.DoGoToFrontDoor();
-						}
-
-					}
-					atHome = false;
-				}			
-				print("Activating a recurring event");
-				goToLocation(nextEvent.location);
-				goToAndDoEvent(nextEvent);
-				return true;
-			}
-		}
-
-		for(SimEvent nextEvent : toDo){
-			if(nextEvent.importance == EventImportance.OneTimeEvent){
-				if(!nextEvent.location.isClosed()){
-					if(!atHome)
-						goToLocation(nextEvent.location);
+						atHome = false;
+					}			
+					print("Activating a recurring event");
+					goToLocation(nextEvent.location);
 					goToAndDoEvent(nextEvent);
 					return true;
 				}
-				toDo.remove(nextEvent);
-				return true;
 			}
+
+			for(SimEvent nextEvent : toDo){
+				if(nextEvent.importance == EventImportance.OneTimeEvent){
+					if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){
+						if(!atHome)
+							goToLocation(nextEvent.location);
+						goToAndDoEvent(nextEvent);
+						return true;
+					}
+					toDo.remove(nextEvent);
+					return true;
+				}
+			}
+			return checkVitals();
 		}
-		return checkVitals();
+		
+		if(atlight){
+			checklight();
 		}
-	return false;
+		
+		return false;
 	}
+	
 
 	/* Actions */
+	
+	private void checklight(){
+		trafficlight.msgCheckLight(this);
+	}
+	
 	private void goToAndDoEvent(SimEvent e){		
 		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant1){
@@ -468,10 +509,14 @@ public class PersonAgent extends Agent implements Person{
 				Restaurant1CustomerGui cg = new Restaurant1CustomerGui(cRole, null);
 				cg.isPresent = true;
 				cRole.setGui(cg);
-				cap.rest1Panel.addGui(cg);
+				if(!testMode){
+					cap.rest1Panel.addGui(cg);
+				}
 				cRole.setHost(((Restaurant1Host)rest.getHost()));
 				cRole.gotHungry();
-				gui.setPresent(false);
+				if(!testMode){
+					gui.setPresent(false);
+				}
 				toDo.remove(e);
 			}
 
@@ -715,7 +760,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 				}
 				Restaurant2WaiterRole wRole = new Restaurant2WaiterRole(this.name, this); 
-				MyRole newRole = new MyRole(wRole, "Rest 4 Waiter");
+				MyRole newRole = new MyRole(wRole, "Rest 2 Waiter");
 				newRole.setActive(true);
 				roles.add(newRole);
 				Restaurant2WaiterGui wg = new Restaurant2WaiterGui((Restaurant2WaiterRole)newRole.role);
@@ -1216,7 +1261,7 @@ public class PersonAgent extends Agent implements Person{
 				return;
 			}
 		}
-		
+
 		//////////////////////////REST 5 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant5){
 			Restaurant rest = (Restaurant)e.location;
@@ -1237,7 +1282,7 @@ public class PersonAgent extends Agent implements Person{
 				Restaurant5FoodGui fgui = new Restaurant5FoodGui();
 				cRole.setFoodGui(fgui);
 				MyRole newRole = new MyRole(cRole, "Rest 5 Customer");
-				
+
 				newRole.setActive(true);
 				roles.add(newRole);
 				Restaurant5CustomerGui cg = new Restaurant5CustomerGui(cRole);
@@ -1634,8 +1679,7 @@ public class PersonAgent extends Agent implements Person{
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 100000.00);
 						mr.setActive(true);
 						gui.setPresent(false);
-						((BankCustomerRole)mr.role).gui.setPresent(true);
-						toDo.remove(e);
+						((BankCustomerRole)mr.role).gui.setPresent(true);						toDo.remove(e);
 						return;
 					}
 				}
@@ -1643,11 +1687,15 @@ public class PersonAgent extends Agent implements Person{
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
 				bcr.bh = bank.getHost();
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
-				cap.bankPanel.addGui(bcg);
+				if(!testMode){
+					cap.bankPanel.addGui(bcg);
+				}
 				if(e.directive.equals("deposit"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
@@ -1692,7 +1740,9 @@ public class PersonAgent extends Agent implements Person{
 				BankTellerGui btg = new BankTellerGui(btr);
 				btr.setGui(btg);
 				btr.gui.setPresent(true);
-				cap.bankPanel.addGui(btg);
+				if(!testMode){
+					cap.bankPanel.addGui(btg);
+				}
 				gui.setPresent(false);
 				return;
 			}
@@ -1736,11 +1786,13 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){ //if our intent is to act as a customer
 				PersonAgent.tracePanel.print("Bank Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
-					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
+					if(mr.type.equals("Bank Customer 2")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
+						else if(e.directive.equals("robBank"))
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 10000.00);
 						mr.setActive(true);
 						gui.setPresent(false);
 						((BankCustomerRole)mr.role).gui.setPresent(true);
@@ -1750,17 +1802,21 @@ public class PersonAgent extends Agent implements Person{
 				}
 				System.err.println("Creating new role");
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
-				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
+				MyRole newRole = new MyRole(bcr, "Bank Customer 2"); //make a new MyRole
 				bcr.bh = bank.getHost();
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
-				cap.bankPanel.addGui(bcg);
+				cap.bankPanel2.addGui(bcg);
 				if(e.directive.equals("deposit"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
+				else if(e.directive.equals("robBank"))
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 10000.00);
 				gui.setPresent(false);
 				((BankCustomerRole)newRole.role).gui.setPresent(true);
 				toDo.remove(e); //remove the event from the queue
@@ -1944,7 +2000,7 @@ public class PersonAgent extends Agent implements Person{
 			if(e.type == EventType.CustomerEvent){
 				PersonAgent.tracePanel.print("Market Customer at " + e.location.getName(), this);
 				for(MyRole mr : roles){
-					if(mr.type.equals("Market Customer")){
+					if(mr.type.equals("Market Customer 2")){
 						((MarketCustomerRole)mr.role).msgHello(wallet.getOnHand(), shoppingBag);
 						mr.setActive(true);
 						gui.setPresent(true);
@@ -1954,13 +2010,13 @@ public class PersonAgent extends Agent implements Person{
 					}
 				}
 				MarketCustomerRole mcr = new MarketCustomerRole(this, this.name);
-				MyRole newRole = new MyRole(mcr, "Market Customer");
+				MyRole newRole = new MyRole(mcr, "Market Customer 2");
 				mcr.setCashier(market.getCashier());
 				newRole.setActive(true);
 				roles.add(newRole);
 				MarketCustomerGui mcg = new MarketCustomerGui((MarketCustomerRole)newRole.role);
 				((MarketCustomerRole)newRole.role).setGui(mcg);
-				cap.marketPanel.addGui(mcg);
+				cap.marketPanel2.addGui(mcg);
 				mcg.setPresent(true);
 				((MarketCustomerRole)newRole.role).msgHello(wallet.getOnHand(), shoppingBag);
 				gui.setPresent(false);
@@ -2036,6 +2092,7 @@ public class PersonAgent extends Agent implements Person{
 		//////////////////////// CASINO //////////////////////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Casino){
 			PersonAgent.tracePanel.print("Casino Player at " + e.location.getName(), this);
+			((Casino)e.location).startTimer();
 			gui.setPresent(false);
 			toDo.remove(e);
 			atCasino = true;
@@ -2159,7 +2216,7 @@ public class PersonAgent extends Agent implements Person{
 		}
 		if(!addedAnEvent && !containsEvent("Go home")){
 			SimEvent goHome = null;
-			if(homeNumber > 4){
+			if(homeNumber > 5){
 				goHome = new SimEvent("Go home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 			}
 			else{

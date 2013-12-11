@@ -78,10 +78,10 @@ public void msgmarketbill(Market5 m, int Bill){
 public void msgGoOffWork(){
 	print ("cook off work");
 	offWorkMess ++; 
-	if (offWorkMess == 2){
+//	if (offWorkMess == 2){
 		offWork = true; 
 		stateChanged();
-	}
+	//}
 }
 
 
@@ -200,6 +200,7 @@ private void payMarketBill(MarketBill b){
 private void goOffWork(){
 	print("cashier go off work");
 	offWork = false; 
+	offWorkMess = 0; 
 	//this.person.msgFinishedEvent(this);
 	this.person.msgGoOffWork(this, 0);
 }

@@ -3,6 +3,7 @@ package person.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
@@ -18,12 +19,24 @@ public class PersonGui implements Gui{
 	private TrafficLightAgent light = null;
 	public int xPos, yPos;//default player position
 	public int xDestination, yDestination;//default start position
+	public int tempX, tempY;
 	private boolean arrived; 
+	private boolean tempActive;
 	public boolean isPresent;
-	public boolean atLight;
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
 	public Image pImg = img.getImage();
 	CityAnimationPanel cPanel;
+	
+	private Semaphore atlight = new Semaphore(0, true);
+	
+	private int xtl = 330, ytl = 170;
+	private int xtr = 440, ytr = 170;
+	private int xbl = 330, ybl = 280;
+	private int xbr = 440, ybr = 280;
+	
+	
+	private int xtemp;
+	private int ytemp;
 
 	public PersonGui(PersonAgent agent, int posx, int posy, CityAnimationPanel cap) {
 		xPos = posx; 
@@ -40,23 +53,98 @@ public class PersonGui implements Gui{
 		this.agent = agent;
 		arrived = false;
 		isPresent = false;
-		atLight = false;
 	}
 	public void updatePosition() {
-    	if (xPos < xDestination && (yPos == 170 || yPos == 280))
+		boolean moved = false;
+    	if (xPos < xDestination && (yPos == 170 || yPos == 280)){
             xPos++;
-        else if (xPos > xDestination && (yPos == 170 || yPos == 280))
+            moved = true;
+    	}
+        else if (xPos > xDestination && (yPos == 170 || yPos == 280)){
             xPos--;
+            moved = true;
+        }
 
-        if (yPos < yDestination && (xPos == 330 || xPos == 440))
+        if (yPos < yDestination && (xPos == 330 || xPos == 440)){
             yPos++;
-        else if (yPos > yDestination && (xPos == 440 || xPos == 330))
-            yPos--;
-		
-		if(yPos == yDestination && xPos == xDestination && !arrived){
-			arrived = true;
-			agent.msgAtDest(new Position(xPos, yPos));
+            moved = true;
+        }
+        else if (yPos > yDestination && (xPos == 440 || xPos == 330)){
+        	yPos--;
+        	moved = true;
+        }
+		if(yPos == yDestination && xPos != xDestination && !moved){
+			tempActive = true;
+			tempX = xDestination;
+			tempY = yDestination;
+			if(170-yDestination > 0)
+				yDestination = 170;
+			else
+				yDestination = 280;
 		}
+		else if(yPos != yDestination && xPos == xDestination && !moved){
+			tempActive = true;
+			tempX = xDestination;
+			tempY = yDestination;
+			if(330-xDestination > 0)
+				xDestination = 330;
+			else
+				xDestination = 440;
+		}
+		if(yPos == yDestination && xPos == xDestination && !arrived){
+			if(tempActive){
+				tempActive = false;
+				xDestination = tempX;
+				yDestination = tempY;
+			}
+			else{
+				arrived = true;
+				agent.msgAtDest(new Position(xPos, yPos));
+			}
+		}
+//		 if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
+//			System.err.println("YO");
+//			arrived = true;
+//			xtemp = xDestination;
+//			ytemp = yDestination;
+//			xDestination = xtl;
+//			yDestination = ytl;
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xbl && yPos == ybl)&&(xPos < xDestination || yPos > yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xbr && yPos == ybr)&&(xPos > xDestination || yPos > yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+	
 	}
 
 	public void draw(Graphics2D g) {
@@ -82,6 +170,12 @@ public class PersonGui implements Gui{
 	public void DoGoTo(Position p){
 		xDestination = p.getX();
 		yDestination = p.getY();
+		arrived = false;
+	}
+	
+	public void ToGo(){
+		xDestination = xtemp;
+		yDestination = ytemp;
 		arrived = false;
 	}
 	

@@ -60,15 +60,15 @@ public class Restaurant2WaiterGui implements Gui {
 		if(path.equals("clear"))
 		{
 			path = "src/resources/white.jpg";
-			icon = new ImageIcon(path);
-			image = icon.getImage();
+			//icon = new ImageIcon(path);
+			//image = icon.getImage();
 		}
 		else
 		{
 			path = "src/resources/"+path+".jpg";
 			System.out.println(path);
-			icon = new ImageIcon(path);
-			image = icon.getImage();
+			//icon = new ImageIcon(path);
+			//image = icon.getImage();
 		}
 
 	}

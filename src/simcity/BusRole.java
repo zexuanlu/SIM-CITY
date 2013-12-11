@@ -229,7 +229,7 @@ public class BusRole extends Agent implements Bus {
 				public void run() {
 					msgtimetoLeave();
 				}
-			},5000);			
+			},2000);			
 		}
 		
 		

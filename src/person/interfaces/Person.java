@@ -51,4 +51,8 @@ public interface Person {
 		
 		public abstract List<SimEvent> getToDo(); // gets the person's to do list
 		
+		public void msgAtLight();
+		
+		public void ToGo();
+		
 }

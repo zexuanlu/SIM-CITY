@@ -17,7 +17,7 @@ import java.util.concurrent.Semaphore;
 //the Restaurant1HostRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
 public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements Restaurant1Waiter {
-
+public boolean offWork = false; 
 	//note that tables is typed with Collection semantics.
 	//Later we will see how it is implemented
 	public int tablenum;
@@ -77,6 +77,14 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		return a;
 	}
 
+	
+	public void msgGoOffWork(){
+		offWork = true; 
+		print("Restaurantabstractwaiter offwork");
+		stateChanged(); 
+	}
+
+	
 	
 	public mycustomer findtable(int table){
 		mycustomer a = null;
@@ -210,6 +218,8 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
             so that table is unoccupied and customer is waiting.
             If so seat him at the table.
 		 */	
+
+		
 		Do("SCHEDULER");
 		Do(customer.size() + "");
 		try{
@@ -277,13 +287,18 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 				return true;
 			}
 		}
-		
+		if (offWork){
+			//CHECK IN HERE FOR SHIT
+			if (customer.size() == 0){	
+				goOffWork();
+				return true; 
+			}
+		}
 		
 		}
 		catch(ConcurrentModificationException e){
 			return false;
 		}
-		Do("Why am I person 15?");
 		return false;
 		//we have tried all our rules and found
 		//nothing to do. So return false to main loop of abstract agent
@@ -325,6 +340,14 @@ public class Restaurant1WaiterRole extends Restaurant1AbstractWaiter implements 
 		print("Seating " + customer.c + " at " + table);
 		waiterGui.DoBringToTable(tablenum); 
 		//waiterGui.DoLeaveCustomer();
+	}
+	
+	private void goOffWork(){
+		print("Restaurant1Waiter offWork");
+		offWork = false; 
+		cashier.msgGoOffWork(); 
+		cook.msgGoOffWork(); 
+		this.person.msgGoOffWork(this, 0);	
 	}
 	
 	public void Dotakeorder(mycustomer customer){

@@ -43,8 +43,8 @@ public class Restaurant6WaiterGui implements Gui {
     private final int pickUpX = 30;
     private final int pickUpY = 150;
     
-    public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
-    public Image image = img.getImage();
+    //public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+    //public Image image = img.getImage();
     
     public void msgRequestedBreak() {
     	requestedBreak = true;
@@ -156,7 +156,7 @@ public class Restaurant6WaiterGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
        // g.fillRect(xPos, yPos, 20, 20);
-        g.drawImage(image, xPos, yPos, 20, 20, null);
+        //g.drawImage(image, xPos, yPos, 20, 20, null);
         if(agent instanceof Restaurant6WaiterRole){
         	g.drawString(((PersonAgent)((Restaurant6WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
         }
