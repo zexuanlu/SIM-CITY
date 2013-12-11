@@ -299,7 +299,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// List of locations
 		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
-		for (int i = 1; i <= 39; ++i) {
+		for (int i = 1; i <= 40; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
 			PersonGui pgui = new PersonGui(p, 40, 170, this.cityAnimPanel);
 			p.gui = pgui;
