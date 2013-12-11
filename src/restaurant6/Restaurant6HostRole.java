@@ -138,7 +138,7 @@ public class Restaurant6HostRole extends Role implements RestaurantHost {
         
         // Messages
         // Message from the timecard that it's time to go off work
-        public void msgGoOffWork(Restaurant6HostRole h, double money) {
+        public void msgEndOfDay(Restaurant6HostRole h, double money) {
         	offWork = true;
         	restPay = money;
         	log.add(new LoggedEvent("It's the end of the day! Time to tell all my worker bees to go home."));
