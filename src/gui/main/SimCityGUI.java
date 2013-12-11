@@ -204,7 +204,7 @@ public class SimCityGUI extends JFrame {
         		trafficlightagent.startThread();
         	
                 // List of apartment tenant roles
-                aptTenants = new ArrayList<ApartmentTenantRole>();
+                /*aptTenants = new ArrayList<ApartmentTenantRole>();
                 
                 for (int i = 5; i < 29; ++i) {
                         aptTenants.add(new ApartmentTenantRole("APT"+i, i, initPerson));
@@ -355,7 +355,7 @@ public class SimCityGUI extends JFrame {
                 
                 for(Location location : locations){
                         cityAnimPanel.addLocation(location);
-                }
+                }*/
                 
                 citymap = new CityMap(locations);
 
@@ -484,7 +484,7 @@ public class SimCityGUI extends JFrame {
                 truck.startThread();
                 cityAnimPanel.addGui(truckGui);
                 
-                wgui5.isPresent = false; 
+                /*wgui5.isPresent = false; 
                 waiter5.setGui(wgui5);
                 cityAnimPanel.rest5Panel.addGui(wgui5);
                 
@@ -560,7 +560,7 @@ public class SimCityGUI extends JFrame {
                 
                 bhg.isPresent = false;
                 bankhostrole.setGui(bhg);
-                cityAnimPanel.bankPanel.addGui(bhg);
+                cityAnimPanel.bankPanel.addGui(bhg);*/
 
                 busstop1.startThread();
                 busstop2.startThread();
@@ -596,156 +596,150 @@ public class SimCityGUI extends JFrame {
                  */
 
 //                for (int i=1; i<6; i++){
-                int x = 40; 
-                int y = 280; 
-                for (int i=0; i<27; i++){
-                        aStarTraversal = new AStarTraversal(grid);
-                		aStarTraversal.originalgrid = origgrid; 
-                        PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
-
-                        x = x+20; 
-
-                        PersonGui pgui = new PersonGui(p, x, y, cityAnimPanel);
-                        p.setGui(pgui);
-                        System.out.println(""+i);
-                        System.out.println(citymap.getHome(i+1));
-                        if(i < 21){
-                        	int u = citymap.getHome(i+1).position.getX();
-                        	int v = citymap.getHome(i+1).position.getY();
-                                p.gui.setStart(u, v);
-                                p.homeNumber = i+1;
-                        }
-                        else
-                        p.homeNumber = i;
-                        people.add(p);
-                        peoplegui.add(pgui);
-                        cityAnimPanel.addGui(pgui);
-                        p.setAnimationPanel(cityAnimPanel);
-                }
+//                int x = 40; 
+//                int y = 280; 
+//                for (int i=0; i<27; i++){
+//                        aStarTraversal = new AStarTraversal(grid);
+//                		aStarTraversal.originalgrid = origgrid; 
+//                        PersonAgent p  = new PersonAgent("Person "+i, citymap, aStarTraversal, 500.00);
+//
+//                        x = x+20; 
+//
+//                        PersonGui pgui = new PersonGui(p, x, y, cityAnimPanel);
+//                        p.setGui(pgui);
+//                        System.out.println(""+i);
+//                        if(i < 21){
+//                                p.gui.setStart(citymap.getHome(i+1).position.getX(), citymap.getHome(i+1).position.getY());
+//                                p.homeNumber = i+1;
+//                        }
+//                        else
+//                        p.homeNumber = i;
+//                        people.add(p);
+//                        peoplegui.add(pgui);
+//                        cityAnimPanel.addGui(pgui);
+//                        p.setAnimationPanel(cityAnimPanel);
+//                }
+//                
+//                for (int i=0;i<27;i++){	
+//                	if (i != 2  && i!=4 && i != 10 && i!= 20 &&  i != 25){
+//                        people.get(i).msgAddMoney(-200);
+//                	}
+//                }
                 
-                for (int i=0;i<27;i++){	
-                	if (i != 2  && i!=4 && i != 10 && i!= 20 &&  i != 25){
-                        people.get(i).msgAddMoney(-200);
-                	}
-                }
-                
-                people.get(0).addRole(bankhostrole, "Bank Host");
-                people.get(0).roles.get(0).role.switchPerson(people.get(0));
-                people.get(0).addRole(homeOwnerRole1, "Home Owner");
-                people.get(0).roles.get(1).role.switchPerson(people.get(0));
-                people.get(1).addRole(bankhostrole, "Bank Host");
-                people.get(1).addRole(homeOwnerRole2, "Home Owner");
-                people.get(1).roles.get(1).role.switchPerson(people.get(1));
-                people.get(2).addRole(banktellerrole1, "Bank Teller");
-                people.get(2).roles.get(0).role.switchPerson(people.get(2));
-                people.get(2).addRole(homeOwnerRole3, "Home Owner");  
-                people.get(2).roles.get(1).role.switchPerson(people.get(2));
-                people.get(3).addRole(banktellerrole1, "Bank Teller");
-                people.get(3).addRole(homeOwnerRole4, "Home Owner");
-                people.get(3).roles.get(1).role.switchPerson(people.get(3));
-                people.get(4).addRole(banktellerrole2, "Bank Teller");
-                people.get(4).roles.get(0).role.switchPerson(people.get(4));
-
-                people.get(4).addRole(aptTenants.get(0), "Apt Tenant");
-                people.get(4).roles.get(1).role.switchPerson(people.get(4));
-                people.get(4).addRole(landlord, "Apt Landlord");
-                people.get(4).roles.get(2).role.switchPerson(people.get(4));
-                people.get(5).addRole(banktellerrole2, "Bank Teller");
-                people.get(5).addRole(aptTenants.get(1), "Apt Tenant");
-                people.get(5).roles.get(1).role.switchPerson(people.get(5));
-                people.get(6).addRole(marketemployeerole, "Market Employee");
-                people.get(6).roles.get(0).role.switchPerson(people.get(6));
-                people.get(6).addRole(aptTenants.get(2), "Apt Tenant");
-                people.get(6).roles.get(1).role.switchPerson(people.get(6));
-                people.get(7).addRole(marketemployeerole, "Market Employee");
-                people.get(7).addRole(aptTenants.get(3), "Apt Tenant");
-                people.get(7).roles.get(1).role.switchPerson(people.get(7));
-                people.get(8).addRole(marketcashierrole, "Market Cashier");
-                people.get(8).roles.get(0).role.switchPerson(people.get(8));
-                people.get(8).addRole(aptTenants.get(4), "Apt Tenant");
-                people.get(8).roles.get(1).role.switchPerson(people.get(8));
-                people.get(9).addRole(marketcashierrole, "Market Cashier");
-                people.get(9).addRole(aptTenants.get(5), "Apt Tenant");
-                people.get(9).roles.get(1).role.switchPerson(people.get(9));
-               
-                people.get(10).addRole(cashier3, "Rest 3 Cashier");
-                people.get(10).roles.get(0).role.switchPerson(people.get(10));
-                people.get(10).addRole(aptTenants.get(6), "Apt Tenant");
-                people.get(10).roles.get(1).role.switchPerson(people.get(10));
-                people.get(11).addRole(cashier1, "Rest 1 Cashier");
-                people.get(11).addRole(aptTenants.get(7), "Apt Tenant");
-                people.get(11).roles.get(1).role.switchPerson(people.get(11));
-               
-                people.get(12).addRole(cook3, "Rest 3 Cook");
-                people.get(12).roles.get(0).role.switchPerson(people.get(12));
-                people.get(12).addRole(aptTenants.get(8), "Apt Tenant");
-                people.get(12).roles.get(1).role.switchPerson(people.get(12));
-                people.get(13).addRole(cook1, "Rest 1 Cook");
-                people.get(13).addRole(aptTenants.get(9), "Apt Tenant");
-                people.get(13).roles.get(1).role.switchPerson(people.get(13));
-                
-                people.get(14).addRole(sdwaiter3, "Rest 3 SDWaiter");
-                people.get(14).roles.get(0).role.switchPerson(people.get(14));
-                people.get(14).addRole(aptTenants.get(10), "Apt Tenant");
-                people.get(14).roles.get(1).role.switchPerson(people.get(14));
-                people.get(15).addRole(waiter1, "Rest 1 Waiter");
-                people.get(15).addRole(aptTenants.get(11), "Apt Tenant");
-                people.get(15).roles.get(1).role.switchPerson(people.get(15));
-                
-                people.get(16).addRole(host3, "Rest 3 Host");
-                people.get(16).roles.get(0).role.switchPerson(people.get(16));
-                people.get(16).addRole(aptTenants.get(12), "Apt Tenant");
-                people.get(16).roles.get(1).role.switchPerson(people.get(16));
-                
-                people.get(17).addRole(host1, "Rest 1 Host");
-                people.get(17).addRole(aptTenants.get(13), "Apt Tenant");
-                people.get(17).roles.get(1).role.switchPerson(people.get(17));
-                people.get(18).addRole(aptTenants.get(14), "Apt Tenant");
-                people.get(18).roles.get(0).role.switchPerson(people.get(18));
-                people.get(19).addRole(aptTenants.get(15), "Apt Tenant");
-                people.get(19).roles.get(0).role.switchPerson(people.get(19));
-                people.get(20).addRole(aptTenants.get(16), "Apt Tenant");
-                people.get(20).roles.get(0).role.switchPerson(people.get(20));
-                
-                people.get(21).addRole(aptTenants.get(17), "Apt Tenant");
-                people.get(21).roles.get(0).role.switchPerson(people.get(21));
-                
-                people.get(22).addRole(host5, "Rest 5 Host");
-                people.get(22).roles.get(0).role.switchPerson(people.get(22));
-                people.get(22).addRole(aptTenants.get(18), "Apt Tenant");
-                people.get(22).roles.get(1).role.switchPerson(people.get(22));
-                
-                people.get(23).addRole(waiter5, "Rest 5 Waiter");
-                people.get(23).roles.get(0).role.switchPerson(people.get(23));
-                people.get(23).addRole(aptTenants.get(19), "Apt Tenant");
-                people.get(23).roles.get(1).role.switchPerson(people.get(23));
-                
-                people.get(24).addRole(cashier5, "Rest 5 Cashier");
-                people.get(24).roles.get(0).role.switchPerson(people.get(24));
-                people.get(24).addRole(aptTenants.get(20), "Apt Tenant");
-                people.get(24).roles.get(1).role.switchPerson(people.get(24));
-                
-                people.get(25).addRole(cook5, "Rest 5 Cook");
-                people.get(25).roles.get(0).role.switchPerson(people.get(25));
-                people.get(25).addRole(aptTenants.get(21), "Apt Tenant");
-                people.get(25).roles.get(1).role.switchPerson(people.get(25));
-                
-                people.get(26).addRole(sdwaiter5, "Rest 5 SDWaiter");
-                people.get(26).roles.get(0).role.switchPerson(people.get(26));
-                people.get(26).addRole(aptTenants.get(22), "Apt Tenant");
-                people.get(26).roles.get(1).role.switchPerson(people.get(26));
-
-                for(int i = 18; i < 26; i++){
-                        people.get(i).wallet.setOnHand(0.00);
-                }
-                
-                rest5.getTimeCard().startThread(); 
-                
-                rest1.getTimeCard().startThread();
-                rest3.getTimeCard().startThread();
-                market.getTimeCard().startThread();
-                bank.getTimeCard().startThread();
-                bankdatabase.startThread();
+//                people.get(0).addRole(bankhostrole, "Bank Host");
+//                people.get(0).roles.get(0).role.switchPerson(people.get(0));
+//                people.get(0).addRole(homeOwnerRole1, "Home Owner");
+//                people.get(0).roles.get(1).role.switchPerson(people.get(0));
+//                people.get(1).addRole(bankhostrole, "Bank Host");
+//                people.get(1).addRole(homeOwnerRole2, "Home Owner");
+//                people.get(1).roles.get(1).role.switchPerson(people.get(1));
+//                people.get(2).addRole(banktellerrole1, "Bank Teller");
+//                people.get(2).roles.get(0).role.switchPerson(people.get(2));
+//                people.get(2).addRole(homeOwnerRole3, "Home Owner");  
+//                people.get(2).roles.get(1).role.switchPerson(people.get(2));
+//                people.get(3).addRole(banktellerrole1, "Bank Teller");
+//                people.get(3).addRole(homeOwnerRole4, "Home Owner");
+//                people.get(3).roles.get(1).role.switchPerson(people.get(3));
+//                people.get(4).addRole(banktellerrole2, "Bank Teller");
+//                people.get(4).roles.get(0).role.switchPerson(people.get(4));
+//
+//                people.get(4).addRole(aptTenants.get(0), "Apt Tenant");
+//                people.get(4).roles.get(1).role.switchPerson(people.get(4));
+//                people.get(4).addRole(landlord, "Apt Landlord");
+//                people.get(4).roles.get(2).role.switchPerson(people.get(4));
+//                people.get(5).addRole(banktellerrole2, "Bank Teller");
+//                people.get(5).addRole(aptTenants.get(1), "Apt Tenant");
+//                people.get(5).roles.get(1).role.switchPerson(people.get(5));
+//                people.get(6).addRole(marketemployeerole, "Market Employee");
+//                people.get(6).roles.get(0).role.switchPerson(people.get(6));
+//                people.get(6).addRole(aptTenants.get(2), "Apt Tenant");
+//                people.get(6).roles.get(1).role.switchPerson(people.get(6));
+//                people.get(7).addRole(marketemployeerole, "Market Employee");
+//                people.get(7).addRole(aptTenants.get(3), "Apt Tenant");
+//                people.get(7).roles.get(1).role.switchPerson(people.get(7));
+//                people.get(8).addRole(marketcashierrole, "Market Cashier");
+//                people.get(8).roles.get(0).role.switchPerson(people.get(8));
+//                people.get(8).addRole(aptTenants.get(4), "Apt Tenant");
+//                people.get(8).roles.get(1).role.switchPerson(people.get(8));
+//                people.get(9).addRole(marketcashierrole, "Market Cashier");
+//                people.get(9).addRole(aptTenants.get(5), "Apt Tenant");
+//                people.get(9).roles.get(1).role.switchPerson(people.get(9));
+//                people.get(10).addRole(cashier1, "Rest 1 Cashier");
+//                people.get(10).roles.get(0).role.switchPerson(people.get(10));
+//                people.get(10).addRole(aptTenants.get(6), "Apt Tenant");
+//                people.get(10).roles.get(1).role.switchPerson(people.get(10));
+//                people.get(11).addRole(cashier1, "Rest 1 Cashier");
+//                people.get(11).addRole(aptTenants.get(7), "Apt Tenant");
+//                people.get(11).roles.get(1).role.switchPerson(people.get(11));
+//                people.get(12).addRole(cook1, "Rest 1 Cook");
+//                people.get(12).roles.get(0).role.switchPerson(people.get(12));
+//                people.get(12).addRole(aptTenants.get(8), "Apt Tenant");
+//                people.get(12).roles.get(1).role.switchPerson(people.get(12));
+//                people.get(13).addRole(cook1, "Rest 1 Cook");
+//                people.get(13).addRole(aptTenants.get(9), "Apt Tenant");
+//                people.get(13).roles.get(1).role.switchPerson(people.get(13));
+//                people.get(14).addRole(waiter1, "Rest 1 Waiter");
+//                people.get(14).roles.get(0).role.switchPerson(people.get(14));
+//                people.get(14).addRole(aptTenants.get(10), "Apt Tenant");
+//                people.get(14).roles.get(1).role.switchPerson(people.get(14));
+//                people.get(15).addRole(waiter1, "Rest 1 Waiter");
+//                people.get(15).addRole(aptTenants.get(11), "Apt Tenant");
+//                people.get(15).roles.get(1).role.switchPerson(people.get(15));
+//                
+//                people.get(16).addRole(host1, "Rest 1 Host");
+//                people.get(16).roles.get(0).role.switchPerson(people.get(16));
+//                people.get(16).addRole(aptTenants.get(12), "Apt Tenant");
+//                people.get(16).roles.get(1).role.switchPerson(people.get(16));
+//                
+//                people.get(17).addRole(host1, "Rest 1 Host");
+//                people.get(17).addRole(aptTenants.get(13), "Apt Tenant");
+//                people.get(17).roles.get(1).role.switchPerson(people.get(17));
+//                people.get(18).addRole(aptTenants.get(14), "Apt Tenant");
+//                people.get(18).roles.get(0).role.switchPerson(people.get(18));
+//                people.get(19).addRole(aptTenants.get(15), "Apt Tenant");
+//                people.get(19).roles.get(0).role.switchPerson(people.get(19));
+//                people.get(20).addRole(aptTenants.get(16), "Apt Tenant");
+//                people.get(20).roles.get(0).role.switchPerson(people.get(20));
+//                
+//                people.get(21).addRole(aptTenants.get(17), "Apt Tenant");
+//                people.get(21).roles.get(0).role.switchPerson(people.get(21));
+//                
+//                people.get(22).addRole(host5, "Rest 5 Host");
+//                people.get(22).roles.get(0).role.switchPerson(people.get(22));
+//                people.get(22).addRole(aptTenants.get(18), "Apt Tenant");
+//                people.get(22).roles.get(1).role.switchPerson(people.get(22));
+//                
+//                people.get(23).addRole(waiter5, "Rest 5 Waiter");
+//                people.get(23).roles.get(0).role.switchPerson(people.get(23));
+//                people.get(23).addRole(aptTenants.get(19), "Apt Tenant");
+//                people.get(23).roles.get(1).role.switchPerson(people.get(23));
+//                
+//                people.get(24).addRole(cashier5, "Rest 5 Cashier");
+//                people.get(24).roles.get(0).role.switchPerson(people.get(24));
+//                people.get(24).addRole(aptTenants.get(20), "Apt Tenant");
+//                people.get(24).roles.get(1).role.switchPerson(people.get(24));
+//                
+//                people.get(25).addRole(cook5, "Rest 5 Cook");
+//                people.get(25).roles.get(0).role.switchPerson(people.get(25));
+//                people.get(25).addRole(aptTenants.get(21), "Apt Tenant");
+//                people.get(25).roles.get(1).role.switchPerson(people.get(25));
+//                
+//                people.get(26).addRole(sdwaiter5, "Rest 5 SDWaiter");
+//                people.get(26).roles.get(0).role.switchPerson(people.get(26));
+//                people.get(26).addRole(aptTenants.get(22), "Apt Tenant");
+//                people.get(26).roles.get(1).role.switchPerson(people.get(26));
+//
+//                for(int i = 18; i < 26; i++){
+//                        people.get(i).wallet.setOnHand(0.00);
+//                }
+//                
+//                rest5.getTimeCard().startThread(); 
+//                
+//                rest1.getTimeCard().startThread();
+//                rest3.getTimeCard().startThread();
+//                market.getTimeCard().startThread();
+//                bank.getTimeCard().startThread();
+//                bankdatabase.startThread();
                 
                  //people.get(0).startThread();
                 //people.get(0).setAnimationPanel(cityAnimPanel);
@@ -757,152 +751,147 @@ public class SimCityGUI extends JFrame {
                  * 
                  * Creating host, cook, cashier, waiter, and teller events
                  * */
-
-                SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
-                SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
-                SimEvent hostGoToRestaurant3 = new SimEvent(rest3, 8, EventType.HostEvent);	//CHANGE EVENT?
-                SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
-                SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CookEvent);
-                SimEvent cookGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CookEvent);	//CHANGE EVENT?
-                SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
-                SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CashierEvent);
-                SimEvent cashierGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CashierEvent);
-                SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
-                SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 14, EventType.SDWaiterEvent);
-                SimEvent waiterGoToRestaurant3 = new SimEvent(rest3, 8, EventType.SDWaiterEvent);	//CHANGE EVENT?
-                SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
-                SimEvent tellerGoToBank2 = new SimEvent(bank, 14, EventType.TellerEvent);
-                SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
-                SimEvent hostGoToBank2 = new SimEvent(bank, 14, EventType.HostEvent);
-                SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
-                SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
-                SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
-                SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
-          
-                SimEvent goEatRest5 = new SimEvent("goEat", rest5, EventType.CustomerEvent);
-                SimEvent goEatRest3 = new SimEvent("goEat", rest3, EventType.CustomerEvent);
-                SimEvent res5hostGoToRestaurant = new SimEvent(rest5, 8, EventType.HostEvent);
-                SimEvent res5hostGoToRestaurant2 = new SimEvent(rest5, 14, EventType.HostEvent);
-                SimEvent res5cookGoToRestaurant = new SimEvent(rest5, 8, EventType.CookEvent);
-                SimEvent res5cookGoToRestaurant2 = new SimEvent(rest5, 14, EventType.CookEvent);
-                SimEvent res5cashierGoToRestaurant = new SimEvent(rest5, 8, EventType.CashierEvent);
-                SimEvent res5cashierGoToRestaurant2 = new SimEvent(rest5, 14, EventType.CashierEvent);
-                SimEvent res5waiterGoToRestaurant = new SimEvent(rest5, 8, EventType.WaiterEvent);
-                
-                SimEvent res5SDwaiterGoToRestaurant = new SimEvent(rest5, 8, EventType.SDWaiterEvent);
-  
-
-
-                bankhostrole.addTeller(banktellerrole1);
-                bankhostrole.addTeller(banktellerrole2);
-                banktellerrole1.bh = bankhostrole;
-                banktellerrole2.bh = bankhostrole;
-                banktellerrole1.bd = bankdatabase;
-                banktellerrole2.bd = bankdatabase;
-                
-                marketcashierrole.addEmployee(marketemployeerole);
-                waiter1.setcook(cook1);
-                waiter1.sethost(host1);
-                waiter1.setRevolvingStand(cook1.getRevStand());
-                marketemployeerole.setCashier(marketcashierrole);
-                host1.msgaddwaiter(waiter1);
-                waiter1.setCashier(cashier1);
-                cook1.setMarketCashier(marketcashierrole);
-                cook1.setCashier(cashier1);
-                cashier1.bank = bankdatabase; 
-                
-                waiter5.setHost(host5);
-                waiter5.setCashier(cashier5);
-                waiter5.setCook(cook5);
-                
-                sdwaiter5.setHost(host5);
-                sdwaiter5.setCashier(cashier5);
-                sdwaiter5.setCook(cook5);
-                sdwaiter5.setStand(revolvingstand5);
-                
-                
-        
-                
-                host5.addWaiter(waiter5);
-                host5.addWaiter(sdwaiter5);
-                cook5.setMarketCashier(marketcashierrole);
-                cook5.setRevolvingStand(revolvingstand5);
-    
-                //Set Restaurant 3 agent references
-                waiter3.setHost(host3);
-                waiter3.setCook(cook3);
-                waiter3.setCashier(cashier3);
-                sdwaiter3.setHost(host3);
-                sdwaiter3.setCook(cook3);
-                sdwaiter3.setCashier(cashier3);
-                sdwaiter3.setRevolvingStand(cook3.getRevStand());
-                cook3.setCashier(cashier3);
-                cook3.setMarketCashier(marketcashierrole);
-                host3.addWaiter(sdwaiter3);
-                
-
-                // Messages landlord with initial tenants
-                for (ApartmentTenantRole r : aptTenants) {
-                        landlord.msgNewTenant(r, r.getAptNum());
-                }
-                
-                /*
-                 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
-                 * Host, cook, cashier, waiter and teller events
-                 */
-                people.get(0).toDo.add(hostGoToBank);
-                people.get(1).toDo.add(hostGoToBank2);
-                people.get(2).toDo.add(tellerGoToBank);
-                people.get(3).toDo.add(tellerGoToBank2);
-                people.get(4).toDo.add(tellerGoToBank);
-                people.get(5).toDo.add(tellerGoToBank2);
-                people.get(6).toDo.add(employeeGoToMarket);
-                people.get(7).toDo.add(employeeGoToMarket2);
-                people.get(8).toDo.add(cashierGoToMarket);
-                people.get(9).toDo.add(cashierGoToMarket2);
-                people.get(10).toDo.add(cashierGoToRestaurant3);
-                people.get(11).toDo.add(cashierGoToRestaurant2);
-                people.get(12).toDo.add(cookGoToRestaurant3);
-                people.get(13).toDo.add(cookGoToRestaurant2);
-                people.get(14).toDo.add(waiterGoToRestaurant3);
-                people.get(15).toDo.add(waiterGoToRestaurant2);
-                people.get(16).toDo.add(hostGoToRestaurant3);
-                people.get(17).toDo.add(hostGoToRestaurant2);
-                people.get(18).toDo.add(goEatRest3); //Changed
-                people.get(22).toDo.add(res5hostGoToRestaurant);
-                people.get(23).toDo.add(res5waiterGoToRestaurant);
-                people.get(24).toDo.add(res5cashierGoToRestaurant);
-                people.get(25).toDo.add(res5cookGoToRestaurant);
-                people.get(26).toDo.add(res5SDwaiterGoToRestaurant);
-                
-                
-                truck.setCashier(marketcashierrole);
-                marketcashierrole.addTruck(truck);
-                truck.setRestaurant(rest1, 1);
-                truck.setRestaurant(rest2, 2);
-                truck.setRestaurant(rest3, 3);
-                truck.setRestaurant(rest4, 4);
-                truck.setRestaurant(rest5, 5);
-                truck.setRestaurant(rest6, 6);
-                /*Create the SimWorldClock with the starting time and the list of people*/
-                simclock = new SimWorldClock(8,people, citymap, 6000);
-                simclock.tracePanel = tracePanel;
-                simclock.timeCards.add(bank.getTimeCard());
-                simclock.timeCards.add(market.getTimeCard());
-                simclock.timeCards.add(rest1.getTimeCard());
-                simclock.timeCards.add(rest5.getTimeCard());
-                simclock.timeCards.add(rest3.getTimeCard());
-                
-                for (PersonAgent p: people){
-                     p.setcitygui(this);
-                     p.startThread();
-                }
+//
+//                SimEvent hostGoToRestaurant = new SimEvent(rest1, 8, EventType.HostEvent);
+//                SimEvent hostGoToRestaurant2 = new SimEvent(rest1, 14, EventType.HostEvent);
+//                SimEvent hostGoToRestaurant3 = new SimEvent(rest3, 8, EventType.HostEvent);	//CHANGE EVENT?
+//                SimEvent cookGoToRestaurant = new SimEvent(rest1, 8, EventType.CookEvent);
+//                SimEvent cookGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CookEvent);
+//                SimEvent cookGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CookEvent);	//CHANGE EVENT?
+//                SimEvent cashierGoToRestaurant = new SimEvent(rest1, 8, EventType.CashierEvent);
+//                SimEvent cashierGoToRestaurant2 = new SimEvent(rest1, 14, EventType.CashierEvent);
+//                SimEvent cashierGoToRestaurant3 = new SimEvent(rest3, 8, EventType.CashierEvent);
+//                SimEvent waiterGoToRestaurant = new SimEvent(rest1, 8, EventType.SDWaiterEvent);
+//                SimEvent waiterGoToRestaurant2 = new SimEvent(rest1, 14, EventType.SDWaiterEvent);
+//                SimEvent waiterGoToRestaurant3 = new SimEvent(rest3, 8, EventType.WaiterEvent);	//CHANGE EVENT?
+//                SimEvent tellerGoToBank = new SimEvent(bank, 8, EventType.TellerEvent);
+//                SimEvent tellerGoToBank2 = new SimEvent(bank, 14, EventType.TellerEvent);
+//                SimEvent hostGoToBank = new SimEvent(bank, 8, EventType.HostEvent);
+//                SimEvent hostGoToBank2 = new SimEvent(bank, 14, EventType.HostEvent);
+//                SimEvent employeeGoToMarket = new SimEvent(market, 8, EventType.EmployeeEvent);
+//                SimEvent employeeGoToMarket2 = new SimEvent(market, 14, EventType.EmployeeEvent);
+//                SimEvent cashierGoToMarket = new SimEvent(market, 8, EventType.CashierEvent);
+//                SimEvent cashierGoToMarket2 = new SimEvent(market, 14, EventType.CashierEvent);
+//          
+//                SimEvent goEatRest5 = new SimEvent("goEat", rest5, EventType.CustomerEvent);
+//                SimEvent res5hostGoToRestaurant = new SimEvent(rest5, 8, EventType.HostEvent);
+//                SimEvent res5hostGoToRestaurant2 = new SimEvent(rest5, 14, EventType.HostEvent);
+//                SimEvent res5cookGoToRestaurant = new SimEvent(rest5, 8, EventType.CookEvent);
+//                SimEvent res5cookGoToRestaurant2 = new SimEvent(rest5, 14, EventType.CookEvent);
+//                SimEvent res5cashierGoToRestaurant = new SimEvent(rest5, 8, EventType.CashierEvent);
+//                SimEvent res5cashierGoToRestaurant2 = new SimEvent(rest5, 14, EventType.CashierEvent);
+//                SimEvent res5waiterGoToRestaurant = new SimEvent(rest5, 8, EventType.WaiterEvent);
+//                
+//                SimEvent res5SDwaiterGoToRestaurant = new SimEvent(rest5, 8, EventType.SDWaiterEvent);
+//  
+//
+//
+//                bankhostrole.addTeller(banktellerrole1);
+//                bankhostrole.addTeller(banktellerrole2);
+//                banktellerrole1.bh = bankhostrole;
+//                banktellerrole2.bh = bankhostrole;
+//                banktellerrole1.bd = bankdatabase;
+//                banktellerrole2.bd = bankdatabase;
+//                
+//                marketcashierrole.addEmployee(marketemployeerole);
+//                waiter1.setcook(cook1);
+//                waiter1.sethost(host1);
+//                waiter1.setRevolvingStand(cook1.getRevStand());
+//                marketemployeerole.setCashier(marketcashierrole);
+//                host1.msgaddwaiter(waiter1);
+//                waiter1.setCashier(cashier1);
+//                cook1.setMarketCashier(marketcashierrole);
+//                cook1.setCashier(cashier1);
+//                cashier1.bank = bankdatabase; 
+//                
+//                waiter5.setHost(host5);
+//                waiter5.setCashier(cashier5);
+//                waiter5.setCook(cook5);
+//                
+//                sdwaiter5.setHost(host5);
+//                sdwaiter5.setCashier(cashier5);
+//                sdwaiter5.setCook(cook5);
+//                sdwaiter5.setStand(revolvingstand5);
+//                
+//                
+//        
+//                
+//                host5.addWaiter(waiter5);
+//                host5.addWaiter(sdwaiter5);
+//                cook5.setMarketCashier(marketcashierrole);
+//                cook5.setRevolvingStand(revolvingstand5);
+//    
+//                //Set Restaurant 3 agent references
+//                waiter3.setHost(host3);
+//                waiter3.setCook(cook3);
+//                waiter3.setCashier(cashier3);
+//                cook3.setCashier(cashier3);
+//                cook3.setMarketCashier(marketcashierrole);
+//                //host3.addWaiter(waiter3);
+//                
+//
+//                // Messages landlord with initial tenants
+//                for (ApartmentTenantRole r : aptTenants) {
+//                        landlord.msgNewTenant(r, r.getAptNum());
+//                }
+//                
+//                /*
+//                 * toDO.offer(e) adds the SimEvent to the person's list and gives him/her purpose in SimCity
+//                 * Host, cook, cashier, waiter and teller events
+//                 */
+//                people.get(0).toDo.add(hostGoToBank);
+//                people.get(1).toDo.add(hostGoToBank2);
+//                people.get(2).toDo.add(tellerGoToBank);
+//                people.get(3).toDo.add(tellerGoToBank2);
+//                people.get(4).toDo.add(tellerGoToBank);
+//                people.get(5).toDo.add(tellerGoToBank2);
+//                people.get(6).toDo.add(employeeGoToMarket);
+//                people.get(7).toDo.add(employeeGoToMarket2);
+//                people.get(8).toDo.add(cashierGoToMarket);
+//                people.get(9).toDo.add(cashierGoToMarket2);
+//                people.get(10).toDo.add(cashierGoToRestaurant);
+//                people.get(11).toDo.add(cashierGoToRestaurant2);
+//                people.get(12).toDo.add(cookGoToRestaurant);
+//                people.get(13).toDo.add(cookGoToRestaurant2);
+//                people.get(14).toDo.add(waiterGoToRestaurant);
+//                people.get(15).toDo.add(waiterGoToRestaurant2);
+//                people.get(16).toDo.add(hostGoToRestaurant);
+//                people.get(17).toDo.add(hostGoToRestaurant2);
+//                people.get(18).toDo.add(goEatRest5);
+//                people.get(22).toDo.add(res5hostGoToRestaurant);
+//                people.get(23).toDo.add(res5waiterGoToRestaurant);
+//                people.get(24).toDo.add(res5cashierGoToRestaurant);
+//                people.get(25).toDo.add(res5cookGoToRestaurant);
+//                people.get(26).toDo.add(res5SDwaiterGoToRestaurant);
+//                
+//                
+//                truck.setCashier(marketcashierrole);
+//                marketcashierrole.addTruck(truck);
+//                truck.setRestaurant(rest1, 1);
+//                truck.setRestaurant(rest2, 2);
+//                truck.setRestaurant(rest3, 3);
+//                truck.setRestaurant(rest4, 4);
+//                truck.setRestaurant(rest5, 5);
+//                truck.setRestaurant(rest6, 6);
+//                /*Create the SimWorldClock with the starting time and the list of people*/
+//                simclock = new SimWorldClock(8,people, citymap, 6000);
+//                simclock.tracePanel = tracePanel;
+//                simclock.timeCards.add(bank.getTimeCard());
+//                simclock.timeCards.add(market.getTimeCard());
+//                simclock.timeCards.add(rest1.getTimeCard());
+//                simclock.timeCards.add(rest5.getTimeCard());
+//
+//                simclock.timeCards.add(rest3.getTimeCard());
+//                for (PersonAgent p: people){
+//                     p.setcitygui(this);
+//                     p.startThread();
+//                }
                 
                 // Sets the sim world clock to the interaction panel's so events can be created with correct start time
                 cityCtrlPanel.interactPanel.setClock(simclock);
                 cityCtrlPanel.scenarioPanel.setCityAnim(cityAnimPanel);
         		cityCtrlPanel.scenarioPanel.setSimCityGUI(this);
-        		cityCtrlPanel.scenarioPanel.setClock(simclock);
+//        		cityCtrlPanel.scenarioPanel.setClock(simclock);
 
         		
        

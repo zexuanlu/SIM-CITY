@@ -28,6 +28,7 @@ public class Restaurant4CookGui implements Gui{
 	//public Image image = img.getImage();
 
 	public Restaurant4CookGui(Restaurant4CookRole c){ //HostAgent m) {
+		this.agent = c;
 		xPos = 440;
 		yPos = 250;
 		xDestination = 435;

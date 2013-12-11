@@ -22,6 +22,7 @@ import javax.swing.*;
 
 import market.*;
 import market.gui.MarketEmployeeGui;
+import market.gui.MarketTruckGui;
 import agent.Role;
 import bank.*;
 import bank.gui.BankCustomerGui;
@@ -575,7 +576,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest1SDWaiter.setRevolvingStand(rest1Cook.getRevStand());
   		rest1SDWaiter.setCashier(rest1Cashier);
   		rest1Host.msgaddwaiter(rest1Waiter);
-  		//rest1Host.msgaddwaiter(rest1SDWaiter);
+  		rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
   		rest1Cashier.accountNumber = 1;
@@ -676,6 +677,28 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		((MarketEmployeeRole)roles.get(8)).setCashier((MarketCashierRole)roles.get(6));
   		((MarketCashierRole)roles.get(7)).addEmployee((MarketEmployeeRole)roles.get(9));
   		((MarketEmployeeRole)roles.get(9)).setCashier((MarketCashierRole)roles.get(7));
+  		
+  		// Setting truck
+  		MarketTruckAgent truck = new MarketTruckAgent(1);
+        MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
+        truck.setGui(truckGui);
+        truck.startThread();
+        cityAnimPanel.addGui(truckGui);
+        
+        // Setting second truck
+        MarketTruckAgent truck2 = new MarketTruckAgent(2);
+        MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
+        truck2.setGui(truck2Gui);
+        truck2.startThread();
+        cityAnimPanel.addGui(truck2Gui);
+        
+        // Sets truck to restaurants
+        truck.setRestaurant(rest1, 1);
+        truck.setRestaurant(rest2, 2);
+//        truck.setRestaurant(rest3, 2);
+        truck2.setRestaurant(rest4, 4);
+        truck2.setRestaurant(rest5, 5);
+        truck2.setRestaurant(rest6, 6);
         
 		locations.add(bank);
 		locations.add(bank2);
@@ -784,14 +807,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(33).msgAddEvent(sdWaiter6GoToRestaurant2);
 		people.get(34).msgAddEvent(waiter6GoToRestaurant);
 		
-		// This is to start all the people's threads
-//		for (int j = 0; j < 14; ++j) {
-//			people.get(j).startThread();
-//		}
-		
-//		BankCustomerRole bankCust = new BankCustomerRole(walking, "Bank Customer");
-//		walking.addRole(bankCust, "Bank Customer");
-		
 		/**
 		 * GIVE WALKING PERSON EVENTS
 		 */
@@ -799,7 +814,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent eatAtHome = new SimEvent("Eat", home, EventType.HomeOwnerEvent);
 		
 		// Go to bank to withdraw money
-		SimEvent withdrawFromBank1 = new SimEvent("deposit", bank, EventType.CustomerEvent);
+		SimEvent depositFromBank1 = new SimEvent("deposit", bank, EventType.CustomerEvent);
 		
 		// Go to market to buy shopping list items
 		SimEvent goToMarket1 = new SimEvent("Buy groceries", market, EventType.CustomerEvent);
@@ -815,18 +830,18 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent goToMarket2 = new SimEvent("Buy groceries", market2, EventType.CustomerEvent);
 		
 		// Go to bank to deposit money
-		SimEvent depositBank2 = new SimEvent("deposit", bank2, EventType.CustomerEvent);
+		SimEvent withdrawBank2 = new SimEvent("withdraw", bank2, EventType.CustomerEvent);
 		
-		walking.msgAddEvent(eatAtHome);
-		walking.msgAddEvent(withdrawFromBank1);
-		walking.msgAddEvent(goToMarket1);
+//		walking.msgAddEvent(eatAtHome);
+//		walking.msgAddEvent(depositFromBank1);
+//		walking.msgAddEvent(goToMarket1);
 //		walking.msgAddEvent(goToRest1);
-		walking.msgAddEvent(goToRest2);
-		walking.msgAddEvent(goToRest4);
-		walking.msgAddEvent(goToRest5);
+//		walking.msgAddEvent(goToRest2);
+//		walking.msgAddEvent(goToRest4);
+//		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
 		walking.msgAddEvent(goToMarket2);
-		walking.msgAddEvent(depositBank2);
+		walking.msgAddEvent(withdrawBank2);
 		
 		for (PersonAgent p : people) {
 			p.setcitygui(simCityGui);
@@ -886,6 +901,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 
 		for (PersonAgent p : people) {
 			p.startThread();
+			simCityGui.people.add(p);
 		}
 		
 		// Starts the thread of each timecard
@@ -899,7 +915,14 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		rest5.getTimeCard().startThread();
 		rest6.getTimeCard().startThread();
 		
+		clock = new SimWorldClock(8, people, cityMap, 6000);
+		simCityGui.simclock = clock;
+		
+		TracePanel trace = new TracePanel(cntrlPanel);
+		simCityGui.simclock.tracePanel = trace;
+		
 		clock.timeCards.add(bank.getTimeCard());
+		clock.timeCards.add(bank2.getTimeCard());
 		clock.timeCards.add(market.getTimeCard());
 		clock.timeCards.add(market2.getTimeCard());
 		clock.timeCards.add(rest1.getTimeCard());
@@ -3019,7 +3042,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         List<Apartment> aptComplex2 = Collections.synchronizedList(new ArrayList<Apartment>());
         List<Apartment> aptComplex3 = Collections.synchronizedList(new ArrayList<Apartment>());
         List<Apartment> aptComplex4 = Collections.synchronizedList(new ArrayList<Apartment>());
-        Casino casino = new Casino(people, "Casino", new Position(50, 50),LocationType.Casino);
+        Casino casino = new Casino(people, "Casino", new Position(330, 380),LocationType.Casino);
         
         int k = 5;
         for (ApartmentTenantRole r : aptTenants) {
@@ -3152,7 +3175,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		locations.add(home4);
 		locations.add(home5);
 		locations.add(casino);
-		System.err.println("GUL "+casino.isClosed);
+
 		for (Location a : aptComplex1) {
 			locations.add(a);
 		}
@@ -3268,16 +3291,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		rest5.getTimeCard().startThread();
 		rest6.getTimeCard().startThread();
 		
-		clock.timeCards.add(bank.getTimeCard());
+		/*clock.timeCards.add(bank.getTimeCard());
 		clock.timeCards.add(market.getTimeCard());
 		clock.timeCards.add(market2.getTimeCard());
 		clock.timeCards.add(rest1.getTimeCard());
 		clock.timeCards.add(rest2.getTimeCard());
 		clock.timeCards.add(rest4.getTimeCard());
 		clock.timeCards.add(rest5.getTimeCard());
-		clock.timeCards.add(rest6.getTimeCard());
-		
-		System.err.println("GUUUUUUUUL");
+		clock.timeCards.add(rest6.getTimeCard());*/
+		//casino.startTimer();
 		tracePanel.print("Starting Weekend Scenario", null);
 	}
 }

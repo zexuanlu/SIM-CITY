@@ -26,8 +26,8 @@ public class SimWorldClock {
 	public SimWorldClock(int currentHour, List<PersonAgent> people, CityMap cm, int time){
 		this.currentHour = currentHour;
 		timeCards = new ArrayList<TimeCard>();
-		hourLength = time;
-		hourLength = 2000; 
+		//hourLength = time;
+		hourLength = 100; 
 		cityMap = cm;
 		this.people = people;
 		dayOfTheWeek = 1;

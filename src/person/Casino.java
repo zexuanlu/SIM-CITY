@@ -17,20 +17,26 @@ public class Casino extends Location{
 	Timer duration;
 	Random luckyWinner;
 	List<PersonAgent> gamblers;
-	int lengthOfStay = 2880000;
-	
+	int lengthOfStay = 1000;
+	public boolean hasStarted; 
+
 	public Casino(List<PersonAgent> gamblers, String name, Position p, LocationType lt){
 		super(name, lt, p);
 		duration = new Timer();
 		luckyWinner = new Random();
 		this.gamblers = gamblers;
+		hasStarted = false;
 	}
+
 	public void startTimer(){
-		duration.schedule(new TimerTask() {
-			public void run() {
-				sendGamblersHome();
-			}
-		}, lengthOfStay);
+		if(!hasStarted){
+			hasStarted = true;
+			duration.schedule(new TimerTask() {
+				public void run() {
+					sendGamblersHome();
+				}
+			}, lengthOfStay);
+		}
 	}
 	public void sendGamblersHome(){
 		for(PersonAgent p : gamblers){
@@ -40,6 +46,8 @@ public class Casino extends Location{
 	}
 	public PersonAgent pickTheWinner(){
 		int winner = luckyWinner.nextInt(gamblers.size());
-		return gamblers.get(winner);
+		PersonAgent p = gamblers.get(winner);
+		System.out.println("WINNING "+p.getName());
+		return p;
 	}
 }

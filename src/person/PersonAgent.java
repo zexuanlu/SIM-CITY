@@ -228,12 +228,15 @@ public class PersonAgent extends Agent implements Person{
 		print("Back home");
 	}
 	public void msgGoHome(){
+		Do("Going home from casino to a"+homeType);
 		atCasino = false;
 		SimEvent goHome = null;
-		if(homeType == HomeType.Home){
+		if(homeNumber <= 5){
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
 		}
-		else if(homeType == HomeType.Apartment){
+		else{
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 		}
 		toDo.add(goHome);
@@ -351,10 +354,9 @@ public class PersonAgent extends Agent implements Person{
 		}
 		for(MyRole role : roles){
 			if(role.role == r ){
-				if(r.getGui() != null){
+				if(role.role.getGui() != null)
 					role.role.getGui().setPresent(false);
-					role.setActive(false);
-				}
+				role.setActive(false);
 			}
 		}
 		stateChanged();
@@ -2048,6 +2050,7 @@ public class PersonAgent extends Agent implements Person{
 		//////////////////////// CASINO //////////////////////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Casino){
 			PersonAgent.tracePanel.print("Casino Player at " + e.location.getName(), this);
+			((Casino)e.location).startTimer();
 			gui.setPresent(false);
 			toDo.remove(e);
 			atCasino = true;

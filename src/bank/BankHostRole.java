@@ -65,6 +65,9 @@ public class BankHostRole extends Role implements BankHost {
 		stateChanged();
 	}
 
+	/**
+	 * Received from the Time Card at the end of the work day
+	 */
 	public void msgEndOfDay(){
 		log.add(new LoggedEvent("Received msgEndOfDay from Time Card"));
 		endOfDay = true;
@@ -140,6 +143,7 @@ public class BankHostRole extends Role implements BankHost {
 	
 	/**
 	 * Sends messages to all the tellers telling them to leave
+	 * Because it's the end of the day and they're another day older
 	 */
 	private void workDayOver(){
 		for(MyTeller mt : tellers){
