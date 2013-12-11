@@ -838,8 +838,8 @@ cityAnimPanel.bankPanel.addGui(bhg);*/
 // truck.setRestaurant(rest5, 5);
 // truck.setRestaurant(rest6, 6);
 // /*Create the SimWorldClock with the starting time and the list of people*/
-// simclock = new SimWorldClock(8,people, citymap, 6000);
-// simclock.tracePanel = tracePanel;
+ simclock = new SimWorldClock(8,people, citymap, 6000);
+ simclock.tracePanel = tracePanel;
 // simclock.timeCards.add(bank.getTimeCard());
 // simclock.timeCards.add(market.getTimeCard());
 // simclock.timeCards.add(rest1.getTimeCard());
@@ -887,19 +887,19 @@ cityAnimPanel.bankPanel.addGui(bhg);*/
 
         
         public void crashcars(){
-                    
+             System.out.println("Crashcars");       
                     //THIS IS CREATED ONLY TO TEST OUT THE CAR CRASHING SCENARIO
-                    AStarTraversal aStarTraversal = new AStarTraversal(grid);
+           AStarTraversal aStarTraversal = new AStarTraversal(grid);
 
-                    PersonAgent p = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
+           PersonAgent p = new PersonAgent("Crash dummy1", citymap, aStarTraversal, 500.00);
             PersonGui pgui = new PersonGui(p,-20, -20, cityAnimPanel);
             p.setGui(pgui);
             p.setAnimationPanel(cityAnimPanel);
             cityAnimPanel.addGui(pgui);
             simclock.addPerson(p);
-                    p.msgAddMoney(-400);
-                    AStarTraversal aStarTrav = new AStarTraversal(grid);
-                    aStarTrav.originalgrid = origgrid;
+             p.msgAddMoney(-400);
+            AStarTraversal aStarTrav = new AStarTraversal(grid);
+             aStarTrav.originalgrid = origgrid;
             CarAgent caragent = new CarAgent(aStarTrav, p);
             caragent.percentCrash = 100;
             CarGui cgui = new CarGui(caragent,720,460);
