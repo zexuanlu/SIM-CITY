@@ -243,7 +243,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	
 	public void restockFood(){
 		print(name + ": restocking food");
-		marketCashier.MsgIwantFood(this, cashier, restockList, marketNum);
+		marketCashier.MsgIwantFood(this, cashier, restockList, 3);
 		restockList.clear();
 	}
 	
