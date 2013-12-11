@@ -546,5 +546,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	public utilities.Gui getGui(){
 		return cookGui; 
 	}
+
+
 }
 
