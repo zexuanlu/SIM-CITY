@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
+import market.Food;
 import market.MarketCashierRole;
 import market.interfaces.MarketTruck;
 import person.interfaces.Person;
@@ -44,6 +45,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	private Map<String, Integer> cookTimes = new HashMap<String, Integer>();
 	private Map<MyMarket, Check> owed = new HashMap<MyMarket, Check>();
 	private Food inventory = new Food(10,10,10,10,10,10);
+	private List<market.Food> foodlist;
 	public Restaurant2RevolvingStand revolver; //= new Restaurant2RevolvingStand();
 
 	private Semaphore atGrill = new Semaphore(0, true);
@@ -53,6 +55,7 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	private MyMarket mm2;
 	private MyMarket mm3;
 	private MyMarket market;
+	private boolean needTocookOrder = false;
 	public enum MarketState {Idle, OrderedFrom, NeedsPayment};
 
 	/**
@@ -243,6 +246,12 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 
 	private void  checkInventory(){
 
+		if(!foodlist.isEmpty()){
+			marketCashier.MsgIwantFood(this, cashier, foodlist, 2);
+			foodlist.clear();
+			needTocookOrder = false;
+			return;
+		}
 		List<String> marketOrders = new ArrayList<String>();
 		Map<String, Integer> itemsAndQuantityNeeded = new HashMap<String, Integer>();
 		int numSteak = inventory.getInventory("Steak");
@@ -529,13 +538,19 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 	}
 	@Override
 	public void msgHereisYourFood(MarketTruck t, List<market.Food> fList) {
-		// TODO Auto-generated method stub
-
+		t.msgGoBack();
+		for(market.Food f : fList){
+			inventory.add(f.choice, f.amount);
+		}
 	}
 	@Override
 	public void msgEmptyStock() {
-		// TODO Auto-generated method stub
-
+		foodlist = new ArrayList<market.Food>();
+		foodlist.add(new market.Food("Steak", 5));
+		foodlist.add(new market.Food("Hamburger", 5));
+		foodlist.add(new market.Food("Ribs", 5));
+		needTocookOrder = true;
+		stateChanged();
 	}
 
 
