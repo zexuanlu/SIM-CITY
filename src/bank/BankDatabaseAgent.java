@@ -170,7 +170,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		 * If the account has debt, half of the deposit goes to paying off the debt
 		 */
 		if(r.type.equals("deposit")){
-			if(r.bc == null && r.rc == r.a.cashier){
+			if(r.bc == null){
 				totalMoney += r.amount;
 				r.a.balance += r.amount;
 				if(r.rc != null)
@@ -205,7 +205,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 		 * If they have less than the amount, withdraws everything
 		 */
 		if(r.type.equals("withdraw")){
-			if(r.bc == null && r.rc == r.a.cashier){
+			if(r.bc == null){
 				totalMoney -= r.amount;
 				r.a.balance -= r.amount;
 				if(r.rc != null)

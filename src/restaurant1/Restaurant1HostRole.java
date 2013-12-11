@@ -19,6 +19,7 @@ import restaurant1.interfaces.Restaurant1Waiter;
 //the Restaurant1HostRole. A Host is the manager of a restaurant who sees that all
 //is proceeded as he wishes.
 public class Restaurant1HostRole extends Role implements Restaurant1Host{
+	public boolean offWork = false;
 	static final int NTABLES = 3;//a global for the number of tables.
 	//Notice that we implement waitingCustomers using ArrayList, but type it
 	//with List semantics.
@@ -95,6 +96,14 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 	}
 
 
+	public void msgEndOfDay(){
+		print("end of day in restaurant1host role");
+		offWork = true; 
+		stateChanged();
+	}
+	
+	
+	
 
 	public void msgaddwaiter(Restaurant1Waiter w){
 		waiter.add(new mywaiter(w));
@@ -142,7 +151,6 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
-		
 		try{
 		boolean hasemptytable = false;
 
@@ -179,6 +187,13 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 			}
 		}
 
+		if (offWork){
+			//check if no more people
+			if (waitingCustomers.size()==0){
+				goOffWork();
+				return true; 
+			}
+		}
 
 		}
 		catch(ConcurrentModificationException e){
@@ -193,7 +208,15 @@ public class Restaurant1HostRole extends Role implements Restaurant1Host{
 	// Actions
 
 
-
+	private void goOffWork(){
+		offWork = false; 
+		for (mywaiter mw: waiter){
+			mw.waiter.msgGoOffWork();
+			print("CLOSE THE DAMN WAITERS");
+		}
+		print("Restaurant1HostRole offWork");
+		this.person.msgGoOffWork(this, 0);
+	}
 
 	private void seatCustomer(Restaurant1CustomerRole customer, Table table) {
 		mycustomer mc = findcustomer(customer);

@@ -15,6 +15,7 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 
 	//MEMBER DATA
 	String name;
+	public boolean offWork; 
 	double money = 500;
 	public BankDatabase bank;
 	public int accountNumber;
@@ -29,7 +30,10 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 	//Enum to keep track of bill state
 	public enum bState {pending, withCust, paid}; 
 	
-	
+	public void msgGoOffWork(){
+		offWork = true; 
+		stateChanged();
+	}
 	//Private class to keep track of customer bills
 	private class Bill{
 		Restaurant3Waiter wtr;
@@ -148,7 +152,17 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 			}
 		}
 		
+		if (offWork){
+			goOffWork();
+			return true; 
+		}
+		
 		return false;
+	}
+	
+	public void goOffWork(){
+		offWork = false; 
+		this.person.msgGoOffWork(this, 0);
 	}
 	
 	//ACTIONS ************************************

@@ -5,6 +5,8 @@ import person.interfaces.Person;
 import restaurant3.interfaces.Restaurant3Customer;
 
 public abstract class Restaurant3AbstractWaiter extends Role{
+	
+	public boolean offWork; 
 
 	
 	//Enums to keep track of customer state
@@ -17,6 +19,11 @@ public abstract class Restaurant3AbstractWaiter extends Role{
 	//CONSTRUCTOR *****************************
 	public Restaurant3AbstractWaiter(Person pa) {
 		super(pa);
+	}
+	
+	public void msgGoOffWork(){
+		offWork = true; 
+		stateChanged(); 
 	}
 
 	
