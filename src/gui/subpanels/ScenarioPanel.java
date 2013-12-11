@@ -693,7 +693,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest3Host.addWaiter(rest3SDWaiter);
   		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest3Cook.cashier = rest3Cashier;
-  		rest3Cashier.accountNumber = 6;
+  		rest3Cashier.accountNumber = 3;
   		rest3Cashier.bank = bankdatabase;
   		bankdatabase.addRestaurantAccount(rest3Cashier, 5000.00, 3);
   		
