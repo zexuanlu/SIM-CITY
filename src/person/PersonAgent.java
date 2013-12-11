@@ -478,6 +478,10 @@ public class PersonAgent extends Agent implements Person{
 		return false;
 	}
 	
+	public void msgDie(){
+		gui.setPresent(false);
+		print("I have died :(");
+	}
 
 	/* Actions */
 	

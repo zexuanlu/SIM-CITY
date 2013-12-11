@@ -1,8 +1,9 @@
 package person.gui;
-
+import java.util.*; 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
@@ -14,7 +15,8 @@ import utilities.TrafficLightAgent;
 import gui.panels.CityAnimationPanel;
 
 public class PersonGui implements Gui{
-	
+	public List<simcity.gui.BusGui>busses = new ArrayList<simcity.gui.BusGui>();
+	public simcity.gui.CarGui crashCar; 
 	private PersonAgent agent = null;
 	private TrafficLightAgent light = null;
 	public int xPos, yPos;//default player position
@@ -26,6 +28,8 @@ public class PersonGui implements Gui{
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
 	public Image pImg = img.getImage();
 	CityAnimationPanel cPanel;
+	private boolean dead = false; 
+
 	
 	private Semaphore atlight = new Semaphore(0, true);
 	
@@ -53,9 +57,25 @@ public class PersonGui implements Gui{
 		this.agent = agent;
 		arrived = false;
 		isPresent = false;
+
+	//	atLight = false;
 	}
 	public void updatePosition() {
 		boolean moved = false;
+		
+		if (!dead){
+			if(crashCar != null){
+				if(checkCollision()){
+					xDestination = xPos; 
+					yDestination = yPos; 
+					agent.msgDie(); 
+					dead = true; 
+					return; 
+				
+				}
+			}
+		}
+		
     	if (xPos < xDestination && (yPos == 170 || yPos == 280)){
             xPos++;
             moved = true;
@@ -102,6 +122,17 @@ public class PersonGui implements Gui{
 				agent.msgAtDest(new Position(xPos, yPos));
 			}
 		}
+		else if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
+		//	agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			System.out.println("Released at the stop light "+agent.getName());
+		}
+		}
 //		 if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
 //			System.err.println("YO");
 //			arrived = true;
@@ -144,6 +175,23 @@ public class PersonGui implements Gui{
 //				e.printStackTrace();
 //			}
 //		}
+	
+	
+	public boolean checkCollision(){
+		Rectangle2D.Double player = new Rectangle2D.Double(xPos,yPos,10,10);
+		Rectangle2D.Double car = new Rectangle2D.Double(crashCar.xPos, crashCar.yPos, 20, 20);
+		if (player.intersects(car)){
+			return true;
+		}
+		
+		for (simcity.gui.BusGui bs: busses){
+			car = new Rectangle2D.Double(bs.xPos, bs.yPos, 20,20);
+			if (player.intersects(car)){
+				return true; 
+			}
+		}
+		
+		return false;
 	
 	}
 
