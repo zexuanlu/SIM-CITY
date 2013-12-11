@@ -176,7 +176,7 @@ public class TrafficLightAgent extends Agent {
 	private void PeopleGo(){
 		synchronized(myPeople){
 			for(MyPeople p: myPeople){
-				//message people
+				p.p.ToGo();
 				myPeople.remove(p);
 			}
 		}

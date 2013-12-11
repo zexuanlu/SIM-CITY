@@ -241,6 +241,7 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
 	// Called by host for waiter to seat customer
 	public void seatAtTable(Restaurant6Customer cust, int tn) {
 		waiterCustomers.add(new MyCustomer(cust, tn));
+		System.err.println("Seat at Table");
 		stateChanged();
 	}
 
@@ -352,7 +353,8 @@ public abstract class Restaurant6AbstractWaiterRole extends Role implements Rest
 	/**
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
-	public boolean pickAndExecuteAnAction() {			
+	public boolean pickAndExecuteAnAction() {	
+		System.err.println("Imma scheduling");
 		try {
             if (waiterState == MyWaiterState.RequestBreak) {
                 askHostForBreak();

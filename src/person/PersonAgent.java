@@ -3,9 +3,11 @@ package person;
 import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
 import restaurant5.gui.Restaurant5FoodGui; 
+
 import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+
 import restaurant5.*; 
 import restaurant5.gui.*; 
 import person.Location.LocationType;
@@ -78,6 +80,7 @@ import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.astar.AStarTraversal;
 import simcity.gui.PassengerGui;
+import utilities.TrafficLightAgent;
 /*
  * The PersonAgent controls the sim character. In particular his navigation, decision making and scheduling
  * The PersonAgent, once a decision has been made, will switch to the appropriate role to carry out the task given in the event
@@ -105,6 +108,7 @@ public class PersonAgent extends Agent implements Person{
 
 	public Wallet wallet;
 	private int currentTime; 
+	public int accountNumber = -1;
 
 	public Position currentLocation; 
 	public Position dest = new Position(50, 50);
@@ -116,7 +120,9 @@ public class PersonAgent extends Agent implements Person{
 	public List<Food> shoppingBag = new ArrayList<Food>();
 
 	public SimCityGUI simcitygui;
-
+	
+	private TrafficLightAgent trafficlight;
+	private boolean atlight = false;
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
 
@@ -156,6 +162,10 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* Utilities */
+	public void setTrafficLight(TrafficLightAgent tl){
+		this.trafficlight = tl;
+	}
+	
 	public void setName(String name){this.name = name;}
 
 	public String getName(){ return this.name; }
@@ -228,12 +238,15 @@ public class PersonAgent extends Agent implements Person{
 		print("Back home");
 	}
 	public void msgGoHome(){
+		Do("Going home from casino to a"+homeType);
 		atCasino = false;
 		SimEvent goHome = null;
-		if(homeType == HomeType.Home){
+		if(homeNumber <= 5){
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
 		}
-		else if(homeType == HomeType.Apartment){
+		else{
+			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
 		}
 		toDo.add(goHome);
@@ -386,6 +399,15 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(false);
 		this.stopThread();
 	}
+	
+	public void msgAtLight(){
+		atlight = true;
+	}
+	
+	public void ToGo(){
+		gui.ToGo();
+	}
+	
 	/* Scheduler */
 
 	@Override
@@ -436,8 +458,7 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					System.err.println("THIS IS THE EVENT AND IT IS "+nextEvent.location.isClosed);
-					if(!nextEvent.location.isClosed()){
+					if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
 						goToAndDoEvent(nextEvent);
@@ -449,6 +470,11 @@ public class PersonAgent extends Agent implements Person{
 			}
 			return checkVitals();
 		}
+		
+		if(atlight){
+			checklight();
+		}
+		
 		return false;
 	}
 	
@@ -458,6 +484,11 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	/* Actions */
+	
+	private void checklight(){
+		trafficlight.msgCheckLight(this);
+	}
+	
 	private void goToAndDoEvent(SimEvent e){		
 		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant1){
@@ -1660,6 +1691,8 @@ public class PersonAgent extends Agent implements Person{
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
 				bcr.bh = bank.getHost();
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
@@ -1777,6 +1810,8 @@ public class PersonAgent extends Agent implements Person{
 				bcr.bh = bank.getHost();
 				newRole.setActive(true); //set it active
 				roles.add(newRole); 
+				if(accountNumber != -1)
+					((BankCustomerRole)newRole.role).accountNumber = accountNumber;
 				BankCustomerGui bcg = new BankCustomerGui((BankCustomerRole)newRole.role);
 				((BankCustomerRole)newRole.role).setGui(bcg);
 				cap.bankPanel2.addGui(bcg);
@@ -2061,6 +2096,7 @@ public class PersonAgent extends Agent implements Person{
 		//////////////////////// CASINO //////////////////////////////////////////////////////////////////////
 		else if(e.location.type == LocationType.Casino){
 			PersonAgent.tracePanel.print("Casino Player at " + e.location.getName(), this);
+			((Casino)e.location).startTimer();
 			gui.setPresent(false);
 			toDo.remove(e);
 			atCasino = true;

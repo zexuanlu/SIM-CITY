@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
@@ -24,11 +25,18 @@ public class PersonGui implements Gui{
 	private boolean arrived; 
 	private boolean tempActive;
 	public boolean isPresent;
-	public boolean atLight;
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
 	public Image pImg = img.getImage();
 	CityAnimationPanel cPanel;
 	private boolean dead = false; 
+
+	
+	private Semaphore atlight = new Semaphore(0, true);
+	
+	private int xtl = 330, ytl = 170;
+	private int xtr = 440, ytr = 170;
+	private int xbl = 330, ybl = 280;
+	private int xbr = 440, ybr = 280;
 
 	public PersonGui(PersonAgent agent, int posx, int posy, CityAnimationPanel cap) {
 		xPos = posx; 
@@ -45,7 +53,7 @@ public class PersonGui implements Gui{
 		this.agent = agent;
 		arrived = false;
 		isPresent = false;
-		atLight = false;
+	//	atLight = false;
 	}
 	public void updatePosition() {
 		boolean moved = false;
@@ -109,6 +117,44 @@ public class PersonGui implements Gui{
 				agent.msgAtDest(new Position(xPos, yPos));
 			}
 		}
+		else if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
+		//	agent.msgAtLight();
+			try {
+				atlight.acquire();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Released at the stop light "+agent.getName());
+		}
+//		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xbl && yPos == ybl)&&(xPos < xDestination || yPos > yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xbr && yPos == ybr)&&(xPos > xDestination || yPos > yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+	
 	}
 	
 	public boolean checkCollision(){
@@ -153,6 +199,10 @@ public class PersonGui implements Gui{
 		xDestination = p.getX();
 		yDestination = p.getY();
 		arrived = false;
+	}
+	
+	public void ToGo(){
+		atlight.release();
 	}
 	
 	public void walkto(int x, int y){
