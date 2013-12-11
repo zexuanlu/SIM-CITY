@@ -46,6 +46,9 @@
 	+ Fixes of other code and integration
 	+ Upgrade of restaurant6
 	+ Worked on scenario panel
+	+ Overall restaurant fixes for producer consumer
+	+ Market delivery scenario
+	+ GUI additions
   2. Lizhi Fan -
 	+ Transportation
 	+ Busses and Cars
@@ -102,7 +105,7 @@
 	+ Some fixes and debugging
 	+ Fixes to panel looks and formatting 
 
-###Issues and Known Bugs for V1
+###Issues and Known Bugs 
   + People sometimes do not disappear into buildings
   + People sometimes do not take bus when they should
   + Only 1 upgraded restaurant included, however, A* was implemented
@@ -115,3 +118,4 @@
   + Because CarAgent is so integrated with A* and it's GUI it was unable to be JUNIT tested
   + For Transportation, focused more on A* and GUI than on JUNIT testing
   + Paths to gui icon images may be currupt on pull, copy images from src folder to respective bin folders (i.e. 		    src/restaurant1/gui -> bin/restaurant1/gui)
+  + Null pointer exceptions in the 50-person scenario. This is due to the fact that the second shift people do not handle their locations appropriately, even when given a home. The shift changes can be properly identified as working when SimCityGUI.java is uncommented. Sorry for the inconvenience.
