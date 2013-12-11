@@ -22,6 +22,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	public boolean offWork; 
 	int marketNum = 1;
 	boolean startTimer = true;
+	boolean restock = false;
 	public Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
 	//Agent references
@@ -128,7 +129,17 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 			print("Stock: " + f.choice + " = " + foodInventory.get(f.choice).amount);
 		}
 		sendTruckBack = true;
+		truck.msgGoBack();
 		stateChanged();
+	}
+	
+	@Override
+	public void msgEmptyStock() {
+		print(name + ": need to restock");
+		for(Entry<String, MyFood> e : foodInventory.entrySet()){
+			e.getValue().amount = 3;
+		}
+		restock = true;
 	}
 
 	public void msgAtFrRelease(){
@@ -143,8 +154,16 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 			return true;
 		}
 		//Send truck back
-		if(sendTruckBack == true) {
+		if(sendTruckBack) {
 			truckBack();
+			return true;
+		}
+		//Check if we need to restock
+		if(restock){
+			for(Entry<String, MyFood> f : foodInventory.entrySet()){
+				checkRestock(f);
+			}
+			restock = false;
 			return true;
 		}
 		//Check if there is an order on the revolving stand
@@ -210,10 +229,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		for(Entry<String, MyFood> f : foodInventory.entrySet()){
 			if(f.getKey().equals(o.choice)){
 				f.getValue().amount--;
-				if(f.getValue().amount <= 3){
-					print(name + ": need to restock " + f.getKey());
-					restockList.add(new Food(f.getKey(), (f.getValue().max - f.getValue().amount)));
-				}
+				checkRestock(f);
 			}
 		}
 		o.state = Restaurant3Order.oState.cooking;
@@ -237,6 +253,13 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		print(name + ": sending market truck back");
 		truck.msgGoBack();
 		sendTruckBack = false;
+	}
+	
+	public void checkRestock(Entry<String, MyFood> f){
+		if(f.getValue().amount <= 3){
+			print(name + ": need to restock " + f.getKey());
+			restockList.add(new Food(f.getKey(), (f.getValue().max - f.getValue().amount)));
+		}
 	}
 	
 	//DO METHODS ****************************************
@@ -276,12 +299,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void msgEmptyStock() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public utilities.Gui getGui(){
