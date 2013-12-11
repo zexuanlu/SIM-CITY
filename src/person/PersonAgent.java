@@ -458,7 +458,7 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					Do("The next event is "+nextEvent.location.type);
+//					Do("The next event is "+nextEvent.location.type);
 					if(nextEvent.location.type == LocationType.Home || 
 							nextEvent.location.type == LocationType.Apartment || 
 							!nextEvent.location.isClosed()){
@@ -1679,7 +1679,7 @@ public class PersonAgent extends Agent implements Person{
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
 						else if(e.directive.equals("robBank"))
@@ -1704,7 +1704,7 @@ public class PersonAgent extends Agent implements Person{
 					cap.bankPanel.addGui(bcg);
 				}
 				if(e.directive.equals("deposit"))
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 				else if(e.directive.equals("robBank"))
@@ -1795,7 +1795,7 @@ public class PersonAgent extends Agent implements Person{
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Customer 2")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
 						else if(e.directive.equals("robBank"))
@@ -1819,7 +1819,7 @@ public class PersonAgent extends Agent implements Person{
 				((BankCustomerRole)newRole.role).setGui(bcg);
 				cap.bankPanel2.addGui(bcg);
 				if(e.directive.equals("deposit"))
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 				else if(e.directive.equals("robBank"))
