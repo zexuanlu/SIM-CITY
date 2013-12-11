@@ -2071,7 +2071,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(17).addRole(rest2Cashier, "Rest 2 Cashier");
 		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
 		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
-		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
+		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 2 Shift 1", people.get(19));
 		people.get(19).addRole(rest2Waiter, "Rest 2 Waiter");
 		
 		// Fourth restaurant's employees: FIRST SHIFT 
