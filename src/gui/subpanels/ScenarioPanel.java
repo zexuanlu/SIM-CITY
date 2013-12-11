@@ -1960,7 +1960,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		Restaurant2SDWaiterRole rest2SDWaiter = new Restaurant2SDWaiterRole("Shared Data Waiter 2 Shift 1", people.get(18));
 		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
 		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
-		people.get(19).addRole(rest2Waiter, "Waiter 2 Shift 1");
+		people.get(19).addRole(rest2Waiter, "Rest 2 Waiter");
 		
 		// Fourth restaurant's employees: FIRST SHIFT 
 		Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", people.get(20));
@@ -2198,9 +2198,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2SDWaiter.setHost(rest2Host);
   		Restaurant2RevolvingStand rs2 = new Restaurant2RevolvingStand();
   		rest2Cook.setRevolvingStand(rs2);
-  		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
+  		rest2SDWaiter.revolver = rs2;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		//rest2Host.addWaiter(rest2Waiter);
+  		rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
