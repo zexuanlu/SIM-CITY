@@ -24,9 +24,9 @@ public class Restaurant5WaiterGui implements Gui {
     
     ArrayList<myGui> myGuis = new ArrayList<myGui>();
 	public enum State {IconOn, IconOff,Brought};
-	
-	//public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
-	//public Image image = img.getImage();
+
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	public Image image = img.getImage();
 	
     private class myGui {
     	public Restaurant5FoodGui f;

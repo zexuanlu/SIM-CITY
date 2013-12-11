@@ -21,6 +21,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	String name;
 	public boolean offWork; 
 	int marketNum = 1;
+	boolean startTimer = true;
 	private Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
 	//Agent references
@@ -100,12 +101,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	}
 	
 	public void setGui(Restaurant3CookGui ckg){
-		checkTimer.scheduleAtFixedRate(new TimerTask(){
-			public void run(){
-				if(person != null)
-					stateChanged();
-			}
-		}, 0, 500);
 		cookGui = ckg;
 	}
 	
@@ -143,6 +138,10 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//SCHEDULER *****************************************
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(startTimer){
+			startCheckTimer();
+			return true;
+		}
 		//Send truck back
 		if(sendTruckBack == true) {
 			truckBack();
@@ -187,6 +186,15 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		this.person.msgGoOffWork(this, 0);
 	}
 	//ACTIONS *************************************
+	public void startCheckTimer(){
+		checkTimer.scheduleAtFixedRate(new TimerTask(){
+			public void run(){
+				stateChanged();
+			}
+		}, 0, 500);
+		startTimer = false;
+	}
+	
 	public void takeOrderFromStand(){
 		Restaurant3Order o = null;
 		o = revStand.removeOrder();

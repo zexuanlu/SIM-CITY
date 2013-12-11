@@ -27,7 +27,7 @@ public class BankHostGui implements Gui{
 	private int xPos, yPos;
 	private int xDestination, yDestination;
 	
-	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/host.png"));
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("image/worker.png"));
     public Image m1 = img.getImage();
 
 	public BankHostGui(BankHostRole t){//, BankAnimationPanel gui){ //HostAgent m) {

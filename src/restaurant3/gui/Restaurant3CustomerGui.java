@@ -124,7 +124,7 @@ public class Restaurant3CustomerGui implements Gui {
         catch(InterruptedException e){
         	e.printStackTrace();
         }
-        yDestination += height;
+        //yDestination += height;
         
         command = Command.GoToSeat;
 	}

@@ -7,6 +7,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class Restaurant2HostGui implements Gui {
@@ -22,6 +24,9 @@ public class Restaurant2HostGui implements Gui {
     public static final int yTable2 = 300;
     public static final int xTable3 = 50;
     public static final int yTable3 = 50;
+    
+    ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+    Image image = img.getImage();
     
     public Restaurant2HostGui(Restaurant2HostRole agent) {
         this.agent = agent;
@@ -48,8 +53,7 @@ public class Restaurant2HostGui implements Gui {
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(image, xPos, yPos, 20, 20, null);
         g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
     }
 

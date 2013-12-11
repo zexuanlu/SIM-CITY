@@ -55,6 +55,11 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     
     public List<Gui> guis = new ArrayList<Gui>();
     public List<Shape> tables;
+    
+    ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable2.png"));
+    Image timg = table.getImage();
 
     public Restaurant6AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -85,14 +90,16 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
         g2.setColor(getBackground());
         g2.fillRect(winX, winY, WINDOWX, WINDOWY);
         
+        //draw floor
+        g2.drawImage(floorimg, 0, 0, WINDOWX, WINDOWY, null);
+        
         tableXPos = 30; // Reinitializes the table x position to 30 
         
         //Here is the table when the customer has just sat down
     	for (Shape s : tables) {
-    		g2.setColor(Color.ORANGE);
-        	g2.fillRect(tableXPos, tableYPos, tableWidth, tableHeight);
+        	g2.drawImage(timg, tableXPos, tableYPos, tableWidth, tableHeight, null);
         	tableXPos = tableXPos + 200;
-        	g2.draw(s);
+        	//g2.draw(s);
         }           
     	
     	// Drawing the kitchen area
