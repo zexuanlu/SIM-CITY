@@ -8,9 +8,14 @@ import restaurant2.Restaurant2AbstractWaiterRole.WaiterState;
 import restaurant2.interfaces.Restaurant2Customer;
 
 public class Restaurant2WaiterRole extends Restaurant2AbstractWaiterRole{
-
+	public boolean offWork = false; 
 	public Restaurant2WaiterRole(String name, Person p) {
 		super(name, p);
+	}
+	
+	public void msgGoOffWork(){
+		offWork = true; 
+		stateChanged(); 
 	}
 	@Override
 	public boolean pickAndExecuteAnAction() {
@@ -45,11 +50,25 @@ public class Restaurant2WaiterRole extends Restaurant2AbstractWaiterRole{
 					return true;
 				}
 			}
+			
+			if (offWork){
+				goOffWork();
+				return true; 
+			}
 		}
 		catch(ConcurrentModificationException e){
 			return true;
 		}
 		return false;	
+	}
+	
+	
+	private void goOffWork(){
+		offWork = false; 
+		cashier.msgGoOffWork();
+		cook.msgGoOffWork(); 
+		
+		this.person.msgGoOffWork(this, 0);
 	}
 
 	public void ordersToCook(){

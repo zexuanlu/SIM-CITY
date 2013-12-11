@@ -13,6 +13,8 @@ public interface Restaurant2Waiter {
 	
 	public abstract void msgAtTable();
 	
+	public abstract void msgGoOffWork();
+	
 	public abstract void msgAtCook();
 	
 	public abstract void msgReadyToOrder(Restaurant2Customer customer, int table);

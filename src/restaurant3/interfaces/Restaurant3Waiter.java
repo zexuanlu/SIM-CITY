@@ -12,6 +12,7 @@ public interface Restaurant3Waiter extends RestaurantWaiter{
 	public void msgDoneEatingCheckPls(Restaurant3Customer c);
 	public void msgHereIsMyMoney(Restaurant3Customer c, double money);
 	public void msgLeavingTable(Restaurant3Customer c);
+	public void msgGoOffWork();
 	
 	//Messages from cook
 	public void msgOrderReady(int table, String choice);

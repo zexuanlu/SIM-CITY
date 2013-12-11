@@ -79,7 +79,7 @@ public class BusGui implements Gui {
     		NorthSouth = true; 
     	}
     	
-    	
+
         if (xPos < xDestination)
             xPos+=2;
         else if (xPos > xDestination)
