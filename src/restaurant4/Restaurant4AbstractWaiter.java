@@ -54,6 +54,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the customer when they leave the restaurant
+	 * 
+	 * @param cust the customer who is leaving
+	 */
 	public void msgLeavingTable(Restaurant4Customer cust) {
 		for(MyCustomer customer : customers){
 			if(customer.c == cust){
@@ -64,6 +69,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the customer when he is ready to order
+	 * 
+	 * @param cust the customer who is ready to order
+	 */
 	public void msgReadyToOrder(Restaurant4Customer cust){
 		for(MyCustomer customer : customers){
 			if(customer.c == cust){
@@ -74,6 +84,13 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the customer when he is giving his order
+	 * to the waiter
+	 * 
+	 * @param cust the customer who is ordering
+	 * @param choice the customer's order
+	 */
 	public void msgHereIsOrder(Restaurant4Customer cust, String choice){
 		for(MyCustomer customer : customers){
 			if(customer.c == cust){
@@ -85,6 +102,13 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the cook when the order is ready
+	 * 
+	 * @param table the table that the customer is at who ordered it
+	 * @param choice the item that the customer ordered
+	 * @param location the grill that has the item
+	 */
 	public void msgOrderReady(int table, String choice, String location){
 		for(MyCustomer cust : customers){
 			if(cust.table == table){
@@ -95,6 +119,12 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the cook when he's out of some item
+	 * 
+	 * @param food the item he is out of
+	 * @param table the table at which the customer ordered the out of stock item
+	 */
 	public void msgOutOfItem(String food, int table){
 		menu.remove(food);
 		for(MyCustomer c : customers){
@@ -105,6 +135,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the customer when he is ready to get the check
+	 * 
+	 * @param cust the customer who is ready to order
+	 */
 	public void msgINeedCheck(Restaurant4Customer cust){
 		for(MyCustomer customer : customers){
 			if(customer.c == cust){
@@ -115,6 +150,12 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the cashier when he has completed the check
+	 * 
+	 * @param cust the customer who requested the check
+	 * @param price the amount that the customer must pay
+	 */
 	public void msgHereIsCheck(Restaurant4Customer cust, double price){
 		for(MyCustomer customer : customers){
 			if(customer.c == cust){
@@ -126,6 +167,9 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Received from the host when the work day is over and you're another day older
+	 */
 	public void msgWorkDayOver(){
 		endOfDay = true;
 		stateChanged();
@@ -155,6 +199,9 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the gui when the gui is at the destination
+	 */
 	public void msgAtDestination(){
 		movement.release();
 		stateChanged();
@@ -162,9 +209,6 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 	
 	//Scheduler
 	public boolean pickAndExecuteAnAction() {
-		Do("Scheduler fun time with " + customers.size() + " customers");
-		if(customers.size() != 0)
-			Do("State is" + customers.get(0).s);
 		try{
 			//Wants to go on break
 			if(bs == breakState.wantBreak){
@@ -258,10 +302,21 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		return false;
 	}
 	
+	/**
+	 * This is the only difference between the two waiters. 
+	 * It is implemented in the inheriting classes
+	 * 
+	 * @param customer the customer who is ordering
+	 */
 	protected void giveOrderToCook(MyCustomer customer) {
 		//Implemented in the lower classes
 	}
 
+	/**
+	 * Messages the customer and takes him to the table
+	 * 
+	 * @param customer the customer who is to be seated
+	 */
 	protected void seatCustomer(MyCustomer customer) {
 		gui.GoToLocation(customer.location);
 		movement.drainPermits();
@@ -283,6 +338,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		gui.GoToLocation("Home");
 	}
 	
+	/**
+	 * Goes to the table of the customer and takes his order
+	 * 
+	 * @param customer the customer who is ordering
+	 */
 	protected void takeOrder(MyCustomer customer){
 		gui.GoToLocation("Table " + customer.table);
 		movement.drainPermits();
@@ -303,6 +363,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		}
 	}
 	
+	/**
+	 * Gets the food from the cook and gives it to the customer
+	 * 
+	 * @param customer the customer whose food you are getting
+	 */
 	private void giveFood(MyCustomer customer){
 		gui.GoToLocation(customer.location);
 		movement.drainPermits();
@@ -328,6 +393,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		gui.GoToLocation("Home");
 	}
 	
+	/**
+	 * Goes to the host and tells him that there is an empty table
+	 * 
+	 * @param customer the customer who is leaving
+	 */
 	private void emptyTable(MyCustomer customer){
 		gui.GoToLocation("Host"); //Animation
 		movement.drainPermits();
@@ -365,7 +435,13 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		gui.noBreak();
 		bs = breakState.none;
 	}
-	
+
+	/**
+	 * Used if a customer ordered something that is out. 
+	 * Gets a new order from him.
+	 * 
+	 * @param customer the customer who needs to reorder
+	 */
 	private void reOrder(MyCustomer customer){
 		gui.GoToLocation("Table " + customer.table);
 		movement.drainPermits();
@@ -378,6 +454,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		customer.c.msgReOrder(menu);
 	}
 	
+	/**
+	 * Requests a check from the cashier
+	 * 
+	 * @param cust the customer who needs to pay
+	 */
 	private void requestCheck(MyCustomer cust){
 		gui.GoToLocation("Cashier");
 		movement.drainPermits();
@@ -391,6 +472,11 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		cashier.msgINeedCheck(cust.choice, cust.c, this);
 	}
 	
+	/**
+	 * Gives the check to the customer
+	 * 
+	 * @param cust the customer who requested the check
+	 */
 	private void sendCheck(MyCustomer cust){
 		gui.GoToLocation("Table " + cust.table);
 		movement.drainPermits();
@@ -405,6 +491,10 @@ public abstract class Restaurant4AbstractWaiter extends Role implements Restaura
 		gui.GoToLocation("Home");
 	}
 	
+	/**
+	 * Leaves the restaurant because it's the end of the day and
+	 * he's another day older
+	 */
 	private void workDayOver(){
 		cashier.msgWorkDayOver();
 		cook.msgWorkDayOver();

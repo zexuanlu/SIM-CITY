@@ -96,7 +96,8 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	public void setGui(Restaurant3CookGui ckg){
 		checkTimer.scheduleAtFixedRate(new TimerTask(){
 			public void run(){
-				stateChanged();
+				if(person != null)
+					stateChanged();
 			}
 		}, 0, 500);
 		cookGui = ckg;
