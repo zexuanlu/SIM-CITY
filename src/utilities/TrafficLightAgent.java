@@ -119,7 +119,6 @@ public class TrafficLightAgent extends Agent {
 		}
 
 		if(Plight){
-			print("hit here in peoplego");
 			PeopleGo();
 			return true;
 		}
