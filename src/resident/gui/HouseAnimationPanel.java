@@ -39,6 +39,13 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
     
     ImageIcon img2 = new ImageIcon(this.getClass().getResource("bedfloor.png"));
     Image image2 = img2.getImage();
+    
+    ImageIcon img3 = new ImageIcon(this.getClass().getResource("aptbed.png"));
+    Image image3 = img3.getImage();
+    
+    ImageIcon t = new ImageIcon(this.getClass().getResource("resttable.png"));
+    Image timg = t.getImage();
+
 
     public HouseAnimationPanel(int n) {
     	houseNumber = n; 
@@ -73,8 +80,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         g2.fillRect(stoveX, stoveY, 20, 20);
         
         // Drawing the table
-        g2.setColor(Color.BLACK);
-        g2.fillRect(tableX, tableY, 40, 40);
+        g2.drawImage(timg, tableX, tableY, 40, 40, null);
         
         // Drawing the sink
         g2.setColor(Color.CYAN);
@@ -95,8 +101,7 @@ public class HouseAnimationPanel extends JPanel implements ActionListener {
         g2.drawImage(image2, 0, 230, 640, 450, null);
         
         // Drawing the bed
-        g2.setColor(Color.PINK);
-        g2.fillRect(250, 300, 50, 100);
+        g2.drawImage(image3, 250, 300, 50, 100, null);
         
         for(Gui gui : guis) {
             if (gui.isPresent()) {

@@ -64,6 +64,7 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     public Restaurant6AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
+        this.setBorder(BorderFactory.createTitledBorder(" Restaurant 6 "));
         
         bufferSize = this.getSize();
  
@@ -90,6 +91,12 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
         g2.setColor(getBackground());
         g2.fillRect(winX, winY, WINDOWX, WINDOWY);
         
+        
+        // Drawing the customer waiting area
+    	g2.setColor(Color.lightGray);
+    	g2.drawString("WAITING", waitingXPos+40, waitingYPos+110);
+    	g2.fillRect(waitingXPos, waitingYPos, waitingWidth, waitingHeight);
+        
         //draw floor
         g2.drawImage(floorimg, 0, 0, WINDOWX, WINDOWY, null);
         
@@ -105,11 +112,6 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     	// Drawing the kitchen area
     	g2.setColor(Color.lightGray);
     	g2.fillRect(kitchenXPos, kitchenYPos, kitchenWidth, kitchenHeight);
-    	
-    	// Drawing the customer waiting area
-    	g2.setColor(Color.lightGray);
-    	g2.drawString("WAITING", waitingXPos+40, waitingYPos+110);
-    	g2.fillRect(waitingXPos, waitingYPos, waitingWidth, waitingHeight);
     	
     	// Drawing the grill
     	g2.setColor(Color.DARK_GRAY);
