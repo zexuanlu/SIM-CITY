@@ -111,7 +111,8 @@ public class PersonGui implements Gui{
 				}
 				else{
 					arrived = true;
-					agent.msgAtDest(new Position(xPos, yPos));
+					agent.msgAtDest(new Position(xPos, yPos));}
+			}
 
 		if (!dead){
 			if(crashCar != null){
@@ -125,6 +126,9 @@ public class PersonGui implements Gui{
 				}
 			}
 		}
+			
+			
+	}
 		
 		
 		
@@ -136,18 +140,9 @@ public class PersonGui implements Gui{
 			}
 			atlight = true;
 			 }
-=======
-    	if (xPos < xDestination && (yPos == 170 || yPos == 280)){
-            xPos++;
-            moved = true;
-    	}
-        else if (xPos > xDestination && (yPos == 170 || yPos == 280)){
-            xPos--;
-            moved = true;
-        }
->>>>>>> 7f9447befe379f5b06bd0454a4b802a413122007
+		 }
 
-		}
+
 		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
 			 if(agent.toString().equals("Walking Person")){
 			if (!atlight){
@@ -176,60 +171,12 @@ public class PersonGui implements Gui{
 			atlight = true;
 			 }
 		}
+		
+	}
+			
+			
+			
 
-		else if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
-		//	agent.msgAtLight();
-//			try {
-//				atlight.acquire();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			System.out.println("Released at the stop light "+agent.getName());
-		}
-		}
-//		 if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
-//			System.err.println("YO");
-//			arrived = true;
-//			xtemp = xDestination;
-//			ytemp = yDestination;
-//			xDestination = xtl;
-//			yDestination = ytl;
-//			agent.msgAtLight();
-//			try {
-//				atlight.acquire();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
-//			agent.msgAtLight();
-//			try {
-//				atlight.acquire();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		if((xPos == xbl && yPos == ybl)&&(xPos < xDestination || yPos > yDestination)){
-//			agent.msgAtLight();
-//			try {
-//				atlight.acquire();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		if((xPos == xbr && yPos == ybr)&&(xPos > xDestination || yPos > yDestination)){
-//			agent.msgAtLight();
-//			try {
-//				atlight.acquire();
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 
 	
 	
