@@ -177,7 +177,6 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		5000);
 	}
 	private void takeFromStand(){
-		Do("TAKING FROM STAND GUL");
 		orders.add(revolver.remove());
 	}
 	private void cookFood(final int position, final Restaurant2Order custOrder) {
@@ -510,6 +509,10 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 
 	public void setMarketCashier(MarketCashierRole r) {
 		marketCashier = r;
+	}
+	
+	public utilities.Gui getGui(){
+		return cookGui; 
 	}
 }
 

@@ -1,7 +1,5 @@
 package restaurant4.gui;
 
-import restaurant1.Restaurant1SDWaiterRole;
-import restaurant1.Restaurant1WaiterRole;
 import restaurant4.Restaurant4AbstractWaiter;
 import restaurant4.Restaurant4SDWaiterRole;
 import restaurant4.Restaurant4WaiterRole;
@@ -11,6 +9,8 @@ import utilities.Gui;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ImageIcon;
 
 import person.PersonAgent;
 
@@ -30,7 +30,10 @@ public class Restaurant4WaiterGui implements Gui {
     public boolean isPresent = false;
     private int xPos, yPos;//default waiter position
     private int xDestination, yDestination;//default start position
-
+    
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+    public Image image = img.getImage();
+    
     public Restaurant4WaiterGui(Restaurant4AbstractWaiter agent, int x, int y) {
         this.agent = agent;;
         this.isPresent = false;
@@ -73,7 +76,8 @@ public class Restaurant4WaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+        //g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(image, xPos, yPos, 20, 20, null);
         
         if(agent instanceof Restaurant4WaiterRole){
         	g.drawString(((PersonAgent)((Restaurant4WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);

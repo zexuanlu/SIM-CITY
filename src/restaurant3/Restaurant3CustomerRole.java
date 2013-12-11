@@ -258,4 +258,8 @@ public class Restaurant3CustomerRole extends Role implements Restaurant3Customer
 		custGui.DoLeaveRestaurant();	//GUI CODE
 	
 	}
+	
+	public utilities.Gui getGui(){
+		return custGui; 
+	}
 }

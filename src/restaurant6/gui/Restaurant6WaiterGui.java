@@ -11,6 +11,8 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class Restaurant6WaiterGui implements Gui {
@@ -40,6 +42,9 @@ public class Restaurant6WaiterGui implements Gui {
     // Pickup spot
     private final int pickUpX = 30;
     private final int pickUpY = 150;
+    
+    public ImageIcon img = new ImageIcon(this.getClass().getResource("worker.png"));
+    public Image image = img.getImage();
     
     public void msgRequestedBreak() {
     	requestedBreak = true;
@@ -150,8 +155,8 @@ public class Restaurant6WaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
-        
+       // g.fillRect(xPos, yPos, 20, 20);
+        g.drawImage(image, xPos, yPos, 20, 20, null);
         if(agent instanceof Restaurant6WaiterRole){
         	g.drawString(((PersonAgent)((Restaurant6WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
         }
@@ -239,5 +244,9 @@ public class Restaurant6WaiterGui implements Gui {
 
     public int getYPos() {
         return yPos;
+    }
+    
+    public void setPresent(boolean b){
+    	isPresent = b; 
     }
 }

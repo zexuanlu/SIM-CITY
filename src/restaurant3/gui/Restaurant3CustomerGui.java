@@ -2,6 +2,10 @@ package restaurant3.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import utilities.Gui; 
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import person.PersonAgent;
 import restaurant1.Restaurant1CustomerRole;
@@ -24,6 +28,8 @@ public class Restaurant3CustomerGui implements Gui {
 	String food;
 	String eating;
 	
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	public Image image = img.getImage();
 	
 	public Restaurant3CustomerGui(Restaurant3CustomerRole c) {
 		//Initialize agent
@@ -62,7 +68,8 @@ public class Restaurant3CustomerGui implements Gui {
 		g.setColor(Color.green);
 		g.drawString(food, xPos, yPos+height+height);
 		g.drawString(((PersonAgent)((Restaurant3CustomerRole)agent).getPerson()).getName(), xPos-14, yPos+30);
-		g.fillRect(xPos, yPos, width, height);
+		//g.fillRect(xPos, yPos, width, height);
+		g.drawImage(image, xPos, yPos, width, height, null);
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package restaurant5;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
+import bank.interfaces.BankDatabase;
 import market.interfaces.MarketCashier;
 import person.PersonAgent; 
 import restaurant5.interfaces.Cashier5; 
@@ -10,10 +12,15 @@ import restaurant5.interfaces.Market5;
 import agent.Role;
 
 public class Restaurant5Cashier extends Role implements Cashier5{
+	public boolean offWork = false; 
+	public int offWorkMess = 0; 
 	Menu5 myMenu = new Menu5(); 
 	String name; 
 	int Cash; 
 	int debt; 
+	public BankDatabase bank;
+	public int accountNumber;
+	Semaphore getMoney = new Semaphore(0,true);
 	
 	PersonAgent myPerson; 
 
@@ -68,6 +75,16 @@ public void msgmarketbill(Market5 m, int Bill){
 }
 
 
+public void msgGoOffWork(){
+	print ("cook off work");
+	offWorkMess ++; 
+	if (offWorkMess == 2){
+		offWork = true; 
+		stateChanged();
+	}
+}
+
+
 public void msgReceivedFood(){
 	for (MarketBill mb: marketbills){
 		if (mb.mstate == MarketState.waitForCook){
@@ -119,7 +136,10 @@ public void msgDrainMoney(){
 }
 
 public boolean pickAndExecuteAnAction() {
-	
+	if(Cash < 500.00){
+		getMoneyFromBank();
+		return true;
+	}
 	synchronized(bills){
 		for (Bill b: bills){
 			if (b.bs == BillState.computing){
@@ -146,6 +166,10 @@ public boolean pickAndExecuteAnAction() {
 			}
 		}
 	}
+	
+	if (offWork){
+		goOffWork();
+	}
 	return false;
 	//we have tried all our rules and found
 	//nothing to do. So return false to main loop of abstract agent
@@ -171,6 +195,15 @@ private void payMarketBill(MarketBill b){
 		b.market.msgBillFromTheAir(paid);
 	}
 }
+
+
+private void goOffWork(){
+	print("cashier go off work");
+	offWork = false; 
+	//this.person.msgFinishedEvent(this);
+	this.person.msgGoOffWork(this, 0);
+}
+
 
 
 private void computeBill(Bill b){
@@ -213,6 +246,25 @@ public String toString(){
 
 public String getRoleName(){
 	return "Restaurant 5 Cashier";
+}
+
+public utilities.Gui getGui(){
+	return null; 
+}
+
+private void getMoneyFromBank(){
+	bank.msgWithdrawMoney(this, (1000.00-Cash), accountNumber);
+	try{
+		getMoney.acquire();
+	}
+	catch(InterruptedException ie){
+		ie.printStackTrace();
+	}
+}
+
+public void msgAddMoney(double amount) {
+	Cash += amount;
+	getMoney.release();
 }
 
 

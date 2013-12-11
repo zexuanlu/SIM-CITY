@@ -1,7 +1,9 @@
 package restaurant1;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
+import bank.interfaces.BankDatabase;
 import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Waiter;
@@ -16,7 +18,10 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 	public List<Check> check = Collections.synchronizedList(new ArrayList<Check>());
 	public List<Bill> bill = Collections.synchronizedList(new ArrayList<Bill>());
 	public Map<String, Double> Price = new HashMap<String, Double>();
-	public double money = 70;
+	public double money = 0.0;
+	public int accountNumber;
+	Semaphore getMoney = new Semaphore(0, true);
+	public BankDatabase bank;
 	boolean payingbill = false;
 	MarketCashier marketCashier;
 
@@ -114,6 +119,10 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		// TODO Auto-generated method stub
+		if(money < 500.00){
+			getMoneyFromBank();
+			return true;
+		}
 		synchronized(bill){
 			for(Bill b: bill){
 				if(money > 0 && b.s1 == state1.paynow){
@@ -180,5 +189,26 @@ public class Restaurant1CashierRole extends Role implements Restaurant1Cashier{
 
 	public String getRoleName(){
 		return roleName;
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
+
+	private void getMoneyFromBank(){
+		if(bank != null){
+			bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
+			try{
+				getMoney.acquire();
+			}
+			catch(InterruptedException ie){
+				ie.printStackTrace();
+			}
+		}
+	}
+	
+	public void msgAddMoney(double amount) {
+		money += amount;
+		getMoney.release();
 	}
 }

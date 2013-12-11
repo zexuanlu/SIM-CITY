@@ -122,4 +122,9 @@ public class Restaurant3HostRole extends Role implements RestaurantHost{
 		nextWaiter = (nextWaiter+1)%waiters.size();
 		stateChanged();
 	}
+	
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
 }

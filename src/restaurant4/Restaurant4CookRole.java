@@ -50,7 +50,8 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		timer.schedule(new TimerTask() {
 			public void run() {
 				checkStand = true;
-				stateChanged();
+				if(person != null)
+					stateChanged();
 			}
 		},
 			5000);
@@ -236,7 +237,8 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 		timer.schedule(new TimerTask() {
 			public void run() {
 				checkStand = true;
-				stateChanged();
+				if(person != null)
+					stateChanged();
 			}
 		},
 			5000);
@@ -363,5 +365,9 @@ public class Restaurant4CookRole extends Role implements Restaurant4Cook{
 	public void msgWorkDayOver() {
 		endOfDay++;
 		stateChanged();
+	}
+	
+	public utilities.Gui getGui(){
+		return this.gui; 
 	}
 }

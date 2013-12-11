@@ -24,14 +24,14 @@ public class TracePanel extends JPanel implements ActionListener{
 	// PANEL SETUP DATA
 	private String title = " Trace Panel ";
 	private static final int WIDTH = 275;
-	private static final int HEIGHT = 310;
+	private static final int HEIGHT = 500;
 	private Dimension size = new Dimension(WIDTH, HEIGHT);
 	
 	// RELEVANT REFERENCES
 	CityControlPanel cntrlPanel;
 	
 	// Message display area
-	JTextArea message = new JTextArea("Trace message output", 10, 260);
+	JTextArea message = new JTextArea("Trace message output");
 	
 	// Limit on num messages to display
 	private final int messageLim = 1000;
@@ -60,7 +60,7 @@ public class TracePanel extends JPanel implements ActionListener{
 		
 		
 		// Component initializations
-		Dimension msgsize = new Dimension(275, 100);
+		Dimension msgsize = new Dimension(275, 500);
 		message.setBackground(Color.GRAY);
 		message.setWrapStyleWord(true);
 		message.setLineWrap(true);
@@ -82,7 +82,7 @@ public class TracePanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == refTrace){
-			
+			update();
 		}
 	}
 	

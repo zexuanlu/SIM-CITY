@@ -275,7 +275,6 @@ public class CityMap {
 		if(!history.contains(l)){
 			history.add(l);
 		}
-		System.out.println("Going to " + l.getName());
 		ateOutLast = true;
 
 		return l;

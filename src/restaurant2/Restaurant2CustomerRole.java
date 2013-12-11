@@ -113,8 +113,7 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		event = AgentEvent.followHost;
 		stateChanged();
 	}
-	public void msgYouHaveToWait()
-	{
+	public void msgYouHaveToWait(){
 		print("im sorry from the wait! feel free to leave if need be");
 		event = AgentEvent.waiting;
 	}
@@ -138,29 +137,24 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		mealChoice = null;
 		stateChanged();
 	}
-	public void msgServed(String order)
-	{
+	public void msgServed(String order){
 		System.out.println("Thank you for the "+order);
 		event = AgentEvent.served;
 		stateChanged();
 	}
-	public void msgHeresYourCheck(int check)
-	{
+	public void msgHeresYourCheck(int check){
 		this.check = check;
 		stateChanged();
 	}
-	public void msgAtCashier()
-	{
-		if(state != AgentState.NotEnoughMoney || state != AgentState.DoingNothing)
-		{
+	public void msgAtCashier(){
+		if(state != AgentState.NotEnoughMoney || state != AgentState.DoingNothing){
 			waitForPayment.release();
 			print("At the cashier paying for meal");
 			event = AgentEvent.donePaying;
 			stateChanged();
 		}
 	}
-	public void msgThanksForDining()//from the cashier
-	{
+	public void msgThanksForDining(){
 		event = AgentEvent.doneLeaving;
 		stateChanged();
 	}
@@ -219,6 +213,7 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		}
 		if (state == AgentState.Leaving && event == AgentEvent.doneLeaving){
 			state = AgentState.DoingNothing;
+			leaveBuilding();
 			//no action
 			return true;
 		}
@@ -227,13 +222,14 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 
 	// Actions
 
-	private void gamble()
-	{
+	private void gamble(){
 		int leave = chooser.nextInt(6);
-		if(leave == 2)
-		{
+		if(leave == 2){
 			leaveTable();
 		}
+	}
+	private void leaveBuilding(){
+		this.person.msgFinishedEvent(this);
 	}
 	private void goToRestaurant() {
 		Do("Going to restaurant");
@@ -286,22 +282,18 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		},
 		10000);
 	}
-	private boolean decide()
-	{
+	private boolean decide(){
 		String choice = menu.chooseMeal();
-		if(choice.equals("none"))
-		{
+		if(choice.equals("none")){
 			state = AgentState.NotEnoughMoney;
 			event = AgentEvent.leavingWithoutOrdering;
 			return false;
 		}
-		if(menu.checkPrice(choice, wallet) || name.equalsIgnoreCase("flake"))
-		{
+		if(menu.checkPrice(choice, wallet) || name.equalsIgnoreCase("flake")){
 			mealChoice = choice;
 			return true;
 		}
-		else
-		{
+		else{
 			menu.restrict(choice);
 			print("deciding again "+choice);
 			decide();
@@ -310,8 +302,7 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 		event = AgentEvent.leavingWithoutOrdering;
 		return false;
 	}
-	private void whatShouldIOrder()
-	{
+	private void whatShouldIOrder(){
 		print("thinking about what to get");
 		customerGui.changeText("...");
 		Random thinkingTime = new Random();
@@ -346,17 +337,16 @@ public class Restaurant2CustomerRole extends Role implements Restaurant2Customer
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.person.msgFinishedEvent(this);
 	}
-	private void leaveTableNoPayment()
-	{
+	private void leaveTableNoPayment(){
 		Do("I dont have the money to eat here");
 		customerGui.changeText("$ :(");
 		waiter.msgLeavingTableNoOrder((Restaurant2Customer) this);
 		customerGui.DoExitRestaurant();
 
 	}
-	private void payForMeal()
-	{
+	private void payForMeal(){
 		if(!this.name.equals("flake lord")){
 			cashier.msgPayment((Restaurant2Customer) this, check);
 		}

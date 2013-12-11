@@ -15,8 +15,7 @@ public class Restaurant2WaiterRole extends Restaurant2AbstractWaiterRole{
 	@Override
 	public boolean pickAndExecuteAnAction() {
 		try{
-			for(MyCustomer mc : MyCustomers)
-			{
+			for(MyCustomer mc : MyCustomers){
 				if(mc.getState() == "toBeServed"){
 					serveCustomers(mc);
 					return true;

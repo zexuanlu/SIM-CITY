@@ -1,20 +1,24 @@
 package restaurant3;
 
 import agent.Role;
+import bank.interfaces.BankDatabase;
 import person.PersonAgent;
 import restaurant3.interfaces.Restaurant3Cashier;
 import restaurant3.interfaces.Restaurant3Waiter;
-
 import market.interfaces.MarketCashier;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.Semaphore;
 
 public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 
 	//MEMBER DATA
 	String name;
 	double money = 500;
+	public BankDatabase bank;
+	public int accountNumber;
+	Semaphore getMoney = new Semaphore(0,true);
 	
 	//Food prices
 	static final double steak = 10.00;
@@ -114,6 +118,10 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 	//SCHEDULER *************************************
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(money < 500.00){
+			getMoneyFromBank();
+			return true;
+		}
 		synchronized(mBills){
 			if(!mBills.isEmpty() && money > 0){
 				payMarketBill();
@@ -178,5 +186,24 @@ public class Restaurant3CashierRole extends Role implements Restaurant3Cashier {
 			print(name + ": paid partial bill. Will pay " + mb.payAmt + " later");
 			mb.mCash.msgBillFromTheAir(payment);
 		}
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+
+	}
+	private void getMoneyFromBank(){
+		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
+		try{
+			getMoney.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+	}
+	
+	public void msgAddMoney(double amount) {
+		money += amount;
+		getMoney.release();
 	}
 }

@@ -705,4 +705,9 @@ public class HomeOwnerRole extends Role implements HomeOwner {
 	public String getRoleName(){
 		return roleName;
 	}
+	
+	public utilities.Gui getGui(){
+		return homeGui; 
+	}
+	
 }

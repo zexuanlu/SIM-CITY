@@ -79,6 +79,10 @@ public class Restaurant5FoodGui implements Gui {
     	
     }
     
+    public void setPresent(boolean b){
+    	isPresent = b; 
+    }
+    
 
 
 }

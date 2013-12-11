@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 import person.PersonAgent;
 
 public class Restaurant6CustomerGui implements Gui{
@@ -44,7 +46,11 @@ public class Restaurant6CustomerGui implements Gui{
 	
 	private int waitingX;
 	private int waitingY;
-
+	
+	public ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	public Image image = img.getImage();
+	
+	
 	public Restaurant6CustomerGui(Restaurant6CustomerRole c) { //, RestaurantGui gui){ //HostAgent m) {
 		agent = c;
 		xPos = -40;
@@ -112,7 +118,8 @@ public class Restaurant6CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.CYAN);
-		g.fillRect(xPos, yPos, 20, 20);
+		//g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(image, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 	

@@ -6,6 +6,7 @@ import utilities.Gui;
 
 import java.awt.*;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 
@@ -32,6 +33,10 @@ public class Restaurant2CustomerGui implements Gui{
     public static final int yTable4 = 400;
 
     private String text = " ";
+    
+	private ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	private Image cu = img.getImage();
+    
 	public Restaurant2CustomerGui(Restaurant2CustomerRole c, int x, int y){
 		agent = c;
 		xPos = -20;
@@ -70,6 +75,7 @@ public class Restaurant2CustomerGui implements Gui{
 	public void draw(Graphics2D g) {
 		g.setColor(Color.PINK);//so we can see the text better
 		g.fillRect(xPos, yPos, 20, 20);
+		g.drawImage(cu, xPos, yPos, 20, 2, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		g.drawString(text, xPos, yPos-5);	
 	}

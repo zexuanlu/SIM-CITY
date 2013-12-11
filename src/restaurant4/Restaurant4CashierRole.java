@@ -1,10 +1,13 @@
 package restaurant4;
 
 import agent.Role;
+import bank.interfaces.BankDatabase;
 import restaurant4.interfaces.*;
 import restaurant4.test.mock.EventLog;
+import restaurant4.test.mock.LoggedEvent;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 import market.interfaces.MarketCashier;
 import person.interfaces.Person;
@@ -20,6 +23,10 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	public List<Bill> bills = Collections.synchronizedList(new ArrayList<Bill>());
 	private String name;
 	private int endOfDay = 0;
+	public int accountNumber;
+	private double money = 0;
+	public BankDatabase bank;
+	Semaphore getMoney = new Semaphore(0,true);
 	//Lets the Cashier check the prices of items
 	private Map<String, Double> foodPrices = Collections.synchronizedMap(new HashMap<String, Double>());
 	public EventLog log;
@@ -48,6 +55,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * @param waiter the waiter who submitted the check
 	 */
 	public void msgINeedCheck(String choice, Restaurant4Customer customer, Restaurant4Waiter waiter){
+		log.add(new LoggedEvent("Received msgINeedCheck from Waiter"));
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -68,6 +76,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * @param money the amount of money the customer is using
 	 */
 	public void msgPayingForFood(Restaurant4Customer customer, double money){
+		log.add(new LoggedEvent("Received msgPayingForFood from Customer"));
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -99,6 +108,10 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
+		if(money < 500.00){
+			getMoneyFromBank();
+			return true;
+		}
 		//If there is a check that has been paid, confirm the payment
 		for(Check c : checks){
 			if(c.s == state.paid){
@@ -165,8 +178,25 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		b.mc.msgBillFromTheAir(b.amount);
 	}
 	
+	private void getMoneyFromBank(){
+		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
+		try{
+			getMoney.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+	}
+	
 	private void workDayOver(){
 		endOfDay = 0;
+		bank.msgDepositMoney(this, money, accountNumber);
+		try{
+			getMoney.acquire();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
 		getPerson().msgGoOffWork(this, 0.00);
 	}
 	//utilities
@@ -215,5 +245,14 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	public void msgWorkDayOver() {
 		endOfDay++;
 		stateChanged();
+	}
+	
+	public utilities.Gui getGui(){
+		return null; 
+	}
+	
+	public void msgAddMoney(double amount) {
+		money += amount;
+		getMoney.release();
 	}
 }
