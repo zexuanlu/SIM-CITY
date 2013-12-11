@@ -178,7 +178,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 				requests.remove(r);
 				return;
 			}
-			if(r.a.owner == r.bc){
+			else{
 				if(r.a.debt == 0){
 					Do("Completed deposit of " + r.amount);
 					r.a.balance += r.amount;
@@ -194,11 +194,8 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 				totalMoney += r.amount;
 				r.bt.msgDepositDone(r.a.balance, r.bc);
 				requests.remove(r);
-			}
-			else{
-				r.bt.msgRequestFailed(r.bc, "deposit");
-			}
 			return;
+			}
 		}
 		/**
 		 * Withdraws some amount of money from the account. 
@@ -213,7 +210,7 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 				requests.remove(r);
 				return;
 			}
-			if(r.a.owner == r.bc){
+			else{
 				if(r.a.balance > r.amount){
 					r.a.balance -= r.amount;
 					totalMoney -= r.amount;
@@ -225,9 +222,6 @@ public class BankDatabaseAgent extends Agent implements BankDatabase {
 				}
 				Do("Completed withdrawal of " + r.amount);
 				r.bt.msgWithdrawDone(r.a.balance, r.amount, r.bc);
-			}
-			else{
-				r.bt.msgRequestFailed(r.bc, "withdraw");
 			}
 			requests.remove(r);
 		}

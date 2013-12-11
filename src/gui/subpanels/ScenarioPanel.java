@@ -834,6 +834,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent withdrawBank2 = new SimEvent("withdraw", bank2, EventType.CustomerEvent);
 		
 		walking.msgAddEvent(eatAtHome);
+		walking.msgAddEvent(withdrawBank2);
 		walking.msgAddEvent(depositFromBank1);
 		walking.msgAddEvent(goToMarket1);
 		walking.msgAddEvent(goToRest1);
@@ -842,7 +843,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
 		walking.msgAddEvent(goToMarket2);
-		walking.msgAddEvent(withdrawBank2);
 		
 		for (PersonAgent p : people) {
 			p.setcitygui(simCityGui);
@@ -1405,7 +1405,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         	else if (k >= 37 && k < 53) {
         		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(240, 280), k, LocationType.Apartment));
         	}
-        	else if (k >= 54 && k < 70) {
+        	else if (k >= 53 && k <= 70) {
         		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(330, 300), k, LocationType.Apartment));
         	}
         	++k;
