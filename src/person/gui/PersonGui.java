@@ -124,12 +124,12 @@ public class PersonGui implements Gui{
 		}
 		else if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
 		//	agent.msgAtLight();
-			try {
-				atlight.acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			System.out.println("Released at the stop light "+agent.getName());
 		}
 		}
