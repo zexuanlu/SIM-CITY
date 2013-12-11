@@ -81,14 +81,14 @@ public class BusGui implements Gui {
     	
     	
         if (xPos < xDestination)
-            xPos++;
+            xPos+=2;
         else if (xPos > xDestination)
-            xPos--;
+            xPos-=2;
 
         if (yPos < yDestination)
-            yPos++;
+            yPos+=2;
         else if (yPos > yDestination)
-            yPos--;
+            yPos-=2;
         
         if (xPos == xDestination && yPos == yDestination && guistate == GuiState.canStop){
         	guistate = GuiState.atStop; 
