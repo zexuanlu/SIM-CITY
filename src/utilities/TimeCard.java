@@ -60,7 +60,6 @@ public class TimeCard extends Agent {
 		synchronized(roles){
 			for(Role r : roles){
 				r.msgEndOfDay();
-				System.err.println("TIMECARD ENDOFDAY" + " "+r.getRoleName());
 			}
 		}
 		endOfDay = false;

@@ -116,7 +116,6 @@ public class CarGui implements Gui {
    // if (xPos == xDestination && yPos == yDestination && guistate == GuiState.canStop){
         if (xPos == overallX && yPos == overallY && guistate == GuiState.canStop && !collided){
                 guistate = GuiState.atStop;
-                System.out.println("At Place where I'm supposed to be at/ dead position");
                 myCar.deadPos(deadpositionX, deadpositionY);
                 myCar.msgatDestination();
                 xDestination = deadpositionX;
