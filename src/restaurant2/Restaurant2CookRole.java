@@ -69,6 +69,12 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		cookTimes.put("Ribs", 1500);
 		cookTimes.put("Salad", 750);
 		cookTimes.put("Pound Cake", 900);
+		checkStand.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				Do("THE LORD");
+				stateChanged();
+			}
+		}, 0, 1000);
 	}
 	
 	
@@ -89,12 +95,12 @@ public class Restaurant2CookRole extends Role implements RestaurantCook {
 		markets.add(mm1);
 		markets.add(mm2);
 		markets.add(mm3);*/
-		checkStand.scheduleAtFixedRate(new TimerTask() {
+		/*checkStand.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				Do("THE LORD");
 				stateChanged();
 			}
-		}, 0, 1000);
+		}, 0, 1000);*/
 
 	}
 	public void setGui(Restaurant2CookGui c){

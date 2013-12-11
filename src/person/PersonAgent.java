@@ -731,7 +731,7 @@ public class PersonAgent extends Agent implements Person{
 					}
 				}
 				Restaurant2WaiterRole wRole = new Restaurant2WaiterRole(this.name, this); 
-				MyRole newRole = new MyRole(wRole, "Rest 4 Waiter");
+				MyRole newRole = new MyRole(wRole, "Rest 2 Waiter");
 				newRole.setActive(true);
 				roles.add(newRole);
 				Restaurant2WaiterGui wg = new Restaurant2WaiterGui((Restaurant2WaiterRole)newRole.role);
