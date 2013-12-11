@@ -32,7 +32,7 @@
   9. People who have nothing to do go to their home or apartment
   10. People leave work when their replacements arrive or at the end of the day
   11. Restaurants order from the market and receive food by truck
-###Team Members Contributions
+###Team Members Contributions for V1 and V2
   1. Jennie Zhou - 
 	+ Houses and Apartments
 	+ Residents, Landlords, Apartment Tenants
@@ -40,7 +40,8 @@
 	+ Some of Add Person Panel
 	+ Team Management
 	+ Fixes of other code and integration
-  	+ Upgrade of restaurant6
+	+ Upgrade of restaurant6
+	+ Worked on scenario panel
   2. Lizhi Fan -
 	+ Transportation
 	+ Busses and Cars
@@ -48,7 +49,10 @@
 	+ City Layout
 	+ Person Initialization in Main Class
 	+ Fixes of other code and integration
-  	+ Upgrade of restaurant5
+	+ Upgrade of restaurant5
+	+ Vehicle-person collision
+	+ Vehicle-vehicle collision
+	+ Traffic light
   3. Joseph Boman - 
 	+ Bank
 	+ Clickable buildings in City View
@@ -58,31 +62,43 @@
 	+ Fixes with Person and Person scheduler
 	+ Individual Location GUIs
 	+ Fixes of other code and integration
-  	+ Some of PersonAgent
+	+ Some of PersonAgent
 	+ Upgrade of restaurant4
-  	+ GUI radial button upgrade upon right click
+	+ GUI radial button upgrade upon right click
+	+ Bank robbery scenario
+	+ Market delivery scenario
+	+ Open and close scenario
+	+ Fixes and debugging
   4. Grant Collins -
 	+ Person Agent
 	+ Person Initialization in Main Class
 	+ CityMap Class
 	+ Global Clock and Locations
 	+ Integration
-  	+ Upgrade of restaurant3
+	+ Upgrade of restaurant3
+	+ Weekend scenario
+	+ Upgraded restaurant 2
+	+ Traffic light
+	+ Fixes and debugging
   5. Rocky Luo -
 	+ Market
 	+ Market Trucks
 	+ Integration
-  	+ Upgrade of restaurant2
+	+ Upgrade of restaurant2
+	+ Traffic light
+	+ Helped with images in CityAnimationPanel 
+	+ Market delivery fail scenario
   6. Mikhail Bhuta -
-	+ Restaurant Upgrades
-	+ Since he did the restaurant and gui, he only has one interaction diagram and doc
 	+ Person Interaction Panel
 	+ Trace Panel
-	+ Overall gui layout
+	+ All gui panel layout and formatting
 	+ Integration
-	+ Upgrade of restaurant1
+	+ Upgrade of restaurant 1 and 2
+	+ Created images and integrated them for all agent and panel animations
+	+ Some fixes and debugging
+	+ Fixes to panel looks and formatting 
 
-###Issues and Known Bugs
+###Issues and Known Bugs for V1
   + People sometimes do not disappear into buildings
   + People sometimes do not take bus when they should
   + Only 1 upgraded restaurant included, however, A* was implemented
