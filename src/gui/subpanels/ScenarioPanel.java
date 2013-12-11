@@ -57,7 +57,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	public TracePanel tracePanel;
 	
 	// Reference to the sim world clock
-	private SimWorldClock clock;
+	public SimWorldClock clock;
 	
 	List<PersonAgent> people;
 	List<PersonGui> peopleGuis;
@@ -234,6 +234,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			else if (chosen.getText().trim().equals("Person Vehicle collision")) {
 				// Here we will run the scenario where all restaurants order from the market
 				//FIX
+				simCityGui.crashPerson();
 				System.err.println("Person Vehicle collision");
 			}
 			else if (chosen.getText().trim().equals("One not working person")) {
