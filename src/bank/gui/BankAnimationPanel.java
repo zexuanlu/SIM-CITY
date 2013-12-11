@@ -35,6 +35,8 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
     public Image m1 = img.getImage();
     public ImageIcon img2 = new ImageIcon(this.getClass().getResource("image/tellerDesk.png"));
     public Image m2 = img2.getImage();
+    public ImageIcon img3 = new ImageIcon(this.getClass().getResource("image/bank.png"));
+    public Image m3 = img3.getImage();
     
     public BankAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -57,6 +59,9 @@ public class BankAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        //draw background
+        g2.drawImage(m3, 0, 0, WINDOWX, WINDOWY, null);
 
         //Here are the teller booths
         g2.setColor(Color.BLACK);

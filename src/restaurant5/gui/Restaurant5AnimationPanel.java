@@ -18,6 +18,11 @@ public class Restaurant5AnimationPanel extends JPanel implements ActionListener 
     private Dimension bufferSize;
 
     public List<Gui> guis = new ArrayList<Gui>();
+    
+    ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable.png"));
+    Image timg = table.getImage();
 
     public Restaurant5AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -39,16 +44,16 @@ public class Restaurant5AnimationPanel extends JPanel implements ActionListener 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        //draw floor
+        g2.drawImage(floorimg, 0, 0, WINDOWX, WINDOWY, null);
 
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(200, 250, 50, 50);//200 and 250 need to be table params
+        g2.drawImage(timg, 200, 250, 50, 50, null);
+
+        g2.drawImage(timg, 300, 250, 50, 50, null);
         
-        g2.setColor(Color.orange);
-        g2.fillRect(300,250,50,50);
-        
-        g2.setColor(Color.orange);
-        g2.fillRect(400,250,50,50);
+        g2.drawImage(timg, 400, 250, 50, 50, null);
         
         g2.setColor(Color.blue);
         g2.fillRect(400,20,30,130);

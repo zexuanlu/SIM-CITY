@@ -85,7 +85,6 @@ public class Restaurant4CustomerGui implements Gui{
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
-		//g.fillRect(xPos, yPos, 20, 20);
 		g.drawImage(image, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		

@@ -102,26 +102,8 @@ public class Restaurant2WaiterGui implements Gui {
 	}
 
 	public void draw(Graphics2D g) {
-		switch (skin)//this is simply to identify individual waiters and what their current doings are
-		{
-		case 0:
-			g.setColor(Color.BLACK);
-			break;
-		case 1:
-			g.setColor(Color.BLACK);
-			break;
-		case 2:
-			g.setColor(Color.BLACK);
-			break;
-		case 3:
-			g.setColor(Color.BLACK);
-			break;
-		}
-		g.fillRect(xPos, yPos, 20, 20);
 		//g.drawString(text, xPos, yPos);	
 		g.drawImage(image, xPos, yPos, 20, 20, null);
-		
-		
 		if(agent instanceof Restaurant2WaiterRole){
         	g.drawString(((PersonAgent)((Restaurant2WaiterRole)agent).getPerson()).getName(), xPos-14, yPos+30);
         }

@@ -23,7 +23,7 @@ public class Restaurant3WaiterGui implements Gui {
 		private int height = 20;
 
 		Restaurant3Waiter agent = null;
-		int home = 0;
+		int home = 10;
 		int xDestination = home;
 		int yDestination = home;
 		int xPos, yPos;
@@ -46,8 +46,8 @@ public class Restaurant3WaiterGui implements Gui {
 		
 	public Restaurant3WaiterGui(Restaurant3Waiter w) {
 		agent = w;
-		xPos = xDestination;
-		yPos = yDestination;
+		xPos = 0;
+		yPos = 0;
 	}
 
 	@Override

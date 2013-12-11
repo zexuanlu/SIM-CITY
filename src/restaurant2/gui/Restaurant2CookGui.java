@@ -94,9 +94,9 @@ public class Restaurant2CookGui implements Gui {
 		stationLabels.put(position, text);
 	}
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
        // g.fillRect(xPos, yPos, 20, 20);
         g.drawImage(ck, xPos, yPos, 20, 20, null);
+        g.setColor(Color.MAGENTA);
         g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         g.drawString(orderText, xPos, yPos);
 		for(Map.Entry<Integer, String> entry: grillLabels.entrySet())

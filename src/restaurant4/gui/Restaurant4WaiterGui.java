@@ -76,7 +76,6 @@ public class Restaurant4WaiterGui implements Gui {
 
     public void draw(Graphics2D g) {
         g.setColor(Color.MAGENTA);
-        //g.fillRect(xPos, yPos, 20, 20);
         g.drawImage(image, xPos, yPos, 20, 20, null);
         
         if(agent instanceof Restaurant4WaiterRole){
