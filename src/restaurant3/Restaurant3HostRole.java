@@ -22,11 +22,12 @@ public class Restaurant3HostRole extends Role implements RestaurantHost{
 	
 	//Private class to keep track of tables at restaurant
 	private class Table{
-		boolean isOccupied = false;
+		boolean isOccupied;
 		int tableNum;
 		
 		Table(int tNum){
 			tableNum = tNum;
+			isOccupied = false;
 		}
 		
 		boolean isOccupied() {

@@ -341,7 +341,6 @@ public class Restaurant3SDWaiterRole extends Restaurant3AbstractWaiter implement
 			e.printStackTrace();
 		}
 		revStand.insertOrder(new Restaurant3Order(this, c.choice, c.tableNum));
-		cook.msgAddedOrderToRevolvingStand();
 		waiterGui.DoGoToHomePosition();	//GUI CODE
 	}
 	
