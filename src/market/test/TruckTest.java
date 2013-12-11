@@ -24,8 +24,8 @@ public class TruckTest extends TestCase{
 	
 	public void setUp() throws Exception{
 		super.setUp();
-		truck = new MarketTruckAgent();
-		truckGui = new MarketTruckGui(truck);
+		truck = new MarketTruckAgent(1);
+		truckGui = new MarketTruckGui(truck, null, 1);
 		cook = new MockRestaurantCook("cook");
 		cashier = new MockCashier("C");
 		
@@ -39,7 +39,7 @@ public class TruckTest extends TestCase{
 		
 		List<Food> food = new ArrayList<Food>();
 		
-		truck.gotoPosition(cook,food, 200, 200);
+		truck.gotoPosition(cook,food, 1);
 		
 		assertTrue("truck should contain a state == sending. It doesn't.",
 				truck.s == state.collecting);

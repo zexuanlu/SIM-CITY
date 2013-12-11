@@ -23,11 +23,12 @@ public class MockTruck extends Mock implements MarketTruck{
 	}
 
 
+
 	@Override
-	public void gotoPosition(RestaurantCook c, List<Food> food, int x,
-			int y) {
-		// TODO Auto-generated method stub
+	public void gotoPosition(RestaurantCook c, List<Food> food,
+			int restaurantnum) {
 		log.add(new LoggedEvent("Got it"));
+		
 	}
 
 }
