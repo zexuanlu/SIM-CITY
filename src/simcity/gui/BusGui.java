@@ -53,8 +53,10 @@ public class BusGui implements Gui {
 			//g.fillRect(xPos, yPos, 20, 20);
 			g.drawImage(bImg, xPos, yPos, 20, 20, null);
 		}
-		for(int i = 0; i < myBus.passengers.size(); i++){
-			g.drawString(((PersonAgent)((PassengerRole)myBus.passengers.get(i).p).person).getName(), xPos-15, yPos-(10*i));
+		synchronized(myBus.passengers){
+			for(int i = 0; i < myBus.passengers.size(); i++){
+				g.drawString(((PersonAgent)((PassengerRole)myBus.passengers.get(i).p).person).getName(), xPos-15, yPos-(10*i));
+			}
 		}
     }
 	
