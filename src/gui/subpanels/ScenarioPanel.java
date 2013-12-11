@@ -1179,69 +1179,69 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		/**
 		 * CREATING HOME OWNER ROLE
 		 */
-		HomeOwnerRole homeOwner = new HomeOwnerRole(people.get(0), "Home Owner", 1);
-		people.get(0).addRole(homeOwner, "Home Owner");
-		HomeOwnerRole homeOwner2 = new HomeOwnerRole(people.get(1), "Home Owner", 2);
-		people.get(1).addRole(homeOwner2, "Home Owner");
-		HomeOwnerRole homeOwner3 = new HomeOwnerRole(people.get(2), "Home Owner", 3);
-		people.get(2).addRole(homeOwner3, "Home Owner");
-		HomeOwnerRole homeOwner4 = new HomeOwnerRole(people.get(3), "Home Owner", 4);
-		people.get(3).addRole(homeOwner4, "Home Owner");
-		HomeOwnerRole homeOwner5 = new HomeOwnerRole(people.get(4), "Home Owner", 5);
-		people.get(4).addRole(homeOwner5, "Home Owner");
-		
-		roles.add(homeOwner);
-		roles.add(homeOwner2);
-		roles.add(homeOwner3);
-		roles.add(homeOwner4);
-		roles.add(homeOwner5);
+//		HomeOwnerRole homeOwner = new HomeOwnerRole(people.get(0), "Home Owner", 1);
+//		people.get(0).addRole(homeOwner, "Home Owner");
+//		HomeOwnerRole homeOwner2 = new HomeOwnerRole(people.get(1), "Home Owner", 2);
+//		people.get(1).addRole(homeOwner2, "Home Owner");
+//		HomeOwnerRole homeOwner3 = new HomeOwnerRole(people.get(2), "Home Owner", 3);
+//		people.get(2).addRole(homeOwner3, "Home Owner");
+//		HomeOwnerRole homeOwner4 = new HomeOwnerRole(people.get(3), "Home Owner", 4);
+//		people.get(3).addRole(homeOwner4, "Home Owner");
+//		HomeOwnerRole homeOwner5 = new HomeOwnerRole(people.get(4), "Home Owner", 5);
+//		people.get(4).addRole(homeOwner5, "Home Owner");
+//		
+//		roles.add(homeOwner);
+//		roles.add(homeOwner2);
+//		roles.add(homeOwner3);
+//		roles.add(homeOwner4);
+//		roles.add(homeOwner5);
 		
 		// List of apartment tenant roles
-        List<ApartmentTenantRole> aptTenants = Collections.synchronizedList(new ArrayList<ApartmentTenantRole>());
-        
-        // List of apartment tenant GUIs
-        List<ApartmentTenantGui> aptGuis = Collections.synchronizedList(new ArrayList<ApartmentTenantGui>());
+//        List<ApartmentTenantRole> aptTenants = Collections.synchronizedList(new ArrayList<ApartmentTenantRole>());
+//        
+//        // List of apartment tenant GUIs
+//        List<ApartmentTenantGui> aptGuis = Collections.synchronizedList(new ArrayList<ApartmentTenantGui>());
 		
 		/**
 		 * CREATING APARTMENT TENANT ROLES
 		 */
-		for (int i = 5; i < 69; ++i) {
-			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", i+1, people.get(i));
-			aptTenants.add(temp);
-			people.get(i).addRole(temp, "Apt Tenant");
-		}
-		
-		for (int l = 69; l < 80; ++l) {
-			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", 60, people.get(l));
-			aptTenants.add(temp);
-			people.get(l).addRole(temp, "Apt Tenant");
-		}
+//		for (int i = 5; i < 69; ++i) {
+//			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", i+1, people.get(i));
+//			aptTenants.add(temp);
+//			people.get(i).addRole(temp, "Apt Tenant");
+//		}
+//		
+//		for (int l = 69; l < 80; ++l) {
+//			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", 60, people.get(l));
+//			aptTenants.add(temp);
+//			people.get(l).addRole(temp, "Apt Tenant");
+//		}
         
-        int t = 5;
-        for (PersonAgent p : people) {
-        	if (p.homeNumber > 5 && p.homeNumber <= 69) {
-        		ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", t+1, people.get(t));
-    			aptTenants.add(temp);
-    			people.get(t).addRole(temp, "Apt Tenant");
-        	}
-        	else if (p.homeNumber == -1) {
-        		ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", -1, people.get(t));
-    			aptTenants.add(temp);
-    			people.get(t).addRole(temp, "Apt Tenant");
-        	}
-        }
+//        int t = 5;
+//        for (PersonAgent p : people) {
+//        	if (p.homeNumber > 5 && p.homeNumber <= 69) {
+//        		ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", t+1, people.get(t));
+//    			aptTenants.add(temp);
+//    			people.get(t).addRole(temp, "Apt Tenant");
+//        	}
+//        	else if (p.homeNumber == -1) {
+//        		ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", -1, people.get(t));
+//    			aptTenants.add(temp);
+//    			people.get(t).addRole(temp, "Apt Tenant");
+//        	}
+//        }
 		
 		/**
 		 * CREATING APARTMENT TENANT GUIS
 		 */
-		for (ApartmentTenantRole apt : aptTenants) {
-			aptGuis.add(new ApartmentTenantGui(apt));
-		}
-        
-        // Loops through apartment tenant roles and sets to respective GUI
-        for (ApartmentTenantRole r : aptTenants) {
-        	r.setGui(aptGuis.get(aptTenants.indexOf(r)));
-        }
+//		for (ApartmentTenantRole apt : aptTenants) {
+//			aptGuis.add(new ApartmentTenantGui(apt));
+//		}
+//        
+//        // Loops through apartment tenant roles and sets to respective GUI
+//        for (ApartmentTenantRole r : aptTenants) {
+//        	r.setGui(aptGuis.get(aptTenants.indexOf(r)));
+//        }
 		
 		/** 
 		 * GUI CREATION AND INITIALIZATION
@@ -1298,33 +1298,33 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		cityAnimPanel.marketPanel2.addGui(((MarketEmployeeRole)roles.get(9)).employeeGui);
 		
 		 // Sets each home owner to respective animation panel
-	   cityAnimPanel.house1Panel.addGui(((HomeOwnerRole)roles.get(10)).homeGui);
-	   cityAnimPanel.house2Panel.addGui(((HomeOwnerRole)roles.get(11)).homeGui);
-	   cityAnimPanel.house3Panel.addGui(((HomeOwnerRole)roles.get(12)).homeGui);
-	   cityAnimPanel.house4Panel.addGui(((HomeOwnerRole)roles.get(13)).homeGui);
-	   cityAnimPanel.house5Panel.addGui(((HomeOwnerRole)roles.get(14)).homeGui);
+//	   cityAnimPanel.house1Panel.addGui(((HomeOwnerRole)roles.get(10)).homeGui);
+//	   cityAnimPanel.house2Panel.addGui(((HomeOwnerRole)roles.get(11)).homeGui);
+//	   cityAnimPanel.house3Panel.addGui(((HomeOwnerRole)roles.get(12)).homeGui);
+//	   cityAnimPanel.house4Panel.addGui(((HomeOwnerRole)roles.get(13)).homeGui);
+//	   cityAnimPanel.house5Panel.addGui(((HomeOwnerRole)roles.get(14)).homeGui);
 		
 		/**
 		 * APARTMENT & HOME INITIALIZATION
 		 */
 		// Loops through the apartment guis to add them to their animation panels
-	   int j = 0;
-	   for (ApartmentTenantGui aptGui : aptGuis) {
-		   aptGui.isPresent = false;
-	       if (j >= 0 && j < 16) {
-	    	   cityAnimPanel.apartment1.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
-	       }
-	       else if (j >= 16 && j < 32) {
-	    	   cityAnimPanel.apartment2.get(aptGuis.indexOf(aptGui)-16).addGui(aptGui);
-	       }
-	       else if (j >= 32 && j < 48) {
-	    	   cityAnimPanel.apartment3.get(aptGuis.indexOf(aptGui)-32).addGui(aptGui);
-	       }
-	       else if (j >= 48 && j < 64) {
-	    	   cityAnimPanel.apartment4.get(aptGuis.indexOf(aptGui)-48).addGui(aptGui);
-	       }
-	       ++j;
-	   }
+//	   int j = 0;
+//	   for (ApartmentTenantGui aptGui : aptGuis) {
+//		   aptGui.isPresent = false;
+//	       if (j >= 0 && j < 16) {
+//	    	   cityAnimPanel.apartment1.get(aptGuis.indexOf(aptGui)).addGui(aptGui);
+//	       }
+//	       else if (j >= 16 && j < 32) {
+//	    	   cityAnimPanel.apartment2.get(aptGuis.indexOf(aptGui)-16).addGui(aptGui);
+//	       }
+//	       else if (j >= 32 && j < 48) {
+//	    	   cityAnimPanel.apartment3.get(aptGuis.indexOf(aptGui)-32).addGui(aptGui);
+//	       }
+//	       else if (j >= 48 && j < 64) {
+//	    	   cityAnimPanel.apartment4.get(aptGuis.indexOf(aptGui)-48).addGui(aptGui);
+//	       }
+//	       ++j;
+//	   }
 	   
 	  		
 		/**
@@ -1434,11 +1434,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 100), LocationType.Restaurant6);                
         
         // Third quadrant locations
-        Home home = new Home("Home 1", homeOwner, new Position(460, 280), 1, LocationType.Home);
-        Home home2 = new Home("Home 2", homeOwner2, new Position(440, 380), 2, LocationType.Home);
-        Home home3 = new Home("Home 3", homeOwner3, new Position(520, 280), 3, LocationType.Home);
-        Home home4 = new Home("Home 4", homeOwner4, new Position(600, 280), 4, LocationType.Home);
-        Home home5 = new Home("Home 5", homeOwner5, new Position(660, 280), 5, LocationType.Home);
+//        Home home = new Home("Home 1", homeOwner, new Position(460, 280), 1, LocationType.Home);
+//        Home home2 = new Home("Home 2", homeOwner2, new Position(440, 380), 2, LocationType.Home);
+//        Home home3 = new Home("Home 3", homeOwner3, new Position(520, 280), 3, LocationType.Home);
+//        Home home4 = new Home("Home 4", homeOwner4, new Position(600, 280), 4, LocationType.Home);
+//        Home home5 = new Home("Home 5", homeOwner5, new Position(660, 280), 5, LocationType.Home);
         
         // Fourth quadrant locations. Creating apartments.
         // List of apartment locations
@@ -1472,22 +1472,22 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         truck2.setRestaurant(rest5, 5);
         truck2.setRestaurant(rest6, 6);
         
-        int k = 5;
-        for (ApartmentTenantRole r : aptTenants) {
-        	if (k < 21) {
-        		aptComplex1.add(new Apartment("Apartment "+k, r, new Position(80, 280), k, LocationType.Apartment));
-        	}
-        	else if (k >= 21 && k < 37) {
-        		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(160, 280), k, LocationType.Apartment));
-        	}
-        	else if (k >= 37 && k < 53) {
-        		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(240, 280), k, LocationType.Apartment));
-        	}
-        	else if (k >= 54 && k < 80) {
-        		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(330, 300), k, LocationType.Apartment));
-        	}
-        	++k;
-        }
+//        int k = 5;
+//        for (ApartmentTenantRole r : aptTenants) {
+//        	if (k < 21) {
+//        		aptComplex1.add(new Apartment("Apartment "+k, r, new Position(80, 280), k, LocationType.Apartment));
+//        	}
+//        	else if (k >= 21 && k < 37) {
+//        		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(160, 280), k, LocationType.Apartment));
+//        	}
+//        	else if (k >= 37 && k < 53) {
+//        		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(240, 280), k, LocationType.Apartment));
+//        	}
+//        	else if (k >= 53 && k <= 70) {
+//        		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(330, 300), k, LocationType.Apartment));
+//        	}
+//        	++k;
+//        }
         
         // SETTING FOR RESTAURANTS AND MARKETS AND BANKS 		
   		rest1.setCashier(rest1Cashier);
@@ -1632,11 +1632,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		locations.add(rest4);
 		locations.add(rest5);
 		locations.add(rest6);
-		locations.add(home);
-		locations.add(home2);
-		locations.add(home3);
-		locations.add(home4);
-		locations.add(home5);
+//		locations.add(home);
+//		locations.add(home2);
+//		locations.add(home3);
+//		locations.add(home4);
+//		locations.add(home5);
 		
 		for (Location a : aptComplex1) {
 			locations.add(a);
