@@ -13,7 +13,7 @@ import restaurant3.gui.Restaurant3WaiterGui;
 public class Restaurant3SDWaiterRole extends Restaurant3AbstractWaiter implements Restaurant3Waiter{
 	//MEMBER DATA
 	String name;
-	Restaurant3RevolvingStand revStand;
+	public Restaurant3RevolvingStand revStand;
 		
 	//References to agents
 	public Restaurant3HostRole host;

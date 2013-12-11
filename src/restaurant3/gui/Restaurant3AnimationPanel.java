@@ -2,6 +2,7 @@ package restaurant3.gui;
 
 import restaurant3.Restaurant3HostRole;
 import utilities.Gui; 
+
 import java.awt.*;
 
 import javax.swing.*;
@@ -50,11 +51,17 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 	Timer animTimer = new Timer(2, this);
 	public List<Gui> guis = new ArrayList<Gui>();
 	
+	//Images
+	ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable.png"));
+    Image timg = table.getImage();
+	
 	public Restaurant3AnimationPanel() {
 		//Set up panel
 		setSize(size);
     	setVisible(true);
-		this.setBorder(BorderFactory.createTitledBorder("Restaurant 3"));
+		this.setBorder(BorderFactory.createTitledBorder(" Restaurant 3 "));
 		
 		//Start timer for animation
 		//animTimer.start();
@@ -71,9 +78,11 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 		 //Clear the screen by painting a rectangle the size of the frame
 	     g2.setColor(getBackground());
 	     g2.fillRect(0, 0, WIDTH, HEIGHT );
+	     
+	     //draw floor
+	     g2.drawImage(floorimg, 0, 0, WIDTH, HEIGHT, null);
 	        
-	     //Draw table
-	     g2.setColor(Color.ORANGE);
+	     //Draw tables
 	     for(int i = 1; i <= nTables; i++){
 	    	int row;
 	     	if(i%3 !=0){
@@ -84,7 +93,7 @@ public class Restaurant3AnimationPanel extends JPanel implements ActionListener 
 			}
 	        int TABLEX = (((i-1)%3)+1)*100;
 	        int TABLEY = row*100;
-	        g2.fillRect(TABLEX, TABLEY, TableW, TableH);
+	        g2.drawImage(timg, TABLEX, TABLEY, TableW, TableH, null);
 	     }
 	        
 	     //Draw fridge

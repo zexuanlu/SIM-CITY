@@ -27,10 +27,16 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
     static final int TABLEDIM = 50;
 
     public List<Gui> guis = Collections.synchronizedList(new ArrayList<Gui>());
+    
+    ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable2.png"));
+    Image timg = table.getImage();
 
     public Restaurant4AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
+        this.setBorder(BorderFactory.createTitledBorder(" Restaurant 4 "));
  
    // 	Timer timer = new Timer(TIMERCOUNT, this );
    // 	timer.start();
@@ -46,16 +52,16 @@ public class Restaurant4AnimationPanel extends JPanel implements ActionListener 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        //draw floor
+        g2.drawImage(floorimg, 0, 0, WINDOWX, WINDOWY, null);
 
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLEX, TABLEY, TABLEDIM, TABLEDIM);//200 and 250 need to be table params
+        g2.drawImage(timg, TABLEX, TABLEY, TABLEDIM, TABLEDIM, null);
         
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLEX + TABLEDIST, TABLEY, TABLEDIM, TABLEDIM);
+        g2.drawImage(timg, TABLEX+TABLEDIST, TABLEY, TABLEDIM, TABLEDIM, null);
         
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(TABLEX + 2*TABLEDIST, TABLEY, TABLEDIM, TABLEDIM);
+        g2.drawImage(timg, TABLEX+(2*TABLEDIST), TABLEY, TABLEDIM, TABLEDIM, null);
 
         //Customer Waiting Area
         g2.setColor(Color.GRAY);

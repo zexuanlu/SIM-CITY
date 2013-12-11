@@ -143,6 +143,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		standTimer.schedule(new TimerTask() {
 			public void run() {
 				msgCheckStand();
+				if(person != null)
 				stateChanged();
 			}
 		}, (3000)); 
@@ -182,14 +183,14 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	
 	// Message telling cook to check the revolving stand
 	public void msgCheckStand() {
-		print("I have to go check the revolving stand for orders!");
+//		print("I have to go check the revolving stand for orders!");
 		log.add(new LoggedEvent("I have to go check the revolving stand for orders!"));		
 		checkingStand = true;
 		stateChanged();
 	}
 
 	// Message telling cook to decrease inventory
-	public void decreaseFoodOrderOneMarket() {
+	public void msgEmptyStock() {
 		state = CookState.Bored;
 		
 		// Sets number needed to 3 so that cook only orders from one market
@@ -231,11 +232,6 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	public void msgCheckInventory() {
 		state = CookState.Bored;
 		stateChanged();
-	}
-
-	public void msgEmptyStock() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	// Message to receive order from waiter
@@ -422,7 +418,8 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 		}
 		
 		if (!tempOrder.items.isEmpty()) {
-			markets.get(0).MsgIwantFood(this, this.cashier, tempOrder.items, 6);
+			marketCashier.MsgIwantFood(this, this.cashier, tempOrder.items, 6);
+			System.err.println("Ordering food!");
 			// Tell the cashier what you ordered so they can verify
 			cashier.msgOrderedFood(tempOrder.items);
 			orderPlaced = true;
@@ -463,7 +460,7 @@ public class Restaurant6CookRole extends Role implements Restaurant6Cook {
 	 * Checks the stand for any new orders. Will wait until order appears
 	 */
 	private void checkStand() {
-		print("Checking stand..");
+//		print("Checking stand..");
 		log.add(new LoggedEvent("Checking stand.."));
 		
 //		if (cookGui != null) {

@@ -55,10 +55,16 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
     
     public List<Gui> guis = new ArrayList<Gui>();
     public List<Shape> tables;
+    
+    ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable2.png"));
+    Image timg = table.getImage();
 
     public Restaurant6AnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
+        this.setBorder(BorderFactory.createTitledBorder(" Restaurant 6 "));
         
         bufferSize = this.getSize();
  
@@ -85,24 +91,27 @@ public class Restaurant6AnimationPanel extends JPanel implements ActionListener 
         g2.setColor(getBackground());
         g2.fillRect(winX, winY, WINDOWX, WINDOWY);
         
+        
+        // Drawing the customer waiting area
+    	g2.setColor(Color.lightGray);
+    	g2.drawString("WAITING", waitingXPos+40, waitingYPos+110);
+    	g2.fillRect(waitingXPos, waitingYPos, waitingWidth, waitingHeight);
+        
+        //draw floor
+        g2.drawImage(floorimg, 0, 0, WINDOWX, WINDOWY, null);
+        
         tableXPos = 30; // Reinitializes the table x position to 30 
         
         //Here is the table when the customer has just sat down
     	for (Shape s : tables) {
-    		g2.setColor(Color.ORANGE);
-        	g2.fillRect(tableXPos, tableYPos, tableWidth, tableHeight);
+        	g2.drawImage(timg, tableXPos, tableYPos, tableWidth, tableHeight, null);
         	tableXPos = tableXPos + 200;
-        	g2.draw(s);
+        	//g2.draw(s);
         }           
     	
     	// Drawing the kitchen area
     	g2.setColor(Color.lightGray);
     	g2.fillRect(kitchenXPos, kitchenYPos, kitchenWidth, kitchenHeight);
-    	
-    	// Drawing the customer waiting area
-    	g2.setColor(Color.lightGray);
-    	g2.drawString("WAITING", waitingXPos+40, waitingYPos+110);
-    	g2.fillRect(waitingXPos, waitingYPos, waitingWidth, waitingHeight);
     	
     	// Drawing the grill
     	g2.setColor(Color.DARK_GRAY);

@@ -21,10 +21,12 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	String name;
 	public boolean offWork; 
 	int marketNum = 1;
-	private Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
+	boolean startTimer = true;
+	boolean restock = false;
+	public Restaurant3RevolvingStand revStand = new Restaurant3RevolvingStand();
 	
 	//Agent references
-	Restaurant3CashierRole cashier;
+	public Restaurant3CashierRole cashier;
 	MarketCashierRole marketCashier;
 	MarketTruck truck;
 	
@@ -100,12 +102,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	}
 	
 	public void setGui(Restaurant3CookGui ckg){
-		checkTimer.scheduleAtFixedRate(new TimerTask(){
-			public void run(){
-				if(person != null)
-					stateChanged();
-			}
-		}, 0, 500);
 		cookGui = ckg;
 	}
 	
@@ -135,6 +131,15 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		sendTruckBack = true;
 		stateChanged();
 	}
+	
+	@Override
+	public void msgEmptyStock() {
+		print(name + ": need to restock");
+		for(Entry<String, MyFood> e : foodInventory.entrySet()){
+			e.getValue().amount = 3;
+		}
+		restock = true;
+	}
 
 	public void msgAtFrRelease(){
 		atFr.release();
@@ -143,9 +148,20 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//SCHEDULER *****************************************
 	@Override
 	public boolean pickAndExecuteAnAction() {
+		if(startTimer){
+			startCheckTimer();
+			return true;
+		}
 		//Send truck back
 		if(sendTruckBack == true) {
 			truckBack();
+			return true;
+		}
+		//Check if we need to restock
+		if(restock){
+			for(Entry<String, MyFood> f : foodInventory.entrySet()){
+				checkRestock(f);
+			}
 			return true;
 		}
 		//Check if there is an order on the revolving stand
@@ -187,6 +203,15 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		this.person.msgGoOffWork(this, 0);
 	}
 	//ACTIONS *************************************
+	public void startCheckTimer(){
+		checkTimer.scheduleAtFixedRate(new TimerTask(){
+			public void run(){
+				stateChanged();
+			}
+		}, 0, 500);
+		startTimer = false;
+	}
+	
 	public void takeOrderFromStand(){
 		Restaurant3Order o = null;
 		o = revStand.removeOrder();
@@ -202,10 +227,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		for(Entry<String, MyFood> f : foodInventory.entrySet()){
 			if(f.getKey().equals(o.choice)){
 				f.getValue().amount--;
-				if(f.getValue().amount <= 3){
-					print(name + ": need to restock " + f.getKey());
-					restockList.add(new Food(f.getKey(), (f.getValue().max - f.getValue().amount)));
-				}
+				checkRestock(f);
 			}
 		}
 		o.state = Restaurant3Order.oState.cooking;
@@ -221,7 +243,7 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	
 	public void restockFood(){
 		print(name + ": restocking food");
-		marketCashier.MsgIwantFood(this, cashier, restockList, marketNum);
+		marketCashier.MsgIwantFood(this, cashier, restockList, 3);
 		restockList.clear();
 	}
 	
@@ -229,6 +251,13 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		print(name + ": sending market truck back");
 		truck.msgGoBack();
 		sendTruckBack = false;
+	}
+	
+	public void checkRestock(Entry<String, MyFood> f){
+		if(f.getValue().amount <= 3){
+			print(name + ": need to restock " + f.getKey());
+			restockList.add(new Food(f.getKey(), (f.getValue().max - f.getValue().amount)));
+		}
 	}
 	
 	//DO METHODS ****************************************
@@ -268,12 +297,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void msgEmptyStock() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public utilities.Gui getGui(){

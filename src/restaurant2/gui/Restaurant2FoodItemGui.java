@@ -46,8 +46,8 @@ public class Restaurant2FoodItemGui implements Gui {
     }
 
     public void draw(Graphics2D g) {
-        g.setColor(Color.MAGENTA);
-        g.fillRect(xPos, yPos, 20, 20);
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillOval(xPos, yPos, 20, 20);
     }
 
     public boolean isPresent() {

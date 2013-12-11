@@ -324,18 +324,20 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.remove(p);
 		
 		// Checks to see if there's something else for the person to do that is a one time event (aka not work)
-		for (SimEvent e : this.person.getToDo()) {
-			if (e.importance == SimEvent.EventImportance.OneTimeEvent) {
-				DoGoToFrontDoor();
-				
-				try {
-					atFrontDoor.acquire();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+		if (this.person.getToDo() != null) {
+			for (SimEvent e : this.person.getToDo()) {
+				if (e.importance == SimEvent.EventImportance.OneTimeEvent) {
+					DoGoToFrontDoor();
+					
+					try {
+						atFrontDoor.acquire();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					this.person.msgFinishedEvent(this);
 				}
-				
-				this.person.msgFinishedEvent(this);
 			}
 		}
 	}

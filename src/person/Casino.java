@@ -40,7 +40,7 @@ public class Casino extends Location{
 	}
 	public void sendGamblersHome(){
 		for(PersonAgent p : gamblers){
-			p.msgGoHome();
+			p.msgGoHome("Casino");
 		}
 		pickTheWinner().msgAddMoney(2500.00);
 	}

@@ -1,8 +1,9 @@
 package person.gui;
-
+import java.util.*; 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
@@ -14,7 +15,8 @@ import utilities.TrafficLightAgent;
 import gui.panels.CityAnimationPanel;
 
 public class PersonGui implements Gui{
-	
+	public List<simcity.gui.BusGui>busses = new ArrayList<simcity.gui.BusGui>();
+	public simcity.gui.CarGui crashCar; 
 	private PersonAgent agent = null;
 	public TrafficLightAgent light;
 
@@ -27,6 +29,8 @@ public class PersonGui implements Gui{
 	public ImageIcon img = new ImageIcon(this.getClass().getResource("person.png"));
 	public Image pImg = img.getImage();
 	CityAnimationPanel cPanel;
+	private boolean dead = false; 
+
 	
 	public boolean atlight = false;
 	
@@ -56,6 +60,8 @@ public class PersonGui implements Gui{
 		this.agent = agent;
 		arrived = false;
 		isPresent = false;
+		//atLight = false;
+
 	}
 	public void updatePosition() {
 		boolean moved = false;
@@ -106,6 +112,16 @@ public class PersonGui implements Gui{
 				else{
 					arrived = true;
 					agent.msgAtDest(new Position(xPos, yPos));
+
+		if (!dead){
+			if(crashCar != null){
+				if(checkCollision()){
+					xDestination = xPos; 
+					yDestination = yPos; 
+					agent.msgDie(); 
+					dead = true; 
+					return; 
+				
 				}
 			}
 		}
@@ -120,6 +136,16 @@ public class PersonGui implements Gui{
 			}
 			atlight = true;
 			 }
+=======
+    	if (xPos < xDestination && (yPos == 170 || yPos == 280)){
+            xPos++;
+            moved = true;
+    	}
+        else if (xPos > xDestination && (yPos == 170 || yPos == 280)){
+            xPos--;
+            moved = true;
+        }
+>>>>>>> 7f9447befe379f5b06bd0454a4b802a413122007
 
 		}
 		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
@@ -150,6 +176,78 @@ public class PersonGui implements Gui{
 			atlight = true;
 			 }
 		}
+
+		else if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
+		//	agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			System.out.println("Released at the stop light "+agent.getName());
+		}
+		}
+//		 if((xPos == xtl && yPos == ytl)&&(xPos < xDestination || yPos < yDestination)){
+//			System.err.println("YO");
+//			arrived = true;
+//			xtemp = xDestination;
+//			ytemp = yDestination;
+//			xDestination = xtl;
+//			yDestination = ytl;
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xtr && yPos == ytr)&&(xPos > xDestination || yPos < yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xbl && yPos == ybl)&&(xPos < xDestination || yPos > yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		if((xPos == xbr && yPos == ybr)&&(xPos > xDestination || yPos > yDestination)){
+//			agent.msgAtLight();
+//			try {
+//				atlight.acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+
+	
+	
+	public boolean checkCollision(){
+		Rectangle2D.Double player = new Rectangle2D.Double(xPos,yPos,10,10);
+		Rectangle2D.Double car = new Rectangle2D.Double(crashCar.xPos, crashCar.yPos, 20, 20);
+		if (player.intersects(car)){
+			return true;
+		}
+		
+		for (simcity.gui.BusGui bs: busses){
+			car = new Rectangle2D.Double(bs.xPos, bs.yPos, 20,20);
+			if (player.intersects(car)){
+				return true; 
+			}
+		}
+		
+		return false;
 	
 	}
 	

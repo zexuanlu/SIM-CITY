@@ -158,5 +158,20 @@ public class MockPerson extends Mock implements Person {
 	public void msgBanished() {
 		
 	}
+	@Override
+	public List<SimEvent> getToDo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void msgAtLight() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void ToGo() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -817,7 +817,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                            else
                                    temp = new radialButton(new Ellipse2D.Double((int)restaurant6.getX()-10, (int)restaurant6.getY()-10, BUTTONSIZE, BUTTONSIZE), "Open", locations.get("Rest 6"));
                            buttons.add(temp);
-                           temp = new radialButton(new Ellipse2D.Double((int)restaurant6.getMaxX()-20, (int)restaurant6.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest6"));
+                           temp = new radialButton(new Ellipse2D.Double((int)restaurant6.getMaxX()-20, (int)restaurant6.getY()-10, BUTTONSIZE, BUTTONSIZE), "Empty Stock", locations.get("Rest 6"));
                            buttons.add(temp);
                    }
         }

@@ -29,6 +29,10 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
     
     
     public List<Gui> guis = new ArrayList<Gui>();
+    ImageIcon flImg = new ImageIcon(this.getClass().getResource("restaurantfloor.png"));
+    Image floorimg = flImg.getImage();
+    ImageIcon table = new ImageIcon(this.getClass().getResource("resttable.png"));
+    Image timg = table.getImage();
 
     public Restaurant1AnimationPanel() {
     	
@@ -58,16 +62,16 @@ public class Restaurant1AnimationPanel extends JPanel implements ActionListener 
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(origin, origin, WINDOWX, WINDOWY );
+        
+        //draw floor
+        g2.drawImage(floorimg, 0, 0, WINDOWX, WINDOWY, null);
 
         //Here is the table
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(lec, wid, res, res);//200 and 250 need to be table params
+        g2.drawImage(timg, lec, wid, res, res, null);
         
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(lec1, wid, res, res);
+        g2.drawImage(timg, lec1, wid, res, res, null);
 
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(lec1, wid1, res, res);
+        g2.drawImage(timg, lec1, wid1, res, res, null);
         
         // Drawing the fridge
         g2.setColor(Color.BLUE);

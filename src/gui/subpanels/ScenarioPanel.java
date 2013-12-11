@@ -57,7 +57,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	public TracePanel tracePanel;
 	
 	// Reference to the sim world clock
-	private SimWorldClock clock;
+	public SimWorldClock clock;
 	
 	List<PersonAgent> people;
 	List<PersonGui> peopleGuis;
@@ -234,6 +234,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			else if (chosen.getText().trim().equals("Person Vehicle collision")) {
 				// Here we will run the scenario where all restaurants order from the market
 				//FIX
+				simCityGui.crashPerson();
 				System.err.println("Person Vehicle collision");
 			}
 			else if (chosen.getText().trim().equals("One not working person")) {
@@ -298,9 +299,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// List of locations
 		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
-		for (int i = 1; i <= 35; ++i) {
+		for (int i = 1; i <= 40; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
-			//FIX
 			PersonGui pgui = new PersonGui(p, 40, 170, this.cityAnimPanel);
 			p.gui = pgui;
 			p.homeNumber = i;
@@ -316,6 +316,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		PersonGui pgui = new PersonGui(walking, 20, 170, this.cityAnimPanel);
 		pgui.light = simCityGui.trafficlightagent; 
 		walking.gui = pgui;
+		walking.setHungerLevel(5);
 		people.add(walking);
 		peopleGuis.add(walking.gui);
 		cityAnimPanel.addGui(walking.gui);
@@ -412,6 +413,18 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(33).addRole(rest6SDWaiter, "Rest 6 SDWaiter");
 		Restaurant6WaiterRole rest6Waiter = new Restaurant6WaiterRole("Waiter 6 Shift 1", people.get(34));
 		people.get(34).addRole(rest6Waiter, "Rest 6 Waiter");
+		
+		// Third restaurant's employees: FIRST SHIFT
+		Restaurant3HostRole rest3Host = new Restaurant3HostRole("Host 3 Shift 1", people.get(35));
+		people.get(35).addRole(rest3Host, "Rest 3 Host");
+		Restaurant3CookRole rest3Cook = new Restaurant3CookRole("Cook 3 Shift 1", people.get(36));
+		people.get(36).addRole(rest3Cook, "Rest 3 Cook");
+		Restaurant3CashierRole rest3Cashier = new Restaurant3CashierRole("Cashier 3 Shift 1", people.get(37));
+		people.get(37).addRole(rest3Cashier, "Rest 3 Cashier");
+		Restaurant3SDWaiterRole rest3SDWaiter = new Restaurant3SDWaiterRole("Shared Data Waiter 3 Shift 1", people.get(38));
+		people.get(38).addRole(rest3SDWaiter, "Rest 3 SDWaiter");
+		Restaurant3WaiterRole rest3Waiter = new Restaurant3WaiterRole("Waiter 3 Shift 1", people.get(39));
+		people.get(39).addRole(rest3Waiter, "Rest 3 Waiter");
 		
 		/**
 		 * CREATING HOME OWNER ROLE
@@ -542,6 +555,19 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		rest6Cook.setGui(r6cg1);
 		cityAnimPanel.rest6Panel.addGui(r6cg1);
 		
+		// Third Restaurant: FIRST SHIFT
+		Restaurant3WaiterGui r3sharedwg1 = new Restaurant3WaiterGui(rest3SDWaiter);
+		rest3SDWaiter.setGui(r3sharedwg1);
+		cityAnimPanel.rest3Panel.addGui(r3sharedwg1);
+		
+		Restaurant3WaiterGui r3wg1 = new Restaurant3WaiterGui(rest3Waiter);
+		rest3Waiter.setGui(r3wg1);
+		cityAnimPanel.rest3Panel.addGui(r3wg1);
+		
+		Restaurant3CookGui r3cg1 = new Restaurant3CookGui(rest3Cook);
+		rest3Cook.setGui(r3cg1);
+		cityAnimPanel.rest3Panel.addGui(r3cg1);
+		
 		/**
 		 * SETTING LOCATIONS
 		 */
@@ -552,7 +578,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
                         new Position(130, 170), LocationType.Market);
         Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
         Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
-        //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
+        Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
         
         // Second quadrant locations
         Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
@@ -652,7 +678,24 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Cook.cashier = rest6Cashier;
   		rest6Cashier.accountNumber = 6;
   		rest6Cashier.bank = bankdatabase;
-  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 6);
+  		bankdatabase.addRestaurantAccount(rest6Cashier, 5000.00, 6);
+  		
+  		rest3.setCashier(rest3Cashier);
+  		rest3.setCook(rest3Cook);
+  		rest3Waiter.setCook(rest3Cook);
+  		rest3Waiter.setHost(rest3Host);
+  		rest3Waiter.setCashier(rest3Cashier);
+  		rest3SDWaiter.setCook(rest3Cook);
+  		rest3SDWaiter.setHost(rest3Host);
+  		rest3SDWaiter.revStand = rest3Cook.revStand;
+  		rest3SDWaiter.setCashier(rest3Cashier);
+  		rest3Host.addWaiter(rest3Waiter);
+  		rest3Host.addWaiter(rest3SDWaiter);
+  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest3Cook.cashier = rest3Cashier;
+  		rest3Cashier.accountNumber = 6;
+  		rest3Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest3Cashier, 5000.00, 3);
   		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
@@ -678,9 +721,12 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		((MarketEmployeeRole)roles.get(8)).setCashier((MarketCashierRole)roles.get(6));
   		((MarketCashierRole)roles.get(7)).addEmployee((MarketEmployeeRole)roles.get(9));
   		((MarketEmployeeRole)roles.get(9)).setCashier((MarketCashierRole)roles.get(7));
+
   		
   		// Setting truck
   		MarketTruckAgent truck = new MarketTruckAgent(1);
+  		((MarketCashierRole)roles.get(6)).addTruck(truck);
+  		truck.setCashier(((MarketCashierRole)roles.get(6)));
         MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
         truck.setGui(truckGui);
         truck.startThread();
@@ -689,6 +735,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         
         // Setting second truck
         MarketTruckAgent truck2 = new MarketTruckAgent(2);
+  		((MarketCashierRole)roles.get(7)).addTruck(truck2);
+  		truck2.setCashier(((MarketCashierRole)roles.get(7)));
         MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
         truck2.setGui(truck2Gui);
         truck2.startThread();
@@ -697,7 +745,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         // Sets truck to restaurants
         truck.setRestaurant(rest1, 1);
         truck.setRestaurant(rest2, 2);
-//        truck.setRestaurant(rest3, 2);
+        truck.setRestaurant(rest3, 3);
         truck2.setRestaurant(rest4, 4);
         truck2.setRestaurant(rest5, 5);
         truck2.setRestaurant(rest6, 6);
@@ -708,6 +756,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		locations.add(market2);
 		locations.add(rest1);
 		locations.add(rest2);
+		locations.add(rest3);
 		locations.add(rest4);
 		locations.add(rest5);
 		locations.add(rest6);
@@ -752,6 +801,13 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent sdWaiter2GoToRestaurant2 = new SimEvent("Go to work", rest2, EventType.SDWaiterEvent);
 		SimEvent waiter2GoToRestaurant = new SimEvent("Go to work", rest2, EventType.WaiterEvent);
 		
+		// For the third restaurant
+		SimEvent host3GoToRestaurant = new SimEvent("Go to work", rest3, EventType.HostEvent);
+		SimEvent cook3GoToRestaurant = new SimEvent("Go to work", rest3, EventType.CookEvent);
+		SimEvent cashier3GoToRestaurant = new SimEvent("Go to work", rest3,EventType.CashierEvent);
+		SimEvent sdWaiter3GoToRestaurant2 = new SimEvent("Go to work", rest3, EventType.SDWaiterEvent);
+		SimEvent waiter3GoToRestaurant = new SimEvent("Go to work", rest3, EventType.WaiterEvent);
+	
 		// For the fourth restaurant
 		SimEvent host4GoToRestaurant = new SimEvent("Go to work", rest4, EventType.HostEvent);
 		SimEvent cook4GoToRestaurant = new SimEvent("Go to work", rest4, EventType.CookEvent);
@@ -808,6 +864,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(32).msgAddEvent(cashier6GoToRestaurant);
 		people.get(33).msgAddEvent(sdWaiter6GoToRestaurant2);
 		people.get(34).msgAddEvent(waiter6GoToRestaurant);
+		people.get(35).msgAddEvent(host3GoToRestaurant);
+		people.get(36).msgAddEvent(cook3GoToRestaurant);
+		people.get(37).msgAddEvent(cashier3GoToRestaurant);
+		people.get(38).msgAddEvent(sdWaiter3GoToRestaurant2);
+		people.get(39).msgAddEvent(waiter3GoToRestaurant);
 		
 		/**
 		 * GIVE WALKING PERSON EVENTS
@@ -824,6 +885,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// Eat at each restaurant.. fatty.
 		SimEvent goToRest1 = new SimEvent("Eat", rest1, EventType.CustomerEvent);
 		SimEvent goToRest2 = new SimEvent("Eat", rest2, EventType.CustomerEvent);
+		SimEvent goToRest3 = new SimEvent("Eat", rest3, EventType.CustomerEvent);
 		SimEvent goToRest4 = new SimEvent("Eat", rest4, EventType.CustomerEvent);
 		SimEvent goToRest5 = new SimEvent("Eat", rest5, EventType.CustomerEvent);
 		SimEvent goToRest6 = new SimEvent("Eat", rest6, EventType.CustomerEvent);
@@ -835,47 +897,28 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent withdrawBank2 = new SimEvent("withdraw", bank2, EventType.CustomerEvent);
 		
 		walking.msgAddEvent(eatAtHome);
+		walking.msgAddEvent(withdrawBank2);
 		walking.msgAddEvent(depositFromBank1);
 		walking.msgAddEvent(goToMarket1);
 		walking.msgAddEvent(goToRest1);
 		walking.msgAddEvent(goToRest2);
+		walking.msgAddEvent(goToRest3);
 		walking.msgAddEvent(goToRest4);
 		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
 		walking.msgAddEvent(goToMarket2);
-		walking.msgAddEvent(withdrawBank2);
+		
+		clock = new SimWorldClock(8, people, cityMap, 6000);
+		simCityGui.simclock = clock;
+		
+		clock.tracePanel = simCityGui.tracePanel;
 		
 		for (PersonAgent p : people) {
 			p.setcitygui(simCityGui);
 			p.populateCityMap(locations);
-		}
-		
-		//FIX.. FOR TESTING PURPOSES
-		// This is to initialize all the city maps
-//		for (int j = 0; j < 14; ++j) {
-//			people.get(j).populateCityMap(locations);
-//		}
-		
-		// This is to add all the bus stops to the city maps
-//		for (int j = 0; j < 14; ++j) {
-//			people.get(j).getMap().addBusStop(simCityGui.busstop1.name, simCityGui.busstop1);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop2.name, simCityGui.busstop2);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop3.name, simCityGui.busstop3);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop4.name, simCityGui.busstop4);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop5.name, simCityGui.busstop5);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop6.name, simCityGui.busstop6);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop7.name, simCityGui.busstop7);
-//			people.get(j).getMap().addBusStop(simCityGui.busstop8.name, simCityGui.busstop8);
-//			
-//			people.get(j).getMap().addBus(simCityGui.busstop1, simCityGui.bus);
-//			people.get(j).getMap().addBus(simCityGui.busstop2, simCityGui.bus);
-//			people.get(j).getMap().addBus(simCityGui.busstop3, simCityGui.bus);
-//			people.get(j).getMap().addBus(simCityGui.busstop4, simCityGui.bus);
-//			people.get(j).getMap().addBus(simCityGui.busstop5, simCityGui.bus2);
-//			people.get(j).getMap().addBus(simCityGui.busstop6, simCityGui.bus2);
-//			people.get(j).getMap().addBus(simCityGui.busstop7, simCityGui.bus2);
-//			people.get(j).getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
-//		}
+			simCityGui.people.add(p);
+//			simCityGui.simclock.people.add(p);
+		}		
 		
 		for (PersonAgent p : people) {
 			p.getMap().addBusStop(simCityGui.busstop1.name, simCityGui.busstop1);
@@ -896,14 +939,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop7, simCityGui.bus2);
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
-		
-//		for(int j = 0; j < 25; j++){
-//			people.get(j).startThread();
-//		}
 
 		for (PersonAgent p : people) {
 			p.startThread();
-			simCityGui.people.add(p);
 		}
 		
 		// Starts the thread of each timecard
@@ -913,15 +951,10 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		market2.getTimeCard().startThread();
 		rest1.getTimeCard().startThread();
 		rest2.getTimeCard().startThread();
+		rest3.getTimeCard().startThread();
 		rest4.getTimeCard().startThread();
 		rest5.getTimeCard().startThread();
 		rest6.getTimeCard().startThread();
-		
-		clock = new SimWorldClock(8, people, cityMap, 6000);
-		simCityGui.simclock = clock;
-		
-		TracePanel trace = new TracePanel(cntrlPanel);
-		simCityGui.simclock.tracePanel = trace;
 		
 		clock.timeCards.add(bank.getTimeCard());
 		clock.timeCards.add(bank2.getTimeCard());
@@ -956,35 +989,14 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
 			PersonGui pgui = new PersonGui(p, 40, 170, this.cityAnimPanel);
 			p.gui = pgui;
-			p.homeNumber = i;
+			if (i > 69) {
+				p.homeNumber = -1;
+			}
 			people.add(p);
 			peopleGuis.add(pgui);
 			cityAnimPanel.addGui(pgui);
 			p.setAnimationPanel(cityAnimPanel);
 		}
-	
-//		for (int i = 1; i <= 20; ++i) {
-//			if (i <= 7) {
-//				BankTellerRole temp = new BankTellerRole(people.get(i-1), "BANK TELLER");
-//				roles.add(temp);
-//				people.get(i-1).addRole(temp, "Bank Teller");
-//			}
-//			else if (i >= 8 && i < 12) {
-//				BankHostRole temp = new BankHostRole(people.get(i-1), "BANK HOST");
-//				roles.add(temp);
-//				people.get(i-1).addRole(temp, "Bank Host");
-//			}
-//			else if (i >= 12 && i < 16) {
-//				MarketCashierRole temp = new MarketCashierRole(people.get(i-1), "MARKET CASHIER");
-//				roles.add(temp);
-//				people.get(i-1).addRole(temp, "Market Cashier");
-//			}
-//			else if (i >= 17 && i <= 20) { 
-//				MarketEmployeeRole temp = new MarketEmployeeRole(people.get(i-1), "MARKET EMPLOYEE");
-//				roles.add(temp);
-//				people.get(i-1).addRole(temp, "Market Employee");
-//			}
-//		}
 		
 		BankTellerRole bankTeller = new BankTellerRole(people.get(0), "Bank Teller");
 		roles.add(bankTeller);
@@ -1150,19 +1162,40 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(68).addRole(rest6Waiter, "Rest 6 Waiter");
 		people.get(69).addRole(rest6Waiter, "Rest 6 Waiter");
 		
+		// Third restaurant's employees: FIRST & SECOND SHIFT
+		Restaurant3HostRole rest3Host = new Restaurant3HostRole("Host 3 Shift 1", people.get(70));
+		people.get(70).addRole(rest3Host, "Rest 3 Host");
+		people.get(71).addRole(rest3Host, "Rest 3 Host");
+		
+		Restaurant3CookRole rest3Cook = new Restaurant3CookRole("Cook 3 Shift 1", people.get(72));
+		people.get(72).addRole(rest3Cook, "Rest 3 Cook");
+		people.get(73).addRole(rest3Cook, "Rest 3 Cook");
+		
+		Restaurant3CashierRole rest3Cashier = new Restaurant3CashierRole("Cashier 3 Shift 1", people.get(74));
+		people.get(74).addRole(rest3Cashier, "Rest 3 Cashier");
+		people.get(75).addRole(rest3Cashier, "Rest 3 Cashier");
+		
+		Restaurant3SDWaiterRole rest3SDWaiter = new Restaurant3SDWaiterRole("Shared Data Waiter 3 Shift 1", people.get(76));
+		people.get(76).addRole(rest3SDWaiter, "Rest 3 SDWaiter");
+		people.get(77).addRole(rest3SDWaiter, "Rest 3 SDWaiter");
+		
+		Restaurant3WaiterRole rest3Waiter = new Restaurant3WaiterRole("Waiter 3 Shift 1", people.get(78));
+		people.get(78).addRole(rest3Waiter, "Rest 3 Waiter");
+		people.get(79).addRole(rest3Waiter, "Rest 3 Waiter");
+		
 		/**
 		 * CREATING HOME OWNER ROLE
 		 */
 		HomeOwnerRole homeOwner = new HomeOwnerRole(people.get(0), "Home Owner", 1);
 		people.get(0).addRole(homeOwner, "Home Owner");
 		HomeOwnerRole homeOwner2 = new HomeOwnerRole(people.get(1), "Home Owner", 2);
-		people.get(1).addRole(homeOwner, "Home Owner");
+		people.get(1).addRole(homeOwner2, "Home Owner");
 		HomeOwnerRole homeOwner3 = new HomeOwnerRole(people.get(2), "Home Owner", 3);
-		people.get(2).addRole(homeOwner, "Home Owner");
+		people.get(2).addRole(homeOwner3, "Home Owner");
 		HomeOwnerRole homeOwner4 = new HomeOwnerRole(people.get(3), "Home Owner", 4);
-		people.get(3).addRole(homeOwner, "Home Owner");
+		people.get(3).addRole(homeOwner4, "Home Owner");
 		HomeOwnerRole homeOwner5 = new HomeOwnerRole(people.get(4), "Home Owner", 5);
-		people.get(4).addRole(homeOwner, "Home Owner");
+		people.get(4).addRole(homeOwner5, "Home Owner");
 		
 		roles.add(homeOwner);
 		roles.add(homeOwner2);
@@ -1179,24 +1212,37 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		/**
 		 * CREATING APARTMENT TENANT ROLES
 		 */
-		for (int i = 5; i < 69; ++i) {
-//			roles.add(new ApartmentTenantRole("Apt Tenant", i+1, people.get(i)));
-			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", i+1, people.get(i));
-			aptTenants.add(temp);
-			people.get(i).addRole(temp, "Apt Tenant");
-		}
-		
-		for (int l = 69; l < 80; ++l) {
-			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", -1, people.get(l));
-			aptTenants.add(temp);
-			people.get(l).addRole(temp, "Apt Tenant");
-		}
+//		for (int i = 5; i < 69; ++i) {
+//			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", i+1, people.get(i));
+//			aptTenants.add(temp);
+//			people.get(i).addRole(temp, "Apt Tenant");
+//		}
+//		
+//		for (int l = 69; l < 80; ++l) {
+//			ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", 60, people.get(l));
+//			aptTenants.add(temp);
+//			people.get(l).addRole(temp, "Apt Tenant");
+//		}
+        
+        int t = 5;
+        for (PersonAgent p : people) {
+        	if (p.homeNumber > 5 && p.homeNumber <= 69) {
+        		ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", t+1, people.get(t));
+    			aptTenants.add(temp);
+    			people.get(t).addRole(temp, "Apt Tenant");
+        	}
+        	else if (p.homeNumber == -1) {
+        		ApartmentTenantRole temp = new ApartmentTenantRole("Apt Tenant", -1, people.get(t));
+    			aptTenants.add(temp);
+    			people.get(t).addRole(temp, "Apt Tenant");
+        	}
+        }
 		
 		/**
 		 * CREATING APARTMENT TENANT GUIS
 		 */
-		for (ApartmentTenantRole t : aptTenants) {
-			aptGuis.add(new ApartmentTenantGui(t));
+		for (ApartmentTenantRole apt : aptTenants) {
+			aptGuis.add(new ApartmentTenantGui(apt));
 		}
         
         // Loops through apartment tenant roles and sets to respective GUI
@@ -1286,8 +1332,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 	       }
 	       ++j;
 	   }
-		
-		
+	   
+	  		
 		/**
 		 * RESTAURANT GUI CREATION AND INITIALIZATION
 		 */
@@ -1360,6 +1406,19 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		rest6Cook.setGui(r6cg1);
 		cityAnimPanel.rest6Panel.addGui(r6cg1);
 		
+		// Third Restaurant: FIRST SHIFT
+		Restaurant3WaiterGui r3sharedwg1 = new Restaurant3WaiterGui(rest3SDWaiter);
+		rest3SDWaiter.setGui(r3sharedwg1);
+		cityAnimPanel.rest3Panel.addGui(r3sharedwg1);
+		
+		Restaurant3WaiterGui r3wg1 = new Restaurant3WaiterGui(rest3Waiter);
+		rest3Waiter.setGui(r3wg1);
+		cityAnimPanel.rest3Panel.addGui(r3wg1);
+		
+		Restaurant3CookGui r3cg1 = new Restaurant3CookGui(rest3Cook);
+		rest3Cook.setGui(r3cg1);
+		cityAnimPanel.rest3Panel.addGui(r3cg1);
+		
 		/**
 		 * SETTING LOCATIONS
 		 */
@@ -1370,7 +1429,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
                         new Position(130, 170), LocationType.Market);
         Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
         Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
-        //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
+        Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
         
         // Second quadrant locations
         Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
@@ -1381,7 +1440,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         Restaurant rest5 = new Restaurant("Rest 5", rest5Host, new TimeCard(), new Position(600, 170), LocationType.Restaurant5);
         Restaurant rest6 = new Restaurant("Rest 6", rest6Host, new TimeCard(), new Position(440, 100), LocationType.Restaurant6);                
         
-       // Third quadrant locations
+        // Third quadrant locations
         Home home = new Home("Home 1", homeOwner, new Position(460, 280), 1, LocationType.Home);
         Home home2 = new Home("Home 2", homeOwner2, new Position(440, 380), 2, LocationType.Home);
         Home home3 = new Home("Home 3", homeOwner3, new Position(520, 280), 3, LocationType.Home);
@@ -1395,6 +1454,35 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         List<Apartment> aptComplex3 = Collections.synchronizedList(new ArrayList<Apartment>());
         List<Apartment> aptComplex4 = Collections.synchronizedList(new ArrayList<Apartment>());
         
+        /**
+ 	    * MARKET TRUCK CREATION
+ 	    */
+ 	   // Setting truck
+  		MarketTruckAgent truck = new MarketTruckAgent(1);
+  		((MarketCashierRole)roles.get(6)).addTruck(truck);
+  		truck.setCashier((MarketCashierRole)roles.get(6));
+        MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
+        truck.setGui(truckGui);
+        truck.startThread();
+        cityAnimPanel.addGui(truckGui);
+        
+        // Setting second truck
+        MarketTruckAgent truck2 = new MarketTruckAgent(2);
+ 		((MarketCashierRole)roles.get(7)).addTruck(truck);
+  		truck.setCashier((MarketCashierRole)roles.get(7));
+        MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
+        truck2.setGui(truck2Gui);
+        truck2.startThread();
+        cityAnimPanel.addGui(truck2Gui);
+        
+        // Sets truck to restaurants
+        truck.setRestaurant(rest1, 1);
+        truck.setRestaurant(rest2, 2);
+        truck.setRestaurant(rest3, 3);
+        truck2.setRestaurant(rest4, 4);
+        truck2.setRestaurant(rest5, 5);
+        truck2.setRestaurant(rest6, 6);
+        
         int k = 5;
         for (ApartmentTenantRole r : aptTenants) {
         	if (k < 21) {
@@ -1406,7 +1494,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
         	else if (k >= 37 && k < 53) {
         		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(240, 280), k, LocationType.Apartment));
         	}
-        	else if (k >= 54 && k < 70) {
+        	else if (k >= 53 && k <= 70) {
         		aptComplex2.add(new Apartment("Apartment "+k, r, new Position(330, 300), k, LocationType.Apartment));
         	}
         	++k;
@@ -1426,6 +1514,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest1Host.msgaddwaiter(rest1SDWaiter);
   		rest1Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest1Cook.setCashier(rest1Cashier);
+  		rest1Cashier.accountNumber = 1;
+  		rest1Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 1);
   
   		rest2.setCashier(rest2Cashier);
   		rest2.setCook(rest2Cook);
@@ -1438,10 +1529,32 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Cook.setRevolvingStand(rs2);
   		rest2SDWaiter.revolver = rs2;//rest2Cook.revolver;
   		rest2SDWaiter.setCashier(rest2Cashier);
-  		//rest2Host.addWaiter(rest2Waiter);
+  		rest2Host.addWaiter(rest2Waiter);
   		rest2Host.addWaiter(rest2SDWaiter);
   		rest2Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest2Cook.cashier = rest2Cashier;
+  		rest2Cashier.accountNumber = 2;
+  		rest2Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest2Cashier, 5000.00, 2);
+  		
+  		rest3.setCashier(rest3Cashier);
+  		rest3.setCook(rest3Cook);
+  		rest3Waiter.setCook(rest3Cook);
+  		rest3Waiter.setHost(rest3Host);
+  		rest3Waiter.setCashier(rest3Cashier);
+  		rest3SDWaiter.setCook(rest3Cook);
+  		rest3SDWaiter.setHost(rest3Host);
+  		Restaurant3RevolvingStand rs3 = new Restaurant3RevolvingStand();
+  		rest3Cook.revStand = rs3;
+  		rest3SDWaiter.revStand = rs3;//rest2Cook.revolver;
+  		rest3SDWaiter.setCashier(rest3Cashier);
+  		rest3Host.addWaiter(rest3Waiter);
+  		rest3Host.addWaiter(rest3SDWaiter);
+  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(6));
+  		rest3Cook.cashier = rest3Cashier;
+  		rest3Cashier.accountNumber = 3;
+  		rest3Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest3Cashier, 5000.00, 3);
   		
   		rest4.setCashier(rest4Cashier);
   		rest4.setCook(rest4Cook);
@@ -1456,6 +1569,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest4Host.addWaiter(rest4SDWaiter);
   		rest4Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest4Cook.rc = rest4Cashier;
+  		rest4Cashier.accountNumber = 4;
+  		rest4Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest4Cashier, 5000.00, 4);
   		
   		rest5.setCashier(rest5Cashier);
   		rest5.setCook(rest5Cook);
@@ -1470,6 +1586,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest5Host.addWaiter(rest5SDWaiter);
   		rest5Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest5Cook.cashier = rest5Cashier;
+  		rest5Cashier.accountNumber = 5;
+  		rest5Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest5Cashier, 5000.00, 5);
   		
   		rest6.setCashier(rest6Cashier);
   		rest6.setCook(rest6Cook);
@@ -1484,6 +1603,9 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Host.msgSetWaiter(rest6SDWaiter);
   		rest6Cook.setMarketCashier((MarketCashierRole)roles.get(7));
   		rest6Cook.cashier = rest6Cashier;
+  		rest6Cashier.accountNumber = 6;
+  		rest6Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest6Cashier, 5000.00, 6);
   		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
@@ -1517,6 +1639,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		locations.add(market2);
 		locations.add(rest1);
 		locations.add(rest2);
+		locations.add(rest3);
 		locations.add(rest4);
 		locations.add(rest5);
 		locations.add(rest6);
@@ -1545,6 +1668,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		for (Location l : locations) {
 			cityAnimPanel.addLocation(l);
 		}
+		
+		clock = new SimWorldClock(8, people, cityMap, 6000);
+		simCityGui.simclock = clock;
+		
+		clock.tracePanel = simCityGui.tracePanel;
 		
 		/**
 		 * ADDING EVENTS TO EACH PERSON
@@ -1613,6 +1741,20 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent sSdWaiter2GoToRestaurant2 = new SimEvent(rest2, 14, EventType.SDWaiterEvent);
 		SimEvent sWaiter2GoToRestaurant = new SimEvent(rest2, 14, EventType.WaiterEvent);
 		
+		// For the third restaurant: FIRST SHIFT
+		SimEvent host3GoToRestaurant = new SimEvent(rest3, 8, EventType.HostEvent);
+		SimEvent cook3GoToRestaurant = new SimEvent(rest3, 8, EventType.CookEvent);
+		SimEvent cashier3GoToRestaurant = new SimEvent(rest3, 8, EventType.CashierEvent);
+		SimEvent sdWaiter3GoToRestaurant2 = new SimEvent(rest3, 8, EventType.SDWaiterEvent);
+		SimEvent waiter3GoToRestaurant = new SimEvent(rest3, 8, EventType.WaiterEvent);
+		
+		// For the third restaurant: SECOND SHIFT
+		SimEvent sHost3GoToRestaurant = new SimEvent(rest3, 14, EventType.HostEvent);
+		SimEvent sCook3GoToRestaurant = new SimEvent(rest3, 14, EventType.CookEvent);
+		SimEvent sCashier3GoToRestaurant = new SimEvent(rest3, 14, EventType.CashierEvent);
+		SimEvent sSdWaiter3GoToRestaurant2 = new SimEvent(rest3, 14, EventType.SDWaiterEvent);
+		SimEvent sWaiter3GoToRestaurant = new SimEvent(rest3, 14, EventType.WaiterEvent);
+		
 		// For the fourth restaurant: FIRST SHIFT
 		SimEvent host4GoToRestaurant = new SimEvent(rest4, 8, EventType.HostEvent);
 		SimEvent cook4GoToRestaurant = new SimEvent(rest4, 8, EventType.CookEvent);
@@ -1656,8 +1798,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent sWaiter6GoToRestaurant = new SimEvent(rest6, 14, EventType.WaiterEvent);
 		
 		people.get(0).msgAddEvent(tellerGoToBank);
-		people.get(1).msgAddEvent(teller2GoToBank);
-		people.get(2).msgAddEvent(sTellerGoToBank);
+		people.get(1).msgAddEvent(sTellerGoToBank);
+		people.get(2).msgAddEvent(teller2GoToBank);
 		people.get(3).msgAddEvent(sTeller2GoToBank);
 		
 		people.get(4).msgAddEvent(tellerGoToBank2);
@@ -1755,46 +1897,27 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(68).msgAddEvent(waiter6GoToRestaurant);
 		people.get(69).msgAddEvent(sWaiter6GoToRestaurant);
 		
-		// This is to start all the people's threads
-//				for (int j = 0; j < 14; ++j) {
-//					people.get(j).startThread();
-//				}
+		people.get(70).msgAddEvent(host3GoToRestaurant);
+		people.get(71).msgAddEvent(sHost3GoToRestaurant);
 		
-//				BankCustomerRole bankCust = new BankCustomerRole(walking, "Bank Customer");
-//				walking.addRole(bankCust, "Bank Customer");
+		people.get(72).msgAddEvent(cook3GoToRestaurant);
+		people.get(73).msgAddEvent(sCook3GoToRestaurant);
 		
-			
+		people.get(74).msgAddEvent(cashier3GoToRestaurant);
+		people.get(75).msgAddEvent(sCashier3GoToRestaurant);
+		
+		people.get(76).msgAddEvent(sdWaiter3GoToRestaurant2);
+		people.get(77).msgAddEvent(sSdWaiter3GoToRestaurant2);
+		
+		people.get(78).msgAddEvent(waiter3GoToRestaurant);
+		people.get(79).msgAddEvent(sWaiter3GoToRestaurant);
+		
 		for (PersonAgent p : people) {
 			p.setcitygui(simCityGui);
+			simCityGui.people.add(p);
+//			simCityGui.simclock.people.add(p);
 			p.populateCityMap(locations);
 		}
-		
-		//FIX.. FOR TESTING PURPOSES
-		// This is to initialize all the city maps
-//				for (int j = 0; j < 14; ++j) {
-//					people.get(j).populateCityMap(locations);
-//				}
-		
-		// This is to add all the bus stops to the city maps
-//				for (int j = 0; j < 14; ++j) {
-//					people.get(j).getMap().addBusStop(simCityGui.busstop1.name, simCityGui.busstop1);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop2.name, simCityGui.busstop2);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop3.name, simCityGui.busstop3);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop4.name, simCityGui.busstop4);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop5.name, simCityGui.busstop5);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop6.name, simCityGui.busstop6);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop7.name, simCityGui.busstop7);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop8.name, simCityGui.busstop8);
-//					
-//					people.get(j).getMap().addBus(simCityGui.busstop1, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop2, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop3, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop4, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop5, simCityGui.bus2);
-//					people.get(j).getMap().addBus(simCityGui.busstop6, simCityGui.bus2);
-//					people.get(j).getMap().addBus(simCityGui.busstop7, simCityGui.bus2);
-//					people.get(j).getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
-//				}
 		
 		for (PersonAgent p : people) {
 			p.getMap().addBusStop(simCityGui.busstop1.name, simCityGui.busstop1);
@@ -1815,18 +1938,15 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop7, simCityGui.bus2);
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
-		
-//				for(int j = 0; j < 25; j++){
-//					people.get(j).startThread();
-//				}
 
 //		for (PersonAgent p : people) {
 //			p.startThread();
 //		}
 		
-		for (int s = 0; s < 70; ++s) {
-			people.get(s).startThread();
-		}
+		people.get(0).startThread();
+		people.get(1).startThread();
+		people.get(2).startThread();
+		people.get(3).startThread();
 		
 		// Starts the thread of each timecard
 		bank.getTimeCard().startThread();
@@ -1840,6 +1960,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		rest6.getTimeCard().startThread();
 		
 		clock.timeCards.add(bank.getTimeCard());
+		clock.timeCards.add(bank2.getTimeCard());
 		clock.timeCards.add(market.getTimeCard());
 		clock.timeCards.add(market2.getTimeCard());
 		clock.timeCards.add(rest1.getTimeCard());
@@ -1865,12 +1986,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// List of locations
 		locations = Collections.synchronizedList(new ArrayList<Location>());
 		
-		for (int i = 1; i <= 35; ++i) {
+		for (int i = 1; i <= 40; ++i) {
 			PersonAgent p = new PersonAgent("Person " + i); // cityMap, 500);
-			//FIX
 			PersonGui pgui = new PersonGui(p, 40, 170, this.cityAnimPanel);
 			p.gui = pgui;
-			p.homeNumber = i;
+			p.homeNumber = (i+3);
 			people.add(p);
 			peopleGuis.add(pgui);
 			cityAnimPanel.addGui(pgui);
@@ -1886,6 +2006,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		PersonGui pgui = new PersonGui(walking, 20, 170, this.cityAnimPanel);
 		pgui.light = simCityGui.trafficlightagent; 
 		walking.gui = pgui;
+		//walking.setHungerLevel(5);
 		people.add(walking);
 		peopleGuis.add(walking.gui);
 		cityAnimPanel.addGui(walking.gui);
@@ -1896,6 +2017,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		PersonAgent busPerson = new PersonAgent("Person taking the Bus", cityMap, 900);
 		PersonGui busPersonGui = new PersonGui(busPerson, 40, 170, this.cityAnimPanel);
 		busPerson.gui = busPersonGui;
+		busPerson.setHungerLevel(5);
 		people.add(busPerson);
 		peopleGuis.add(busPersonGui);
 		cityAnimPanel.addGui(busPersonGui);
@@ -1905,6 +2027,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		PersonAgent carPerson = new PersonAgent("Person taking a Car", cityMap, 1000000);
 		PersonGui carPersonGui = new PersonGui(carPerson, 40, 170, this.cityAnimPanel);
 		carPerson.gui = carPersonGui;
+		carPerson.setHungerLevel(5);
 		people.add(carPerson);
 		peopleGuis.add(carPersonGui);
 		cityAnimPanel.addGui(carPersonGui);
@@ -1965,6 +2088,8 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(18).addRole(rest2SDWaiter, "Rest 2 SDWaiter");
 		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 1 Shift 1", people.get(19));
 		people.get(19).addRole(rest2Waiter, "Waiter 2 Shift 1");
+		Restaurant2WaiterRole rest2Waiter = new Restaurant2WaiterRole("Waiter 2 Shift 1", people.get(19));
+		people.get(19).addRole(rest2Waiter, "Rest 2 Waiter");
 		
 		// Fourth restaurant's employees: FIRST SHIFT 
 		Restaurant4HostRole rest4Host = new Restaurant4HostRole("Host 4 Shift 1", people.get(20));
@@ -2001,6 +2126,18 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(33).addRole(rest6SDWaiter, "Rest 6 SDWaiter");
 		Restaurant6WaiterRole rest6Waiter = new Restaurant6WaiterRole("Waiter 6 Shift 1", people.get(34));
 		people.get(34).addRole(rest6Waiter, "Rest 6 Waiter");
+		
+		// Third restaurant's employees: FIRST SHIFT
+		Restaurant3HostRole rest3Host = new Restaurant3HostRole("Host 3 Shift 1", people.get(35));
+		people.get(35).addRole(rest3Host, "Rest 3 Host");
+		Restaurant3CookRole rest3Cook = new Restaurant3CookRole("Cook 3 Shift 1", people.get(36));
+		people.get(36).addRole(rest3Cook, "Rest 3 Cook");
+		Restaurant3CashierRole rest3Cashier = new Restaurant3CashierRole("Cashier 3 Shift 1", people.get(37));
+		people.get(37).addRole(rest3Cashier, "Rest 3 Cashier");
+		Restaurant3SDWaiterRole rest3SDWaiter = new Restaurant3SDWaiterRole("Shared Data Waiter 3 Shift 1", people.get(38));
+		people.get(38).addRole(rest3SDWaiter, "Rest 3 SDWaiter");
+		Restaurant3WaiterRole rest3Waiter = new Restaurant3WaiterRole("Waiter 3 Shift 1", people.get(39));
+		people.get(39).addRole(rest3Waiter, "Rest 3 Waiter");
 		
 		/**
 		 * CREATING HOME OWNER ROLE
@@ -2149,6 +2286,19 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		rest6Cook.setGui(r6cg1);
 		cityAnimPanel.rest6Panel.addGui(r6cg1);
 		
+		// Third Restaurant: FIRST SHIFT
+		Restaurant3WaiterGui r3sharedwg1 = new Restaurant3WaiterGui(rest3SDWaiter);
+		rest3SDWaiter.setGui(r3sharedwg1);
+		cityAnimPanel.rest3Panel.addGui(r3sharedwg1);
+		
+		Restaurant3WaiterGui r3wg1 = new Restaurant3WaiterGui(rest3Waiter);
+		rest3Waiter.setGui(r3wg1);
+		cityAnimPanel.rest3Panel.addGui(r3wg1);
+		
+		Restaurant3CookGui r3cg1 = new Restaurant3CookGui(rest3Cook);
+		rest3Cook.setGui(r3cg1);
+		cityAnimPanel.rest3Panel.addGui(r3cg1);
+		
 		/**
 		 * SETTING LOCATIONS
 		 */
@@ -2159,7 +2309,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
                         new Position(130, 170), LocationType.Market);
         Restaurant rest1 = new Restaurant("Rest 1", rest1Host, new TimeCard(), new Position(200, 170), LocationType.Restaurant1);
         Restaurant rest2 = new Restaurant("Rest 2", rest2Host, new TimeCard(), new Position(270, 170), LocationType.Restaurant2);
-        //Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant);
+        Restaurant rest3 = new Restaurant("Rest 3", rest3Host, new TimeCard(), new Position(330, 40), LocationType.Restaurant3);
         
         // Second quadrant locations
         Bank bank2 = new Bank("Banco Popular 2", new TimeCard(), (BankHostRole)roles.get(5), 
@@ -2210,7 +2360,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest2Cook.cashier = rest2Cashier;
   		rest2Cashier.accountNumber = 2;
   		rest2Cashier.bank = bankdatabase;
-  		bankdatabase.addRestaurantAccount(rest1Cashier, 5000.00, 2);
+  		bankdatabase.addRestaurantAccount(rest2Cashier, 5000.00, 2);
   		
   		rest4.setCashier(rest4Cashier);
   		rest4.setCook(rest4Cook);
@@ -2263,6 +2413,23 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest6Cashier.bank = bankdatabase;
   		bankdatabase.addRestaurantAccount(rest6Cashier, 5000.00, 6);
   		
+  		rest3.setCashier(rest3Cashier);
+  		rest3.setCook(rest3Cook);
+  		rest3Waiter.setCook(rest3Cook);
+  		rest3Waiter.setHost(rest3Host);
+  		rest3Waiter.setCashier(rest3Cashier);
+  		rest3SDWaiter.setCook(rest3Cook);
+  		rest3SDWaiter.setHost(rest3Host);
+  		rest3SDWaiter.revStand = rest3Cook.revStand;
+  		rest3SDWaiter.setCashier(rest3Cashier);
+  		rest3Host.addWaiter(rest3Waiter);
+  		rest3Host.addWaiter(rest3SDWaiter);
+  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest3Cook.cashier = rest3Cashier;
+  		rest3Cashier.accountNumber = 6;
+  		rest3Cashier.bank = bankdatabase;
+  		bankdatabase.addRestaurantAccount(rest3Cashier, 5000.00, 3);
+  		
   		// Setting tellers for the first bank host & vice versa
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(0));
   		((BankHostRole)roles.get(4)).addTeller((BankTellerRole)roles.get(1));
@@ -2287,6 +2454,32 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		((MarketEmployeeRole)roles.get(8)).setCashier((MarketCashierRole)roles.get(6));
   		((MarketCashierRole)roles.get(7)).addEmployee((MarketEmployeeRole)roles.get(9));
   		((MarketEmployeeRole)roles.get(9)).setCashier((MarketCashierRole)roles.get(7));
+  		
+  		// Setting truck
+  		MarketTruckAgent truck = new MarketTruckAgent(1);
+  		((MarketCashierRole)roles.get(6)).addTruck(truck);
+  		truck.setCashier(((MarketCashierRole)roles.get(6)));
+        MarketTruckGui truckGui = new MarketTruckGui(truck, simCityGui.bldngAnimPanel, 1);
+        truck.setGui(truckGui);
+        truck.startThread();
+        cityAnimPanel.addGui(truckGui);
+        
+        // Setting second truck
+        MarketTruckAgent truck2 = new MarketTruckAgent(2);
+  		((MarketCashierRole)roles.get(7)).addTruck(truck2);
+  		truck2.setCashier(((MarketCashierRole)roles.get(7)));
+        MarketTruckGui truck2Gui = new MarketTruckGui(truck2, simCityGui.bldngAnimPanel, 2);
+        truck2.setGui(truck2Gui);
+        truck2.startThread();
+        cityAnimPanel.addGui(truck2Gui);
+        
+        // Sets truck to restaurants
+        truck.setRestaurant(rest1, 1);
+        truck.setRestaurant(rest2, 2);
+        truck.setRestaurant(rest3, 3);
+        truck2.setRestaurant(rest4, 4);
+        truck2.setRestaurant(rest5, 5);
+        truck2.setRestaurant(rest6, 6);
         
 		locations.add(bank);
 		locations.add(bank2);
@@ -2294,12 +2487,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		locations.add(market2);
 		locations.add(rest1);
 		locations.add(rest2);
+		locations.add(rest3);
 		locations.add(rest4);
 		locations.add(rest5);
 		locations.add(rest6);
 		locations.add(home);
-		locations.add(home2);
-		locations.add(home3);
 		
 		for (Location l : locations) {
 			cityAnimPanel.addLocation(l);
@@ -2340,6 +2532,13 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent sdWaiter2GoToRestaurant2 = new SimEvent("Go to work", rest2, EventType.SDWaiterEvent);
 		SimEvent waiter2GoToRestaurant = new SimEvent("Go to work", rest2, EventType.WaiterEvent);
 		
+		// For the third restaurant
+		SimEvent host3GoToRestaurant = new SimEvent("Go to work", rest3, EventType.HostEvent);
+		SimEvent cook3GoToRestaurant = new SimEvent("Go to work", rest3, EventType.CookEvent);
+		SimEvent cashier3GoToRestaurant = new SimEvent("Go to work", rest3,EventType.CashierEvent);
+		SimEvent sdWaiter3GoToRestaurant2 = new SimEvent("Go to work", rest3, EventType.SDWaiterEvent);
+		SimEvent waiter3GoToRestaurant = new SimEvent("Go to work", rest3, EventType.WaiterEvent);
+	
 		// For the fourth restaurant
 		SimEvent host4GoToRestaurant = new SimEvent("Go to work", rest4, EventType.HostEvent);
 		SimEvent cook4GoToRestaurant = new SimEvent("Go to work", rest4, EventType.CookEvent);
@@ -2396,14 +2595,11 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		people.get(32).msgAddEvent(cashier6GoToRestaurant);
 		people.get(33).msgAddEvent(sdWaiter6GoToRestaurant2);
 		people.get(34).msgAddEvent(waiter6GoToRestaurant);
-		
-		// This is to start all the people's threads
-//				for (int j = 0; j < 14; ++j) {
-//					people.get(j).startThread();
-//				}
-		
-//				BankCustomerRole bankCust = new BankCustomerRole(walking, "Bank Customer");
-//				walking.addRole(bankCust, "Bank Customer");
+		people.get(35).msgAddEvent(host3GoToRestaurant);
+		people.get(36).msgAddEvent(cook3GoToRestaurant);
+		people.get(37).msgAddEvent(cashier3GoToRestaurant);
+		people.get(38).msgAddEvent(sdWaiter3GoToRestaurant2);
+		people.get(39).msgAddEvent(waiter3GoToRestaurant);
 		
 		/**
 		 * GIVE WALKING PERSON EVENTS
@@ -2414,7 +2610,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent eatAtHome3 = new SimEvent("Eat", home3, EventType.HomeOwnerEvent);
 		
 		// Go to bank to withdraw money
-		SimEvent withdrawFromBank1 = new SimEvent("deposit", bank, EventType.CustomerEvent);
+		SimEvent depositFromBank1 = new SimEvent("deposit", bank, EventType.CustomerEvent);
 		
 		// Go to market to buy shopping list items
 		SimEvent goToMarket1 = new SimEvent("Buy groceries", market, EventType.CustomerEvent);
@@ -2422,6 +2618,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		// Eat at each restaurant.. fatty.
 		SimEvent goToRest1 = new SimEvent("Eat", rest1, EventType.CustomerEvent);
 		SimEvent goToRest2 = new SimEvent("Eat", rest2, EventType.CustomerEvent);
+		SimEvent goToRest3 = new SimEvent("Eat", rest3, EventType.CustomerEvent);
 		SimEvent goToRest4 = new SimEvent("Eat", rest4, EventType.CustomerEvent);
 		SimEvent goToRest5 = new SimEvent("Eat", rest5, EventType.CustomerEvent);
 		SimEvent goToRest6 = new SimEvent("Eat", rest6, EventType.CustomerEvent);
@@ -2430,79 +2627,60 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent goToMarket2 = new SimEvent("Buy groceries", market2, EventType.CustomerEvent);
 		
 		// Go to bank to deposit money
-		SimEvent depositBank2 = new SimEvent("deposit", bank2, EventType.CustomerEvent);
+		SimEvent withdrawBank2 = new SimEvent("withdraw", bank2, EventType.CustomerEvent);
 		
 		walking.msgAddEvent(eatAtHome);
-		walking.msgAddEvent(withdrawFromBank1);
+		walking.msgAddEvent(depositFromBank1);
 		walking.msgAddEvent(goToMarket1);
 		walking.msgAddEvent(goToRest1);
 		walking.msgAddEvent(goToRest2);
+		walking.msgAddEvent(goToRest3);
 		walking.msgAddEvent(goToRest4);
 		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
 		walking.msgAddEvent(goToMarket2);
-		walking.msgAddEvent(depositBank2);
+		walking.msgAddEvent(withdrawBank2);
 		
 		/**
 		 * GIVE BUS PERSON EVENTS
 		 */		
 		busPerson.msgAddEvent(eatAtHome2);
-		busPerson.msgAddEvent(withdrawFromBank1);
+		busPerson.msgAddEvent(depositFromBank1);
 		busPerson.msgAddEvent(goToMarket2);
 		busPerson.msgAddEvent(goToMarket1);
-		busPerson.msgAddEvent(depositBank2);
+		busPerson.msgAddEvent(withdrawBank2);
 		busPerson.msgAddEvent(goToRest1);
 		busPerson.msgAddEvent(goToRest4);
 		busPerson.msgAddEvent(goToRest2);
 		busPerson.msgAddEvent(goToRest5);
-		//busPerson.msgAddEvent(goToRest3); FIX
+		busPerson.msgAddEvent(goToRest3);
 		busPerson.msgAddEvent(goToRest6);
 		
 		/**
 		 * GIVE CAR PERSON EVENTS
 		 */		
 		carPerson.msgAddEvent(eatAtHome3);
-		carPerson.msgAddEvent(withdrawFromBank1);
-		carPerson.msgAddEvent(goToMarket1);
-		carPerson.msgAddEvent(goToRest1);
-		carPerson.msgAddEvent(goToRest2);
-		carPerson.msgAddEvent(goToRest4);
+		carPerson.msgAddEvent(depositFromBank1);
 		carPerson.msgAddEvent(goToRest5);
+		carPerson.msgAddEvent(goToMarket1);
+		carPerson.msgAddEvent(goToRest2);
 		carPerson.msgAddEvent(goToRest6);
 		carPerson.msgAddEvent(goToMarket2);
-		carPerson.msgAddEvent(depositBank2);
+		carPerson.msgAddEvent(withdrawBank2);
+		carPerson.msgAddEvent(goToRest4);
+		carPerson.msgAddEvent(goToRest1);
+		
+		clock = new SimWorldClock(8, people, cityMap, 6000);
+		simCityGui.simclock = clock;
+		
+		clock.tracePanel = simCityGui.tracePanel;
 		
 		for (PersonAgent p : people) {
 			p.setcitygui(simCityGui);
 			p.populateCityMap(locations);
-		}
-		
-		//FIX.. FOR TESTING PURPOSES
-		// This is to initialize all the city maps
-//				for (int j = 0; j < 14; ++j) {
-//					people.get(j).populateCityMap(locations);
-//				}
-		
-		// This is to add all the bus stops to the city maps
-//				for (int j = 0; j < 14; ++j) {
-//					people.get(j).getMap().addBusStop(simCityGui.busstop1.name, simCityGui.busstop1);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop2.name, simCityGui.busstop2);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop3.name, simCityGui.busstop3);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop4.name, simCityGui.busstop4);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop5.name, simCityGui.busstop5);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop6.name, simCityGui.busstop6);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop7.name, simCityGui.busstop7);
-//					people.get(j).getMap().addBusStop(simCityGui.busstop8.name, simCityGui.busstop8);
-//					
-//					people.get(j).getMap().addBus(simCityGui.busstop1, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop2, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop3, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop4, simCityGui.bus);
-//					people.get(j).getMap().addBus(simCityGui.busstop5, simCityGui.bus2);
-//					people.get(j).getMap().addBus(simCityGui.busstop6, simCityGui.bus2);
-//					people.get(j).getMap().addBus(simCityGui.busstop7, simCityGui.bus2);
-//					people.get(j).getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
-//				}
+			simCityGui.people.add(p);
+//					simCityGui.simclock.people.add(p);
+		}		
 		
 		for (PersonAgent p : people) {
 			p.getMap().addBusStop(simCityGui.busstop1.name, simCityGui.busstop1);
@@ -2523,10 +2701,6 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 			p.getMap().addBus(simCityGui.busstop7, simCityGui.bus2);
 			p.getMap().addBus(simCityGui.busstop8, simCityGui.bus2);
 		}
-		
-//				for(int j = 0; j < 25; j++){
-//					people.get(j).startThread();
-//				}
 
 		for (PersonAgent p : people) {
 			p.startThread();
@@ -2539,11 +2713,13 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		market2.getTimeCard().startThread();
 		rest1.getTimeCard().startThread();
 		rest2.getTimeCard().startThread();
+		rest3.getTimeCard().startThread();
 		rest4.getTimeCard().startThread();
 		rest5.getTimeCard().startThread();
 		rest6.getTimeCard().startThread();
 		
 		clock.timeCards.add(bank.getTimeCard());
+		clock.timeCards.add(bank2.getTimeCard());
 		clock.timeCards.add(market.getTimeCard());
 		clock.timeCards.add(market2.getTimeCard());
 		clock.timeCards.add(rest1.getTimeCard());

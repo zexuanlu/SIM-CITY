@@ -122,6 +122,7 @@ public class PersonAgent extends Agent implements Person{
 	public SimCityGUI simcitygui;
 	
 	public TrafficLightAgent trafficlight;
+
 	private boolean atlight = false;
 
 	CarAgent car; // car if the person has a car */ //Who is in charge of these classes?
@@ -165,7 +166,7 @@ public class PersonAgent extends Agent implements Person{
 	public void setTrafficLight(TrafficLightAgent tl){
 		this.trafficlight = tl;
 	}
-	
+
 	public void setName(String name){this.name = name;}
 
 	public String getName(){ return this.name; }
@@ -237,17 +238,19 @@ public class PersonAgent extends Agent implements Person{
 	public void msgAtHome(){
 		print("Back home");
 	}
-	public void msgGoHome(){
-		Do("Going home from casino to a"+homeType);
-		atCasino = false;
+	public void msgGoHome(String sender){
+		if(sender.equals("Casino")){
+			atCasino = false;
+		}
 		SimEvent goHome = null;
 		if(homeNumber <= 5){
-			Do("Going home from casino to a"+homeType);
 			goHome = new SimEvent("Go Home", (Home)cityMap.getHome(homeNumber), EventType.HomeOwnerEvent);
 		}
-		else{
-			Do("Going home from casino to a"+homeType);
+		else if(homeNumber > 5 && homeNumber != -1){
 			goHome = new SimEvent("Go Home", (Apartment)cityMap.getHome(homeNumber), EventType.AptTenantEvent);
+		}
+		else if(homeNumber == -1){
+			
 		}
 		toDo.add(goHome);
 		stateChanged();
@@ -399,7 +402,7 @@ public class PersonAgent extends Agent implements Person{
 		gui.setPresent(false);
 		this.stopThread();
 	}
-	
+
 	public void msgAtLight(){
 		if (name.equals("Walking Person")){
 			print("msgatlight");
@@ -407,11 +410,11 @@ public class PersonAgent extends Agent implements Person{
 		atlight = true;
 		stateChanged();
 	}
-	
+
 	public void ToGo(){
 		gui.atlight = false; 
 	}
-	
+
 	/* Scheduler */
 
 	@Override
@@ -463,7 +466,9 @@ public class PersonAgent extends Agent implements Person{
 
 			for(SimEvent nextEvent : toDo){
 				if(nextEvent.importance == EventImportance.OneTimeEvent){
-					if(nextEvent.location.type == LocationType.Home || nextEvent.location.type == LocationType.Apartment || !nextEvent.location.isClosed()){
+					if(nextEvent.location.type == LocationType.Home || 
+							nextEvent.location.type == LocationType.Apartment || 
+							!nextEvent.location.isClosed()){
 						if(!atHome)
 							goToLocation(nextEvent.location);
 						goToAndDoEvent(nextEvent);
@@ -475,15 +480,27 @@ public class PersonAgent extends Agent implements Person{
 			}
 			return checkVitals();
 		}
-		
+
+		if(atlight){
+			checklight();
+		}
 
 		return false;
 	}
-	
 
 	/* Actions */
+
 	
 	
+	public void msgDie(){
+		gui.setPresent(false);
+		print("I have died :(");
+	}
+	private void checklight(){
+		trafficlight.msgCheckLight(this);
+	}
+
+
 	private void goToAndDoEvent(SimEvent e){		
 		////////////////////////// REST 1 EVENTS /////////////////////////////////////////////////
 		if(e.location.type == LocationType.Restaurant1){
@@ -1671,7 +1688,7 @@ public class PersonAgent extends Agent implements Person{
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Customer")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
 						else if(e.directive.equals("robBank"))
@@ -1696,7 +1713,7 @@ public class PersonAgent extends Agent implements Person{
 					cap.bankPanel.addGui(bcg);
 				}
 				if(e.directive.equals("deposit"))
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 				else if(e.directive.equals("robBank"))
@@ -1787,7 +1804,7 @@ public class PersonAgent extends Agent implements Person{
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Customer 2")){   //check if we don't already have it 
 						if(e.directive.equals("deposit"))
-							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand/2);
+							((BankCustomerRole)mr.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 						else if(e.directive.equals("withdraw"))
 							((BankCustomerRole)mr.role).msgGoToBank(e.directive, 500.00);//FIX?
 						else if(e.directive.equals("robBank"))
@@ -1811,7 +1828,7 @@ public class PersonAgent extends Agent implements Person{
 				((BankCustomerRole)newRole.role).setGui(bcg);
 				cap.bankPanel2.addGui(bcg);
 				if(e.directive.equals("deposit"))
-					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand/2);
+					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, wallet.onHand-400.00);
 				else if(e.directive.equals("withdraw"))
 					((BankCustomerRole)newRole.role).msgGoToBank(e.directive, 500.00);//FIX?
 				else if(e.directive.equals("robBank"))
@@ -2182,7 +2199,14 @@ public class PersonAgent extends Agent implements Person{
 		 * find locations on the fly via look up 
 		 */
 		boolean addedAnEvent = false;
-
+		if(wallet.getOnHand() >= 2500 && car == null){
+			Market m = (Market)cityMap.getByType(LocationType.Market);
+			SimEvent buyCar = new SimEvent("Go buy a car", m,EventType.CustomerEvent);
+			if(!containsEvent("Go buy a car")){
+				toDo.add(buyCar);
+				addedAnEvent = true;
+			}
+		}
 		Bank b = cityMap.pickABank(gui.xPos, gui.yPos);//(Bank)cityMap.getByType(LocationType.Bank);
 		if(b != null){
 			if(wallet.getOnHand() <= 100 && wallet.inBank > 200.00){ //get cash
@@ -2198,14 +2222,6 @@ public class PersonAgent extends Agent implements Person{
 					toDo.add(needDeposit);
 					addedAnEvent = true;
 				}
-			}
-		}
-		if(wallet.getOnHand() >= 2500 && car == null){
-			Market m = (Market)cityMap.getByType(LocationType.Market);
-			SimEvent buyCar = new SimEvent("Go buy a car", m,EventType.CustomerEvent);
-			if(!containsEvent("Go buy a car")){
-				toDo.add(buyCar);
-				addedAnEvent = true;
 			}
 		}
 		if(hunger > 3 && !containsEvent("Go Eat") && !cityMap.ateOutLast){

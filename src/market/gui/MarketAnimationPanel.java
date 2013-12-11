@@ -22,8 +22,11 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     //public ImageIcon img = new ImageIcon(this.getClass().getResource("shelf.png"));
     //public Image image = img.getImage();
     
-    //public ImageIcon img1 = new ImageIcon(this.getClass().getResource("cashier.png"));
-    //public Image image1 = img1.getImage();
+    public ImageIcon img1 = new ImageIcon(this.getClass().getResource("cashier.png"));
+    public Image image1 = img1.getImage();
+    
+    public ImageIcon img2 = new ImageIcon(this.getClass().getResource("market.png"));
+    public Image image2 = img2.getImage();
 
     public MarketAnimationPanel() {
     	setSize(WINDOWX, WINDOWY);
@@ -47,6 +50,9 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
         //Clear the screen by painting a rectangle the size of the frame
         g2.setColor(getBackground());
         g2.fillRect(0, 0, WINDOWX, WINDOWY );
+        
+        //draw floor
+        g2.drawImage(image2, 0, 0, WINDOWX, WINDOWY, null);
 
     
 //        g2.setColor(Color.BLUE);
