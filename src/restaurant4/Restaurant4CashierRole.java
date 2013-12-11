@@ -4,6 +4,7 @@ import agent.Role;
 import bank.interfaces.BankDatabase;
 import restaurant4.interfaces.*;
 import restaurant4.test.mock.EventLog;
+import restaurant4.test.mock.LoggedEvent;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -54,6 +55,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * @param waiter the waiter who submitted the check
 	 */
 	public void msgINeedCheck(String choice, Restaurant4Customer customer, Restaurant4Waiter waiter){
+		log.add(new LoggedEvent("Received msgINeedCheck from Waiter"));
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -74,6 +76,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * @param money the amount of money the customer is using
 	 */
 	public void msgPayingForFood(Restaurant4Customer customer, double money){
+		log.add(new LoggedEvent("Received msgPayingForFood from Customer"));
 		synchronized(checks){
 			for(Check c : checks){
 				if(c.cust == customer){
@@ -86,11 +89,22 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		}
 	}
 	
+	/**
+	 * Received from the market cashier when he needs to pay for food
+	 * 
+	 * @param mc the market cashier
+	 * @param price the price that needs to be paid
+	 */
 	public void msgPleasepaytheBill(MarketCashier mc, double price){
 		bills.add(new Bill(mc, price));
 		stateChanged();
 	}
 	
+	/**
+	 * Received from the cook when the bill has been checked
+	 * 
+	 * @param price the amount of the bill that was verified
+	 */
 	public void msgBillChecked(double price){
 		for(Bill b : bills){
 			if(b.amount == price){
@@ -105,6 +119,7 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	 * Scheduler.  Determine what action is called for, and do it.
 	 */
 	public boolean pickAndExecuteAnAction() {
+		//If low on money, get more from the bank
 		if(money < 500.00){
 			getMoneyFromBank();
 			return true;
@@ -123,18 +138,21 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 				return true;
 			}
 		}
+		//If there is a bill that has been checked
 		for(Bill bill : bills){
 			if(bill.bs == billState.checked){
 				payBill(bill);
 				return true;
 			}
 		}
+		//If he has a bill that needs to be checked
 		for(Bill bill : bills){
 			if(bill.bs == billState.received){
 				checkBill(bill);
 				return true;
 			}
 		}
+		//If it's the end of the day and you're another day older
 		if(endOfDay == 2){
 			workDayOver();
 			return true;
@@ -167,14 +185,27 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		c.s = state.done;
 	}
 	
+	/**
+	 * Changes a bill to checked because the cook checked it
+	 * 
+	 * @param b the bill that has been checked
+	 */
 	private void checkBill(Bill b){
 		b.bs = billState.checked;
 	}
 
+	/**
+	 * Pays a bill to the market
+	 * 
+	 * @param b the bill to be paid
+	 */
 	private void payBill(Bill b){
 		b.mc.msgBillFromTheAir(b.amount);
 	}
 	
+	/**
+	 * Messages the bank to get money to restock his stuff
+	 */
 	private void getMoneyFromBank(){
 		bank.msgWithdrawMoney(this, (1000.00-money), accountNumber);
 		try{
@@ -185,6 +216,10 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		}
 	}
 	
+	/**
+	 * Leaves the restaurant because it's the end of the day and 
+	 * he's another day older
+	 */
 	private void workDayOver(){
 		endOfDay = 0;
 		bank.msgDepositMoney(this, money, accountNumber);
@@ -198,6 +233,12 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 	}
 	//utilities
 	
+	/**
+	 * The Bill class, which is a bill from the market to the cashier
+	 * 
+	 * @author Joseph Boman
+	 *
+	 */
 	public class Bill {
 		public MarketCashier mc;
 		public double amount;
@@ -239,6 +280,11 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		return "Restaurant 4 Cashier";
 	}
 
+	/**
+	 * Received from the waiters when they leave
+	 * because it's the end of the day and they are another day 
+	 * older
+	 */
 	public void msgWorkDayOver() {
 		endOfDay++;
 		stateChanged();
@@ -248,6 +294,11 @@ public class Restaurant4CashierRole extends Role implements Restaurant4Cashier{
 		return null; 
 	}
 	
+	/**
+	 * Received from the bank when he is getting or losing money
+	 * 
+	 * @param money the amount of money
+	 */
 	public void msgAddMoney(double amount) {
 		money += amount;
 		getMoney.release();

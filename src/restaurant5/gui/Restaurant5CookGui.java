@@ -26,8 +26,8 @@ public class Restaurant5CookGui implements Gui {
     private Restaurant5CookAgent agent = null;
     //private RestaurantGui gui; 
     
-    public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
-    public Image image = img.getImage();
+//    public ImageIcon img = new ImageIcon(this.getClass().getResource("cook.png"));
+//    public Image image = img.getImage();
     
     private class drawGui {
     	int x;
@@ -51,7 +51,7 @@ public class Restaurant5CookGui implements Gui {
     public void draw(Graphics2D g) {
         g.setColor(Color.ORANGE);
         //g.fillRect(xPos, yPos, 20, 20);
-        g.drawImage(image, xPos, yPos, 20, 20, null);
+//        g.drawImage(image, xPos, yPos, 20, 20, null);
         g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
         
 		for (Map.Entry<Integer, drawGui> entry: drawguis.entrySet()){

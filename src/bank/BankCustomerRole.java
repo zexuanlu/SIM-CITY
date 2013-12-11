@@ -203,8 +203,11 @@ public class BankCustomerRole extends Role implements BankCustomer {
 		//If the customer has a teller, go to the teller's location
 		if(s == state.haveTeller){
 			goToLocation(destination);
+			System.err.println("Imma going to " + destination);
 			s = state.atTeller;
+			System.err.println("My state is " + s);
 			destination = null;
+			System.err.println("I has no destination");
 			Do("Has a teller");
 			return true;
 		}
@@ -223,8 +226,8 @@ public class BankCustomerRole extends Role implements BankCustomer {
 			leaveBank();
 			return true;
 		}
-		//If you have a destination to go to
-		if(destination != null){
+		//If you have a destination to go to that isn't a teller
+		if(destination != null && !destination.contains("Teller")){
 			goToLocation(destination);
 			destination = null;
 			return true;

@@ -162,6 +162,7 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        customerGui.setPresent(false);
 		p.msgFinishedEvent(this, Receivedfood, money );
 	}
 

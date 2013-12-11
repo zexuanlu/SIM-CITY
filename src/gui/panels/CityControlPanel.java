@@ -29,10 +29,13 @@ public class CityControlPanel extends JPanel {
 	public CityControlPanel(SimCityGUI c) {
 		// PANEL SETUP
 		simcitygui = c; 
+		simcitygui.cityAnimPanel.tracePanel = tracePanel;
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		this.setBackground(Color.GRAY);
+		scenarioPanel.tracePanel = tracePanel;
+		simcitygui.tracePanel = tracePanel;
 		PersonAgent.setTracePanel(tracePanel);
 		
 		// Panel size initiations

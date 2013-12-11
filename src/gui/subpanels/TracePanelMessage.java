@@ -28,7 +28,10 @@ public class TracePanelMessage {
 	}
 	
 	public String getMessage(){
-		return agent + ": " + message;
+		if(agent != null)
+			return agent + ": " + message;
+		else
+			return message;
 	}
 	
 	public void setMessage(String message){

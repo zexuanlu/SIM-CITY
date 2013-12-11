@@ -51,13 +51,15 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 		food.put("Pizza", new MyFood("Pizza", 4000, 6, 2, 5, 10));
 		food.put("Salad", new MyFood("Salad", 3000, 6, 2, 8, 10));
 
-		timer.schedule(new TimerTask() {
+		if (this.person != null) {
+			timer.schedule(new TimerTask() {
 			public void run() {
 				checkStand = true;
 				stateChanged();
 			}
 		},
 			5000);
+		}
 	
 		
 	}

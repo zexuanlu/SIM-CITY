@@ -70,6 +70,9 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	//Timer for cooking
 	Timer cookTimer = new Timer();
 	
+	//Timer to check revolving stand
+	Timer checkTimer = new Timer();
+	
 	//CONSTRUCTOR *****************************************
 	public Restaurant3CookRole(String name, PersonAgent pa) {
 		super(pa);
@@ -81,7 +84,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 		foodInventory.put("Pizza", new MyFood("Pizza", 3, 10, 10));
 		foodInventory.put("Chicken", new MyFood("Chicken", 2, 10, 10));
 		foodInventory.put("Salad", new MyFood("Salad", 1, 10, 10));
-
 	}
 	
 	//HELPER METHODS **************************************
@@ -98,6 +100,12 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	}
 	
 	public void setGui(Restaurant3CookGui ckg){
+		checkTimer.scheduleAtFixedRate(new TimerTask(){
+			public void run(){
+				if(person != null)
+					stateChanged();
+			}
+		}, 0, 500);
 		cookGui = ckg;
 	}
 	
@@ -114,10 +122,6 @@ public class Restaurant3CookRole extends Role implements Restaurant3Cook{
 	public void msgNewOrder(Restaurant3Waiter w, int table, String choice) {
 		print(name + ": received new order from waiter " + w.getName());
 		orders.add(new Restaurant3Order(w, choice, table));
-		stateChanged();
-	}
-	
-	public void msgAddedOrderToRevolvingStand(){
 		stateChanged();
 	}
 	
