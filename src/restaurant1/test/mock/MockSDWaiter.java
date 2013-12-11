@@ -69,14 +69,16 @@ public class MockSDWaiter extends Mock implements Restaurant1Waiter {
 		
 	}
 
+
+
 	@Override
-	public void IwantBreak() {
+	public void msgHereistheCheck(Restaurant1Customer c, double p) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void msgHereistheCheck(Restaurant1Customer c, double p) {
+	public void msgGoOffWork() {
 		// TODO Auto-generated method stub
 		
 	}
