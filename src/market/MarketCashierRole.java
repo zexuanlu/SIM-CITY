@@ -272,7 +272,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 
 	void TakeOrder(Mycustomer customer){
 		customer.s = state.ordered;
-		Do("Hey!!!!!!!");
 		customer.bill = DoCalculateBill(customer, customer.order);
 		customer.c.msgPleasePay(customer.bill);
 		int s = employeeCount;
@@ -282,7 +281,6 @@ public class MarketCashierRole extends Role implements MarketCashier{
 		else{
 			employeeCount = 0;
 		}
-		Do("Here!!!!!!!");
 		employee.get(s).msgCollectOrer(customer.c, customer.collectedOrder);
 	}
 
