@@ -1,6 +1,7 @@
 package bank;
 
 import bank.interfaces.*;
+import person.PersonAgent;
 import person.interfaces.*;
 import agent.*;
 import bank.test.mock.*;
@@ -155,7 +156,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgCallingCops(){
 		log.add(new LoggedEvent("Received msgCallingCops from BankTeller"));
-		Do("Not the cops! I'm outta here!");
+		PersonAgent.tracePanel.print("Cops Called! Run Away!", (PersonAgent)person);
 		this.s = state.runAway;
 		stateChanged();
 	}
@@ -166,7 +167,7 @@ public class BankCustomerRole extends Role implements BankCustomer {
 	 */
 	public void msgHereIsMoney(double amount){
 		log.add(new LoggedEvent("Received msgHereIsMoney from BankTeller"));
-		Do("Just stole " + amount + " dollars! Time to skip town!");
+		PersonAgent.tracePanel.print("Just stole " + amount + "! Run Away!", (PersonAgent)person);
 		this.s = state.runAway;
 		person.msgAddMoney(amount);
 		stateChanged();

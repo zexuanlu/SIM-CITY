@@ -38,7 +38,7 @@ public class Restaurant2WaiterGui implements Gui {
 
 	private boolean arrived = false;
 	private boolean isPresent = false;
-	private ImageIcon icon = new ImageIcon(this.getClass().getResource(".png"));
+	private ImageIcon icon = new ImageIcon(this.getClass().getResource("worker.png"));
 	private Image image = icon.getImage();
 	private int skin; 
 	private String text = " "; 

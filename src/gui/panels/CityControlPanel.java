@@ -8,8 +8,9 @@ import java.awt.*;
 import java.util.List;
 
 import javax.swing.*;
-import gui.main.*;
 
+import person.PersonAgent;
+import gui.main.*;
 import gui.subpanels.*;
 
 public class CityControlPanel extends JPanel {
@@ -32,6 +33,7 @@ public class CityControlPanel extends JPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		this.setBackground(Color.GRAY);
+		PersonAgent.setTracePanel(tracePanel);
 		
 		// Panel size initiations
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
