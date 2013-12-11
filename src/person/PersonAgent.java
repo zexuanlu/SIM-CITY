@@ -4,7 +4,6 @@ import gui.panels.CityAnimationPanel;
 import gui.main.SimCityGUI;
 import restaurant5.gui.Restaurant5FoodGui; 
 
-import java.lang.Math;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -14,11 +13,9 @@ import person.Location.LocationType;
 import person.SimEvent.EventImportance;
 import person.SimEvent.EventType;
 import bank.gui.*;
-import bank.interfaces.*;
 import bank.*;
 import market.*;
 import market.gui.MarketCustomerGui;
-import market.interfaces.*;
 import agent.*;
 import person.gui.PersonGui;
 import person.interfaces.Person;
@@ -34,11 +31,9 @@ import restaurant1.Restaurant1CustomerRole;
 import restaurant1.Restaurant1HostRole;
 import restaurant1.Restaurant1SDWaiterRole;
 import restaurant1.Restaurant1WaiterRole;
-import restaurant1.gui.CookGui;
 import restaurant1.gui.Restaurant1CustomerGui;
 import restaurant1.gui.WaiterGui;
 import restaurant1.interfaces.Restaurant1Host;
-import restaurant2.Restaurant2AbstractWaiterRole;
 import restaurant2.Restaurant2CashierRole;
 import restaurant2.Restaurant2CookRole;
 import restaurant2.Restaurant2CustomerRole;
@@ -54,7 +49,6 @@ import restaurant3.Restaurant3HostRole;
 import restaurant3.Restaurant3SDWaiterRole;
 import restaurant3.Restaurant3WaiterRole;
 import restaurant3.gui.Restaurant3CustomerGui;
-import restaurant3.gui.Restaurant3CookGui;
 import restaurant3.gui.Restaurant3WaiterGui;
 import restaurant4.Restaurant4CashierRole;
 import restaurant4.Restaurant4CookRole;
@@ -64,8 +58,6 @@ import restaurant4.Restaurant4SDWaiterRole;
 import restaurant4.Restaurant4WaiterRole;
 import restaurant4.gui.Restaurant4CustomerGui;
 import restaurant4.gui.Restaurant4WaiterGui;
-import restaurant4.interfaces.Restaurant4Host;
-import restaurant5.*;
 import restaurant6.Restaurant6CashierRole;
 import restaurant6.Restaurant6CookRole;
 import restaurant6.Restaurant6CustomerRole;
@@ -75,7 +67,6 @@ import restaurant6.Restaurant6WaiterRole;
 import restaurant6.gui.Restaurant6CustomerGui;
 import restaurant6.gui.Restaurant6WaiterGui;
 import simcity.CarAgent;
-import simcity.gui.CarGui; 
 import simcity.PassengerRole;
 import simcity.CityMap;
 import simcity.astar.AStarTraversal;
@@ -149,7 +140,6 @@ public class PersonAgent extends Agent implements Person{
 
 		this.hunger = 0;
 		currentTime = 7;
-		this.astar = astar;
 		PersonAgent.tracePanel.print("Initializing", this);
 	}
 	public PersonAgent () {
@@ -236,7 +226,6 @@ public class PersonAgent extends Agent implements Person{
 		return wallet.getOnHand();
 	}
 	public void msgAtHome(){
-		print("Back home");
 	}
 	public void msgGoHome(String sender){
 		if(sender.equals("Casino")){
@@ -263,7 +252,6 @@ public class PersonAgent extends Agent implements Person{
 
 	public void msgAddEvent(SimEvent e){
 		toDo.add(e);
-		print("Message add event received");
 		//stateChanged();
 	}
 	public void msgNewHour(int hour){ //from the world timer or gui 
@@ -308,7 +296,6 @@ public class PersonAgent extends Agent implements Person{
 	}
 
 	public void msgAtDest(Position destination,CarAgent c){ // From the gui. now we can send the correct entrance message to the location manager
-		print("Received the message AtDest from car");
 		going.release();
 		gui.setPresent(true);
 		currentLocation = destination;
@@ -317,7 +304,6 @@ public class PersonAgent extends Agent implements Person{
 
 	public void msgFinishedEvent(Role r, List<Food> foodList, double change){
 		atHome = false;
-		print("Received this message");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.setActive(false);
@@ -332,7 +318,6 @@ public class PersonAgent extends Agent implements Person{
 	}
 	public void msgFinishedEvent(Role r){ 
 		atHome = false;
-		print("Received msgFinishedEvent");
 		for(MyRole role : roles){
 			if(role.role == r){
 				role.setActive(false);
@@ -351,7 +336,6 @@ public class PersonAgent extends Agent implements Person{
 	public void msgReadyToWork(Role r){
 		log.add(new LoggedEvent("Recieved msgReadyToWork"));
 		wait.release();
-		print("Received msgReadyToWork");
 		for(MyRole role : roles){
 			if(role.role == r ){
 				role.setActive(true);
@@ -361,7 +345,6 @@ public class PersonAgent extends Agent implements Person{
 		stateChanged();
 	}
 	public void msgGoOffWork(Role r, double pay){ 
-		print("Received the message go off work from " + r.toString());
 		wallet.setOnHand(pay);
 		if(!testMode){
 			gui.isPresent = true;
@@ -398,14 +381,12 @@ public class PersonAgent extends Agent implements Person{
 		catch(InterruptedException ie){
 			ie.printStackTrace();
 		}
-		Do("Terminating thread");
 		gui.setPresent(false);
 		this.stopThread();
 	}
 
 	public void msgAtLight(){
 		if (name.equals("Walking Person")){
-			print("msgatlight");
 		}
 		atlight = true;
 		stateChanged();
@@ -457,7 +438,6 @@ public class PersonAgent extends Agent implements Person{
 						}
 						atHome = false;
 					}			
-					print("Activating a recurring event");
 					goToLocation(nextEvent.location);
 					goToAndDoEvent(nextEvent);
 					return true;
@@ -494,7 +474,6 @@ public class PersonAgent extends Agent implements Person{
 	
 	public void msgDie(){
 		gui.setPresent(false);
-		print("I have died :(");
 	}
 	private void checklight(){
 		trafficlight.msgCheckLight(this);
@@ -517,7 +496,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				print("Customer not found");
 				Restaurant1CustomerRole cRole = new Restaurant1CustomerRole(this.name, this);
 				MyRole newRole = new MyRole(cRole, "Rest 1 Customer");
 				newRole.setActive(true);
@@ -713,7 +691,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				print("Customer not found");
 				Restaurant2CustomerRole cRole = new Restaurant2CustomerRole(this.name, this);
 				MyRole newRole = new MyRole(cRole, "Rest 2 Customer");
 				newRole.setActive(true);
@@ -905,7 +882,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				print("Customer not found");
 				Restaurant3CustomerRole cRole = new Restaurant3CustomerRole(this.name, this);
 				MyRole newRole = new MyRole(cRole, "Rest 3 Customer");
 				newRole.setActive(true);
@@ -1095,7 +1071,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				print("Customer not found");
 				Restaurant4CustomerRole cRole = new Restaurant4CustomerRole(this.name, this);
 				MyRole newRole = new MyRole(cRole, "Rest 4 Customer");
 				newRole.setActive(true);
@@ -1144,9 +1119,7 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.WaiterEvent){
 				PersonAgent.tracePanel.print("Restaurant Waiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
-					Do("Checking Role " + mr.type);
 					if(mr.type.equals("Rest 4 Waiter")){  
-						Do("Found ONe!");
 						((Restaurant4WaiterRole)mr.role).gui.setPresent(true);
 						rest.getTimeCard().msgBackToWork(this, mr.role); 
 						try{
@@ -1181,9 +1154,7 @@ public class PersonAgent extends Agent implements Person{
 			else if(e.type == EventType.SDWaiterEvent){
 				PersonAgent.tracePanel.print("Restaurant SDWaiter at " + e.location.getName(), this);
 				for(MyRole mr : roles){
-					Do("Checking Role " + mr.type);
 					if(mr.type.equals("Rest 4 SDWaiter")){
-						Do("Found one!");
 						((Restaurant4SDWaiterRole)mr.role).gui.isPresent = true;
 						rest.getTimeCard().msgBackToWork(this, mr.role);
 						try{
@@ -1293,7 +1264,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				print("Customer not found");
 				Restaurant5CustomerAgent cRole = new Restaurant5CustomerAgent(this.name, this);
 				Restaurant5FoodGui fgui = new Restaurant5FoodGui();
 				cRole.setFoodGui(fgui);
@@ -1504,7 +1474,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				print("Customer not found");
 				Restaurant6CustomerRole cRole = new Restaurant6CustomerRole(this.name, this);
 				MyRole newRole = new MyRole(cRole, "Rest 6 Customer");
 				newRole.setActive(true);
@@ -1699,7 +1668,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				System.err.println("Creating new role");
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer"); //make a new MyRole
 				bcr.bh = bank.getHost();
@@ -1816,7 +1784,6 @@ public class PersonAgent extends Agent implements Person{
 						return;
 					}
 				}
-				System.err.println("Creating new role");
 				BankCustomerRole bcr = new BankCustomerRole(this, this.name);
 				MyRole newRole = new MyRole(bcr, "Bank Customer 2"); //make a new MyRole
 				bcr.bh = bank.getHost();
@@ -1880,7 +1847,6 @@ public class PersonAgent extends Agent implements Person{
 				PersonAgent.tracePanel.print("Bank Host at " + e.location.getName(), this);
 				for(MyRole mr : roles){
 					if(mr.type.equals("Bank Host")){
-						print("Messaging the Time Card!");
 						bank.getTimeCard().msgBackToWork(this, mr.role); 
 						try{
 							wait.acquire();
@@ -2225,7 +2191,6 @@ public class PersonAgent extends Agent implements Person{
 			}
 		}
 		if(hunger > 3 && !containsEvent("Go Eat") && !cityMap.ateOutLast){
-			System.err.println("Going to eat!");
 			toDo.add(new SimEvent("Go Eat", (Restaurant)cityMap.eatOutOrIn(), EventType.CustomerEvent));
 			addedAnEvent = true;
 		}
@@ -2248,7 +2213,6 @@ public class PersonAgent extends Agent implements Person{
 
 	private void goToLocation(Location loc){
 		PersonAgent.tracePanel.print("Going to " + loc.getName(), this);
-		Do(loc.position.toString() + ":" + loc.getName());
 		if (!walking) {
 			if(!isInWalkingDistance(loc)){ //if its not in walking distance we ride the bus
 				//			//make a PassengerRole and start it
@@ -2260,7 +2224,6 @@ public class PersonAgent extends Agent implements Person{
 				if(!testMode){
 					PassengerGui pg = new PassengerGui(((PassengerRole)newRole.role), gui.xPos, gui.yPos);
 					pg.setPresent(true);
-					print("gui xpos is " + gui.xPos + " " + gui.yPos);
 					((PassengerRole)newRole.role).setGui(pg);
 					cap.addGui(pg);
 				}
@@ -2284,7 +2247,6 @@ public class PersonAgent extends Agent implements Person{
 				}
 			}
 		}
-		print("Going to location");
 		DoGoTo(loc); 
 		if(!testMode){
 			going.drainPermits();
@@ -2295,12 +2257,10 @@ public class PersonAgent extends Agent implements Person{
 				e1.printStackTrace();
 			}
 		}
-		print("Arrived at Destination");
 		//		}
 	}
 	private void dowalkto(int originx, int originy){
 		gui.isPresent = true; 
-		print(name + " " + "DOWALKTO");
 		gui.walkto(originx, originy);
 		//currentLocation.setX(originx);
 		//currentLocation.setY(originy);
@@ -2321,10 +2281,7 @@ public class PersonAgent extends Agent implements Person{
 			//SWITCHES LOCATION WHY
 			Position p = cityMap.getNearestStreet(currentLocation.getX(), currentLocation.getY());
 			Position l = cityMap.getNearestStreet(loc.position.getX(), loc.position.getY());
-			print ("origin position "+ currentLocation.getX() + " " + currentLocation.getY() + " "+p.getX() + " " + p.getY());
-			print("goingto position "+loc.position.getX() + " " + loc.position.getY() + " " + l.getX() + " " + l.getY());
 
-			print("gotoposition from person");
 			going.drainPermits();
 			car.gotoPosition(p.getX(), p.getY(), l.getX(), l.getY());
 			try {
@@ -2360,10 +2317,8 @@ public class PersonAgent extends Agent implements Person{
 		}
 
 		if(Quadrant == loc.Quadrant){
-			System.err.println("In walking distance :");
 			return true;
 		}
-		System.err.println("not walking distance :");
 		return false;
 	}
 	public class MyRole{
@@ -2384,8 +2339,6 @@ public class PersonAgent extends Agent implements Person{
 		private double inBank;
 		private double balance;
 
-		private List<BankTicket> transactions 
-		= new ArrayList<BankTicket>();
 		public Wallet(double oh, double ib){
 			this.onHand = oh;
 			this.inBank = ib;
@@ -2402,7 +2355,6 @@ public class PersonAgent extends Agent implements Person{
 		}
 		public void setOnHand(double money){
 			onHand += money;
-			Do("" + onHand);
 		}
 		public void setInBank(double newAmount){
 			inBank += newAmount;
@@ -2427,7 +2379,6 @@ public class PersonAgent extends Agent implements Person{
 		simcitygui = scg; 
 
 		if (this.wallet.getOnHand() >= 1000.00){
-			System.out.println("I have a car!");
 			car = simcitygui.createCar(this);
 		}
 	}

@@ -205,7 +205,7 @@ public class Restaurant2HostRole extends Role implements RestaurantHost {
 		}
 	}
 	private void seatCustomer(MyCustomer customer, Table table, MyWaiter waiter) {
-		waiter.available = false;
+		//waiter.available = false;
 		table.setOccupant(customer.getCustomer());
 		print("waiter "+waiter.getWaiter()+" taking "+customer+" to "+table);
 		waiter.getWaiter().msgSeatCustomer((Restaurant2Customer) customer.getCustomer(), table);//send a message to the selected waiter with the table and customer to seat at the table

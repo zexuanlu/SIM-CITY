@@ -11,6 +11,7 @@ import java.awt.*;
 
 public class BuildingAnimationPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1;
 	private String title = " Building Animation ";
 	public static final int WIDTH = 530;
 	public static final int HEIGHT = 480;

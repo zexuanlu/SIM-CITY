@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import person.interfaces.*;
-import restaurant1.Restaurant1CookRole;
 import utilities.restaurant.RestaurantCook;
 import market.gui.MarketEmployeeGui;
 import market.interfaces.*;

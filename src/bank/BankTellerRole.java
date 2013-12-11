@@ -84,7 +84,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	 */
 	public void msgDepositMoney(BankCustomer bc, double amount, int accountNumber){
 		log.add(new LoggedEvent("Received msgDepositMoney from BankCustomer"));
-		Do("Received request for deposit");
 		this.bc = bc;
 		synchronized(tasks){
 			tasks.add(new Task("deposit", amount, accountNumber));
@@ -150,7 +149,6 @@ public class BankTellerRole extends Role implements BankTeller {
 		synchronized(tasks){
 			for(Task t : tasks){
 				if(t.type.equals("openAccount")){
-					Do("Account Number " + accountNumber + " Created");
 					t.accountNumber = accountNumber;
 					t.ts = taskState.completed;
 					stateChanged();
@@ -361,7 +359,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	 * @param t the task that needs to be performed
 	 */
 	private void openAccount(Task t){
-		Do("Requesting an account");
 		bd.msgOpenAccount(bc, this);
 		t.ts = taskState.waiting;
 	}
@@ -372,7 +369,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	 * @param t the task that was completed
 	 */
 	private void accountMade(Task t){
-		Do("Informing Customer of account");
 		bc.msgAccountMade(t.accountNumber);
 		tasks.remove(t);
 	}
@@ -383,7 +379,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	 * @param t the task that needs to be performed
 	 */
 	private void deposit(Task t){
-		Do("Requesting a deposit");
 		bd.msgDepositMoney(bc, t.amount, t.accountNumber, this);
 		t.ts = taskState.waiting;
 	}
@@ -394,7 +389,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	 * @param t the task that was completed
 	 */
 	private void depositMade(Task t){
-		Do("Telling customer of his deposit. Current balance is " + t.balance);
 		bc.msgDepositDone(t.balance, t.amount);
 		tasks.remove(t);
 	}
@@ -486,7 +480,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	 * is back to work
 	 */
 	private void informHost(){
-		Do("Telling host that I am working");
 		bh.msgBackToWork(this);
 		s = state.working;
 	}
@@ -499,7 +492,6 @@ public class BankTellerRole extends Role implements BankTeller {
 	private void goToLocation(String location){
 		if(gui != null){
 			gui.DoGoToLocation(location);
-			Do("Moving to " + location);
 			try{
 				movement.acquire();
 			}

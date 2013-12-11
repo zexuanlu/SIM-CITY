@@ -1,12 +1,8 @@
 package resident;
 
-import java.text.DecimalFormat; 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
 
 import person.interfaces.Person;
 import resident.interfaces.ApartmentLandlord;
@@ -59,7 +55,6 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	public List<MyTenant> tenants = Collections.synchronizedList(new ArrayList<MyTenant>());
 	private String name;
 	private Person person; 
-	private double myMoney;
 	private static double rentCost = 100; // Static for now	
 	private int apartmentNumber;
 
@@ -107,7 +102,6 @@ public class ApartmentLandlordRole extends Role implements ApartmentLandlord {
 	 */
 	private void collectPayment(MyTenant t) {
 		t.state = MyTenant.TenantState.Paid;
-		myMoney += t.amountPaying;
 		// person.msgAddMoney(t.amountPaying);
 		t.amountOwed = rentCost - t.amountPaying;
 		t.aptRes.msgReceivedRent(t.amountOwed);

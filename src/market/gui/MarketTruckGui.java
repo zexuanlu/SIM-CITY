@@ -1,13 +1,10 @@
 package market.gui;
-import simcity.astar.*; 
-import simcity.CarAgent;  
+ 
 import utilities.Gui;
 import market.MarketTruckAgent; 
 import gui.panels.BuildingAnimationPanel;
 
-import java.util.*; 
 import java.awt.*; 
-import java.util.List; 
 import java.awt.Graphics2D;
 
 import javax.swing.ImageIcon;

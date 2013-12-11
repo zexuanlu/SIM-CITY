@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import person.SimEvent.EventType;
 /**
  * The Casino location. 
  * 1.Tracks the time of the people's stay (weekend)
@@ -47,7 +45,6 @@ public class Casino extends Location{
 	public PersonAgent pickTheWinner(){
 		int winner = luckyWinner.nextInt(gamblers.size());
 		PersonAgent p = gamblers.get(winner);
-		System.out.println("WINNING "+p.getName());
 		return p;
 	}
 }

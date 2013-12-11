@@ -52,7 +52,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 		food = f;
 		money = m;
 		s = state.ordering;
-		Do("YOooooooo");
 		stateChanged();
 	}
 
@@ -81,7 +80,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 	}
 
 	public void msgAtTable(){
-		Do("At table");
 		atTable.release();
 	}
 	
@@ -125,7 +123,6 @@ public class MarketCustomerRole extends Role implements MarketCustomer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Do(""+food.size());
 		cashier.msgHereisOrder(this,  food);
 		s = state.ordered;
 	}

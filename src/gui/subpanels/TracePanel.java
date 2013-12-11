@@ -21,6 +21,7 @@ import javax.swing.Timer;
 
 public class TracePanel extends JPanel implements ActionListener{
 
+	private static final long serialVersionUID = 7;
 	// PANEL SETUP DATA
 	private String title = " Trace Panel ";
 	private static final int WIDTH = 275;

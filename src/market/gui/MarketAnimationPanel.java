@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class MarketAnimationPanel extends JPanel implements ActionListener {
-	
-    private final int WINDOWX = 540;
+
+	private static final long serialVersionUID = 8;
+	private final int WINDOWX = 540;
     private final int WINDOWY = 480;
-    private Image bufferImage;
-    private Dimension bufferSize;
 
     public List<Gui> guis = new ArrayList<Gui>();
     
@@ -32,9 +31,6 @@ public class MarketAnimationPanel extends JPanel implements ActionListener {
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
 		this.setBorder(BorderFactory.createTitledBorder("Market"));
-
-        
-        bufferSize = this.getSize();
  
     //	Timer timer = new Timer(8, this );
     //	timer.start();

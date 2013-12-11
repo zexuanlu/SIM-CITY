@@ -133,7 +133,6 @@ public class BankHostRole extends Role implements BankHost {
 	 * @param mt the teller who is being assigned
 	 */
 	private void assignCustomer(BankCustomer bc, MyTeller mt){
-		Do("Assigning a teller");
 		bc.msgHereIsTeller(mt.bt, mt.location);
 		mt.s = state.withCustomer;
 		waitingCustomers.remove(bc);
@@ -174,7 +173,6 @@ public class BankHostRole extends Role implements BankHost {
 	private void goToLocation(String location){
 		if(gui != null){
 			gui.DoGoToLocation(location);
-			Do("Moving to " + location);
 			try{
 				movement.acquire();
 			}

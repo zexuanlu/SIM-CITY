@@ -2,7 +2,6 @@ package market.interfaces;
 
 import java.util.List;
 
-import restaurant1.Restaurant1CookRole;
 import utilities.restaurant.RestaurantCook;
 import market.Food;
 

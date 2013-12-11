@@ -40,8 +40,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public List<Order> order= Collections.synchronizedList(new ArrayList<Order>());	
 	Timer timer = new Timer();
 	
-	private boolean TT = true;
-
 	public Restaurant1CookRole(String name, Person pa) {
 		super(pa);
 		roleName = "Rest1 Cook";
@@ -200,7 +198,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 
 	
 	private void goOffWork(){
-		print("restaurant1cookrole go off work");
 		offWork = false; 
 		offWorkMess = 0; 
 		this.person.msgGoOffWork(this, 0);
@@ -210,7 +207,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 	public void Docooking(final Order o){
 		MyFood f = food.get(o.choice);
 		if(f.amount == 0){
-			Do(o.choice +" is sold out!");
 			o.w.msgOutOfFood(o.table);
 			order.remove(o);
 			foodlist.add(new Food(f.type, f.capacity-f.amount));
@@ -262,8 +258,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 
 	public void Orderfoodislow(){
 		opening = false;
-		int s = count;
-		Do("We need more food!");
 		marketCashier.MsgIwantFood(this, cashier, foodlist, 1);
 		foodlist.clear();
 	}
@@ -297,7 +291,6 @@ public  class Restaurant1CookRole extends Role implements Restaurant1Cook {
 			e.printStackTrace();
 		}
 		cookGui.hideCarryFoood();
-		Do("Order cooked!");
 		order.w.msgorderiscooked(order.table);
 	}
 

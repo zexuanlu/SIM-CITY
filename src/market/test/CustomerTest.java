@@ -2,12 +2,6 @@ package market.test;
 
 import market.MarketCustomerRole;
 import person.Location;
-import person.PersonAgent;
-import person.Position;
-import person.SimEvent;
-import person.Location.LocationType;
-import person.SimEvent.EventType;
-import person.interfaces.*;
 import person.test.mock.PersonMock;
 import market.MarketCustomerRole.state;
 import market.Food;

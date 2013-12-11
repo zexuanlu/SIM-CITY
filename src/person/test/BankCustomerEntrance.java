@@ -1,7 +1,5 @@
 package person.test;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,6 @@ import person.Location;
 import simcity.CityMap;
 import utilities.TimeCard;
 import bank.*;
-import bank.test.mock.*;
 /*
  * Tests the entrance role handoff between the TimeCard and the Person
  * sends a role on work and the person will begin calling the role's 

@@ -10,24 +10,12 @@ import restaurant5.*;
 import restaurant5.gui.*;
 import market.gui.MarketEmployeeGui;
 import market.gui.MarketTruckGui;
-import person.Apartment;
-import person.Bank;
-import person.Home;
-import person.Market;
-import person.PersonAgent.MyRole;
-import person.Position;
 import person.PersonAgent;
-import person.Restaurant;
-import person.SimEvent;
-import person.Location.LocationType;
-import person.SimEvent.EventType;
 import person.gui.PersonGui;
 import person.SimWorldClock;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
-import agent.Role;
 import bank.*;
 import bank.gui.BankHostGui;
 import bank.gui.BankTellerGui;
@@ -37,14 +25,11 @@ import restaurant1.gui.CookGui;
 import restaurant1.gui.WaiterGui;
 import restaurant3.*;
 import restaurant3.gui.Restaurant3CookGui;
-import restaurant3.gui.Restaurant3CustomerGui;
 import restaurant3.gui.Restaurant3WaiterGui;
 import restaurant4.*;
 import person.Location;
 import resident.ApartmentLandlordRole;
-import resident.ApartmentTenantRole;
 import resident.HomeOwnerRole;
-import resident.gui.ApartmentTenantGui;
 import resident.gui.HomeOwnerGui;
 import simcity.BusRole;
 import simcity.BusStopAgent;
@@ -54,10 +39,8 @@ import simcity.astar.*;
 import simcity.gui.BusGui;
 import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
-import utilities.TimeCard;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -68,7 +51,8 @@ import java.util.concurrent.*;
 
 public class SimCityGUI extends JFrame {
 
-        private PersonAgent initPerson;
+	private static final long serialVersionUID = 0;
+		private PersonAgent initPerson;
         public SimWorldClock simclock;
         
         public BankDatabaseAgent bankdatabase = new BankDatabaseAgent();
@@ -89,10 +73,8 @@ public class SimCityGUI extends JFrame {
         public ApartmentLandlordRole landlord = new ApartmentLandlordRole("APT5", 5, initPerson);
 
         // List of apartment tenant roles
-        private List<ApartmentTenantRole> aptTenants;
         public TrafficLightAgent trafficlightagent = new TrafficLightAgent();
         // List of apartment tenant GUIs
-        private List<ApartmentTenantGui> aptGuis;
         
         public Restaurant1HostRole host1 = new Restaurant1HostRole("Host 1", initPerson);
         public Restaurant1CookRole cook1 = new Restaurant1CookRole("Cook 1", initPerson);

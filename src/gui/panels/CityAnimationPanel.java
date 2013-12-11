@@ -16,7 +16,6 @@ import market.gui.MarketAnimationPanel;
 import bank.gui.BankAnimationPanel;
 import person.gui.PersonGui;
 import resident.gui.ApartmentAnimationPanel;
-import resident.gui.HomeOwnerGui;
 import resident.gui.HouseAnimationPanel;
 import restaurant1.gui.Restaurant1AnimationPanel;
 import restaurant2.gui.Restaurant2AnimationPanel;
@@ -30,7 +29,6 @@ import simcity.gui.BusStopGui;
 import simcity.gui.CarGui;
 import simcity.gui.PassengerGui;
 import utilities.Gui;
-import person.gui.PersonGui;
 import person.Location;
 import person.Restaurant;
 
@@ -42,7 +40,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Ellipse2D.Double;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -52,7 +49,8 @@ import java.util.Map;
 
 public class CityAnimationPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener{
 
-    private BuildingAnimationPanel BuildPanel;
+	private static final long serialVersionUID = 2;
+	private BuildingAnimationPanel BuildPanel;
     public TracePanel tracePanel;
     public BankAnimationPanel bankPanel = new BankAnimationPanel();
     public BankAnimationPanel bankPanel2 = new BankAnimationPanel();
@@ -113,8 +111,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     public List<ApartmentAnimationPanel> apartment4 = new ArrayList<ApartmentAnimationPanel>();
     
     private Map<String, Location> locations = new HashMap<String, Location>();
-    private Image bufferImage;
-    private Dimension bufferSize;
         private String title = " City Animation ";
         state s = state.none;
         public static final int WIDTH = 740;
@@ -212,9 +208,7 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
                 
             setSize(WIDTH, HEIGHT);
         setVisible(true);
-        
-        bufferSize = this.getSize();
- 
+         
             timer = new Timer(8, this );
             timer.start();
         }
@@ -668,7 +662,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     
     public void addGui(CarGui gui){
             guis.add(gui);
-            System.out.println("CAR GUI ADDGUI CITY ANIM PANEL");
     }
     
     public void addGui(PersonGui gui) {
@@ -715,13 +708,11 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
     
         @Override
         public void mouseEntered(MouseEvent arg0) {
-                // TODO Auto-generated method stub
                 
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
-                // TODO Auto-generated method stub
                 
         }
 
@@ -843,7 +834,6 @@ public class CityAnimationPanel extends JPanel implements ActionListener, MouseL
 
         @Override
         public void mouseDragged(MouseEvent arg0) {
-                // TODO Auto-generated method stub
                 
         }
 

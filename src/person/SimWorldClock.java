@@ -8,7 +8,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import person.Location.LocationType;
-import person.interfaces.Person;
 import simcity.CityMap;
 import utilities.TimeCard;
  //msgEndOfDay()
@@ -45,7 +44,6 @@ public class SimWorldClock {
 	private void updateWorldClock(){
 		if(tracePanel != null)
 			tracePanel.print("Time is now " + currentHour, null);
-		System.out.println("Time is now " + currentHour );
 		for(PersonAgent person : people){
 			person.msgNewHour(currentHour);
 		}

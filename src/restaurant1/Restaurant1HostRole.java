@@ -7,7 +7,6 @@ import java.util.*;
 
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Host;
-import utilities.restaurant.*;
 import restaurant1.interfaces.Restaurant1Waiter;
 
 

@@ -1,12 +1,5 @@
 package gui.subpanels;
-import person.Location;
-import person.Location.LocationType;
 import person.PersonAgent;
-import person.Position;
-import person.SimEvent;
-import person.SimEvent.EventType;
-import person.SimWorldClock;
-import person.gui.PersonGui; 
 import gui.panels.CityControlPanel;
 import gui.main.SimCityGUI; 
 
@@ -14,9 +7,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.Timer;
-
-import java.util.*;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -27,16 +17,9 @@ import javax.swing.*;
 
 public class InteractPersonPanel extends JPanel implements ActionListener{
 	
-	private CityControlPanel citycontrolpanel; 
+	private static final long serialVersionUID = 5;
+
 	private SimCityGUI simcitygui; 
-	
-	// Reference to the sim world clock
-	private SimWorldClock clock;
-	
-	// Sets world clock
-	public void setClock(SimWorldClock c) {
-		clock = c;
-	}
 	
 	private PersonAgent selectedPerson;
 	
@@ -181,35 +164,9 @@ public class InteractPersonPanel extends JPanel implements ActionListener{
 			}
 			
 		}
-//		else {
-//			JComboBox comboBox = (JComboBox)e.getSource();
-//            Object selected = comboBox.getSelectedItem();
-//            if (selected.toString().equals("Go to Bank")) {
-//            	System.err.println("going to bank");
-//            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Bank", Location.LocationType.Bank, new Position(140, 160)), 1, 7, SimEvent.EventType.CustomerEvent));
-//            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Bank), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
-//            }
-//            else if (selected.toString().equals("Go Buy From Market")) {
-//            	System.err.println("going to market");
-//            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Market", Location.LocationType.Market, new Position(500, 60)), 1, 7, SimEvent.EventType.CustomerEvent));
-//            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Market), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
-//            }
-//            else {
-//            	System.err.println("going to restaurant");
-//            	//selectedPerson.msgAddEvent(new SimEvent(new Location("Restaurant", Location.LocationType.Restaurant, new Position(220, 80)), 1, 7, SimEvent.EventType.CustomerEvent));
-//            	selectedPerson.msgAddEvent(new SimEvent(selectedPerson.getMap().chooseByType(LocationType.Restaurant), 2, clock.getCurrentTime()+1, EventType.CustomerEvent));
-//            }
-//        }
 	}
 	
 	public void displayInfo(PersonAgent p) {
-		// Labels
-		/*name = new JLabel("Person: " + p.getName());
-		for (PersonAgent.MyRole r : p.roles) {
-			if (r.isActive) {
-				currentRole = new JLabel("Role: " + r.role);
-			}
-		}*/
 		selectedPerson = p;
 		event.setEnabled(true);				
 	}

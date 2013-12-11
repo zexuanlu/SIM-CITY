@@ -5,7 +5,6 @@ import restaurant1.interfaces.Restaurant1Cashier;
 import restaurant1.interfaces.Restaurant1Customer;
 import restaurant1.interfaces.Restaurant1Host;
 import restaurant1.interfaces.Restaurant1Waiter;
-import utilities.restaurant.RestaurantHost;
 import agent.Role;
 import person.interfaces.Person;
 
@@ -89,7 +88,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	// Messages
 
 	public void gotHungry() {//from animation
-		print("I'm hungry");
 		event = AgentEvent.gotHungry;
 		stateChanged();
 	}
@@ -100,7 +98,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	}
 
 	public void msgSitAtTable(int a, Map<String, Double> s) {
-		print("Received msgSitAtTable");
 		event = AgentEvent.followHost;
 		menue = s;
 		tablenum = a;
@@ -198,7 +195,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	// Actions
 
 	private void goToRestaurant() {
-		Do("Going to restaurant");
 		host.msgIWantFood(this,location);//send our instance, so he can respond to us
 		event = AgentEvent.none;
 	}
@@ -208,11 +204,9 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		int a = run.nextInt(2);
 		event = AgentEvent.none;
 		if(a == 0){
-			Do("I will stay");
 			host.msgDecidestatus(false, this);
 		} 
 		else if(a ==1){
-			Do("I am leaving");
 			host.msgDecidestatus(true, this);
 			customerGui.DoExitRestaurant();
 		}
@@ -220,7 +214,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	}
 
 	private void SitDown() {
-		Do("Being seated. Going to table");
 		customerGui.DoGoToSeat(tablenum);//hack; only one table
 		event = AgentEvent.none;
 	}
@@ -260,7 +253,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		if(noMoney){
 			int a = run.nextInt(2);
 			if(a == 0){
-				Do("Money is not enough");
 				event = AgentEvent.doneEating;
 			}
 			else if(a ==1){
@@ -275,7 +267,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		}
 		}
 		else{
-			Do("I have nothing to order!");
 			event = AgentEvent.doneEating;
 		}
 	}
@@ -286,7 +277,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 
 	public void Hereismychoice(){
 		event = AgentEvent.ordered;
-		Do("I want " + choice);
 		waiter.msgorderisready(this, choice, tablenum);
 		customerGui.ordered(choice);
 	}
@@ -307,7 +297,6 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 		event = AgentEvent.none;
 		timer.schedule(new TimerTask() {
 			public void run() {
-				print("Done eating");
 				event = AgentEvent.dogotocheck;
 				DoGotoCheck();
 				//leaveTable();
@@ -319,13 +308,11 @@ public class Restaurant1CustomerRole extends Role implements Restaurant1Customer
 	}
 
 	private void DoGotoCheck(){
-		Do("Here is my payment");
 		cashier.msgPayment(this, money);
 	}
 
 	private void leaveTable() {
 		customerGui.done();
-		Do("Leaving.");
 		event = AgentEvent.abouttoleave;
 		waiter.msgLeavingTable(this);
 		customerGui.DoExitRestaurant();

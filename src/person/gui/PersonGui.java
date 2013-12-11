@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
-import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 
@@ -38,10 +37,6 @@ public class PersonGui implements Gui{
 	private int xtr = 440, ytr = 170;
 	private int xbl = 330, ybl = 280;
 	private int xbr = 440, ybr = 280;
-	
-	
-	private int xtemp;
-	private int ytemp;
 
 	public PersonGui(PersonAgent agent, int posx, int posy, CityAnimationPanel cap) {
 		xPos = posx; 

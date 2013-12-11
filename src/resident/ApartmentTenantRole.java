@@ -3,21 +3,17 @@ package resident;
 import java.text.DecimalFormat;  
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import market.Food;
 import person.Market;
-import person.PersonAgent;
 import person.Restaurant;
 import person.SimEvent;
 import person.Location.LocationType;
 import person.interfaces.Person;
-import resident.HomeOwnerRole.MyPriority;
 import resident.gui.ApartmentTenantGui;
 import resident.interfaces.ApartmentLandlord;
 import resident.interfaces.ApartmentTenant;
@@ -129,7 +125,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		// Log that the message has been received
 		log.add(new LoggedEvent("I'm hungry."));
 		
-		print("I'm hungry.");
 		
 		stateChanged();
 		}
@@ -140,9 +135,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.add(new MyPriority(MyPriority.Task.Eating, MyPriority.Type.Hunger));
 		
 		log.add(new LoggedEvent("My food is ready! I can eat now."));
-		
-		print("My food is ready! I can eat now.");
-		
+				
 		stateChanged();
 	}
 
@@ -151,9 +144,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.add(new MyPriority(MyPriority.Task.WashDishes, MyPriority.Type.Cleaning));
 		
 		log.add(new LoggedEvent("Done eating. I'm going to wash dishes now."));
-		
-		print("Done eating. I'm going to wash dishes now.");
-		
+				
 		stateChanged();
 	}
 
@@ -162,9 +153,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		toDoList.remove(p);
 		
 		log.add(new LoggedEvent("Done washing dishes!"));
-		
-		print("Done washing dishes!");
-		
+				
 		toDoList.add(new MyPriority(MyPriority.Task.CheckPerson, MyPriority.Type.Bored));
 		
 		stateChanged();
@@ -175,9 +164,7 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		
 		// If the customer has just finished going to the market, restock the fridge and then cook
 		log.add(new LoggedEvent("I just finished going to the market. Time to put all my groceries in the fridge."));
-		
-		print("I just finished going to the market. Time to put all my groceries in the fridge.");
-		
+				
 		// Add restocking fridge to the to do list
 		toDoList.add(new MyPriority(MyPriority.Task.RestockFridge, MyPriority.Type.Shop));		
 
@@ -192,15 +179,12 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		waitForReturn.release();
 		
 		log.add(new LoggedEvent("I just finished eating out. I'm full now!"));
-		
-		print("I just finished eating out. I'm full now!");
-		
+				
 		stateChanged();
 	}
 	
 	public void msgPayRent() {
 		log.add(new LoggedEvent("It's been a day. Time to pay rent."));
-		print("It's been a day. Time to pay rent.");
 		
 		toDoList.add(new MyPriority(MyPriority.Task.PayRent, MyPriority.Type.Maintainance));
 		stateChanged();
@@ -212,7 +196,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		debt += amount; 
 		
 		log.add(new LoggedEvent("I now have debt of $" + df.format(debt) + "."));
-		print("I now have debt of $" + df.format(debt) + ".");
 		stateChanged();
 	}
 	
@@ -356,7 +339,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			// Otherwise, pay as much as you can 
 			else {
 				log.add(new LoggedEvent("Paying the landlord $" + person.getWallet().getBalance() + ", because I don't have enough."));
-				print("Paying the landlord $" + person.getWallet().getBalance() + ", because I don't have enough.");
 				landlord.msgHereIsTheRent(this, person.getWallet().getBalance());
 				person.msgAddMoney(0);
 			}
@@ -368,7 +350,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		state = MyState.Sleeping;
 		
 		// Gui goes to bed and timer begins to start sleeping
-		print("Going to bed. It's sleepytime!");
 		
 		DoGoToBed();
 		
@@ -389,12 +370,10 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			// Adds going to the market or restaurant to the list
 			toDoList.add(new MyPriority(MyPriority.Task.NoFood, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has no food. I must now decide if I should go to the market or go out to eat."));
-			print("My fridge has no food. I must now decide if I should go to the market or go out to eat.");
 		}
 		else { // Cook the food
 			toDoList.add(new MyPriority(MyPriority.Task.Cooking, MyPriority.Type.Hunger));
 			log.add(new LoggedEvent("My fridge has food. I can cook now!"));
-			print("My fridge has food. I can cook now!");
 		}
 		toDoList.remove(p);
 	}
@@ -406,7 +385,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			
 			log.add(new LoggedEvent("I'm going to go to the market. I have enough money to go and come home."));
 			
-			print("I'm going to go to the market. I have enough money to go and come home.");
 		}
 		else { 
 			toDoList.add(new MyPriority(MyPriority.Task.GoToRestaurant, MyPriority.Type.Hunger));
@@ -414,7 +392,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			
 			log.add(new LoggedEvent("I have enough money to go to the restaurant, and go to the market when I have time."));
 			
-			print("I have enough money to go to the restaurant, and go to the market when I have time.");
 		}
 		toDoList.remove(p);
 	}
@@ -474,7 +451,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 				--f.amount;
 				++index;
 				log.add(new LoggedEvent("I'm going to cook " + f.choice + ". My inventory of it is now " + f.amount + "."));
-				print("I'm going to cook " + f.choice + ". My inventory of it is now " + f.amount + ".");
 				break;
 			}
 		}
@@ -483,7 +459,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 		if (myFridge.get(index).amount == 0) {
 			myFridge.remove(index);
 			log.add(new LoggedEvent("My fridge has no more " + maxChoice + "."));
-			print("My fridge has no more " + maxChoice + ".");
 		}
 		toDoList.remove(p);
 		state = MyState.Cooking;
@@ -581,7 +556,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 			
 			aptGui.state = ApartmentTenantGui.AptCookingState.Cooking;
 
-			print("Cooking food..");
 			
 	        // Timer to cook the food
 	        cookingTimer.schedule(new TimerTask() 
@@ -625,7 +599,6 @@ public class ApartmentTenantRole extends Role implements ApartmentTenant {
 				e.printStackTrace();
 			}
 			
-			print("Eating my food..");
 
 			// Timer to eat the food
 	        eatingTimer.schedule(new TimerTask() 

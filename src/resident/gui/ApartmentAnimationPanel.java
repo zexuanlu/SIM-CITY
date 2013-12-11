@@ -2,7 +2,6 @@ package resident.gui;
 
 import javax.swing.*;  
 
-import person.interfaces.Person;
 import utilities.Gui;
 
 import java.awt.*;
@@ -12,8 +11,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ApartmentAnimationPanel extends JPanel implements ActionListener {
-	
-    private final int WINDOWX = 540;
+
+	private static final long serialVersionUID = 10;
+	private final int WINDOWX = 540;
     private final int WINDOWY = 480;
     private static int fridgeX = 70;
     private static int fridgeY = 100;
@@ -23,9 +23,6 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     private static int tableY = 300;
     private static int sinkX = 70;
     private static int sinkY = 160;
-    
-    private Image bufferImage;
-    private Dimension bufferSize;
     
     public int aptNum;
 
@@ -46,9 +43,7 @@ public class ApartmentAnimationPanel extends JPanel implements ActionListener {
     	
     	setSize(WINDOWX, WINDOWY);
         setVisible(true);
-        
-        bufferSize = this.getSize();
-        
+                
         this.setBorder(BorderFactory.createTitledBorder("Apartment " + aptNum));
  
  //   	Timer timer = new Timer(8, this);

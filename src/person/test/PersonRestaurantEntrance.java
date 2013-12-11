@@ -1,6 +1,5 @@
 package person.test;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -14,7 +13,6 @@ import person.Location.LocationType;
 import person.Restaurant;
 import restaurant1.Restaurant1CustomerRole;
 import restaurant1.Restaurant1HostRole;
-import person.interfaces.*;
 import person.test.mock.MockHostRole;
 
 /*

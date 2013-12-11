@@ -1,7 +1,5 @@
 package restaurant1;
 
-import restaurant1.interfaces.Restaurant1Customer;
-import agent.Agent;
 import agent.Role;
 import person.interfaces.Person;
 

@@ -1,11 +1,8 @@
 package person.test;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import agent.*;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -21,7 +18,6 @@ import person.gui.PersonGui;
 import person.Location.LocationType;
 import simcity.CityMap;
 import utilities.TimeCard;
-import bank.test.mock.*;
 /*
  * Tests the role handoff between the TimeCard and the BankTellerRole sending the role off work 
  * and the people on their way. 

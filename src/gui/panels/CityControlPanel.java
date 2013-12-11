@@ -3,9 +3,7 @@ package gui.panels;
  * This is the main control panel for SimCity 201
  */
 
-import java.util.*;
 import java.awt.*;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -15,6 +13,7 @@ import gui.subpanels.*;
 
 public class CityControlPanel extends JPanel {
 	
+	private static final long serialVersionUID = 3;
 	private String title = " CITY CONTROL PANEL ";
 	public static final int WIDTH = CityAnimationPanel.WIDTH + BuildingAnimationPanel.WIDTH;
 	public static final int HEIGHT = 310;

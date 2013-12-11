@@ -113,15 +113,10 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			return name;
 		}
 
-		public List getWaitingCustomers() {
-			return customer;
-		}
-
 		
 		// Messages
 
 		public void msgIWantFood(Restaurant1Customer cust, int table, int loc) {
-			print("Seating customer");
 			customer.add(new mycustomer(cust, table, loc));
 			stateChanged();
 		}
@@ -156,9 +151,7 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void msgGoOffWork(){
 			offWork = true; 
 			if (offWork == true){
-				print("offWork is true");
 			}
-			print("Restaurantabstractwaiter offwork");
 			stateChanged(); 
 		}
 
@@ -221,16 +214,9 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 	            If so seat him at the table.
 			 */	
 			
-			print("SCHEDULER CALLED");
 
 			try{
-				
-				if (offWork == true){
-					print("offWork is true sched");
-				}
-				else {
-					print ("offWork is false sched");
-				}
+
 				
 				
 				if (offWork){
@@ -307,7 +293,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 					return true;
 				}
 			}
-			print("end of scheduler");
 			
 			}
 			catch(ConcurrentModificationException e){
@@ -323,7 +308,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		// Actions
 		private void goOffWork(){
 			offWork = false; 			
-			print("Restaurant1Waiter offWork");
 			
 			cashier.msgGoOffWork(); 
 			cook.msgGoOffWork(); 
@@ -365,7 +349,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		private void DoSeatCustomer(mycustomer customer, int table) {
 			//Notice how we print "customer" directly. It's toString method will do it.
 			//Same with "table"
-			print("Seating " + customer.c + " at " + table);
 			waiterGui.DoBringToTable(tablenum); 
 			//waiterGui.DoLeaveCustomer();
 		}
@@ -373,7 +356,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		public void Dotakeorder(mycustomer customer){
 			//Dogototable(customer.table);
 			customer.s = state.askedtoorder;
-			Do("Coming!");
 			waiterGui.DoGoToTakeOrder(customer.c, customer.table);
 			atTable.drainPermits();
 			try {
@@ -388,7 +370,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		
 		public void Doaskfororder(mycustomer customer) {
 			customer.s = state.askedtoorder;
-			Do("What do you like?");
 			customer.c.msgwhatyouwant();
 		}
 		
@@ -404,7 +385,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			}
 			revStand.insertOrder(new Order(this, customer.choice, customer.table));	
 			cook.msgAddedOrderToRevolvingStand();
-			System.err.println("Added order to revolving stand");
 			//waiterGui.DoGotoCHomePosition(tablenum);
 			waiterGui.DoLeaveCustomer();
 		}
@@ -442,7 +422,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 			waiterGui.bringFoodDone();
 			customer.s = state.starteating;
 			customer.c.msgordercooked(cashier);
-			Do("Please compute the check");
 			cashier.msgCheckthePrice(this, customer.c, customer.choice);
 		}
 		
@@ -460,7 +439,6 @@ public class Restaurant1SDWaiterRole extends Restaurant1AbstractWaiter implement
 		}
 		
 		public void DoGiveBill(mycustomer customer){
-			Do("Here is your check");
 			customer.s = state.bringbill;
 			
 		}
