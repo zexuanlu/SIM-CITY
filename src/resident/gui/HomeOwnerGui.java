@@ -100,7 +100,7 @@ public class HomeOwnerGui implements Gui {
     		
     		foodChoice = choice.substring(0, 2) + "?";
     		
-    		g.fillRect(xPos, yPos, 20, 20);
+    		//g.fillRect(xPos, yPos, 20, 20);
     		g.drawString(foodChoice, xPos, yPos);
         }
         
@@ -109,7 +109,7 @@ public class HomeOwnerGui implements Gui {
     		
     		foodChoice = choice.substring(0, 2) + "..";
     		
-    		g.fillRect(stoveX, stoveY+20, 20, 20);
+    		//g.fillRect(stoveX, stoveY+20, 20, 20);
     		g.drawString(foodChoice, stoveX, stoveY+20);
         }
         
@@ -118,7 +118,7 @@ public class HomeOwnerGui implements Gui {
     		
     		foodChoice = choice.substring(0, 2);
     		
-    		g.fillRect(xPos, yPos, 20, 20);
+    		//g.fillRect(xPos, yPos, 20, 20);
     		g.drawString(foodChoice, xPos, yPos);
         }
 	}

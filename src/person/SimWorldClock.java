@@ -26,7 +26,7 @@ public class SimWorldClock {
 		this.currentHour = currentHour;
 		timeCards = new ArrayList<TimeCard>();
 		//hourLength = time;
-		hourLength = 6000; 
+		hourLength = time; 
 		cityMap = cm;
 		this.people = people;
 		dayOfTheWeek = 1;
@@ -62,9 +62,11 @@ public class SimWorldClock {
 		}
 	}
 	public void closeUp(){
-		for(Location l : cityMap.map){
-			if( l.type != LocationType.Apartment && l.type != LocationType.Home){
-				l.isClosed = true;
+		if(cityMap != null && cityMap.map != null){
+			for(Location l : cityMap.map){
+				if( l.type != LocationType.Apartment && l.type != LocationType.Home){
+					l.isClosed = true;
+				}
 			}
 		}
 	}

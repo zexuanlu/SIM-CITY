@@ -73,7 +73,7 @@ public class Restaurant2CustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.drawImage(cu, xPos, yPos, 20, 2, null);
+		g.drawImage(cu, xPos, yPos, 20, 20, null);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 		g.drawString(text, xPos, yPos-5);	
 	}

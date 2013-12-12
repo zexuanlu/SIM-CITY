@@ -1,5 +1,6 @@
 package market.gui;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -193,6 +194,7 @@ public class MarketEmployeeGui implements Gui{
 	public void draw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		g.drawImage(image, xPos, yPos, distance, distance, null);
+        g.setColor(Color.BLACK);
 		g.drawString(((PersonAgent)agent.getPerson()).getName(), xPos-14, yPos+30);
 	}
 
