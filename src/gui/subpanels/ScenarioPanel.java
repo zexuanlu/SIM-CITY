@@ -901,18 +901,18 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		SimEvent withdrawBank2 = new SimEvent("withdraw", bank2, EventType.CustomerEvent);
 		
 		walking.msgAddEvent(eatAtHome);
-		walking.msgAddEvent(withdrawBank2);
 		walking.msgAddEvent(depositFromBank1);
 		walking.msgAddEvent(goToMarket1);
 		walking.msgAddEvent(goToRest1);
 		walking.msgAddEvent(goToRest2);
 		walking.msgAddEvent(goToRest3);
+		walking.msgAddEvent(withdrawBank2);
 		walking.msgAddEvent(goToRest4);
 		walking.msgAddEvent(goToRest5);
 		walking.msgAddEvent(goToRest6);
 		walking.msgAddEvent(goToMarket2);
 		
-		clock = new SimWorldClock(8, people, cityMap, 6000);
+		clock = new SimWorldClock(8, people, cityMap, 80000);
 		simCityGui.simclock = clock;
 		
 		clock.tracePanel = simCityGui.tracePanel;
@@ -2409,7 +2409,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
   		rest3SDWaiter.setCashier(rest3Cashier);
   		rest3Host.addWaiter(rest3Waiter);
   		rest3Host.addWaiter(rest3SDWaiter);
-  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(7));
+  		rest3Cook.setMarketCashier((MarketCashierRole)roles.get(6));
   		rest3Cook.cashier = rest3Cashier;
   		rest3Cashier.accountNumber = 6;
   		rest3Cashier.bank = bankdatabase;
@@ -2655,7 +2655,7 @@ public class ScenarioPanel extends JPanel implements ActionListener{
 		carPerson.msgAddEvent(goToRest4);
 		carPerson.msgAddEvent(goToRest1);
 		
-		clock = new SimWorldClock(8, people, cityMap, 6000);
+		clock = new SimWorldClock(8, people, cityMap, 80000);
 		simCityGui.simclock = clock;
 		
 		clock.tracePanel = simCityGui.tracePanel;

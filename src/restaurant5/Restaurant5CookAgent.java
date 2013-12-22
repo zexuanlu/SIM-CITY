@@ -275,6 +275,7 @@ public class Restaurant5CookAgent extends Role implements RestaurantCook {
 
 	private void sendTruckBack() {
 		truck.msgGoBack();
+		sendTruckBack = false;
 		truck = null;
 	}
 

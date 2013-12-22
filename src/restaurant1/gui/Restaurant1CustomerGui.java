@@ -34,6 +34,9 @@ public class Restaurant1CustomerGui implements Gui{
 	public static final int x1Table = 300;
 	public static final int y1Table = 250;
 	public static final int y2Table = 150;
+	
+	private ImageIcon img = new ImageIcon(this.getClass().getResource("customer.png"));
+	private Image cu = img.getImage();
 
 	public Restaurant1CustomerGui(Restaurant1CustomerRole c, Restaurant1AnimationPanel gui){ //HostAgent m) {
 		agent = c;
@@ -86,10 +89,11 @@ public class Restaurant1CustomerGui implements Gui{
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.green);
+		g.setColor(Color.green);		
+		g.drawImage(cu, xPos, yPos, 20, 20, null);
 		g.drawString(order, xPos, yPos + distance + distance);
     	g.drawString(((PersonAgent)((Restaurant1CustomerRole)agent).getPerson()).getName(), xPos-14, yPos+30);
-		g.fillRect(xPos, yPos, distance, distance);
+		//g.fillRect(xPos, yPos, distance, distance);
 	}
 	
 	public void ordered(String a){
